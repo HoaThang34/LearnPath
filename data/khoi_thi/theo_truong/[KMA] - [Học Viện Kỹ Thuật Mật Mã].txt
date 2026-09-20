@@ -1,0 +1,9 @@
+Trường: Học Viện Kỹ Thuật Mật Mã (Mã: KMA)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (4ngành)
+- C01: Toán, Ngữ Văn, Vật lí (3ngành)
+- A01: Toán, Vật lí, Tiếng Anh (4ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (3ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (4ngành)
+- X07, A0C, TH3, TH4: Toán, Vật lí, Công nghệ công nghiệp (1ngành)

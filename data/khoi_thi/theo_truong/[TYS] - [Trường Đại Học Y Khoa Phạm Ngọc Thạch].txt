@@ -1,0 +1,10 @@
+Trường: Trường Đại Học Y Khoa Phạm Ngọc Thạch (Mã: TYS)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (6ngành)
+- A01: Toán, Vật lí, Tiếng Anh (3ngành)
+- D07: Toán, Hóa học, Tiếng Anh (2ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (2ngành)
+- B00: Toán, Hóa học, Sinh học (14ngành)
+- B08: Toán, Sinh học, Tiếng Anh (6ngành)
+- B03: Toán, Ngữ văn, Sinh học (5ngành)

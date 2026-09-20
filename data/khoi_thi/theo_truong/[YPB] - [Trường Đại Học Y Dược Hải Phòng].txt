@@ -1,0 +1,8 @@
+Trường: Trường Đại Học Y Dược Hải Phòng (Mã: YPB)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- A01: Toán, Vật lí, Tiếng Anh (7ngành)
+- D07: Toán, Hóa học, Tiếng Anh (7ngành)
+- B00: Toán, Hóa học, Sinh học (7ngành)
+- D08: Toán, Sinh học, Tiếng Anh (7ngành)

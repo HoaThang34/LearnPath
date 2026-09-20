@@ -1,0 +1,10 @@
+Trường: Học Viện Thanh Thiếu Niên Việt Nam (Mã: HTN)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (7ngành)
+- A00: Toán, Vật lí, Hóa học (3ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (9ngành)
+- D10: Toán, Địa lí, Tiếng Anh (9ngành)
+- X74: Ngữ văn, Địa lí, GDKTPL (7ngành)
+- X21: Toán, Địa lí, GDKTPL (8ngành)
+- A04: Toán, Vật lí, Địa lí (2ngành)

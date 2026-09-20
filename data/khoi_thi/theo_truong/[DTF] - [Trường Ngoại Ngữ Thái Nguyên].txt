@@ -1,0 +1,15 @@
+Trường: Trường Ngoại Ngữ Thái Nguyên (Mã: DTF)
+Các khối thi / tổ hợp xét tuyển:
+
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (5ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (5ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (3ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (5ngành)
+- X78: Ngữ văn, GDKTPL, Tiếng Anh (5ngành)
+- D45: Ngữ văn, Địa lí, Tiếng Trung (3ngành)
+- D65: Ngữ văn, Lịch sử, Tiếng Trung (3ngành)
+- DD2: Ngữ văn, Toán, Tiếng Hàn (3ngành)
+- X90: Ngữ văn, GDKTPL, Tiếng Trung (3ngành)
+- Y03: Ngữ văn, GDKTPL, Tiếng Hàn (3ngành)
+- DH1: Ngữ văn, Địa lí, Tiếng Hàn (3ngành)
+- DH5: Ngữ văn, Lịch sử, Tiếng Hàn (3ngành)

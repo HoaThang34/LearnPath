@@ -1,0 +1,17 @@
+Trường: Trường Đại Học Ngân Hàng TPHCM (Mã: NHS)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (28ngành)
+- C01: Toán, Ngữ Văn, Vật lí (28ngành)
+- C02: Toán, Ngữ Văn, Hóa học (28ngành)
+- A01: Toán, Vật lí, Tiếng Anh (33ngành)
+- D07: Toán, Hóa học, Tiếng Anh (33ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (31ngành)
+- D10: Toán, Địa lí, Tiếng Anh (5ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (7ngành)
+- A07: Toán, Lịch sử, Địa lí (2ngành)
+- A04: Toán, Vật lí, Địa lí (2ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (27ngành)
+- A06: Toán, Hóa học, Địa lí (2ngành)
+- A03: Toán, Vật lí, Lịch sử (4ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (27ngành)

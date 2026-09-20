@@ -1,0 +1,14 @@
+Trường: Trường Đại học Kinh tế và Quản trị kinh doanh Thái Nguyên (Mã: DTE)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (1ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (6ngành)
+- X01: Ngữ văn, Toán, GDKTPL (25ngành)
+- A00: Toán, Vật lí, Hóa học (25ngành)
+- C04: Ngữ văn, Toán, Địa lí (18ngành)
+- C01: Toán, Ngữ Văn, Vật lí (7ngành)
+- A01: Toán, Vật lí, Tiếng Anh (19ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (25ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (2ngành)
+- D02: Ngữ văn, Toán, Tiếng Nga (1ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (2ngành)

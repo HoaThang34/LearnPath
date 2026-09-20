@@ -1,0 +1,14 @@
+# Khối: Y08 (Ngữ văn, GDKTPL, Công nghệ công nghiệp)
+# Tổng số trường: 11
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DVT] - [Đại Học Trà Vinh]
+[VLU] - [Trường Đại học Công nghệ kỹ thuật Vĩnh Long]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DLH] - [Trường Đại Học Lạc Hồng]
+[DKB] - [Trường Đại Học Kinh Tế Kỹ Thuật Bình Dương]
+[LNH] - [Trường Đại Học Lâm nghiệp]
+[DVH] - [Trường Đại Học Văn Hiến]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

@@ -1,0 +1,11 @@
+# Khối: X86 (Ngữ văn, GDKTPL, Tiếng Pháp)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[LPS] - [Trường Đại Học Luật TPHCM]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

@@ -1,0 +1,17 @@
+Trường: Trường Đại Học Giao Thông Vận Tải (Mã: GHA)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (53ngành)
+- C01: Toán, Ngữ Văn, Vật lí (52ngành)
+- D03: Ngữ văn, Toán, Tiếng Pháp (1ngành)
+- A01: Toán, Vật lí, Tiếng Anh (52ngành)
+- D07: Toán, Hóa học, Tiếng Anh (11ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (31ngành)
+- B00: Toán, Hóa học, Sinh học (1ngành)
+- D10: Toán, Địa lí, Tiếng Anh (1ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (1ngành)
+- V00: Toán, Vật lí, Vẽ Hình họa mỹ thuật (1ngành)
+- V01: Toán, Ngữ văn, Vẽ Hình họa mỹ thuật (1ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (36ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (38ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (43ngành)

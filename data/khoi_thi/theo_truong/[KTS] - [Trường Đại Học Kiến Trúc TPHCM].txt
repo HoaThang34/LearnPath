@@ -1,0 +1,8 @@
+Trường: Trường Đại Học Kiến Trúc TPHCM (Mã: KTS)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (5ngành)
+- C01: Toán, Ngữ Văn, Vật lí (5ngành)
+- A01: Toán, Vật lí, Tiếng Anh (7ngành)
+- D07: Toán, Hóa học, Tiếng Anh (2ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (2ngành)

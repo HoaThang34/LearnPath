@@ -1,0 +1,18 @@
+Trường: Viện nghiên cứu và đào tạo Việt Anh - Đại học Đà Nẵng (Mã: DDV)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (6ngành)
+- C01: Toán, Ngữ Văn, Vật lí (1ngành)
+- A01: Toán, Vật lí, Tiếng Anh (6ngành)
+- D07: Toán, Hóa học, Tiếng Anh (4ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (8ngành)
+- B00: Toán, Hóa học, Sinh học (3ngành)
+- D10: Toán, Địa lí, Tiếng Anh (2ngành)
+- B08: Toán, Sinh học, Tiếng Anh (2ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (2ngành)
+- B03: Toán, Ngữ văn, Sinh học (2ngành)
+- X25: Toán, Tiếng Anh, GDKTPL (2ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (3ngành)
+- X09: Toán, Hóa học, GDKTPL (1ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (3ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (3ngành)

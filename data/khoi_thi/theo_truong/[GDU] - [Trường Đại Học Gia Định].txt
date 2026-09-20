@@ -1,0 +1,18 @@
+Trường: Trường Đại Học Gia Định (Mã: GDU)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (13ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (10ngành)
+- A00: Toán, Vật lí, Hóa học (13ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (6ngành)
+- C01: Toán, Ngữ Văn, Vật lí (19ngành)
+- A01: Toán, Vật lí, Tiếng Anh (19ngành)
+- D07: Toán, Hóa học, Tiếng Anh (3ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (22ngành)
+- B00: Toán, Hóa học, Sinh học (3ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (6ngành)
+- D08: Toán, Sinh học, Tiếng Anh (3ngành)
+- B03: Toán, Ngữ văn, Sinh học (3ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (22ngành)
+- B01: Toán, Lịch sử, Sinh học (3ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (29ngành)

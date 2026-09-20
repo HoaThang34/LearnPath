@@ -1,0 +1,9 @@
+# Khối: X69 (Ngữ văn, Sinh học, Công nghệ nông nghiệp)
+# Tổng số trường: 6
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[VLU] - [Trường Đại học Công nghệ kỹ thuật Vĩnh Long]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

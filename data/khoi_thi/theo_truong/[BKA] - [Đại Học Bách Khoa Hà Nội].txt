@@ -1,0 +1,15 @@
+Trường: Đại Học Bách Khoa Hà Nội (Mã: BKA)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (61ngành)
+- C01: Toán, Ngữ Văn, Vật lí (68ngành)
+- C02: Toán, Ngữ Văn, Hóa học (68ngành)
+- A01: Toán, Vật lí, Tiếng Anh (55ngành)
+- D07: Toán, Hóa học, Tiếng Anh (19ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (15ngành)
+- B00: Toán, Hóa học, Sinh học (10ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (1ngành)
+- B03: Toán, Ngữ văn, Sinh học (68ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (68ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (68ngành)
+- DD2: Ngữ văn, Toán, Tiếng Hàn (1ngành)

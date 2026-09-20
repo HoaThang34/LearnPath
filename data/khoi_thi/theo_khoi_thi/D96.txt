@@ -1,0 +1,11 @@
+# Khối: D96 (Toán, Khoa học xã hội, Tiếng Anh)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[VLU] - [Trường Đại học Công nghệ kỹ thuật Vĩnh Long]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TDL] - [Trường Đại Học Đà Lạt]

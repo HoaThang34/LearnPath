@@ -1,0 +1,18 @@
+# Khối: T02 (Ngữ văn, Sinh, Năng khiếu TDTT)
+# Tổng số trường: 15
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[THP] - [Trường Đại Học Hải Phòng]
+[SPD] - [Trường Đại Học Đồng Tháp]
+[DHC] - [Khoa Giáo Dục Thể Chất Huế]
+[DKT] - [Trường Đại Học Hải Dương]
+[STS] - [Trường Đại Học Sư Phạm Thể Dục Thể Thao TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[TDB] - [Trường Đại Học Thể Dục Thể Thao Bắc Ninh]
+[HDT] - [Trường Đại Học Hồng Đức]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TTB] - [Trường Đại Học Tây Bắc]
+[TQU] - [Trường Đại học Tân Trào]
+[DVD] - [Trường Đại Học Văn Hóa, Thể Thao Và Du Lịch Thanh Hóa]

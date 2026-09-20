@@ -1,0 +1,12 @@
+# Khối: X46 (Toán, Tiếng Nhật, Tin học)
+# Tổng số trường: 9
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DDK] - [Trường Đại Học Bách Khoa Đà Nẵng]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

@@ -1,0 +1,7 @@
+Trường: Trường Đại Học Thể Dục Thể Thao Đà Nẵng (Mã: TTD)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (1ngành)
+- X01: Ngữ văn, Toán, GDKTPL (1ngành)
+- C01: Toán, Ngữ Văn, Vật lí (1ngành)
+- B03: Toán, Ngữ văn, Sinh học (1ngành)

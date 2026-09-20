@@ -1,0 +1,14 @@
+# Khối: T06 (Toán, Địa lý, Năng khiếu Thể dục thể thao)
+# Tổng số trường: 11
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TCT] - [Đại Học Cần Thơ]
+[SGD] - [Trường Đại Học Sài Gòn]
+[SPD] - [Trường Đại Học Đồng Tháp]
+[DKT] - [Trường Đại Học Hải Dương]
+[DQB] - [Trường Đại Học Quảng Bình]
+[TDS] - [Trường Đại Học Thể Dục Thể Thao TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

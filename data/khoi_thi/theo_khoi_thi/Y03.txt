@@ -1,0 +1,8 @@
+# Khối: Y03 (Ngữ văn, GDKTPL, Tiếng Hàn)
+# Tổng số trường: 5
+
+[DTF] - [Trường Ngoại Ngữ Thái Nguyên]
+[HLU] - [Trường Đại Học Hạ Long]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]

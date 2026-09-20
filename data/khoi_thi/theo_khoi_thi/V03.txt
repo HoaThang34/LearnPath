@@ -1,0 +1,15 @@
+# Khối: V03 (Vẽ mỹ thuật, Toán, Hóa)
+# Tổng số trường: 12
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TDM] - [Trường Đại học Thủ Dầu Một]
+[TCT] - [Đại Học Cần Thơ]
+[SGD] - [Trường Đại Học Sài Gòn]
+[KTD] - [Trường Đại Học Kiến Trúc Đà Nẵng]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DAD] - [Trường Đại Học Đông Á]
+[DCA] - [Trường Đại học Intracom]
+[UMT] - [Trường Đại học Quản lý và công nghệ TPHCM]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

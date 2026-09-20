@@ -1,0 +1,11 @@
+Trường: Học Viện Ngân Hàng (Mã: NHH)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (3ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (3ngành)
+- A00: Toán, Vật lí, Hóa học (19ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (3ngành)
+- A01: Toán, Vật lí, Tiếng Anh (42ngành)
+- D07: Toán, Hóa học, Tiếng Anh (42ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (45ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (23ngành)

@@ -1,0 +1,11 @@
+Trường: Trường Đại Học Khoa Học Và Công Nghệ Hà Nội (Mã: KCN)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (20ngành)
+- A01: Toán, Vật lí, Tiếng Anh (13ngành)
+- D07: Toán, Hóa học, Tiếng Anh (9ngành)
+- B00: Toán, Hóa học, Sinh học (9ngành)
+- B08: Toán, Sinh học, Tiếng Anh (4ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (6ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (11ngành)
+- X10, TH4: Toán, Hoá, Tin (4ngành)

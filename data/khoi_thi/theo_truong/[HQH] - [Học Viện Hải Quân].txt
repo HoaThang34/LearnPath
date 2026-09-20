@@ -1,0 +1,7 @@
+Trường: Học Viện Hải Quân (Mã: HQH)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (2ngành)
+- C01: Toán, Ngữ Văn, Vật lí (2ngành)
+- A01: Toán, Vật lí, Tiếng Anh (2ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (2ngành)

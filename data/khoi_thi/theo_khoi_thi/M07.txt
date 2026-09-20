@@ -1,0 +1,11 @@
+# Khối: M07 (Ngữ Văn, Địa lý, Năng khiếu đọc diễn cảm và Hát)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DQB] - [Trường Đại Học Quảng Bình]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[HDT] - [Trường Đại Học Hồng Đức]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[DVD] - [Trường Đại Học Văn Hóa, Thể Thao Và Du Lịch Thanh Hóa]

@@ -1,0 +1,10 @@
+Trường: Trường Đại Học Kiến Trúc Hà Nội (Mã: KTA)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (18ngành)
+- C01: Toán, Ngữ Văn, Vật lí (18ngành)
+- C02: Toán, Ngữ Văn, Hóa học (15ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (18ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (3ngành)
+- X03; TH8; K22; E01: Toán, Ngữ văn, Công nghệ công nghiệp (18ngành)
+- X04; TH8; K22; E01: Toán, Ngữ văn, Công nghệ nông nghiệp (18ngành)

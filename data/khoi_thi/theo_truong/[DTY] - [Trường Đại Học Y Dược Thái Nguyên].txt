@@ -1,0 +1,11 @@
+Trường: Trường Đại Học Y Dược Thái Nguyên (Mã: DTY)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (9ngành)
+- A02: Toán, Vật lí, Sinh học (9ngành)
+- A01: Toán, Vật lí, Tiếng Anh (4ngành)
+- D07: Toán, Hóa học, Tiếng Anh (9ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (2ngành)
+- B00: Toán, Hóa học, Sinh học (9ngành)
+- D08: Toán, Sinh học, Tiếng Anh (8ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (9ngành)

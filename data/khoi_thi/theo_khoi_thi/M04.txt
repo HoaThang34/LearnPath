@@ -1,0 +1,11 @@
+# Khối: M04 (Toán, Đọc kể diễn cảm, Hát - Múa)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TDM] - [Trường Đại học Thủ Dầu Một]
+[SGD] - [Trường Đại Học Sài Gòn]
+[THP] - [Trường Đại Học Hải Phòng]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

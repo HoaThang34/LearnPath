@@ -1,0 +1,12 @@
+Trường: Học viện Kỹ thuật và Công nghệ an ninh (Phía Nam) (Mã: HCN)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (8ngành)
+- A01: Toán, Vật lí, Tiếng Anh (8ngành)
+- D07: Toán, Hóa học, Tiếng Anh (2ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (6ngành)
+- B00: Toán, Hóa học, Sinh học (4ngành)
+- B08: Toán, Sinh học, Tiếng Anh (4ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (6ngành)
+- X27; D0C; K20; TH5; TH7: Toán, Tiếng Anh, Công nghệ công nghiệp (6ngành)
+- X28, K20, D0C: Toán, Tiếng Anh, Công nghệ nông nghiệp (4ngành)

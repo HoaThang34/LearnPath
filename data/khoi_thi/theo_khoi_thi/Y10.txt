@@ -1,0 +1,10 @@
+# Khối: Y10 (Ngữ văn, Tin học, Công nghệ công nghiệp)
+# Tổng số trường: 7
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[VLU] - [Trường Đại học Công nghệ kỹ thuật Vĩnh Long]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DQT] - [Trường Đại Học Quang Trung]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

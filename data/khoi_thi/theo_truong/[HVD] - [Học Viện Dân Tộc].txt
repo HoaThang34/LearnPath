@@ -1,0 +1,11 @@
+Trường: Học Viện Dân Tộc (Mã: HVD)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (1ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (1ngành)
+- A00: Toán, Vật lí, Hóa học (1ngành)
+- C04: Ngữ văn, Toán, Địa lí (1ngành)
+- C01: Toán, Ngữ Văn, Vật lí (1ngành)
+- C02: Toán, Ngữ Văn, Hóa học (1ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (1ngành)
+- D02: Ngữ văn, Toán, Tiếng Nga (1ngành)

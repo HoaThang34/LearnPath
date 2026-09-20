@@ -1,0 +1,10 @@
+# Khối: N03 (Ngữ văn, Tiếng Anh, Năng khiếu âm nhạc)
+# Tổng số trường: 7
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TDM] - [Trường Đại học Thủ Dầu Một]
+[SGD] - [Trường Đại Học Sài Gòn]
+[CMC] - [Trường Đại Học CMC]
+[NTT] - [Trường Đại Học Nguyễn Tất Thành]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

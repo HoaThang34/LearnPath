@@ -1,0 +1,10 @@
+Trường: Trường Đại Học Sư Phạm Thể Dục Thể Thao TPHCM (Mã: STS)
+Các khối thi / tổ hợp xét tuyển:
+
+- T00: Toán, Sinh học, Năng khiếu TDTT (3ngành)
+- T05: Ngữ văn, GDKTPL, Năng khiếu thể dục thể thao (3ngành)
+- T02: Ngữ văn, Sinh, Năng khiếu TDTT (3ngành)
+- T01: Toán, Ngữ văn, Năng khiếu TDTT (3ngành)
+- T10: Toán, Vật lý, Năng khiếu Thể dục Thể thao (3ngành)
+- T08: Toán, GDKTPL, Năng khiếu Thể dục thể thao (3ngành)
+- T09: Ngữ văn, Lịch sử, năng khiếu thể dục thể thao (3ngành)

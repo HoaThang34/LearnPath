@@ -1,0 +1,17 @@
+Trường: Trường Đại Học Mở Hà Nội (Mã: MHN)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (3ngành)
+- X01: Ngữ văn, Toán, GDKTPL (3ngành)
+- A00: Toán, Vật lí, Hóa học (11ngành)
+- C01: Toán, Ngữ Văn, Vật lí (3ngành)
+- A01: Toán, Vật lí, Tiếng Anh (11ngành)
+- D07: Toán, Hóa học, Tiếng Anh (2ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (16ngành)
+- B00: Toán, Hóa học, Sinh học (2ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (1ngành)
+- D10: Toán, Địa lí, Tiếng Anh (2ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (2ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (7ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (10ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (10ngành)

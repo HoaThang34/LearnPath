@@ -1,0 +1,1584 @@
+{
+  "ĐHBK Hà Nội": {
+    "Kỹ thuật Thực phẩm (CT tiên tiến)": {
+      "block": "",
+      "mark": 45.62
+    },
+    "Kỹ thuật sinh học (CT tiên tiến)": {
+      "block": "",
+      "mark": 45.07
+    },
+    "Kỹ thuật Sinh học": {
+      "block": "",
+      "mark": 55.56
+    },
+    "Kỹ thuật Thực phẩm": {
+      "block": "",
+      "mark": 55.01
+    },
+    "Kỹ thuật Hóa dược (CT tiên tiến)": {
+      "block": "",
+      "mark": 46.51
+    },
+    "Hóa học Mỹ phẩm (CT tiên tiến)": {
+      "block": "",
+      "mark": 50.78
+    },
+    "Kỹ thuật Hóa học": {
+      "block": "",
+      "mark": 58.81
+    },
+    "Hóa học": {
+      "block": "",
+      "mark": 56.88
+    },
+    "Công nghệ Giáo dục": {
+      "block": "",
+      "mark": 56.6
+    },
+    "Quản lý Giáo dục": {
+      "block": "",
+      "mark": 54.56
+    },
+    "Tâm lý học công nghiệp và tổ chức": {
+      "block": "",
+      "mark": 54.73
+    },
+    "Hệ thống điện và năng lượng tái tạo (CT tiên tiến)": {
+      "block": "",
+      "mark": 65.89
+    },
+    "Kỹ thuật điều khiển-Tự động hóa (CT tiên tiến)": {
+      "block": "",
+      "mark": 74.31
+    },
+    "Tin học công nghiệp và Tự động hóa (CT Việt - Pháp PFIEV)": {
+      "block": "",
+      "mark": 70.22
+    },
+    "Kỹ thuật điện": {
+      "block": "",
+      "mark": 70.95
+    },
+    "Kỹ thuật điều khiển & Tự động hóa": {
+      "block": "",
+      "mark": 76.5
+    },
+    "Phân tích Kinh doanh (CT tiên tiến)": {
+      "block": "",
+      "mark": 55.21
+    },
+    "Logistics và Quản lý chuỗi cung ứng (CT tiên tiến)": {
+      "block": "",
+      "mark": 59.64
+    },
+    "Kế toán (CT tiên tiến)": {
+      "block": "",
+      "mark": 45.5
+    },
+    "Quản lý Năng lượng": {
+      "block": "",
+      "mark": 59.64
+    },
+    "Quản lý Công nghiệp": {
+      "block": "",
+      "mark": 61.63
+    },
+    "Quản trị Kinh doanh": {
+      "block": "",
+      "mark": 57.99
+    },
+    "Tài chính-Ngân hàng": {
+      "block": "",
+      "mark": 59.34
+    },
+    "Truyền thông số và Kỹ thuật đa phương tiện (CT tiên tiến)": {
+      "block": "",
+      "mark": 66.71
+    },
+    "Kỹ thuật Điện tử - Viễn thông (CT tiên tiến)": {
+      "block": "",
+      "mark": 70.22
+    },
+    "Kỹ thuật Y sinh (CT tiên tiến)": {
+      "block": "",
+      "mark": 63.53
+    },
+    "Hệ thống nhúng thông minh và IoT (tăng cường tiếng Nhật)": {
+      "block": "",
+      "mark": 72
+    },
+    "Điện tử - Viễn thông - ĐH Leibniz Hannover (CHLB Đức)": {
+      "block": "",
+      "mark": 66.58
+    },
+    "Kỹ thuật Điện tử-Viễn thông": {
+      "block": "",
+      "mark": 73.13
+    },
+    "Kỹ thuật Y sinh": {
+      "block": "",
+      "mark": 65.29
+    },
+    "Kỹ thuật Môi trường": {
+      "block": "",
+      "mark": 53.42
+    },
+    "Quản lý Tài nguyên và Môi trường": {
+      "block": "",
+      "mark": 50.94
+    },
+    "Tiếng Anh KHKT và Công nghệ": {
+      "block": "",
+      "mark": 53.98
+    },
+    "Tiếng Anh chuyên nghiệp quốc tế\r\n(do ĐHBK Hà Nội và ĐH Plymouth Marjon - Vương quốc Anh cấp bằng)": {
+      "block": "",
+      "mark": 47.49
+    },
+    "Tiếng Trung KH&CN": {
+      "block": "",
+      "mark": 63.55
+    },
+    "Tiếng Hàn KH&CN": {
+      "block": "",
+      "mark": 53.92
+    },
+    "Kỹ thuật Nhiệt": {
+      "block": "",
+      "mark": 64
+    },
+    "Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)": {
+      "block": "",
+      "mark": 82.12
+    },
+    "An toàn không gian số - Cyber Security (CT tiên tiến)": {
+      "block": "",
+      "mark": 76.79
+    },
+    "Công nghệ Thông tin Việt - Nhật (tăng cường tiếng Nhật)": {
+      "block": "",
+      "mark": 67.83
+    },
+    "Công nghệ Thông tin Global ICT (CT tiên tiến)": {
+      "block": "",
+      "mark": 74.31
+    },
+    "Công nghệ Thông tin Việt - Pháp (tăng cường tiếng Pháp)": {
+      "block": "",
+      "mark": 67.87
+    },
+    "CNTT: Khoa học Máy tính": {
+      "block": "",
+      "mark": 79.26
+    },
+    "CNTT: Kỹ thuật Máy tính": {
+      "block": "",
+      "mark": 75.84
+    },
+    "Kỹ thuật Cơ điện tử (CT tiên tiến)": {
+      "block": "",
+      "mark": 68.24
+    },
+    "Cơ khí Chế tạo máy - hợp tác với trường ĐH Griffith (Úc)": {
+      "block": "",
+      "mark": 62.58
+    },
+    "Cơ điện tử - hợp tác với ĐH Leibniz Hannover (CHLB Đức)": {
+      "block": "",
+      "mark": 66.07
+    },
+    "Cơ điện tử - hợp tác với ĐHCN Nagaoka (Nhật Bản)": {
+      "block": "",
+      "mark": 64.52
+    },
+    "Kỹ thuật Cơ điện tử": {
+      "block": "",
+      "mark": 72.47
+    },
+    "Kỹ thuật Cơ khí": {
+      "block": "",
+      "mark": 67.1
+    },
+    "Khoa học tính toán cho các hệ thống thông minh (CT tiên tiến)": {
+      "block": "",
+      "mark": 69.17
+    },
+    "Toán-Tin": {
+      "block": "",
+      "mark": 69.17
+    },
+    "Hệ thống Thông tin quản lý": {
+      "block": "",
+      "mark": 68.24
+    },
+    "Khoa học và Kỹ thuật Vật liệu (CT tiên tiến)": {
+      "block": "",
+      "mark": 59.47
+    },
+    "Kỹ thuật Vật liệu": {
+      "block": "",
+      "mark": 63.06
+    },
+    "Kỹ thuật Vi điện tử và Công nghệ nano": {
+      "block": "",
+      "mark": 73.59
+    },
+    "Công nghệ vật liệu Polyme và Compozit": {
+      "block": "",
+      "mark": 61.68
+    },
+    "Kỹ thuật In": {
+      "block": "",
+      "mark": 58.64
+    },
+    "Vật lý Kỹ thuật": {
+      "block": "",
+      "mark": 64.78
+    },
+    "Kỹ thuật Hạt nhân": {
+      "block": "",
+      "mark": 62.67
+    },
+    "Vật lý Y khoa": {
+      "block": "",
+      "mark": 61.46
+    },
+    "Kỹ thuật Ô tô (CT tiên tiến)": {
+      "block": "",
+      "mark": 61.98
+    },
+    "Cơ khí Hàng không (CT Việt - Pháp PFIEV)": {
+      "block": "",
+      "mark": 63.53
+    },
+    "Kỹ thuật Ô tô": {
+      "block": "",
+      "mark": 66.11
+    },
+    "Kỹ thuật Cơ khí động lực": {
+      "block": "",
+      "mark": 64.99
+    },
+    "Kỹ thuật Hàng không": {
+      "block": "",
+      "mark": 66.2
+    },
+    "Khoa học Máy tính - ĐH Troy (Hoa Kỳ)\r\n(do ĐH Troy cấp bằng)": {
+      "block": "",
+      "mark": 59.19
+    },
+    "Công nghệ Dệt May": {
+      "block": "",
+      "mark": 52.6
+    }
+  },
+  "ĐH Kinh tế Quốc dân": {
+    "Ngôn ngữ Anh": {
+      "block": "",
+      "mark": 26.46
+    },
+    "Kinh tế học": {
+      "block": "",
+      "mark": 26.64
+    },
+    "Kinh tế và quản lý đô thị": {
+      "block": "",
+      "mark": 25.9
+    },
+    "Kinh tế và quản lý nguồn nhân lực": {
+      "block": "",
+      "mark": 27.07
+    },
+    "Kinh tế đầu tư": {
+      "block": "",
+      "mark": 27.56
+    },
+    "Kinh tế phát triển": {
+      "block": "",
+      "mark": 26.79
+    },
+    "Kinh tế quốc tế": {
+      "block": "",
+      "mark": 27.2
+    },
+    "Thống kê kinh tế": {
+      "block": "",
+      "mark": 27.29
+    },
+    "Toán kinh tế": {
+      "block": "",
+      "mark": 27.22
+    },
+    "Quan hệ công chúng": {
+      "block": "",
+      "mark": 27.58
+    },
+    "Quản trị kinh doanh": {
+      "block": "",
+      "mark": 26.85
+    },
+    "Marketing": {
+      "block": "",
+      "mark": 27.99
+    },
+    "Bất động sản": {
+      "block": "",
+      "mark": 25.36
+    },
+    "Kinh doanh quốc tế": {
+      "block": "",
+      "mark": 28.5
+    },
+    "Kinh doanh thương mại": {
+      "block": "",
+      "mark": 27.94
+    },
+    "Thương mại điện tử": {
+      "block": "",
+      "mark": 28.62
+    },
+    "Tài chính – Ngân hàng": {
+      "block": "",
+      "mark": 27.43
+    },
+    "Bảo hiểm": {
+      "block": "",
+      "mark": 25.35
+    },
+    "Công nghệ tài chính (dự kiến)": {
+      "block": "",
+      "mark": 27.52
+    },
+    "Kế toán": {
+      "block": "",
+      "mark": 27.3
+    },
+    "Kiểm toán": {
+      "block": "",
+      "mark": 28.84
+    },
+    "Khoa học quản lý": {
+      "block": "",
+      "mark": 26.3
+    },
+    "Quản lý công": {
+      "block": "",
+      "mark": 25.37
+    },
+    "Quản trị nhân lực": {
+      "block": "",
+      "mark": 27.25
+    },
+    "Hệ thống thông tin quản lý": {
+      "block": "",
+      "mark": 28.01
+    },
+    "Quan hệ lao động": {
+      "block": "",
+      "mark": 25.52
+    },
+    "Quản lý dự án": {
+      "block": "",
+      "mark": 26.67
+    },
+    "Luật": {
+      "block": "",
+      "mark": 25.52
+    },
+    "Luật kinh tế": {
+      "block": "",
+      "mark": 26.62
+    },
+    "Luật thương mại quốc tế": {
+      "block": "",
+      "mark": 26.38
+    },
+    "Khoa học máy tính": {
+      "block": "",
+      "mark": 26.19
+    },
+    "Hệ thống thông tin": {
+      "block": "",
+      "mark": 27.09
+    },
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 25.68
+    },
+    "An toàn thông tin": {
+      "block": "",
+      "mark": 26
+    },
+    "Logistics và Quản lý chuỗi cung ứng": {
+      "block": "",
+      "mark": 28.53
+    },
+    "Kinh doanh nông nghiệp": {
+      "block": "",
+      "mark": 24.75
+    },
+    "Kinh tế nông nghiệp": {
+      "block": "",
+      "mark": 24.59
+    },
+    "Quản trị dịch vụ du lịch và lữ hành": {
+      "block": "",
+      "mark": 25.79
+    },
+    "Quản trị khách sạn": {
+      "block": "",
+      "mark": 25.05
+    },
+    "Quản lý tài nguyên và môi trường": {
+      "block": "",
+      "mark": 24.2
+    },
+    "Kinh tế tài nguyên thiên nhiên": {
+      "block": "",
+      "mark": 24.38
+    },
+    "Quản lý đất đai": {
+      "block": "",
+      "mark": 24.75
+    },
+    "(1) Kinh tế phát triển": {
+      "block": "",
+      "mark": 25.28
+    },
+    "(2) Ngân hàng": {
+      "block": "",
+      "mark": 25.28
+    },
+    "(3) Công nghệ thông tin và chuyển đổi số": {
+      "block": "",
+      "mark": 25.28
+    },
+    "(4) Bảo hiểm tích hợp chứng chỉ ANZIIF": {
+      "block": "",
+      "mark": 25.28
+    },
+    "(1) Kinh tế Đầu tư": {
+      "block": "",
+      "mark": 24.83
+    },
+    "(2) Quản trị nhân lực": {
+      "block": "",
+      "mark": 24.83
+    },
+    "(3) Quản trị kinh doanh": {
+      "block": "",
+      "mark": 25.25
+    },
+    "(4) Quan hệ công chúng": {
+      "block": "",
+      "mark": 24.83
+    },
+    "(1) Tài chính doanh nghiệp": {
+      "block": "",
+      "mark": 25.89
+    },
+    "(2) Marketing số": {
+      "block": "",
+      "mark": 25.89
+    },
+    "(3) Quản trị Marketing": {
+      "block": "",
+      "mark": 25.89
+    },
+    "(4) Quản trị Kinh doanh quốc tế": {
+      "block": "",
+      "mark": 25.89
+    },
+    "(5) Kinh tế quốc tế": {
+      "block": "",
+      "mark": 25.89
+    },
+    "(6) Logistics và quản lý chuỗi cung ứng": {
+      "block": "",
+      "mark": 25.89
+    },
+    "(7) Thương mại điện tử": {
+      "block": "",
+      "mark": 25.89
+    },
+    "(8) Kiểm toán tích hợp chứng chỉ ACCA": {
+      "block": "",
+      "mark": 25.89
+    },
+    "Quản trị kinh doanh (E-BBA)": {
+      "block": "",
+      "mark": 25.74
+    },
+    "Khởi nghiệp và phát triển kinh doanh (BBAE)": {
+      "block": "",
+      "mark": 25.22
+    },
+    "Khoa học tính toán trong Tài chính và Bảo hiểm": {
+      "block": "",
+      "mark": 26.44
+    },
+    "Phân tích dữ liệu kinh tế (EDA)": {
+      "block": "",
+      "mark": 27.24
+    },
+    "Kế toán tích hợp chứng chỉ quốc tế (ICAEW CFAB)": {
+      "block": "",
+      "mark": 26.62
+    },
+    "Kinh doanh số (E-BDB)": {
+      "block": "",
+      "mark": 26.84
+    },
+    "Phân tích kinh doanh (BA)": {
+      "block": "",
+      "mark": 27.4
+    },
+    "Quản trị điều hành thông minh (E-SOM)": {
+      "block": "",
+      "mark": 25.8
+    },
+    "Quản trị chất lượng và Đổi mới (E-MQI)": {
+      "block": "",
+      "mark": 25.12
+    },
+    "Công nghệ tài chính và Ngân hàng số": {
+      "block": "",
+      "mark": 26.86
+    },
+    "Tài chính và Đầu tư (BFI)": {
+      "block": "",
+      "mark": 26.76
+    },
+    "Quản trị khách sạn quốc tế (IHME)": {
+      "block": "",
+      "mark": 24.93
+    },
+    "Kiểm toán tích hợp chứng chỉ quốc tế (ICAEW CFAB)": {
+      "block": "",
+      "mark": 28.25
+    },
+    "Kinh tế học tài chính (FE)": {
+      "block": "",
+      "mark": 25.89
+    },
+    "Logistics và Quản lý CCU tích hợp chứng chỉ Logistic quốc tế (LSIC)": {
+      "block": "",
+      "mark": 27.87
+    },
+    "Khoa học dữ liệu": {
+      "block": "",
+      "mark": 26.52
+    },
+    "Trí tuệ nhân tạo": {
+      "block": "",
+      "mark": 25.64
+    },
+    "Kỹ thuật phần mềm": {
+      "block": "",
+      "mark": 25
+    },
+    "Quản trị giải trí và sự kiện": {
+      "block": "",
+      "mark": 25.89
+    },
+    "Công nghệ Marketing": {
+      "block": "",
+      "mark": 26.68
+    },
+    "Công nghệ Logistics và Quản trị chuỗi cung ứng": {
+      "block": "",
+      "mark": 27.39
+    },
+    "Kiểm toán nội bộ": {
+      "block": "",
+      "mark": 26.39
+    },
+    "Kinh tế số (dự kiến)": {
+      "block": "",
+      "mark": 26.51
+    },
+    "Kinh tế Y tế": {
+      "block": "",
+      "mark": 24.42
+    },
+    "Phát triển quốc tế": {
+      "block": "",
+      "mark": 24.68
+    },
+    "Công nghệ môi trường và phát triển bền vững": {
+      "block": "",
+      "mark": 23.48
+    },
+    "Quản trị công nghiệp sáng tạo": {
+      "block": "",
+      "mark": 24.08
+    },
+    "Quản trị nhân lực quốc tế": {
+      "block": "",
+      "mark": 25.75
+    },
+    "Quản trị rủi ro định lượng": {
+      "block": "",
+      "mark": 26.15
+    },
+    "Toán ứng dụng (dự kiến)": {
+      "block": "",
+      "mark": 25.6
+    },
+    "Thẩm định giá": {
+      "block": "",
+      "mark": 24.96
+    },
+    "Thống kê và Trí tuệ kinh doanh": {
+      "block": "",
+      "mark": 25.54
+    },
+    "Quản lý công và Chính sách (E-PMP)": {
+      "block": "",
+      "mark": 24.05
+    },
+    "Quản trị lữ hành": {
+      "block": "",
+      "mark": 24.77
+    },
+    "Truyền thông Marketing": {
+      "block": "",
+      "mark": 27.39
+    },
+    "Luật kinh doanh": {
+      "block": "",
+      "mark": 25.68
+    },
+    "Quản trị kinh doanh thương mại": {
+      "block": "",
+      "mark": 26.64
+    },
+    "Quản lý thị trường": {
+      "block": "",
+      "mark": 24.89
+    },
+    "(1) Kế toán": {
+      "block": "",
+      "mark": 25.25
+    },
+    "(2) Kế hoạch tài chính": {
+      "block": "",
+      "mark": 25.25
+    },
+    "(1) Tài chính": {
+      "block": "",
+      "mark": 26
+    },
+    "(2) Kinh doanh quốc tế": {
+      "block": "",
+      "mark": 26
+    }
+  },
+  "ĐH Ngoại thương": {
+    "CT TH Trí tuệ nhân tạo cho đổi mới sáng tạo trong kinh tế và kinh doanh": {
+      "block": "",
+      "mark": 34.66
+    },
+    "CT TH Khoa học dữ liệu cho đổi mới sáng tạo trong kinh tế và kinh doanh": {
+      "block": "",
+      "mark": 34.66
+    },
+    "CT TH Khoa học máy tính và dữ liệu trong kinh tế và kinh doanh": {
+      "block": "",
+      "mark": 34.66
+    }
+  },
+  "ĐH Thương mại": {
+    "Quản trị kinh doanh (Quản trị kinh doanh)": {
+      "block": "K00",
+      "mark": 23.25
+    },
+    "Quản trị kinh doanh (Quản trị kinh doanh - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Quản trị kinh doanh (Khởi nghiệp và phát triển kinh doanh)": {
+      "block": "K00",
+      "mark": 22.5
+    },
+    "Quản trị khách sạn (Quản trị khách sạn)": {
+      "block": "K00",
+      "mark": 22.5
+    },
+    "Quản trị khách sạn (Quản trị khách sạn - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Quản trị dịch vụ du lịch và lữ hành (Quản trị dịch vụ du lịch và lữ hành)": {
+      "block": "K00",
+      "mark": 22.5
+    },
+    "Marketing (Marketing Thương mại)": {
+      "block": "K00",
+      "mark": 23.75
+    },
+    "Marketing (Marketing thương mại - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 23.25
+    },
+    "Marketing (Marketing số)": {
+      "block": "K00",
+      "mark": 24.5
+    },
+    "Marketing (Quản trị Thương hiệu)": {
+      "block": "K00",
+      "mark": 23.5
+    },
+    "Marketing (Quản trị thương hiệu - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.75
+    },
+    "Kế toán (Kế toán doanh nghiệp)": {
+      "block": "K00",
+      "mark": 24.5
+    },
+    "Kế toán (Kế toán tích hợp chứng chỉ quốc tế ICAEW CFAB - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Kế toán (Kế toán công)": {
+      "block": "K00",
+      "mark": 23.5
+    },
+    "Kiểm toán (Kiểm toán)": {
+      "block": "K00",
+      "mark": 24.5
+    },
+    "Kiểm toán (Kiểm toán tích hợp chứng chỉ quốc tế ICAEW CFAB - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Logistics và Quản lý chuỗi cung ứng (Logistics và Quản lý chuỗi cung ứng)": {
+      "block": "K00",
+      "mark": 26.5
+    },
+    "Logistics và Quản lý chuỗi cung ứng (Logistics và Xuất nhập khẩu - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 25.8
+    },
+    "Kinh doanh quốc tế (Thương mại quốc tế)": {
+      "block": "K00",
+      "mark": 25.25
+    },
+    "Kinh doanh quốc tế (Thương mại quốc tế - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 24.75
+    },
+    "Kinh tế quốc tế (Kinh tế quốc tế)": {
+      "block": "K00",
+      "mark": 24.25
+    },
+    "Kinh tế (Quản lý kinh tế)": {
+      "block": "K00",
+      "mark": 22.25
+    },
+    "Kinh tế (Kinh tế và Quản lý đầu tư - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Tài chính - Ngân hàng (Tài chính - Ngân hàng thương mại)": {
+      "block": "K00",
+      "mark": 23.75
+    },
+    "Tài chính - Ngân hàng (Tài chính - Ngân hàng thương mại - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Tài chính - Ngân hàng (Tài chính công)": {
+      "block": "K00",
+      "mark": 22.5
+    },
+    "Tài chính - Ngân hàng (Công nghệ tài ch��nh ngân hàng)": {
+      "block": "K00",
+      "mark": 23.7
+    },
+    "Thương mại điện tử (Quản trị thương mại điện tử)": {
+      "block": "K00",
+      "mark": 24.75
+    },
+    "Thương mại điện tử (Thương mại điện tử - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 24.25
+    },
+    "Thương mại điện tử (Kinh doanh số)": {
+      "block": "K00",
+      "mark": 25
+    },
+    "Hệ thống thông tin quản lý (Quản trị Hệ thống thông tin)": {
+      "block": "K00",
+      "mark": 23.5
+    },
+    "Hệ thống thông tin quản lý (Quản trị Hệ thống thông tin - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Ngôn ngữ Anh (Tiếng Anh thương mại)": {
+      "block": "K00",
+      "mark": 23
+    },
+    "Luật kinh tế (Luật kinh tế)": {
+      "block": "K00",
+      "mark": 22.5
+    },
+    "Luật kinh tế (Luật kinh doanh - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Luật kinh tế (Luật thương mại quốc tế)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Quản trị nhân lực (Quản trị nhân lực doanh nghiệp)": {
+      "block": "K00",
+      "mark": 23.75
+    },
+    "Quản trị nhân lực (Quản trị nhân lực doanh nghiệp - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Kinh tế số (Phân tích kinh doanh trong môi trường số)": {
+      "block": "K00",
+      "mark": 23.7
+    },
+    "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại)": {
+      "block": "K00",
+      "mark": 25.75
+    },
+    "Ngôn ngữ Trung Quốc (Tiếng Trung thương mại - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 25.3
+    },
+    "Quản trị kinh doanh (Tiếng Pháp thương mại)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Quản trị kinh doanh (Quản trị kinh doanh) - Khởi nghiệp (Thành lập doanh nghiệp) - Chương trình đào tạo song bằng quốc tế": {
+      "block": "K00",
+      "mark": 22.5
+    },
+    "Marketing (Marketing thương mại) - Thương mại sản phẩm và dịch vụ (Bán hàng) - Chương trình đào tạo song bằng quốc tế": {
+      "block": "K00",
+      "mark": 22
+    },
+    "Quản trị kinh doanh (Quản trị kinh doanh - Chương trình đào tạo tiến tiến)": {
+      "block": "K00",
+      "mark": 22
+    },
+    "Logistics và quản lý chuỗi cung ứng (Logistics và quản lý chuỗi cung ứng) - Thương mại và phân phối (Quản lý chuỗi cung ứng và phân phối) - Chương trình đào tạo song bằng quốc tế": {
+      "block": "K00",
+      "mark": 23
+    },
+    "Kế toán (Kế toán tích hợp chứng chỉ quốc tế ICAEW CFAB) - Bảo hiểm, ngân hàng, tài chính: Quan hệ khách hàng (Thương mại sản phẩm ngân hàng và dịch vụ tài chính) - Chương trình đào tạo song bằng quốc tế": {
+      "block": "K00",
+      "mark": 23
+    },
+    "Logistics và Quản lý chuỗi cung ứng (Logistics và Quản lý vận tải đa phương thức - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 24
+    },
+    "Kinh tế số (Phân tích dữ liệu trong kinh tế và kinh doanh - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Quản trị dịch vụ du lịch và lữ hành (Quản trị sự kiện và dịch vụ giải trí - Chương trình định hướng chuyên sâu nghề nghiệp quốc tế - IPOP)": {
+      "block": "K00",
+      "mark": 21.5
+    },
+    "Khoa học máy tính (Ứng dụng trí tuệ nhân tạo trong kinh doanh)": {
+      "block": "K00",
+      "mark": 21.5
+    }
+  },
+  "ĐH Dược Hà Nội": {
+    "Dược học": {
+      "block": "K00",
+      "mark": 18.33
+    }
+  },
+  "ĐH Công nghiệp Hà Nội": {
+    "Công nghệ sinh học": {
+      "block": "",
+      "mark": 17.35
+    },
+    "Khoa học máy tính": {
+      "block": "",
+      "mark": 22
+    },
+    "Trí tuệ nhân tạo": {
+      "block": "",
+      "mark": 22.5
+    },
+    "Mạng máy tính và truyền thông dữ liệu": {
+      "block": "",
+      "mark": 20.5
+    },
+    "Kỹ thuật phần mềm": {
+      "block": "",
+      "mark": 20.85
+    },
+    "Hệ thống thông tin": {
+      "block": "",
+      "mark": 21
+    },
+    "Công nghệ kỹ thuật máy tính": {
+      "block": "",
+      "mark": 22.75
+    },
+    "Vi mạch bán dẫn": {
+      "block": "",
+      "mark": 24.68
+    },
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 22
+    },
+    "Công nghệ đa phương tiện": {
+      "block": "",
+      "mark": 19.5
+    },
+    "An toàn thông tin": {
+      "block": "",
+      "mark": 23.7
+    },
+    "Công nghệ kỹ thuật cơ khí": {
+      "block": "",
+      "mark": 24.68
+    },
+    "Công nghệ kỹ thuật khuôn mẫu": {
+      "block": "",
+      "mark": 23
+    },
+    "Thiết kế cơ khí và kiểu dáng công nghiệp": {
+      "block": "",
+      "mark": 22.25
+    },
+    "Công nghệ kỹ thuật cơ điện tử": {
+      "block": "",
+      "mark": 26.5
+    },
+    "Robot và trí tuệ nhân tạo": {
+      "block": "",
+      "mark": 25.65
+    },
+    "Công nghệ kỹ thuật cơ điện tử ô tô": {
+      "block": "",
+      "mark": 25.05
+    },
+    "Công nghệ kỹ thuật ô tô": {
+      "block": "",
+      "mark": 22.75
+    },
+    "Công nghệ kỹ thuật nhiệt": {
+      "block": "",
+      "mark": 23.47
+    },
+    "Công nghệ kỹ thuật điện; điện tử": {
+      "block": "",
+      "mark": 25.14
+    },
+    "Công nghệ kỹ thuật điện tử - viễn thông": {
+      "block": "",
+      "mark": 23.47
+    },
+    "Công nghệ kỹ thuật điện tử y sinh": {
+      "block": "",
+      "mark": 20.85
+    },
+    "Công nghệ kỹ thuật điều khiển và tự động hóa": {
+      "block": "",
+      "mark": 27.39
+    },
+    "Kỹ thuật sản xuất thông minh": {
+      "block": "",
+      "mark": 23.23
+    },
+    "Công nghệ kỹ thuật hoá học": {
+      "block": "",
+      "mark": 22.25
+    },
+    "Công nghệ vật liệu": {
+      "block": "",
+      "mark": 20.85
+    },
+    "Công nghệ kỹ thuật môi trường": {
+      "block": "",
+      "mark": 19.5
+    },
+    "Năng lượng tái tạo": {
+      "block": "",
+      "mark": 21.25
+    },
+    "Kỹ thuật cơ khí động lực": {
+      "block": "",
+      "mark": 23.75
+    },
+    "Kỹ thuật ô tô và năng lượng mới": {
+      "block": "",
+      "mark": 23.1
+    },
+    "Kỹ thuật hệ thống công nghiệp": {
+      "block": "",
+      "mark": 22.75
+    },
+    "Công nghệ thực phẩm": {
+      "block": "",
+      "mark": 21.5
+    },
+    "Hóa dược": {
+      "block": "",
+      "mark": 22.25
+    }
+  },
+  "ĐH Giao thông Vận tải": {
+    "Toán ứng dụng (chuyên ngành Toán tin\r\nứng dụng)": {
+      "block": "K00",
+      "mark": 55.8
+    },
+    "Kinh tế xây dựng (Chương trình CLC Kinh tế xây dựng công trình giao thông Việt - Anh)": {
+      "block": "K00",
+      "mark": 50.39
+    },
+    "Quản lý xây dựng (Chương trình CLC Quản lý xây dựng Việt - Anh)": {
+      "block": "K00",
+      "mark": 47.25
+    },
+    "Khoa học máy tính": {
+      "block": "K00",
+      "mark": 58.19
+    },
+    "Công nghệ thông tin": {
+      "block": "K00",
+      "mark": 55.89
+    },
+    "Công nghệ thông tin\r\n(Chương trình CLC Công nghệ thông tin Việt-Anh)": {
+      "block": "K00",
+      "mark": 51.38
+    },
+    "Trí tuệ nhân tạo": {
+      "block": "K00",
+      "mark": 56.55
+    },
+    "Kỹ thuật cơ khí (chuyên ngành: Công nghệ chế tạo cơ khí; Tự động hoá thiết kế cơ khí)": {
+      "block": "K00",
+      "mark": 61.86
+    },
+    "Kỹ thuật cơ khí\r\n(Chương trình CLC Tự động hóa thiết kế cơ khí)": {
+      "block": "K00",
+      "mark": 56.46
+    },
+    "Kỹ thuật cơ điện tử": {
+      "block": "K00",
+      "mark": 62.61
+    },
+    "Kỹ thuật nhiệt (chuyên ngành: Kỹ thuật nhiệt lạnh và điều hoà không khí)": {
+      "block": "K00",
+      "mark": 59.93
+    },
+    "Kỹ thuật cơ khí động lực (chuyên ngành: Kỹ thuật phương tiện đường sắt; Máy xây dựng; Kỹ thuật máy động lực)": {
+      "block": "K00",
+      "mark": 57.02
+    },
+    "Kỹ thuật cơ khí động lực (chuyên ngành: Kỹ thuật phương tiện đường sắt tốc độ cao)": {
+      "block": "K00",
+      "mark": 55.98
+    },
+    "Kỹ thuật ô tô": {
+      "block": "K00",
+      "mark": 57.65
+    },
+    "Kỹ thuật ô tô\r\n(Chương trình CLC Kỹ thuật ô tô Việt - Anh)": {
+      "block": "K00",
+      "mark": 52.14
+    },
+    "Kỹ thuật điện (chuyên ngành: Trang bị điện trong công nghiệp và GTVT; Hệ thống điện trong giao thông và công nghiệp)": {
+      "block": "K00",
+      "mark": 60.55
+    },
+    "Kỹ thuật điện (chuyên ngành: Hệ thống điện đường sắt tốc độ cao; đường sắt đô thị)": {
+      "block": "K00",
+      "mark": 58.09
+    },
+    "Kỹ thuật điện tử - viễn thông (chuyên\r\nngành: Kỹ thuật viễn thông; Kỹ thuật thông tin và truyền thông)": {
+      "block": "K00",
+      "mark": 58
+    },
+    "Kỹ thuật điện tử - viễn thông (chuyên ngành: Kỹ thuật điện tử và tin học công nghiệp)": {
+      "block": "K00",
+      "mark": 58.41
+    },
+    "Kỹ thuật điện tử - viễn thông (Chuyên ngành Kỹ thuật điện tử và tin học công nghiệp)": {
+      "block": "K00",
+      "mark": 53.16
+    },
+    "Kỹ thuật điều khiển và tự động hoá\r\n(chuyên ngành: Tự động hoá; Kỹ thuật điều khiển và tự động hoá giao thông)": {
+      "block": "K00",
+      "mark": 63.54
+    },
+    "Kỹ thuật điều khiển và tự động hoá\r\n(chuyên ngành: Điều khiển và thông tin tín hiệu đường sắt hiện đại)": {
+      "block": "K00",
+      "mark": 60.17
+    },
+    "Kỹ thuật điều khiển và tự động hóa (Chuyên ngành Hệ thống giao thông thông minh)": {
+      "block": "K00",
+      "mark": 61.07
+    },
+    "Kỹ thuật robot (chuyên ngành Kỹ thuật robot & trí tuệ nhân tạo)": {
+      "block": "K00",
+      "mark": 59
+    },
+    "Kỹ thuật môi trường": {
+      "block": "K00",
+      "mark": 50.88
+    },
+    "Kỹ thuật an toàn giao thông": {
+      "block": "K00",
+      "mark": 49.34
+    },
+    "Kỹ thuật xây dựng (Chuyên ngành: Xây dựng dân dụng và công nghiệp, Kết cấu xây dựng, Vật liệu và công nghệ xây dựng)": {
+      "block": "K00",
+      "mark": 53.78
+    },
+    "Kỹ thuật xây dựng (Chương trình tiên tiến Kỹ thuật xây dựng công trình giao thông)": {
+      "block": "K00",
+      "mark": 49.47
+    },
+    "Kỹ thuật xây dựng (Chương trình CLC Xây dựng dân dụng và công nghiệp)": {
+      "block": "K00",
+      "mark": 46.93
+    },
+    "Kỹ thuật cơ sở hạ tầng (Chuyên ngành Cơ sở hạ tầng kỹ thuật đô thị)": {
+      "block": "K00",
+      "mark": 52.21
+    },
+    "Quản lý đô thị và công trình": {
+      "block": "K00",
+      "mark": 52.08
+    },
+    "Kỹ thuật xây dựng công trình thủy": {
+      "block": "K00",
+      "mark": 50.17
+    },
+    "Kỹ thuật xây dựng công trình giao thông (Chuyên ngành: Cầu đường bộ, Đường bộ và kỹ thuật giao thông, Cầu và kết cấu, Đường sắt và đường sắt đô thị, Xây dựng sân bay cảng hàng không, Công trình giao thông đô thị)": {
+      "block": "K00",
+      "mark": 48.93
+    },
+    "Kỹ thuật xây dựng công trình giao thông (Chuyên ngành Đường sắt tốc độ cao)": {
+      "block": "K00",
+      "mark": 55.13
+    },
+    "Kỹ thuật xây dựng công trình giao thông (Chương trình CLC Cầu - Đường bộ Việt - Pháp)": {
+      "block": "K00",
+      "mark": 46.75
+    },
+    "Kỹ thuật xây dựng công trình giao thông (Chương trình CLC Cầu- Đường bộ Việt - Anh)": {
+      "block": "K00",
+      "mark": 47.47
+    },
+    "Kỹ thuật xây dựng công trình giao thông (Chương trình CLC Công trình giao thông đô thị) (Mã tuyển sinh các năm trước: Chương trình CLC Công trình giao thông đô thị Việt-Nhật)": {
+      "block": "K00",
+      "mark": 46.46
+    },
+    "Kỹ thuật máy tính (theo hướng chuyên sâu vi mạch-bán dẫn; bao gồm lớp kỹ sư tài năng)": {
+      "block": "K00",
+      "mark": 57.87
+    }
+  },
+  "ĐH Thủy lợi": {
+    "Kỹ thuật cơ khí": {
+      "block": "K00",
+      "mark": 59.95
+    },
+    "Công nghệ thông tin": {
+      "block": "K00",
+      "mark": 57.55
+    },
+    "Kỹ thuật môi trường": {
+      "block": "K00",
+      "mark": 50.77
+    },
+    "Kỹ thuật điện": {
+      "block": "K00",
+      "mark": 55.8
+    },
+    "Hệ thống thông tin": {
+      "block": "K00",
+      "mark": 55.06
+    },
+    "Kỹ thuật phần mềm": {
+      "block": "K00",
+      "mark": 54.64
+    },
+    "Kỹ thuật hóa học": {
+      "block": "K00",
+      "mark": 54.25
+    },
+    "Công nghệ sinh học": {
+      "block": "K00",
+      "mark": 51.16
+    },
+    "Kỹ thuật cơ điện tử": {
+      "block": "K00",
+      "mark": 63.4
+    },
+    "Kỹ thuật điều khiển và tự động hóa": {
+      "block": "K00",
+      "mark": 65.47
+    },
+    "Công nghệ cơ khí tự động hóa (Công nghệ chế tạo máy)": {
+      "block": "K00",
+      "mark": 54.64
+    },
+    "Kỹ thuật Ô tô": {
+      "block": "K00",
+      "mark": 56.3
+    },
+    "Kỹ thuật điện tử - viễn thông (gồm các chương trình: Kỹ thuật điện tử - viễn thông; Công nghệ bán dẫn và thiết kế vi mạch)": {
+      "block": "K00",
+      "mark": 60
+    },
+    "Trí tuệ nhân tạo và khoa học dữ liệu": {
+      "block": "K00",
+      "mark": 56.3
+    },
+    "An ninh mạng": {
+      "block": "K00",
+      "mark": 56.3
+    },
+    "Kỹ thuật Robot và Điều khiển thông minh": {
+      "block": "K00",
+      "mark": 54.56
+    },
+    "Chương trình Kỹ thuật xe năng lượng mới thông minh": {
+      "block": "K00",
+      "mark": 50.77
+    }
+  },
+  "ĐH Mỏ - Địa chất": {
+    "Ngôn ngữ Anh": {
+      "block": "",
+      "mark": 53.81
+    },
+    "Ngôn ngữ Trung Quốc": {
+      "block": "",
+      "mark": 66.06
+    },
+    "Quản trị kinh doanh": {
+      "block": "",
+      "mark": 56.62
+    },
+    "Tài chính - Ngân hàng": {
+      "block": "",
+      "mark": 56.62
+    },
+    "Kế toán": {
+      "block": "",
+      "mark": 55.82
+    },
+    "Địa chất học": {
+      "block": "",
+      "mark": 38.16
+    },
+    "Quản lý và phân tích dữ liệu khoa học": {
+      "block": "",
+      "mark": 39.33
+    },
+    "Khoa học dữ liệu": {
+      "block": "",
+      "mark": 48.82
+    },
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 52.56
+    },
+    "Địa tin học": {
+      "block": "",
+      "mark": 39.33
+    },
+    "Công nghệ kỹ thuật điện, điện tử": {
+      "block": "",
+      "mark": 59.86
+    },
+    "Công nghệ kỹ thuật hóa học": {
+      "block": "",
+      "mark": 46.36
+    },
+    "Quản lý công nghiệp": {
+      "block": "",
+      "mark": 50.69
+    },
+    "Kỹ thuật cơ khí": {
+      "block": "",
+      "mark": 55.06
+    },
+    "Kỹ thuật Robot": {
+      "block": "",
+      "mark": 51.31
+    },
+    "Kỹ thuật cơ điện tử": {
+      "block": "",
+      "mark": 58.22
+    },
+    "Kỹ thuật cơ khí động lực": {
+      "block": "",
+      "mark": 46.36
+    },
+    "Kỹ thuật không gian": {
+      "block": "",
+      "mark": 37
+    },
+    "Kỹ thuật ô tô": {
+      "block": "",
+      "mark": 56.62
+    },
+    "Kỹ thuật điện": {
+      "block": "",
+      "mark": 52.56
+    },
+    "Kỹ thuật điều khiển và tự động hoá": {
+      "block": "",
+      "mark": 65.03
+    },
+    "Kỹ thuật hoá học": {
+      "block": "",
+      "mark": 46.36
+    },
+    "Kỹ thuật vật liệu": {
+      "block": "",
+      "mark": 39.33
+    },
+    "Kỹ thuật môi trường": {
+      "block": "",
+      "mark": 38.16
+    },
+    "Kỹ thuật địa chất": {
+      "block": "",
+      "mark": 37
+    },
+    "Kỹ thuật địa vật lý": {
+      "block": "",
+      "mark": 37
+    },
+    "Kỹ thuật trắc địa - bản đồ": {
+      "block": "",
+      "mark": 37.58
+    },
+    "Đá quý Đá mỹ nghệ": {
+      "block": "",
+      "mark": 38.16
+    },
+    "Kỹ thuật mỏ": {
+      "block": "",
+      "mark": 41.68
+    },
+    "Kỹ thuật dầu khí": {
+      "block": "",
+      "mark": 41.68
+    },
+    "Kỹ thuật khí thiên nhiên": {
+      "block": "",
+      "mark": 39.33
+    },
+    "Công nghệ số trong thăm dò và khai thác tài nguyên thiên nhiên": {
+      "block": "",
+      "mark": 39.33
+    },
+    "Kỹ thuật tuyển khoáng": {
+      "block": "",
+      "mark": 41.68
+    },
+    "Quản lý đô thị và công trình": {
+      "block": "",
+      "mark": 37
+    },
+    "Quản lý phát triển đô thị và bất động sản": {
+      "block": "",
+      "mark": 48.82
+    },
+    "Kỹ thuật xây dựng": {
+      "block": "",
+      "mark": 47.57
+    },
+    "Xây dựng công trình ngầm thành phố và Hệ thống tàu điện ngầm": {
+      "block": "",
+      "mark": 39.33
+    },
+    "Kỹ thuật xây dựng công trình giao thông": {
+      "block": "",
+      "mark": 45.19
+    },
+    "Địa kỹ thuật xây dựng": {
+      "block": "",
+      "mark": 37
+    },
+    "Kỹ thuật tài nguyên nước": {
+      "block": "",
+      "mark": 37
+    },
+    "Quản lý xây dựng": {
+      "block": "",
+      "mark": 51.31
+    },
+    "Hoá dược": {
+      "block": "",
+      "mark": 46.36
+    },
+    "Du lịch địa chất": {
+      "block": "",
+      "mark": 48.82
+    },
+    "Quản lý tài nguyên và môi trường": {
+      "block": "",
+      "mark": 45.19
+    },
+    "Quản lý đất đai": {
+      "block": "",
+      "mark": 45.19
+    },
+    "Quản lý tài nguyên khoáng sản": {
+      "block": "",
+      "mark": 38.16
+    },
+    "An toàn, Vệ sinh lao động": {
+      "block": "",
+      "mark": 41.68
+    }
+  },
+  "ĐH Lâm nghiệp": {
+    "Kinh tế": {
+      "block": "K00",
+      "mark": 38
+    },
+    "Quản trị kinh doanh": {
+      "block": "K00",
+      "mark": 35.5
+    },
+    "Bất động sản": {
+      "block": "K00",
+      "mark": 36.25
+    },
+    "Tài chính - Ngân hàng": {
+      "block": "K00",
+      "mark": 40
+    },
+    "Kế toán": {
+      "block": "K00",
+      "mark": 37.5
+    },
+    "Công nghệ sinh học": {
+      "block": "K00",
+      "mark": 35
+    },
+    "Hệ thống thông tin": {
+      "block": "K00",
+      "mark": 35.5
+    },
+    "Công nghệ kỹ thuật cơ điện tử": {
+      "block": "K00",
+      "mark": 35.5
+    },
+    "Công nghệ kỹ thuật ô tô": {
+      "block": "K00",
+      "mark": 35.5
+    },
+    "Logistics và Quản lý chuỗi cung ứng": {
+      "block": "K00",
+      "mark": 38.75
+    },
+    "Kỹ thuật cơ khí": {
+      "block": "K00",
+      "mark": 35.5
+    },
+    "Kỹ thuật hệ thống công nghiệp": {
+      "block": "K00",
+      "mark": 47.75
+    },
+    "Công nghệ chế biến lâm sản": {
+      "block": "K00",
+      "mark": 35
+    },
+    "Kiến trúc cảnh quan": {
+      "block": "K00",
+      "mark": 37.5
+    },
+    "Thiết kế nội thất": {
+      "block": "K00",
+      "mark": 38.75
+    },
+    "Kỹ thuật xây dựng": {
+      "block": "K00",
+      "mark": 37
+    },
+    "Chăn nuôi": {
+      "block": "K00",
+      "mark": 38.75
+    },
+    "Khoa học cây trồng": {
+      "block": "K00",
+      "mark": 45
+    },
+    "Lâm sinh": {
+      "block": "K00",
+      "mark": 35
+    },
+    "Lâm nghiệp": {
+      "block": "K00",
+      "mark": 35
+    },
+    "Quản lý tài nguyên rừng": {
+      "block": "K00",
+      "mark": 35.25
+    },
+    "Thú y": {
+      "block": "K00",
+      "mark": 35.75
+    },
+    "Công tác xã hội": {
+      "block": "K00",
+      "mark": 37.5
+    },
+    "Quản trị dịch vụ Du lịch và Lữ hành": {
+      "block": "K00",
+      "mark": 39.25
+    },
+    "Quản lý tài nguyên và Môi trường": {
+      "block": "K00",
+      "mark": 37.5
+    },
+    "Quản lý đất đai": {
+      "block": "K00",
+      "mark": 39
+    },
+    "Du lịch sinh thái": {
+      "block": "K00",
+      "mark": 37.5
+    },
+    "Quản lý tài nguyên thiên nhiên": {
+      "block": "K00",
+      "mark": 37.75
+    }
+  },
+  "Học viện Kỹ thuật Mật mã": {
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 24.63
+    },
+    "An toàn thông tin (Cơ sở Hà Nội)": {
+      "block": "",
+      "mark": 25.8
+    },
+    "An toàn thông tin (Cơ sở TP.HCM)": {
+      "block": "",
+      "mark": 23.96
+    },
+    "Kỹ thuật điện tử viễn thông": {
+      "block": "",
+      "mark": 24.63
+    }
+  }
+}

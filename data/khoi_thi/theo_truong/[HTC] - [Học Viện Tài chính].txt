@@ -1,0 +1,9 @@
+Trường: Học Viện Tài chính (Mã: HTC)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (27ngành)
+- A01: Toán, Vật lí, Tiếng Anh (50ngành)
+- D07: Toán, Hóa học, Tiếng Anh (50ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (50ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (50ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (27ngành)

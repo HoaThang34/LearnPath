@@ -1,0 +1,12 @@
+# Khối: C09 (Ngữ văn, Địa lí, Vật lí)
+# Tổng số trường: 9
+
+[DKK] - [Trường Đại Học Kinh Tế Kỹ Thuật Công Nghiệp]
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DKT] - [Trường Đại Học Hải Dương]
+[VLU] - [Trường Đại học Công nghệ kỹ thuật Vĩnh Long]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

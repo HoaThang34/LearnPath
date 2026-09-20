@@ -1,0 +1,9 @@
+# Khối: N04 (Ngữ Văn, Năng khiếu thuyết trình, Năng khiếu)
+# Tổng số trường: 6
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TDM] - [Trường Đại học Thủ Dầu Một]
+[SGD] - [Trường Đại Học Sài Gòn]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

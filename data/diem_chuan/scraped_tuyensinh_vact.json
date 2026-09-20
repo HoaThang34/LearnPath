@@ -1,0 +1,970 @@
+{
+  "ĐH Kinh tế Quốc dân": {
+    "Ngôn ngữ Anh": {
+      "block": "",
+      "mark": 910
+    },
+    "Kinh tế học": {
+      "block": "",
+      "mark": 921
+    },
+    "Kinh tế và quản lý đô thị": {
+      "block": "",
+      "mark": 875
+    },
+    "Kinh tế và quản lý nguồn nhân lực": {
+      "block": "",
+      "mark": 947
+    },
+    "Kinh tế đầu tư": {
+      "block": "",
+      "mark": 977
+    },
+    "Kinh tế phát triển": {
+      "block": "",
+      "mark": 930
+    },
+    "Kinh tế quốc tế": {
+      "block": "",
+      "mark": 955
+    },
+    "Thống kê kinh tế": {
+      "block": "",
+      "mark": 960
+    },
+    "Toán kinh tế": {
+      "block": "",
+      "mark": 956
+    },
+    "Quan hệ công chúng": {
+      "block": "",
+      "mark": 978
+    },
+    "Quản trị kinh doanh": {
+      "block": "",
+      "mark": 933
+    },
+    "Marketing": {
+      "block": "",
+      "mark": 1003
+    },
+    "Bất động sản": {
+      "block": "",
+      "mark": 840
+    },
+    "Kinh doanh quốc tế": {
+      "block": "",
+      "mark": 1053
+    },
+    "Kinh doanh thương mại": {
+      "block": "",
+      "mark": 1000
+    },
+    "Thương mại điện tử": {
+      "block": "",
+      "mark": 1064
+    },
+    "Tài chính – Ngân hàng": {
+      "block": "",
+      "mark": 969
+    },
+    "Bảo hiểm": {
+      "block": "",
+      "mark": 839
+    },
+    "Công nghệ tài chính (dự kiến)": {
+      "block": "",
+      "mark": 974
+    },
+    "Kế toán": {
+      "block": "",
+      "mark": 961
+    },
+    "Kiểm toán": {
+      "block": "",
+      "mark": 1086
+    },
+    "Khoa học quản lý": {
+      "block": "",
+      "mark": 900
+    },
+    "Quản lý công": {
+      "block": "",
+      "mark": 841
+    },
+    "Quản trị nhân lực": {
+      "block": "",
+      "mark": 958
+    },
+    "Hệ thống thông tin quản lý": {
+      "block": "",
+      "mark": 1004
+    },
+    "Quan hệ lao động": {
+      "block": "",
+      "mark": 850
+    },
+    "Quản lý dự án": {
+      "block": "",
+      "mark": 922
+    },
+    "Luật": {
+      "block": "",
+      "mark": 850
+    },
+    "Luật kinh tế": {
+      "block": "",
+      "mark": 919
+    },
+    "Luật thương mại quốc tế": {
+      "block": "",
+      "mark": 905
+    },
+    "Khoa học máy tính": {
+      "block": "",
+      "mark": 893
+    },
+    "Hệ thống thông tin": {
+      "block": "",
+      "mark": 948
+    },
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 861
+    },
+    "An toàn thông tin": {
+      "block": "",
+      "mark": 882
+    },
+    "Logistics và Quản lý chuỗi cung ứng": {
+      "block": "",
+      "mark": 1055
+    },
+    "Kinh doanh nông nghiệp": {
+      "block": "",
+      "mark": 800
+    },
+    "Kinh tế nông nghiệp": {
+      "block": "",
+      "mark": 790
+    },
+    "Quản trị dịch vụ du lịch và lữ hành": {
+      "block": "",
+      "mark": 868
+    },
+    "Quản trị khách sạn": {
+      "block": "",
+      "mark": 820
+    },
+    "Quản lý tài nguyên và môi trường": {
+      "block": "",
+      "mark": 765
+    },
+    "Kinh tế tài nguyên thiên nhiên": {
+      "block": "",
+      "mark": 776
+    },
+    "Quản lý đất đai": {
+      "block": "",
+      "mark": 800
+    },
+    "(1) Kinh tế phát triển": {
+      "block": "",
+      "mark": 835
+    },
+    "(2) Ngân hàng": {
+      "block": "",
+      "mark": 835
+    },
+    "(3) Công nghệ thông tin và chuyển đổi số": {
+      "block": "",
+      "mark": 835
+    },
+    "(4) Bảo hiểm tích hợp chứng chỉ ANZIIF": {
+      "block": "",
+      "mark": 835
+    },
+    "(1) Kinh tế Đầu tư": {
+      "block": "",
+      "mark": 805
+    },
+    "(2) Quản trị nhân lực": {
+      "block": "",
+      "mark": 805
+    },
+    "(3) Quản trị kinh doanh": {
+      "block": "",
+      "mark": 833
+    },
+    "(4) Quan hệ công chúng": {
+      "block": "",
+      "mark": 805
+    },
+    "(1) Tài chính doanh nghiệp": {
+      "block": "",
+      "mark": 874
+    },
+    "(2) Marketing số": {
+      "block": "",
+      "mark": 874
+    },
+    "(3) Quản trị Marketing": {
+      "block": "",
+      "mark": 874
+    },
+    "(4) Quản trị Kinh doanh quốc tế": {
+      "block": "",
+      "mark": 874
+    },
+    "(5) Kinh tế quốc tế": {
+      "block": "",
+      "mark": 874
+    },
+    "(6) Logistics và quản lý chuỗi cung ứng": {
+      "block": "",
+      "mark": 874
+    },
+    "(7) Thương mại điện tử": {
+      "block": "",
+      "mark": 874
+    },
+    "(8) Kiểm toán tích hợp chứng chỉ ACCA": {
+      "block": "",
+      "mark": 874
+    },
+    "Quản trị kinh doanh (E-BBA)": {
+      "block": "",
+      "mark": 865
+    },
+    "Khởi nghiệp và phát triển kinh doanh (BBAE)": {
+      "block": "",
+      "mark": 831
+    },
+    "Khoa học tính toán trong Tài chính và Bảo hiểm": {
+      "block": "",
+      "mark": 908
+    },
+    "Phân tích dữ liệu kinh tế (EDA)": {
+      "block": "",
+      "mark": 957
+    },
+    "Kế toán tích hợp chứng chỉ quốc tế (ICAEW CFAB)": {
+      "block": "",
+      "mark": 919
+    },
+    "Kinh doanh số (E-BDB)": {
+      "block": "",
+      "mark": 933
+    },
+    "Phân tích kinh doanh (BA)": {
+      "block": "",
+      "mark": 967
+    },
+    "Quản trị điều hành thông minh (E-SOM)": {
+      "block": "",
+      "mark": 869
+    },
+    "Quản trị chất lượng và Đổi mới (E-MQI)": {
+      "block": "",
+      "mark": 824
+    },
+    "Công nghệ tài chính và Ngân hàng số": {
+      "block": "",
+      "mark": 934
+    },
+    "Tài chính và Đầu tư (BFI)": {
+      "block": "",
+      "mark": 928
+    },
+    "Quản trị khách sạn quốc tế (IHME)": {
+      "block": "",
+      "mark": 812
+    },
+    "Kiểm toán tích hợp chứng chỉ quốc tế (ICAEW CFAB)": {
+      "block": "",
+      "mark": 1028
+    },
+    "Kinh tế học tài chính (FE)": {
+      "block": "",
+      "mark": 874
+    },
+    "Logistics và Quản lý CCU tích hợp chứng chỉ Logistic quốc tế (LSIC)": {
+      "block": "",
+      "mark": 996
+    },
+    "Khoa học dữ liệu": {
+      "block": "",
+      "mark": 913
+    },
+    "Trí tuệ nhân tạo": {
+      "block": "",
+      "mark": 858
+    },
+    "Kỹ thuật phần mềm": {
+      "block": "",
+      "mark": 817
+    },
+    "Quản trị giải trí và sự kiện": {
+      "block": "",
+      "mark": 874
+    },
+    "Công nghệ Marketing": {
+      "block": "",
+      "mark": 923
+    },
+    "Công nghệ Logistics và Quản trị chuỗi cung ứng": {
+      "block": "",
+      "mark": 966
+    },
+    "Kiểm toán nội bộ": {
+      "block": "",
+      "mark": 905
+    },
+    "Kinh tế số (dự kiến)": {
+      "block": "",
+      "mark": 913
+    },
+    "Kinh tế Y tế": {
+      "block": "",
+      "mark": 779
+    },
+    "Phát triển quốc tế": {
+      "block": "",
+      "mark": 796
+    },
+    "Công nghệ môi trường và phát triển bền vững": {
+      "block": "",
+      "mark": 738
+    },
+    "Quản trị công nghiệp sáng tạo": {
+      "block": "",
+      "mark": 757
+    },
+    "Quản trị nhân lực quốc tế": {
+      "block": "",
+      "mark": 865
+    },
+    "Quản trị rủi ro định lượng": {
+      "block": "",
+      "mark": 891
+    },
+    "Toán ứng dụng (dự kiến)": {
+      "block": "",
+      "mark": 856
+    },
+    "Thẩm định giá": {
+      "block": "",
+      "mark": 814
+    },
+    "Thống kê và Trí tuệ kinh doanh": {
+      "block": "",
+      "mark": 852
+    },
+    "Quản lý công và Chính sách (E-PMP)": {
+      "block": "",
+      "mark": 755
+    },
+    "Quản trị lữ hành": {
+      "block": "",
+      "mark": 802
+    },
+    "Truyền thông Marketing": {
+      "block": "",
+      "mark": 966
+    },
+    "Luật kinh doanh": {
+      "block": "",
+      "mark": 861
+    },
+    "Quản trị kinh doanh thương mại": {
+      "block": "",
+      "mark": 921
+    },
+    "Quản lý thị trường": {
+      "block": "",
+      "mark": 809
+    },
+    "(1) Kế toán": {
+      "block": "",
+      "mark": 833
+    },
+    "(2) Kế hoạch tài chính": {
+      "block": "",
+      "mark": 833
+    },
+    "(1) Tài chính": {
+      "block": "",
+      "mark": 882
+    },
+    "(2) Kinh doanh quốc tế": {
+      "block": "",
+      "mark": 882
+    }
+  },
+  "ĐH Kinh tế TP.HCM": {
+    "Tiếng Anh thương mại": {
+      "block": "",
+      "mark": 927
+    },
+    "Kinh tế": {
+      "block": "",
+      "mark": 948
+    },
+    "Kinh tế chính trị": {
+      "block": "",
+      "mark": 915
+    },
+    "Kinh tế đầu tư": {
+      "block": "",
+      "mark": 916
+    },
+    "Thẩm định giá và Quản trị tài sản": {
+      "block": "",
+      "mark": 878
+    },
+    "Thống kê kinh doanh": {
+      "block": "",
+      "mark": 934
+    },
+    "Toán tài chính": {
+      "block": "",
+      "mark": 915
+    },
+    "Phân tích rủi ro và định phí bảo hiểm": {
+      "block": "",
+      "mark": 885
+    },
+    "Truyền thông số và thiết kế đa phương tiện": {
+      "block": "",
+      "mark": 965
+    },
+    "Quản trị kinh doanh": {
+      "block": "",
+      "mark": 922
+    },
+    "Kinh doanh số": {
+      "block": "",
+      "mark": 952
+    },
+    "Quản trị bệnh viện": {
+      "block": "",
+      "mark": 878
+    },
+    "Quản trị bền vững doanh nghiệp và môi trường": {
+      "block": "",
+      "mark": 905
+    },
+    "Marketing": {
+      "block": "",
+      "mark": 969
+    },
+    "Công nghệ Marketing": {
+      "block": "",
+      "mark": 979
+    },
+    "Bất động sản": {
+      "block": "",
+      "mark": 878
+    },
+    "Kinh doanh quốc t���": {
+      "block": "",
+      "mark": 965
+    },
+    "Kinh doanh thương mại": {
+      "block": "",
+      "mark": 956
+    },
+    "Thương mại điện tử": {
+      "block": "",
+      "mark": 961
+    },
+    "Tài chính công": {
+      "block": "",
+      "mark": 910
+    },
+    "Thuế": {
+      "block": "",
+      "mark": 903
+    },
+    "Ngân hàng": {
+      "block": "",
+      "mark": 925
+    },
+    "Thị trường chứng khoán": {
+      "block": "",
+      "mark": 889
+    },
+    "Tài chính": {
+      "block": "",
+      "mark": 937
+    },
+    "Đầu tư tài chính": {
+      "block": "",
+      "mark": 925
+    },
+    "Quản trị Hải quan - Ngoại thương": {
+      "block": "",
+      "mark": 946
+    },
+    "Bảo hiểm": {
+      "block": "",
+      "mark": 878
+    },
+    "Công nghệ tài chính": {
+      "block": "",
+      "mark": 957
+    },
+    "Tài chính quốc tế": {
+      "block": "",
+      "mark": 965
+    },
+    "Kế toán doanh nghiệp": {
+      "block": "",
+      "mark": 899
+    },
+    "Kế toán công": {
+      "block": "",
+      "mark": 915
+    },
+    "Chương trình Kế toán tích hợp chứng chỉ nghề nghiệp quốc tế ICAEW": {
+      "block": "",
+      "mark": 885
+    },
+    "Chương trình Kế toán tích hợp chứng chỉ nghề nghiệp quốc tế ACCA": {
+      "block": "",
+      "mark": 892
+    },
+    "Kiểm toán": {
+      "block": "",
+      "mark": 954
+    },
+    "Quản lý công": {
+      "block": "",
+      "mark": 885
+    },
+    "Quản trị nhân lực": {
+      "block": "",
+      "mark": 934
+    },
+    "Hệ thống thông tin quản lý": {
+      "block": "",
+      "mark": 939
+    },
+    "Luật kinh doanh quốc tế": {
+      "block": "",
+      "mark": 937
+    },
+    "Luật kinh tế": {
+      "block": "",
+      "mark": 931
+    },
+    "Khoa học dữ liệu": {
+      "block": "",
+      "mark": 959
+    },
+    "Phân tích dữ liệu": {
+      "block": "",
+      "mark": 967
+    },
+    "Khoa học máy tính": {
+      "block": "",
+      "mark": 915
+    },
+    "Kỹ thuật phần mềm": {
+      "block": "",
+      "mark": 905
+    },
+    "Robot và Trí tuệ nhân tạo": {
+      "block": "",
+      "mark": 910
+    },
+    "Điều khiển thông minh và tự động hóa": {
+      "block": "",
+      "mark": 899
+    },
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 922
+    },
+    "Công nghệ nghệ thuật": {
+      "block": "",
+      "mark": 937
+    },
+    "Công nghệ và đổi mới sáng tạo": {
+      "block": "",
+      "mark": 885
+    },
+    "An toàn thông tin": {
+      "block": "",
+      "mark": 910
+    },
+    "Logistics và Quản lý chuỗi cung ứng": {
+      "block": "",
+      "mark": 1048
+    },
+    "Công nghệ Logistics": {
+      "block": "",
+      "mark": 948
+    },
+    "Kiến trúc và thiết kế đô thị thông minh": {
+      "block": "",
+      "mark": 885
+    },
+    "Kinh doanh nông nghiệp": {
+      "block": "",
+      "mark": 885
+    },
+    "Quản trị dịch vụ du lịch và lữ hành": {
+      "block": "",
+      "mark": 899
+    },
+    "Quản trị khách sạn": {
+      "block": "",
+      "mark": 920
+    },
+    "Quản trị sự kiện và dịch vụ giải trí": {
+      "block": "",
+      "mark": 950
+    },
+    "Cử nhân ISB ASEAN Co-op": {
+      "block": "",
+      "mark": 932
+    },
+    "Cử nhân Tài năng ISB BBus": {
+      "block": "",
+      "mark": 939
+    }
+  },
+  "ĐH Ngoại thương": {
+    "CT TH Trí tuệ nhân tạo cho đổi mới sáng tạo trong kinh tế và kinh doanh": {
+      "block": "",
+      "mark": 733
+    },
+    "CT TH Khoa học dữ liệu cho đổi mới sáng tạo trong kinh tế và kinh doanh": {
+      "block": "",
+      "mark": 733
+    },
+    "CT TH Khoa học máy tính và dữ liệu trong kinh tế và kinh doanh": {
+      "block": "",
+      "mark": 733
+    },
+    "CT TC Kinh doanh quốc tế": {
+      "block": "",
+      "mark": 1054
+    },
+    "CT ĐHNNQT Kinh doanh số toàn cầu": {
+      "block": "",
+      "mark": 955
+    },
+    "CT ĐHNNQT Kinh doanh quốc tế theo mô hình tiên tiến Nhật Bản": {
+      "block": "",
+      "mark": 955
+    },
+    "CT TC Kế toán - Kiểm toán": {
+      "block": "",
+      "mark": 862
+    },
+    "CT ĐHNNQT Kế toán - Kiểm toán theo định hướng ACCA": {
+      "block": "",
+      "mark": 862
+    },
+    "CT ĐHNNQT Kiểm toán tích hợp công nghệ": {
+      "block": "",
+      "mark": 862
+    },
+    "CT TC Kinh tế đối ngoại": {
+      "block": "",
+      "mark": 1054
+    },
+    "CT ĐHNNQT Logistics toàn cầu và đổi mới chuỗi cung ứng": {
+      "block": "",
+      "mark": 1048
+    },
+    "CT TC Kinh tế quốc tế": {
+      "block": "",
+      "mark": 967
+    },
+    "CT ĐHNNQT Kinh tế số và Phân tích dữ liệu": {
+      "block": "",
+      "mark": 967
+    },
+    "CT TC Quản trị kinh doanh": {
+      "block": "",
+      "mark": 803
+    },
+    "CT ĐHNNQT Quản trị nguồn nhân lực số và phát triển tổ chức": {
+      "block": "",
+      "mark": 803
+    },
+    "CT TC Tài chính - Ngân hàng": {
+      "block": "",
+      "mark": 850
+    },
+    "CT ĐHNNQT Công nghệ tài chính và Tài chính bền vững": {
+      "block": "",
+      "mark": 850
+    },
+    "CT ĐHNNQT Thương mại số thông minh và đổi mới kinh doanh": {
+      "block": "",
+      "mark": 873
+    },
+    "CT ĐHNNQT Marketing số": {
+      "block": "",
+      "mark": 873
+    },
+    "CT TC Kế toán - Kiểm toán (Cơ sở HCM)": {
+      "block": "",
+      "mark": 833
+    },
+    "CT TC Kinh tế đối ngoại (Cơ sở HCM)": {
+      "block": "",
+      "mark": 955
+    },
+    "CT ĐHNNQT Logistics toàn cầu và đổi mới chuỗi cung ứng (Cơ sở HCM)": {
+      "block": "",
+      "mark": 1025
+    },
+    "CT ĐHNNQT Truyền thông Marketing tích hợp (Cơ sở HCM)": {
+      "block": "",
+      "mark": 926
+    },
+    "CT TC Quản trị kinh doanh (Cơ sở HCM)": {
+      "block": "",
+      "mark": 827
+    },
+    "CT TC Tài chính - Ngân hàng (Cơ sở HCM)": {
+      "block": "",
+      "mark": 903
+    }
+  },
+  "ĐH Nha Trang": {
+    "Ngôn ngữ Anh (04 chuyên ngành: Biên - phiên dịch; Tiếng Anh du lịch; Giảng dạy Tiếng Anh; Song ngữ Anh -Trung)": {
+      "block": "",
+      "mark": 776.22
+    },
+    "Ngôn ngữ Trung Quốc": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Kinh tế (02 chuyên ngành: Kinh tế thủy sản; Quản lý kinh tế)": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Quản trị kinh doanh": {
+      "block": "",
+      "mark": 751.85
+    },
+    "Quản trị kinh doanh (Chương trình đặc biệt)": {
+      "block": "",
+      "mark": 751.85
+    },
+    "Marketing": {
+      "block": "",
+      "mark": 824.96
+    },
+    "Kinh doanh thương mại": {
+      "block": "",
+      "mark": 751.85
+    },
+    "Tài chính - Ngân hàng (02 chuyên ngành: Tài chính - Ngân hàng; Công nghệ tài chính)": {
+      "block": "",
+      "mark": 751.85
+    },
+    "Tài chính - Ngân hàng (Chương trình đặc biệt)": {
+      "block": "",
+      "mark": 751.85
+    },
+    "Kế toán": {
+      "block": "",
+      "mark": 727.48
+    },
+    "Kế toán (Chương trình đặc biệt)": {
+      "block": "",
+      "mark": 727.48
+    },
+    "Kiểm toán": {
+      "block": "",
+      "mark": 727.48
+    },
+    "Luật (02 chuyên ngành: Luật; Luật kinh tế)": {
+      "block": "",
+      "mark": 800.59
+    },
+    "Khoa học máy tính": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Công nghệ thông tin (Chương trình đặc biệt)": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Công nghệ thông tin Việt - Nhật": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Kỹ thuật cơ điện tử (02 chuyên ngành: Kỹ thuật cơ điện tử; Hệ th��ng nhúng và IoT)": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Kỹ thuật ô tô": {
+      "block": "",
+      "mark": 703.11
+    },
+    "Kỹ thuật điện (chuyên ngành Kỹ thuật điện, điện tử)": {
+      "block": "",
+      "mark": 727.48
+    },
+    "Kỹ thuật điều khiển và tự động hóa": {
+      "block": "",
+      "mark": 727.48
+    },
+    "Quản trị dịch vụ du lịch và lữ hành": {
+      "block": "",
+      "mark": 776.22
+    },
+    "Quản trị dịch vụ du lịch lữ hành (Chương trình đặc biệt)": {
+      "block": "",
+      "mark": 776.22
+    },
+    "Quản trị dịch vụ du lịch và lữ hành (Chương trình song ngữ Pháp - Việt)": {
+      "block": "",
+      "mark": 727.48
+    },
+    "Quản trị khách sạn": {
+      "block": "",
+      "mark": 776.22
+    },
+    "Quản trị khách sạn (Chương trình đặc biệt)": {
+      "block": "",
+      "mark": 776.22
+    },
+    "Khoa học hàng hải (02 chuyên ngành: Khoa học hàng hải; Quản lý hàng hải và Logistics)": {
+      "block": "",
+      "mark": 776.22
+    }
+  },
+  "Học viện Kỹ thuật Mật mã": {
+    "Công nghệ thông tin": {
+      "block": "",
+      "mark": 853.54
+    },
+    "An toàn thông tin (Cơ sở Hà Nội)": {
+      "block": "",
+      "mark": 921.4
+    },
+    "An toàn thông tin (Cơ sở TP.HCM)": {
+      "block": "",
+      "mark": 815
+    },
+    "Kỹ thuật điện tử viễn thông": {
+      "block": "",
+      "mark": 853.54
+    }
+  },
+  "Học viện Hàng không Việt Nam": {
+    "Quản trị kinh doanh: Quản trị Kinh doanh và vận tải hàng không; Quản trị Kinh doanh cảng hàng không; Quản trị Kinh doanh tổng hợp, Quản trị kinh tế không gian, Quản trị kinh doanh quốc tế, Quản trị Kinh doanh cảng hàng không)": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì); (Văn, Anh, 1 môn bất kì); (Toán, Anh, 1 môn bất kì)",
+      "mark": 727
+    },
+    "Kinh doanh số": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì); (Văn, Anh, 1 môn bất kì); (Toán, Anh, 1 môn bất kì)",
+      "mark": 755
+    },
+    "Quản trị hàng không (Dạy bằng tiếng Anh)": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì); (Văn, Anh, 1 môn bất kì); (Toán, Anh, 1 môn bất kì)",
+      "mark": 785
+    },
+    "Thương mại quốc tế": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 815
+    },
+    "Quản trị nhân lực": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 755
+    },
+    "Quản lý và khai thác cảng hàng không": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 815
+    },
+    "Xây dựng và phát triển cảng hàng không": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 785
+    },
+    "Điện tử ứng dụng Trí tuệ nhân tạo (AI) và Internet vạn vật (IoT)": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 755
+    },
+    "Công nghệ vi mạch và bán dẫn": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 727
+    },
+    "Điện tử viễn thông và Trí tuệ nhân tạo (AI)": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 785
+    },
+    "Điện tử động cảng hàng không": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 815
+    },
+    "Thiết bị bay không người lái và Robotics": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 785
+    },
+    "Kỹ thuật hàng không": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 875
+    },
+    "Kỹ thuật hàng không (học bằng tiếng Anh)": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 845
+    },
+    "Kỹ thuật bảo dưỡng tàu bay": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 860
+    },
+    "Kỹ thuật thiết bị bay không người lái": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 755
+    },
+    "Quản trị dịch vụ thương mại hàng không (tích hợp chứng chỉ nghiệp vụ hàng không)": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 875
+    },
+    "Quản trị nhà hàng khách sạn": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 785
+    },
+    "Quản trị du lịch MICE và tổ chức sự kiện*": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 755
+    },
+    "Quản trị lữ hành": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 815
+    },
+    "Quản lý hoạt động bay; Hệ thống kỹ thuật quản lý bay": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 899
+    },
+    "Quản lý hoạt động bay (học bằng tiếng Anh)": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 945
+    },
+    "Logistics và quản lý chuỗi cung ứng, Logistics và vận tải đa phương thức": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 815
+    },
+    "Logistics và vận tải đa phương thức (học bằng tiếng Anh)": {
+      "block": "(Toán, 2 môn bất kì)",
+      "mark": 727
+    },
+    "Kinh tế hàng không": {
+      "block": "(Văn, 2 môn bất kì); (Toán, 2 môn bất kì)",
+      "mark": 755
+    }
+  }
+}

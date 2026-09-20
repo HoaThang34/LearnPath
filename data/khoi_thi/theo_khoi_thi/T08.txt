@@ -1,0 +1,15 @@
+# Khối: T08 (Toán, GDKTPL, Năng khiếu Thể dục thể thao)
+# Tổng số trường: 12
+
+[HNM] - [Trường Đại học Thủ Đô Hà Nội]
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DDS] - [Trường Đại Học Sư Phạm - Đại Học Đà Nẵng]
+[DHC] - [Khoa Giáo Dục Thể Chất Huế]
+[STS] - [Trường Đại Học Sư Phạm Thể Dục Thể Thao TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[TDB] - [Trường Đại Học Thể Dục Thể Thao Bắc Ninh]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TQU] - [Trường Đại học Tân Trào]

@@ -1,0 +1,8 @@
+Trường: Khoa Giáo Dục Thể Chất Huế (Mã: DHC)
+Các khối thi / tổ hợp xét tuyển:
+
+- T00: Toán, Sinh học, Năng khiếu TDTT (1ngành)
+- T05: Ngữ văn, GDKTPL, Năng khiếu thể dục thể thao (1ngành)
+- T02: Ngữ văn, Sinh, Năng khiếu TDTT (1ngành)
+- T07: Ngữ văn, Địa lý, Năng khiếu Thể dục Thể thao (1ngành)
+- T08: Toán, GDKTPL, Năng khiếu Thể dục thể thao (1ngành)

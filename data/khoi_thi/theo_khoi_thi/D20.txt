@@ -1,0 +1,15 @@
+# Khối: D20 (Toán, Địa lí, Tiếng Trung)
+# Tổng số trường: 12
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[QHT] - [Trường Đại Học Khoa Học Tự Nhiên Hà Nội]
+[SGD] - [Trường Đại Học Sài Gòn]
+[LPS] - [Trường Đại Học Luật TPHCM]
+[SKH] - [Trường Đại Học Sư Phạm Kỹ Thuật Hưng Yên]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

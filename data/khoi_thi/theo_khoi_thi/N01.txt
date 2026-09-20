@@ -1,0 +1,12 @@
+# Khối: N01 (Ngữ văn, xướng âm, biểu diễn nghệ thuật)
+# Tổng số trường: 9
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TDM] - [Trường Đại học Thủ Dầu Một]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DDS] - [Trường Đại Học Sư Phạm - Đại Học Đà Nẵng]
+[SPD] - [Trường Đại Học Đồng Tháp]
+[CMC] - [Trường Đại Học CMC]
+[NTT] - [Trường Đại Học Nguyễn Tất Thành]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

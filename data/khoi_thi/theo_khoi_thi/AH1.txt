@@ -1,0 +1,13 @@
+# Khối: AH1 (Toán, Địa lí, Tiếng Hàn)
+# Tổng số trường: 10
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[SGD] - [Trường Đại Học Sài Gòn]
+[HLU] - [Trường Đại Học Hạ Long]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[BVU] - [Trường Đại Học Bà Rịa – Vũng Tàu]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

@@ -1,0 +1,6 @@
+Trường: Trường Đại Học Sư Phạm Thể Dục Thể Thao Hà Nội (Mã: TDH)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (1ngành)
+- M02: Toán, Năng khiếu 1, Năng khiếu 2 (3ngành)
+- M03: Văn, Năng khiếu 1, Năng khiếu 2 (3ngành)

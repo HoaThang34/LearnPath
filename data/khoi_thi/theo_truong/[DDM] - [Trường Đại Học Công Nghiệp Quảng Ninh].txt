@@ -1,0 +1,18 @@
+Trường: Trường Đại Học Công Nghiệp Quảng Ninh (Mã: DDM)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (12ngành)
+- A00: Toán, Vật lí, Hóa học (12ngành)
+- C04: Ngữ văn, Toán, Địa lí (12ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (2ngành)
+- C01: Toán, Ngữ Văn, Vật lí (12ngành)
+- A01: Toán, Vật lí, Tiếng Anh (12ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (12ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (12ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (2ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (12ngành)
+- X21: Toán, Địa lí, GDKTPL (12ngành)
+- D30: Toán, Vật lí, Tiếng Trung (12ngành)
+- A07: Toán, Lịch sử, Địa lí (12ngành)
+- X17: Toán, Lịch sử, GDKTPL (12ngành)
+- D40: Toán, Lịch sử, Tiếng Trung (12ngành)

@@ -1,0 +1,18 @@
+# Khối: C05 (Ngữ văn, Vật lí, Hóa học)
+# Tổng số trường: 15
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[TLA] - [Trường Đại Học Thủy Lợi]
+[SGD] - [Trường Đại Học Sài Gòn]
+[KCC] - [Trường Đại học Kỹ Thuật Công Nghệ Cần Thơ]
+[UKH] - [Trường Đại học Khánh Hòa]
+[CMC] - [Trường Đại Học CMC]
+[DNC] - [Trường Đại học Nam Cần Thơ]
+[DDN] - [Trường Đại Học Đại Nam]
+[TTG] - [Trường Đại Học Tiền Giang]
+[DQT] - [Trường Đại Học Quang Trung]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DLA] - [Trường Đại Học Kinh Tế Công Nghiệp Long An]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TQU] - [Trường Đại học Tân Trào]

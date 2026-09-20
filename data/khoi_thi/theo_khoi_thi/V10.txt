@@ -1,0 +1,11 @@
+# Khối: V10 (Toán, Tiếng Pháp, Vẽ mỹ thuật)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[XDA] - [Trường Đại Học Xây Dựng Hà Nội]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[UMT] - [Trường Đại học Quản lý và công nghệ TPHCM]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

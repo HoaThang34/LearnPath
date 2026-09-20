@@ -1,0 +1,12 @@
+# Khối: X59 (Ngữ văn, Vật lí, Tin học)
+# Tổng số trường: 9
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[KCC] - [Trường Đại học Kỹ Thuật Công Nghệ Cần Thơ]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[DQT] - [Trường Đại Học Quang Trung]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

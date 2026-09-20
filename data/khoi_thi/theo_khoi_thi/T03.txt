@@ -1,0 +1,13 @@
+# Khối: T03 (Ngữ văn, Địa, Năng khiếu TDTT)
+# Tổng số trường: 10
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[SPD] - [Trường Đại Học Đồng Tháp]
+[DKT] - [Trường Đại Học Hải Dương]
+[DQB] - [Trường Đại Học Quảng Bình]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[TDB] - [Trường Đại Học Thể Dục Thể Thao Bắc Ninh]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TTB] - [Trường Đại Học Tây Bắc]

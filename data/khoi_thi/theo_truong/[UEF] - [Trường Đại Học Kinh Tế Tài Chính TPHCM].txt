@@ -1,0 +1,14 @@
+Trường: Trường Đại Học Kinh Tế Tài Chính TPHCM (Mã: UEF)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (37ngành)
+- X01: Ngữ văn, Toán, GDKTPL (37ngành)
+- C04: Ngữ văn, Toán, Địa lí (37ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (5ngành)
+- C01: Toán, Ngữ Văn, Vật lí (37ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (42ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (5ngành)
+- X78: Ngữ văn, GDKTPL, Tiếng Anh (5ngành)
+- D11: Ngữ văn, Vật lí, Tiếng Anh (5ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (37ngành)
+- X79; TH9: Ngữ văn, Tiếng Anh, Tin học (5ngành)

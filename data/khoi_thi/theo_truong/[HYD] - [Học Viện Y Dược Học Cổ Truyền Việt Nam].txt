@@ -1,0 +1,13 @@
+Trường: Học Viện Y Dược Học Cổ Truyền Việt Nam (Mã: HYD)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (1ngành)
+- C02: Toán, Ngữ Văn, Hóa học (1ngành)
+- A02: Toán, Vật lí, Sinh học (2ngành)
+- D07: Toán, Hóa học, Tiếng Anh (1ngành)
+- B00: Toán, Hóa học, Sinh học (3ngành)
+- D08: Toán, Sinh học, Tiếng Anh (2ngành)
+- B03: Toán, Ngữ văn, Sinh học (2ngành)
+- D35: Toán, Sinh học, Tiếng Trung (1ngành)
+- X14: Toán, Sinh học, Tin học (2ngành)
+- X10, TH4: Toán, Hoá, Tin (1ngành)

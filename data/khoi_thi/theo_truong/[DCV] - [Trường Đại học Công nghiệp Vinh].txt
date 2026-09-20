@@ -1,0 +1,13 @@
+Trường: Trường Đại học Công nghiệp Vinh (Mã: DCV)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (1ngành)
+- C01: Toán, Ngữ Văn, Vật lí (1ngành)
+- C02: Toán, Ngữ Văn, Hóa học (1ngành)
+- A01: Toán, Vật lí, Tiếng Anh (1ngành)
+- D07: Toán, Hóa học, Tiếng Anh (1ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (1ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (1ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (3ngành)
+- X03; TH8; K22; E01: Toán, Ngữ văn, Công nghệ công nghiệp (1ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (3ngành)

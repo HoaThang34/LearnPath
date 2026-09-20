@@ -1,0 +1,9 @@
+Trường: Trường Đại Học Kỹ Thuật Y Tế Hải Dương (Mã: DKY)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (5ngành)
+- D07: Toán, Hóa học, Tiếng Anh (5ngành)
+- B00: Toán, Hóa học, Sinh học (5ngành)
+- B08: Toán, Sinh học, Tiếng Anh (5ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (5ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (5ngành)

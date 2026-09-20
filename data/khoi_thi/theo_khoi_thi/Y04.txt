@@ -1,0 +1,6 @@
+# Khối: Y04 (Ngữ văn, Tin học, Tiếng Hàn)
+# Tổng số trường: 3
+
+[MBS] - [Trường Đại Học Mở TPHCM]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]

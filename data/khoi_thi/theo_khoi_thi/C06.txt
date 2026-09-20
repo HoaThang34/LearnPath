@@ -1,0 +1,11 @@
+# Khối: C06 (Ngữ Văn, Vật lí, Sinh học)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[UKH] - [Trường Đại học Khánh Hòa]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DQT] - [Trường Đại Học Quang Trung]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

@@ -1,0 +1,10 @@
+Trường: Trường Đại Học Y Dược Cần Thơ (Mã: YCT)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (2ngành)
+- A00: Toán, Vật lí, Hóa học (9ngành)
+- D07: Toán, Hóa học, Tiếng Anh (7ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (2ngành)
+- B00: Toán, Hóa học, Sinh học (14ngành)
+- B08: Toán, Sinh học, Tiếng Anh (7ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (2ngành)

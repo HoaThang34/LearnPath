@@ -1,0 +1,13 @@
+# Khối: T04 (Toán, Lý, Năng khiếu TDTT)
+# Tổng số trường: 10
+
+[HNM] - [Trường Đại học Thủ Đô Hà Nội]
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DQB] - [Trường Đại Học Quảng Bình]
+[TDS] - [Trường Đại Học Thể Dục Thể Thao TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TTB] - [Trường Đại Học Tây Bắc]

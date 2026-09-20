@@ -1,0 +1,10 @@
+Trường: Học Viện Công Nghệ Bưu Chính Viễn Thông (Mã: BVH)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (39ngành)
+- A01: Toán, Vật lí, Tiếng Anh (39ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (22ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (39ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (39ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (39ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (39ngành)

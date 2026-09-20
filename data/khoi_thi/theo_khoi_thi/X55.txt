@@ -1,0 +1,13 @@
+# Khối: X55 (Toán, GDKTPL, Công nghệ nông nghiệp)
+# Tổng số trường: 10
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[THV] - [Trường Đại Học Hùng Vương]
+[DVT] - [Đại Học Trà Vinh]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DQT] - [Trường Đại Học Quang Trung]
+[DHL] - [Trường Đại Học Nông Lâm Huế]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

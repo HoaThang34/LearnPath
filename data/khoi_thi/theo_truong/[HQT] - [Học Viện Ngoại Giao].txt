@@ -1,0 +1,16 @@
+Trường: Học Viện Ngoại Giao (Mã: HQT)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (8ngành)
+- A00: Toán, Vật lí, Hóa học (10ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (9ngành)
+- D03: Ngữ văn, Toán, Tiếng Pháp (6ngành)
+- A01: Toán, Vật lí, Tiếng Anh (11ngành)
+- D07: Toán, Hóa học, Tiếng Anh (11ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (11ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (7ngành)
+- D06: Ngữ văn, Toán, Tiếng Nhật (7ngành)
+- D10: Toán, Địa lí, Tiếng Anh (11ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (9ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (11ngành)
+- DD2: Ngữ văn, Toán, Tiếng Hàn (7ngành)

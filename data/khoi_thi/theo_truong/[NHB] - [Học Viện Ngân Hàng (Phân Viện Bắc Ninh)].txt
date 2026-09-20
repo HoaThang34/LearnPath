@@ -1,0 +1,8 @@
+Trường: Học Viện Ngân Hàng (Phân Viện Bắc Ninh) (Mã: NHB)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (4ngành)
+- A01: Toán, Vật lí, Tiếng Anh (4ngành)
+- D07: Toán, Hóa học, Tiếng Anh (4ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (4ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (4ngành)

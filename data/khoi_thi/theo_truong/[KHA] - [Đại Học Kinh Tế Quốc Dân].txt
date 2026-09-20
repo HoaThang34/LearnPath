@@ -1,0 +1,9 @@
+Trường: Đại Học Kinh Tế Quốc Dân (Mã: KHA)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (104ngành)
+- A01: Toán, Vật lí, Tiếng Anh (104ngành)
+- D07: Toán, Hóa học, Tiếng Anh (104ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (104ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (104ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (104ngành)

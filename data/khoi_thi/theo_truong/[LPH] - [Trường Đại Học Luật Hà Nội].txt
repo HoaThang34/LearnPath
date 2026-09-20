@@ -1,0 +1,12 @@
+Trường: Trường Đại Học Luật Hà Nội (Mã: LPH)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (3ngành)
+- A00: Toán, Vật lí, Hóa học (3ngành)
+- D03: Ngữ văn, Toán, Tiếng Pháp (3ngành)
+- A01: Toán, Vật lí, Tiếng Anh (5ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (5ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (3ngành)
+- D06: Ngữ văn, Toán, Tiếng Nhật (3ngành)
+- D05: Ngữ văn, Toán, Tiếng Đức (3ngành)
+- D02: Ngữ văn, Toán, Tiếng Nga (3ngành)

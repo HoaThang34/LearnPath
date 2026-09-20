@@ -1,0 +1,11 @@
+# Khối: D41 (Ngữ văn, Địa lí, Tiếng Đức)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[QHF] - [Trường Đại Học Ngoại Ngữ - ĐH Quốc gia Hà Nội]
+[SGD] - [Trường Đại Học Sài Gòn]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

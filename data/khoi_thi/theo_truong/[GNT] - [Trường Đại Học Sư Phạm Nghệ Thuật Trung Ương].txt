@@ -1,0 +1,8 @@
+Trường: Trường Đại Học Sư Phạm Nghệ Thuật Trung Ương (Mã: GNT)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (2ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (3ngành)
+- A00: Toán, Vật lí, Hóa học (1ngành)
+- C04: Ngữ văn, Toán, Địa lí (2ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (3ngành)

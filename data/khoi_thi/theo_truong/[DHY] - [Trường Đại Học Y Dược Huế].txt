@@ -1,0 +1,8 @@
+Trường: Trường Đại Học Y Dược Huế (Mã: DHY)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- D07: Toán, Hóa học, Tiếng Anh (11ngành)
+- B00: Toán, Hóa học, Sinh học (11ngành)
+- B08: Toán, Sinh học, Tiếng Anh (10ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (6ngành)

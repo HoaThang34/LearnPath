@@ -1,0 +1,9 @@
+# Khối: X84 (Ngữ văn, Công nghệ công nghiệp, Tiếng Nga)
+# Tổng số trường: 6
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DKT] - [Trường Đại Học Hải Dương]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

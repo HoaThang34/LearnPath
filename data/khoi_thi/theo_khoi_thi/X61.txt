@@ -1,0 +1,8 @@
+# Khối: X61 (Ngữ văn, Vật lí, Công nghệ nông nghiệp)
+# Tổng số trường: 5
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

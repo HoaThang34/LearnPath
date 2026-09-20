@@ -1,0 +1,8 @@
+Trường: Học Viện Hậu Cần - Hệ Dân sự (Mã: HFH)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (3ngành)
+- C01: Toán, Ngữ Văn, Vật lí (3ngành)
+- A01: Toán, Vật lí, Tiếng Anh (3ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (3ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (3ngành)

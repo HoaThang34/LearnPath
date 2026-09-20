@@ -1,0 +1,19 @@
+# Khối: H01 (Toán, Ngữ văn, Vẽ Mỹ thuật)
+# Tổng số trường: 16
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[DTT] - [Trường Đại Học Tôn Đức Thắng]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DQK] - [Trường Đại Học Kinh Doanh và Công Nghệ Hà Nội]
+[CMC] - [Trường Đại Học CMC]
+[NTT] - [Trường Đại Học Nguyễn Tất Thành]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[HIU] - [Trường Đại Học Quốc Tế Hồng Bàng]
+[ETU] - [Trường Đại Học Hòa Bình]
+[DDN] - [Trường Đại Học Đại Nam]
+[DYD] - [Trường Đại Học Yersin Đà Lạt]
+[DVH] - [Trường Đại Học Văn Hiến]
+[LNS] - [Phân hiệu Đại Học Lâm nghiệp tại Đồng Nai]
+[UMT] - [Trường Đại học Quản lý và công nghệ TPHCM]
+[TBD] - [Trường Đại Học Thái Bình Dương]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

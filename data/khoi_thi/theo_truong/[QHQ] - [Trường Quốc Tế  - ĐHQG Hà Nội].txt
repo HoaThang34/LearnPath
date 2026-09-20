@@ -1,0 +1,15 @@
+Trường: Trường Quốc Tế  - ĐHQG Hà Nội (Mã: QHQ)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (14ngành)
+- C01: Toán, Ngữ Văn, Vật lí (14ngành)
+- C02: Toán, Ngữ Văn, Hóa học (10ngành)
+- A01: Toán, Vật lí, Tiếng Anh (15ngành)
+- D07: Toán, Hóa học, Tiếng Anh (9ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (15ngành)
+- D10: Toán, Địa lí, Tiếng Anh (1ngành)
+- D08: Toán, Sinh học, Tiếng Anh (1ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (4ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (7ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (4ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (15ngành)

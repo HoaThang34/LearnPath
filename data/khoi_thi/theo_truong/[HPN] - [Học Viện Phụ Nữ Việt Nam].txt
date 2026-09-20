@@ -1,0 +1,15 @@
+Trường: Học Viện Phụ Nữ Việt Nam (Mã: HPN)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (15ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (14ngành)
+- A00: Toán, Vật lí, Hóa học (12ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (14ngành)
+- A01: Toán, Vật lí, Tiếng Anh (12ngành)
+- D07: Toán, Hóa học, Tiếng Anh (3ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (19ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (14ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (3ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (5ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (2ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (19ngành)

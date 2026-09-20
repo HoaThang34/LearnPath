@@ -1,0 +1,17 @@
+# Khối: DH1 (Ngữ văn, Địa lí, Tiếng Hàn)
+# Tổng số trường: 14
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[QHF] - [Trường Đại Học Ngoại Ngữ - ĐH Quốc gia Hà Nội]
+[SGD] - [Trường Đại Học Sài Gòn]
+[DHF] - [Trường Đại Học Ngoại Ngữ Huế]
+[DTF] - [Trường Ngoại Ngữ Thái Nguyên]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[BVU] - [Trường Đại Học Bà Rịa – Vũng Tàu]
+[DVP] - [Trường Đại Học Trưng Vương]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

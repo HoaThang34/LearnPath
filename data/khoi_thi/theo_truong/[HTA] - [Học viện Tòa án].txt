@@ -1,0 +1,7 @@
+Trường: Học viện Tòa án (Mã: HTA)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (4ngành)
+- A00: Toán, Vật lí, Hóa học (4ngành)
+- A01: Toán, Vật lí, Tiếng Anh (4ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (4ngành)

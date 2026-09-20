@@ -1,0 +1,17 @@
+# Khối: X53 (Toán, GDKTPL, Tin học)
+# Tổng số trường: 14
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[SGD] - [Trường Đại Học Sài Gòn]
+[THV] - [Trường Đại Học Hùng Vương]
+[DVT] - [Đại Học Trà Vinh]
+[VLU] - [Trường Đại học Công nghệ kỹ thuật Vĩnh Long]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DCQ] - [Trường Đại Học Công Nghệ và Quản Lý Hữu Nghị]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TDL] - [Trường Đại Học Đà Lạt]

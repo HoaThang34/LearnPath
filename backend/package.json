@@ -1,0 +1,20 @@
+{
+  "name": "learnpath-backend",
+  "version": "1.0.0",
+  "description": "Backend API cho hệ thống tư vấn hướng nghiệp LearnPath",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "db:init": "node src/database/init.js"
+  },
+  "keywords": ["education", "career-guidance", "university"],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "sql.js": "^1.10.3",
+    "csv-parse": "^5.5.3"
+  }
+}

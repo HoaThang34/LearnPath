@@ -1,0 +1,16 @@
+Trường: Học Viện Hành Chính và Quản trị công (Mã: HCH)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (11ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (16ngành)
+- A00: Toán, Vật lí, Hóa học (10ngành)
+- C04: Ngữ văn, Toán, Địa lí (18ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (17ngành)
+- C01: Toán, Ngữ Văn, Vật lí (9ngành)
+- A01: Toán, Vật lí, Tiếng Anh (12ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (41ngành)
+- D10: Toán, Địa lí, Tiếng Anh (12ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (14ngành)
+- A07: Toán, Lịch sử, Địa lí (1ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (2ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (41ngành)

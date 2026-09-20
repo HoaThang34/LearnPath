@@ -1,0 +1,16 @@
+# Khối: V06 (Toán, Địa lí, Vẽ mỹ thuật)
+# Tổng số trường: 13
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TDM] - [Trường Đại học Thủ Dầu Một]
+[SGD] - [Trường Đại Học Sài Gòn]
+[XDA] - [Trường Đại Học Xây Dựng Hà Nội]
+[DQK] - [Trường Đại Học Kinh Doanh và Công Nghệ Hà Nội]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDT] - [Đại Học Duy Tân]
+[DDN] - [Trường Đại Học Đại Nam]
+[LNH] - [Trường Đại Học Lâm nghiệp]
+[LNS] - [Phân hiệu Đại Học Lâm nghiệp tại Đồng Nai]
+[UMT] - [Trường Đại học Quản lý và công nghệ TPHCM]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

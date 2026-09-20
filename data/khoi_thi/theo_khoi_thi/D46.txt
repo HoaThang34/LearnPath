@@ -1,0 +1,8 @@
+# Khối: D46 (Ngữ văn, Hóa học, Tiếng Đức)
+# Tổng số trường: 5
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

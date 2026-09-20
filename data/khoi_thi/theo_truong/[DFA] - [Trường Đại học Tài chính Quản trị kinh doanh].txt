@@ -1,0 +1,9 @@
+Trường: Trường Đại học Tài chính Quản trị kinh doanh (Mã: DFA)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- A01: Toán, Vật lí, Tiếng Anh (7ngành)
+- D07: Toán, Hóa học, Tiếng Anh (7ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (7ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (7ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (7ngành)

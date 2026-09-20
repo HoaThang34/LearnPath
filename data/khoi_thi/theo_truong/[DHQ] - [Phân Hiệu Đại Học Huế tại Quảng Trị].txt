@@ -1,0 +1,12 @@
+Trường: Phân Hiệu Đại Học Huế tại Quảng Trị (Mã: DHQ)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (5ngành)
+- C01: Toán, Ngữ Văn, Vật lí (4ngành)
+- A02: Toán, Vật lí, Sinh học (1ngành)
+- A01: Toán, Vật lí, Tiếng Anh (4ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (4ngành)
+- B00: Toán, Hóa học, Sinh học (1ngành)
+- A04: Toán, Vật lí, Địa lí (1ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (4ngành)
+- X07, A0C, TH3, TH4: Toán, Vật lí, Công nghệ công nghiệp (4ngành)

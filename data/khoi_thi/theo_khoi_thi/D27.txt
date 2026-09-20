@@ -1,0 +1,14 @@
+# Khối: D27 (Toán, Vật lí, Tiếng Nga)
+# Tổng số trường: 11
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[CMC] - [Trường Đại Học CMC]
+[NTT] - [Trường Đại Học Nguyễn Tất Thành]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[VGU] - [Trường Đại Học Việt Đức]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[SKN] - [Trường Đại Học Sư Phạm Kỹ Thuật Nam Định]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[BMU] - [Trường Đại học Y Dược Buôn Ma Thuột]

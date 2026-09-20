@@ -1,0 +1,16 @@
+Trường: Phân hiệu Đại học Thái Nguyên tại Hà Giang (Mã: DTG)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (5ngành)
+- X01: Ngữ văn, Toán, GDKTPL (4ngành)
+- A00: Toán, Vật lí, Hóa học (1ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (1ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (6ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (1ngành)
+- X74: Ngữ văn, Địa lí, GDKTPL (4ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (1ngành)
+- X70: Ngữ văn, Lịch sử, GDKTPL (4ngành)
+- D45: Ngữ văn, Địa lí, Tiếng Trung (1ngành)
+- D65: Ngữ văn, Lịch sử, Tiếng Trung (1ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (4ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (4ngành)

@@ -1,0 +1,14 @@
+# Khối: M02 (Toán, Năng khiếu 1, Năng khiếu 2)
+# Tổng số trường: 11
+
+[SPH] - [Trường Đại Học Sư Phạm Hà Nội]
+[HHK] - [Học Viện Hàng không Việt Nam]
+[TDM] - [Trường Đại học Thủ Dầu Một]
+[SGD] - [Trường Đại Học Sài Gòn]
+[THP] - [Trường Đại Học Hải Phòng]
+[DQU] - [Trường Đại Học Quảng Nam]
+[TDH] - [Trường Đại Học Sư Phạm Thể Dục Thể Thao Hà Nội]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

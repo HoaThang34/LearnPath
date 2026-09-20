@@ -1,0 +1,9 @@
+Trường: Trường Đại Học Y Hà Nội (Mã: YHB)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (14ngành)
+- A01: Toán, Vật lí, Tiếng Anh (3ngành)
+- D07: Toán, Hóa học, Tiếng Anh (8ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (3ngành)
+- B00: Toán, Hóa học, Sinh học (17ngành)
+- D10: Toán, Địa lí, Tiếng Anh (3ngành)

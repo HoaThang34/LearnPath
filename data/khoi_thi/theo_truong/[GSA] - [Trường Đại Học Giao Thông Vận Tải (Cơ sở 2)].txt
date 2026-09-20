@@ -1,0 +1,12 @@
+Trường: Trường Đại Học Giao Thông Vận Tải (Cơ sở 2) (Mã: GSA)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (28ngành)
+- C01: Toán, Ngữ Văn, Vật lí (27ngành)
+- A01: Toán, Vật lí, Tiếng Anh (28ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (11ngành)
+- D10: Toán, Địa lí, Tiếng Anh (1ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (1ngành)
+- V00: Toán, Vật lí, Vẽ Hình họa mỹ thuật (1ngành)
+- V01: Toán, Ngữ văn, Vẽ Hình họa mỹ thuật (1ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (17ngành)

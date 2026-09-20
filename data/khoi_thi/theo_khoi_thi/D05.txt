@@ -1,0 +1,17 @@
+# Khối: D05 (Ngữ văn, Toán, Tiếng Đức)
+# Tổng số trường: 14
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[NHF] - [Trường Đại Học Hà Nội]
+[LPH] - [Trường Đại Học Luật Hà Nội]
+[QHF] - [Trường Đại Học Ngoại Ngữ - ĐH Quốc gia Hà Nội]
+[SGD] - [Trường Đại Học Sài Gòn]
+[NLS] - [Trường Đại Học Nông Lâm TPHCM]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[SKN] - [Trường Đại Học Sư Phạm Kỹ Thuật Nam Định]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[DBG] - [Trường Đại học Nông Lâm Bắc Giang]

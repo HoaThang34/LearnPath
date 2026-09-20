@@ -1,0 +1,13 @@
+# Khối: AH4 (Toán, Sinh học, Tiếng Hàn)
+# Tổng số trường: 10
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[VGU] - [Trường Đại Học Việt Đức]
+[DVP] - [Trường Đại Học Trưng Vương]
+[UMT] - [Trường Đại học Quản lý và công nghệ TPHCM]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[BMU] - [Trường Đại học Y Dược Buôn Ma Thuột]

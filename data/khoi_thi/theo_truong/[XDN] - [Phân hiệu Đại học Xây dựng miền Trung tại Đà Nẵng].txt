@@ -1,0 +1,13 @@
+Trường: Phân hiệu Đại học Xây dựng miền Trung tại Đà Nẵng (Mã: XDN)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (12ngành)
+- C01: Toán, Ngữ Văn, Vật lí (12ngành)
+- A01: Toán, Vật lí, Tiếng Anh (12ngành)
+- D07: Toán, Hóa học, Tiếng Anh (12ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (12ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (12ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (12ngành)
+- X27; D0C; K20; TH5; TH7: Toán, Tiếng Anh, Công nghệ công nghiệp (12ngành)
+- X03; TH8; K22; E01: Toán, Ngữ văn, Công nghệ công nghiệp (12ngành)
+- X56: Toán, Tin học, Công nghệ công nghiệp (12ngành)

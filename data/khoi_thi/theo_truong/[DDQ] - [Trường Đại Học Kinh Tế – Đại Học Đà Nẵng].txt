@@ -1,0 +1,9 @@
+Trường: Trường Đại Học Kinh Tế – Đại Học Đà Nẵng (Mã: DDQ)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (19ngành)
+- A01: Toán, Vật lí, Tiếng Anh (19ngành)
+- D07: Toán, Hóa học, Tiếng Anh (19ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (19ngành)
+- X25: Toán, Tiếng Anh, GDKTPL (19ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (19ngành)

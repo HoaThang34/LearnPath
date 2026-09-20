@@ -1,0 +1,18 @@
+Trường: Trường Đại Học Công Thương TPHCM (Mã: DCT)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (11ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (11ngành)
+- X01: Ngữ văn, Toán, GDKTPL (7ngành)
+- A00: Toán, Vật lí, Hóa học (33ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (7ngành)
+- C01: Toán, Ngữ Văn, Vật lí (25ngành)
+- C02: Toán, Ngữ Văn, Hóa học (8ngành)
+- A01: Toán, Vật lí, Tiếng Anh (27ngành)
+- D07: Toán, Hóa học, Tiếng Anh (16ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (34ngành)
+- B00: Toán, Hóa học, Sinh học (16ngành)
+- B08: Toán, Sinh học, Tiếng Anh (11ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (9ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (7ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (9ngành)

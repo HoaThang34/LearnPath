@@ -1,0 +1,9 @@
+# Khối: X77 (Ngữ văn, Địa lí, Công nghệ nông nghiệp)
+# Tổng số trường: 6
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[BVU] - [Trường Đại Học Bà Rịa – Vũng Tàu]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

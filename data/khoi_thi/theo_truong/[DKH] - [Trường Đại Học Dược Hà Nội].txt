@@ -1,0 +1,8 @@
+Trường: Trường Đại Học Dược Hà Nội (Mã: DKH)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (3ngành)
+- D07: Toán, Hóa học, Tiếng Anh (1ngành)
+- B00: Toán, Hóa học, Sinh học (2ngành)
+- B08: Toán, Sinh học, Tiếng Anh (1ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (1ngành)

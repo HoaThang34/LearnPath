@@ -1,0 +1,13 @@
+Trường: Trường Đại Học Phan Châu Trinh (Mã: DPC)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- C01: Toán, Ngữ Văn, Vật lí (2ngành)
+- C02: Toán, Ngữ Văn, Hóa học (2ngành)
+- A01: Toán, Vật lí, Tiếng Anh (5ngành)
+- D07: Toán, Hóa học, Tiếng Anh (5ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (2ngành)
+- B00: Toán, Hóa học, Sinh học (6ngành)
+- B08: Toán, Sinh học, Tiếng Anh (5ngành)
+- B03: Toán, Ngữ văn, Sinh học (1ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (7ngành)

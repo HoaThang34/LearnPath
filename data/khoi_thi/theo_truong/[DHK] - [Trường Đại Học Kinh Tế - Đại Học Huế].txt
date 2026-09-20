@@ -1,0 +1,14 @@
+Trường: Trường Đại Học Kinh Tế - Đại Học Huế (Mã: DHK)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (22ngành)
+- X01: Ngữ văn, Toán, GDKTPL (22ngành)
+- A00: Toán, Vật lí, Hóa học (22ngành)
+- C04: Ngữ văn, Toán, Địa lí (15ngành)
+- D03: Ngữ văn, Toán, Tiếng Pháp (22ngành)
+- A01: Toán, Vật lí, Tiếng Anh (22ngành)
+- D07: Toán, Hóa học, Tiếng Anh (22ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (22ngành)
+- D10: Toán, Địa lí, Tiếng Anh (22ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (22ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (22ngành)

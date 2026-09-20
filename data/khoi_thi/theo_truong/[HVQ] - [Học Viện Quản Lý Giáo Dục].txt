@@ -1,0 +1,12 @@
+Trường: Học Viện Quản Lý Giáo Dục (Mã: HVQ)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (4ngành)
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (1ngành)
+- A02: Toán, Vật lí, Sinh học (1ngành)
+- A01: Toán, Vật lí, Tiếng Anh (4ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (7ngành)
+- B00: Toán, Hóa học, Sinh học (2ngành)
+- D10: Toán, Địa lí, Tiếng Anh (2ngành)
+- D02: Ngữ văn, Toán, Tiếng Nga (1ngành)

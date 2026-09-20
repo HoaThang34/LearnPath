@@ -1,0 +1,8 @@
+Trường: Trường Đại Học Thể Dục Thể Thao Bắc Ninh (Mã: TDB)
+Các khối thi / tổ hợp xét tuyển:
+
+- T00: Toán, Sinh học, Năng khiếu TDTT (4ngành)
+- T05: Ngữ văn, GDKTPL, Năng khiếu thể dục thể thao (4ngành)
+- T02: Ngữ văn, Sinh, Năng khiếu TDTT (4ngành)
+- T03: Ngữ văn, Địa, Năng khiếu TDTT (4ngành)
+- T08: Toán, GDKTPL, Năng khiếu Thể dục thể thao (4ngành)

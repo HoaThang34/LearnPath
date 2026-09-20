@@ -1,0 +1,5 @@
+# Khối: X49 (Toán, GDKTPL, Tiếng Hàn)
+# Tổng số trường: 2
+
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]

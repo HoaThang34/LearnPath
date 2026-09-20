@@ -1,0 +1,18 @@
+Trường: Trường Đại học Thành Đô (Mã: TDD)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (9ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (7ngành)
+- A00: Toán, Vật lí, Hóa học (14ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (2ngành)
+- A02: Toán, Vật lí, Sinh học (2ngành)
+- A01: Toán, Vật lí, Tiếng Anh (10ngành)
+- D07: Toán, Hóa học, Tiếng Anh (5ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (12ngành)
+- B00: Toán, Hóa học, Sinh học (2ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (2ngành)
+- B08: Toán, Sinh học, Tiếng Anh (2ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (2ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (9ngành)
+- A03: Toán, Vật lí, Lịch sử (2ngành)
+- X07, A0C, TH3, TH4: Toán, Vật lí, Công nghệ công nghiệp (3ngành)

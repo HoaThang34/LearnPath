@@ -1,0 +1,17 @@
+Trường: Trường Đại Học Kinh tế công nghệ Thái Nguyên (Mã: DVB)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (4ngành)
+- A00: Toán, Vật lí, Hóa học (17ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (2ngành)
+- C01: Toán, Ngữ Văn, Vật lí (10ngành)
+- C02: Toán, Ngữ Văn, Hóa học (10ngành)
+- A01: Toán, Vật lí, Tiếng Anh (19ngành)
+- D07: Toán, Hóa học, Tiếng Anh (22ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (22ngành)
+- D10: Toán, Địa lí, Tiếng Anh (2ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (5ngành)
+- X25: Toán, Tiếng Anh, GDKTPL (10ngành)
+- X05: Toán, Vật lí, GDKTPL (10ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (3ngành)
+- DH5: Ngữ văn, Lịch sử, Tiếng Hàn (1ngành)

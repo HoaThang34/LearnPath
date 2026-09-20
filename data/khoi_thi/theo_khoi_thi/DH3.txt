@@ -1,0 +1,11 @@
+# Khối: DH3 (Ngữ văn, Vật lí, Tiếng Hàn)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[UMT] - [Trường Đại học Quản lý và công nghệ TPHCM]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

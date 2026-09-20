@@ -1,0 +1,7 @@
+Trường: Học Viện Biên Phòng (Mã: BPH)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (5ngành)
+- C04: Ngữ văn, Toán, Địa lí (5ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (5ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (5ngành)

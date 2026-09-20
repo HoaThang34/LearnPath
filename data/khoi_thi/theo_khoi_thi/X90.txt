@@ -1,0 +1,16 @@
+# Khối: X90 (Ngữ văn, GDKTPL, Tiếng Trung)
+# Tổng số trường: 13
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[LPS] - [Trường Đại Học Luật TPHCM]
+[DTF] - [Trường Ngoại Ngữ Thái Nguyên]
+[HLU] - [Trường Đại Học Hạ Long]
+[DQB] - [Trường Đại Học Quảng Bình]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[SDU] - [Trường Đại học Sao Đỏ]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

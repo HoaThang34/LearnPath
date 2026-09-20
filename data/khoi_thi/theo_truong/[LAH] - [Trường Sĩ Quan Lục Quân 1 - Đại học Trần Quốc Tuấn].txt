@@ -1,0 +1,7 @@
+Trường: Trường Sĩ Quan Lục Quân 1 - Đại học Trần Quốc Tuấn (Mã: LAH)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (1ngành)
+- C01: Toán, Ngữ Văn, Vật lí (1ngành)
+- A01: Toán, Vật lí, Tiếng Anh (1ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (1ngành)

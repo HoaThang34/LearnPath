@@ -1,0 +1,5 @@
+# Khối: X87 (Ngữ văn, Tin học, Tiếng Pháp)
+# Tổng số trường: 2
+
+[MBS] - [Trường Đại Học Mở TPHCM]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]

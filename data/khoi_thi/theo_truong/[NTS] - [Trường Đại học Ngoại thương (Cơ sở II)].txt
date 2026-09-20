@@ -1,0 +1,9 @@
+Trường: Trường Đại học Ngoại thương (Cơ sở II) (Mã: NTS)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (6ngành)
+- A01: Toán, Vật lí, Tiếng Anh (6ngành)
+- D07: Toán, Hóa học, Tiếng Anh (6ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (6ngành)
+- D06: Ngữ văn, Toán, Tiếng Nhật (1ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (4ngành)

@@ -1,0 +1,11 @@
+# Khối: T09 (Ngữ văn, Lịch sử, năng khiếu thể dục thể thao)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[STS] - [Trường Đại Học Sư Phạm Thể Dục Thể Thao TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]
+[TTB] - [Trường Đại Học Tây Bắc]
+[TQU] - [Trường Đại học Tân Trào]

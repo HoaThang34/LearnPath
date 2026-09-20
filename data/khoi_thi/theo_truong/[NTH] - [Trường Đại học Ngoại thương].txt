@@ -1,0 +1,11 @@
+Trường: Trường Đại học Ngoại thương (Mã: NTH)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (35ngành)
+- D03: Ngữ văn, Toán, Tiếng Pháp (3ngành)
+- A01: Toán, Vật lí, Tiếng Anh (36ngành)
+- D07: Toán, Hóa học, Tiếng Anh (36ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (40ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (2ngành)
+- D06: Ngữ văn, Toán, Tiếng Nhật (4ngành)
+- D02: Ngữ văn, Toán, Tiếng Nga (1ngành)

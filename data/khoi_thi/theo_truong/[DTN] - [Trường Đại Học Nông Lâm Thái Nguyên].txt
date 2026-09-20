@@ -1,0 +1,11 @@
+Trường: Trường Đại Học Nông Lâm Thái Nguyên (Mã: DTN)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (23ngành)
+- A00: Toán, Vật lí, Hóa học (23ngành)
+- C04: Ngữ văn, Toán, Địa lí (23ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (23ngành)
+- C02: Toán, Ngữ Văn, Hóa học (23ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (23ngành)
+- B00: Toán, Hóa học, Sinh học (23ngành)
+- A07: Toán, Lịch sử, Địa lí (9ngành)

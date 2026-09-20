@@ -1,0 +1,5 @@
+# Khối: X38 (Toán, Tin học, Tiếng Trung)
+# Tổng số trường: 2
+
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]

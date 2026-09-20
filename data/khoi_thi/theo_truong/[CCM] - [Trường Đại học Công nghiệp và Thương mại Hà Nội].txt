@@ -1,0 +1,14 @@
+Trường: Trường Đại học Công nghiệp và Thương mại Hà Nội (Mã: CCM)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (9ngành)
+- A00: Toán, Vật lí, Hóa học (9ngành)
+- C04: Ngữ văn, Toán, Địa lí (9ngành)
+- C01: Toán, Ngữ Văn, Vật lí (9ngành)
+- A01: Toán, Vật lí, Tiếng Anh (9ngành)
+- D07: Toán, Hóa học, Tiếng Anh (9ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (11ngành)
+- B00: Toán, Hóa học, Sinh học (9ngành)
+- X23: Toán, Địa lí, Công nghệ công nghiệp (9ngành)
+- X03; TH8; K22; E01: Toán, Ngữ văn, Công nghệ công nghiệp (9ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (11ngành)

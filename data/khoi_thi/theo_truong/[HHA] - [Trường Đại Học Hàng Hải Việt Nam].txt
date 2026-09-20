@@ -1,0 +1,18 @@
+Trường: Trường Đại Học Hàng Hải Việt Nam (Mã: HHA)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (13ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (2ngành)
+- A00: Toán, Vật lí, Hóa học (36ngành)
+- C04: Ngữ văn, Toán, Địa lí (13ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (8ngành)
+- C01: Toán, Ngữ Văn, Vật lí (47ngành)
+- C02: Toán, Ngữ Văn, Hóa học (36ngành)
+- A01: Toán, Vật lí, Tiếng Anh (53ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (55ngành)
+- D10: Toán, Địa lí, Tiếng Anh (6ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (8ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (17ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (36ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (55ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (55ngành)

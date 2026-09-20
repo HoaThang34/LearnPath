@@ -1,0 +1,15 @@
+# Khối: D40 (Toán, Lịch sử, Tiếng Trung)
+# Tổng số trường: 12
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[LPS] - [Trường Đại Học Luật TPHCM]
+[SKH] - [Trường Đại Học Sư Phạm Kỹ Thuật Hưng Yên]
+[CMC] - [Trường Đại Học CMC]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DDN] - [Trường Đại Học Đại Nam]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[BVU] - [Trường Đại Học Bà Rịa – Vũng Tàu]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DDM] - [Trường Đại Học Công Nghiệp Quảng Ninh]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

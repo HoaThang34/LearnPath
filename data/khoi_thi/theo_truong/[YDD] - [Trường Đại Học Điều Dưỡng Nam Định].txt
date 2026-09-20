@@ -1,0 +1,12 @@
+Trường: Trường Đại Học Điều Dưỡng Nam Định (Mã: YDD)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (3ngành)
+- C02: Toán, Ngữ Văn, Hóa học (3ngành)
+- A01: Toán, Vật lí, Tiếng Anh (3ngành)
+- D07: Toán, Hóa học, Tiếng Anh (3ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (3ngành)
+- B00: Toán, Hóa học, Sinh học (3ngành)
+- B08: Toán, Sinh học, Tiếng Anh (3ngành)
+- B03: Toán, Ngữ văn, Sinh học (3ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (3ngành)

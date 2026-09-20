@@ -1,0 +1,11 @@
+# Khối: X37; D89 (Toán, GDKTPL, Tiếng Trung)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[LPS] - [Trường Đại Học Luật TPHCM]
+[DTC] - [Trường Đại học Công Nghệ Thông Tin và Truyền Thông Thái Nguyên]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DPX] - [Trường Đại Học Phú Xuân]
+[DBG] - [Trường Đại học Nông Lâm Bắc Giang]

@@ -1,0 +1,10 @@
+Trường: Trường Y Dược Đà Nẵng (Mã: DDY)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (4ngành)
+- A01: Toán, Vật lí, Tiếng Anh (1ngành)
+- D07: Toán, Hóa học, Tiếng Anh (4ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (1ngành)
+- B00: Toán, Hóa học, Sinh học (7ngành)
+- B08: Toán, Sinh học, Tiếng Anh (7ngành)
+- B03: Toán, Ngữ văn, Sinh học (1ngành)

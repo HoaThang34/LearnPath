@@ -1,0 +1,18 @@
+# Khối: D63 (Ngữ văn, Lịch sử, Tiếng Nhật)
+# Tổng số trường: 15
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[PKA] - [Đại Học Phenikaa]
+[QHF] - [Trường Đại Học Ngoại Ngữ - ĐH Quốc gia Hà Nội]
+[SGD] - [Trường Đại Học Sài Gòn]
+[LPS] - [Trường Đại Học Luật TPHCM]
+[MBS] - [Trường Đại Học Mở TPHCM]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[DKC] - [Trường Đại học Công Nghệ TPHCM]
+[DTV] - [Trường Đại Học Lương Thế Vinh]
+[VJU] - [Trường Đại học Việt Nhật - ĐHQG Hà Nội]
+[BVU] - [Trường Đại Học Bà Rịa – Vũng Tàu]
+[NTU] - [Trường Đại Học Nguyễn Trãi]
+[UMT] - [Trường Đại học Quản lý và công nghệ TPHCM]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

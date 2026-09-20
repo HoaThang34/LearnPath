@@ -1,0 +1,11 @@
+# Khối: D71 (Ngữ văn, GDKTPL, Tiếng Trung)
+# Tổng số trường: 8
+
+[HHK] - [Học Viện Hàng không Việt Nam]
+[SGD] - [Trường Đại Học Sài Gòn]
+[SKH] - [Trường Đại Học Sư Phạm Kỹ Thuật Hưng Yên]
+[CMC] - [Trường Đại Học CMC]
+[DDN] - [Trường Đại Học Đại Nam]
+[SDU] - [Trường Đại học Sao Đỏ]
+[DTZ] - [Trường Đại Học Khoa Học Thái Nguyên]
+[DSG] - [Trường Đại Học Công Nghệ Sài Gòn]

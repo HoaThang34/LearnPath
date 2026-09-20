@@ -1,0 +1,8 @@
+Trường: Đại Học Y Dược TPHCM (Mã: YDS)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (15ngành)
+- D07: Toán, Hóa học, Tiếng Anh (11ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (2ngành)
+- B00: Toán, Hóa học, Sinh học (18ngành)
+- B08: Toán, Sinh học, Tiếng Anh (3ngành)

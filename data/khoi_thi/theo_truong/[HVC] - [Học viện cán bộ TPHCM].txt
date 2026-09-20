@@ -1,0 +1,15 @@
+Trường: Học viện cán bộ TPHCM (Mã: HVC)
+Các khối thi / tổ hợp xét tuyển:
+
+- C03: Ngữ văn, Toán, Lịch sử (5ngành)
+- C00: Ngữ văn, Lịch sử, Địa lí (5ngành)
+- X01: Ngữ văn, Toán, GDKTPL (5ngành)
+- A00: Toán, Vật lí, Hóa học (5ngành)
+- C04: Ngữ văn, Toán, Địa lí (5ngành)
+- A01: Toán, Vật lí, Tiếng Anh (5ngành)
+- D07: Toán, Hóa học, Tiếng Anh (5ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (5ngành)
+- D10: Toán, Địa lí, Tiếng Anh (5ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (5ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (5ngành)
+- A07: Toán, Lịch sử, Địa lí (5ngành)

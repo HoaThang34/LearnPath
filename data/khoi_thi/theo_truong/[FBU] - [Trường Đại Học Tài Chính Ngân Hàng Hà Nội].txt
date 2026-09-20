@@ -1,0 +1,16 @@
+Trường: Trường Đại Học Tài Chính Ngân Hàng Hà Nội (Mã: FBU)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (2ngành)
+- X01: Ngữ văn, Toán, GDKTPL (7ngành)
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- C04: Ngữ văn, Toán, Địa lí (9ngành)
+- A01: Toán, Vật lí, Tiếng Anh (11ngành)
+- D07: Toán, Hóa học, Tiếng Anh (2ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (12ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (2ngành)
+- D10: Toán, Địa lí, Tiếng Anh (4ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (2ngành)
+- X25: Toán, Tiếng Anh, GDKTPL (4ngành)
+- X02, K21, TH6, DK, F01, TH3: Toán, Ngữ văn, Tin học (7ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (12ngành)

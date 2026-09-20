@@ -1,0 +1,17 @@
+Trường: Trường Đại học Y khoa Tokyo Việt Nam (Mã: THU)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (4ngành)
+- A02: Toán, Vật lí, Sinh học (4ngành)
+- A01: Toán, Vật lí, Tiếng Anh (4ngành)
+- D07: Toán, Hóa học, Tiếng Anh (4ngành)
+- B00: Toán, Hóa học, Sinh học (4ngành)
+- B08: Toán, Sinh học, Tiếng Anh (4ngành)
+- D28: Toán, Vật lí, Tiếng Nhật (4ngành)
+- D23: Toán, Hóa học, Tiếng Nhật (4ngành)
+- B03: Toán, Ngữ văn, Sinh học (1ngành)
+- C08: Ngữ văn, Hóa học, Sinh học (1ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (2ngành)
+- D33: Toán, Sinh học, Tiếng Nhật (2ngành)
+- X10, TH4: Toán, Hoá, Tin (1ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (4ngành)

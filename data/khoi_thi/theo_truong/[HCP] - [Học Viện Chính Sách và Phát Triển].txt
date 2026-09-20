@@ -1,0 +1,13 @@
+Trường: Học Viện Chính Sách và Phát Triển (Mã: HCP)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (2ngành)
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- A01: Toán, Vật lí, Tiếng Anh (24ngành)
+- D07: Toán, Hóa học, Tiếng Anh (22ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (25ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (1ngành)
+- X25: Toán, Tiếng Anh, GDKTPL (18ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (6ngành)
+- K00: Toán, Đọc hiểu, Tư duy Khoa học Giải quyết vấn đề (25ngành)
+- Q00: Tư duy định lượng, Tư duy định tính, Khoa học/ Tiếng Anh (25ngành)

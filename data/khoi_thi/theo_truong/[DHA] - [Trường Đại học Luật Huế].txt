@@ -1,0 +1,10 @@
+Trường: Trường Đại học Luật Huế (Mã: DHA)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (2ngành)
+- A00: Toán, Vật lí, Hóa học (2ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (2ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (2ngành)
+- X74: Ngữ văn, Địa lí, GDKTPL (2ngành)
+- X70: Ngữ văn, Lịch sử, GDKTPL (2ngành)
+- X78: Ngữ văn, GDKTPL, Tiếng Anh (2ngành)

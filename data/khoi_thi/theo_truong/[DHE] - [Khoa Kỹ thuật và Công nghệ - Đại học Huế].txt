@@ -1,0 +1,10 @@
+Trường: Khoa Kỹ thuật và Công nghệ - Đại học Huế (Mã: DHE)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (8ngành)
+- C01: Toán, Ngữ Văn, Vật lí (8ngành)
+- C02: Toán, Ngữ Văn, Hóa học (6ngành)
+- A01: Toán, Vật lí, Tiếng Anh (8ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (8ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (2ngành)
+- X07, A0C, TH3, TH4: Toán, Vật lí, Công nghệ công nghiệp (8ngành)

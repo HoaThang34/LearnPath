@@ -1,0 +1,9 @@
+Trường: Trường Đại học Tài Chính Kế Toán (Mã: UFA)
+Các khối thi / tổ hợp xét tuyển:
+
+- X01: Ngữ văn, Toán, GDKTPL (6ngành)
+- A00: Toán, Vật lí, Hóa học (6ngành)
+- C01: Toán, Ngữ Văn, Vật lí (5ngành)
+- C02: Toán, Ngữ Văn, Hóa học (6ngành)
+- A01: Toán, Vật lí, Tiếng Anh (6ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (6ngành)

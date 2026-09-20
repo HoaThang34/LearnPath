@@ -1,0 +1,6 @@
+Trường: Học Viện Kỹ Thuật Quân Sự - Hệ Quân sự (Mã: KQH)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (7ngành)
+- A01: Toán, Vật lí, Tiếng Anh (7ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (7ngành)

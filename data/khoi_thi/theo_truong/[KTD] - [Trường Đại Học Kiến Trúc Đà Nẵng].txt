@@ -1,0 +1,18 @@
+Trường: Trường Đại Học Kiến Trúc Đà Nẵng (Mã: KTD)
+Các khối thi / tổ hợp xét tuyển:
+
+- A00: Toán, Vật lí, Hóa học (11ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (2ngành)
+- A01: Toán, Vật lí, Tiếng Anh (15ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (13ngành)
+- B00: Toán, Hóa học, Sinh học (11ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (2ngành)
+- V00: Toán, Vật lí, Vẽ Hình họa mỹ thuật (1ngành)
+- H00: Ngữ văn, Năng khiếu vẽ Nghệ thuật 1, Năng khiếu vẽ Nghệ thuật 2 (1ngành)
+- V01: Toán, Ngữ văn, Vẽ Hình họa mỹ thuật (1ngành)
+- V02: Toán, Tiếng Anh, Vẽ mỹ thuật (1ngành)
+- X26, K01: Toán, Tiếng Anh, Tin học (15ngành)
+- V03: Vẽ mỹ thuật, Toán, Hóa (1ngành)
+- X06, A0T, GT1, TH1: Toán, Vật lí, Tin học (15ngành)
+- X07, A0C, TH3, TH4: Toán, Vật lí, Công nghệ công nghiệp (15ngành)
+- X27; D0C; K20; TH5; TH7: Toán, Tiếng Anh, Công nghệ công nghiệp (15ngành)

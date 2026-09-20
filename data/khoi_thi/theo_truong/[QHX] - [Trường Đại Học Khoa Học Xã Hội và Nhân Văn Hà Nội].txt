@@ -1,0 +1,14 @@
+Trường: Trường Đại Học Khoa Học Xã Hội và Nhân Văn Hà Nội (Mã: QHX)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (15ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (29ngành)
+- A01: Toán, Vật lí, Tiếng Anh (14ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (29ngành)
+- D04: Ngữ văn, Toán, Tiếng Trung (2ngành)
+- D06: Ngữ văn, Toán, Tiếng Nhật (1ngành)
+- D10: Toán, Địa lí, Tiếng Anh (29ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (29ngành)
+- D09: Toán, Lịch sử, Tiếng Anh (29ngành)
+- D11: Ngữ văn, Vật lí, Tiếng Anh (29ngành)
+- DD2: Ngữ văn, Toán, Tiếng Hàn (1ngành)

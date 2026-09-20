@@ -1,0 +1,7 @@
+Trường: Trường Đại Học Thể Dục Thể Thao TPHCM (Mã: TDS)
+Các khối thi / tổ hợp xét tuyển:
+
+- T00: Toán, Sinh học, Năng khiếu TDTT (4ngành)
+- T01: Toán, Ngữ văn, Năng khiếu TDTT (4ngành)
+- T04: Toán, Lý, Năng khiếu TDTT (4ngành)
+- T06: Toán, Địa lý, Năng khiếu Thể dục thể thao (4ngành)

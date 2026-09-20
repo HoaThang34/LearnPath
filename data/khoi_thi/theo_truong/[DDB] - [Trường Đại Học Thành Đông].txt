@@ -1,0 +1,16 @@
+Trường: Trường Đại Học Thành Đông (Mã: DDB)
+Các khối thi / tổ hợp xét tuyển:
+
+- C00: Ngữ văn, Lịch sử, Địa lí (7ngành)
+- A00: Toán, Vật lí, Hóa học (22ngành)
+- D14: Ngữ văn, Lịch sử, Tiếng Anh (3ngành)
+- C01: Toán, Ngữ Văn, Vật lí (1ngành)
+- A02: Toán, Vật lí, Sinh học (6ngành)
+- A01: Toán, Vật lí, Tiếng Anh (15ngành)
+- D07: Toán, Hóa học, Tiếng Anh (6ngành)
+- D01: Toán, Ngữ Văn, Tiếng Anh (14ngành)
+- B00: Toán, Hóa học, Sinh học (7ngành)
+- D15: Ngữ văn, Địa lí, Tiếng Anh (3ngành)
+- D08: Toán, Sinh học, Tiếng Anh (5ngành)
+- A07: Toán, Lịch sử, Địa lí (4ngành)
+- A04: Toán, Vật lí, Địa lí (1ngành)
