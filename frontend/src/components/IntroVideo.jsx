@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from 'react';
 
 const IntroVideo = ({ onComplete }) => {
   const videoRef = useRef(null);
-  const [isMuted, setIsMuted] = useState(true);
+  const [isMuted, setIsMuted] = useState(false);
 
   // Attempt to play with sound, if blocked by browser policy, fallback to muted
   useEffect(() => {
