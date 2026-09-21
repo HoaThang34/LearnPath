@@ -12,38 +12,36 @@ import {
   getDanhSachKhoiThi
 } from '@/lib/api'
 
-// Determine score scale info
+// Determine score scale info based on method
 function getScoreScale(diemChuan, phuongThuc, ghiChu) {
-  // SAT/International certificates → 1600 scale
-  if (ghiChu?.includes('SAT') || phuongThuc?.includes('V-SAT')) {
-    return { scale: 1600, note: 'Thang 1600 (SAT)' }
+  if (!diemChuan) return { scale: 30, note: '', display: '-' }
+
+  // SAT → 1600 scale
+  if (phuongThuc?.includes('SAT')) {
+    return { scale: 1600, note: 'Thang 1600', display: diemChuan.toFixed(0) }
   }
-  // ĐGNL HSA → 1200 scale
+  // V-ACT → 1200 scale
+  if (phuongThuc?.includes('V-ACT')) {
+    return { scale: 1200, note: 'Thang 1200', display: diemChuan.toFixed(0) }
+  }
+  // HSA → ~130 scale (50-129)
   if (phuongThuc?.includes('HSA')) {
-    return { scale: 1200, note: 'Thang 1200 (HSA)' }
+    return { scale: 130, note: 'Thang 130', display: diemChuan.toFixed(0) }
   }
-  // ĐGNL V-ACT, SPT, QDA, H-SCA, SP2E → 1200 scale
-  if (phuongThuc?.includes('V-ACT') || phuongThuc?.includes('SPT') ||
-      phuongThuc?.includes('QDA') || phuongThuc?.includes('H-SCA') || phuongThuc?.includes('SP2E')) {
-    return { scale: 1200, note: 'Thang 1200' }
+  // TSA → ~100 scale (17-82)
+  if (phuongThuc?.includes('TSA')) {
+    return { scale: 100, note: 'Thang 100', display: diemChuan.toFixed(2) }
   }
-  // ĐGTD TSA → 1000 scale
-  if (phuongThuc?.includes('ĐGTD TSA')) {
-    return { scale: 1000, note: 'Thang 1000 (TSA)' }
+  // THPT → standard 30-point scale
+  if (phuongThuc?.includes('THPT')) {
+    if (diemChuan <= 30) {
+      return { scale: 30, note: '', display: diemChuan.toFixed(2) }
+    }
+    // Some schools use 100-point scale for THPT
+    return { scale: 100, note: 'Thang 100', display: diemChuan.toFixed(2) }
   }
-  // Standard 30-point scale
-  if (diemChuan <= 30) {
-    return { scale: 30, note: '' }
-  }
-  // Check for special scales in ghi_chu
-  if (ghiChu?.includes('Thang điểm 40')) {
-    return { scale: 40, note: 'Thang 40' }
-  }
-  // Higher scores = combined scale (likely 1000 or similar)
-  if (diemChuan > 30) {
-    return { scale: 1000, note: 'Thang điểm tổng hợp' }
-  }
-  return { scale: 30, note: '' }
+  // Default: 30-point scale
+  return { scale: 30, note: '', display: diemChuan.toFixed(2) }
 }
 
 function getScoreColor(diemChuan, scale) {
@@ -57,7 +55,8 @@ function getScoreColor(diemChuan, scale) {
   }
   if (scale === 1200) return 'bg-purple-100 text-purple-700 border-purple-200'
   if (scale === 1600) return 'bg-indigo-100 text-indigo-700 border-indigo-200'
-  if (scale === 1000) return 'bg-orange-100 text-orange-700 border-orange-200'
+  if (scale === 130) return 'bg-cyan-100 text-cyan-700 border-cyan-200'
+  if (scale === 100) return 'bg-orange-100 text-orange-700 border-orange-200'
   return 'bg-gray-100 text-gray-700 border-gray-200'
 }
 
@@ -124,21 +123,14 @@ export default function DiemChuan() {
   const hasActiveFilters = searchTerm || sort !== 'diem_desc' || filterKhoiThi || filterNhomNganh
   const totalPages = Math.ceil(total / PER_PAGE)
 
-  // Get scale info for selected method
-  const methodScaleInfo = (() => {
-    if (selectedPhuongThuc?.includes('THPT')) return { scale: 30, desc: 'Thang điểm 30 (tổng 3 môn thi THPT)' }
-    if (selectedPhuongThuc?.includes('học bạ')) return { scale: 30, desc: 'Thang điểm 30 (tổng điểm học bạ)' }
-    if (selectedPhuongThuc?.includes('kết hợp')) return { scale: null, desc: 'Thang điểm tùy trường' }
-    if (selectedPhuongThuc?.includes('thi riêng')) return { scale: null, desc: 'Thang điểm tùy trường' }
-    if (selectedPhuongThuc?.includes('HSA')) return { scale: 1200, desc: 'Thang điểm 1200' }
-    if (selectedPhuongThuc?.includes('V-ACT')) return { scale: 1200, desc: 'Thang điểm 1200' }
-    if (selectedPhuongThuc?.includes('SPT')) return { scale: 1200, desc: 'Thang điểm 1200' }
-    if (selectedPhuongThuc?.includes('QDA')) return { scale: 1200, desc: 'Thang điểm 1200' }
-    if (selectedPhuongThuc?.includes('H-SCA')) return { scale: 1200, desc: 'Thang điểm 1200' }
-    if (selectedPhuongThuc?.includes('SP2E')) return { scale: 1200, desc: 'Thang điểm 1200' }
-    if (selectedPhuongThuc?.includes('TSA')) return { scale: 1000, desc: 'Thang điểm 1000' }
-    if (selectedPhuongThuc?.includes('V-SAT')) return { scale: 1600, desc: 'Thang điểm 1600' }
-    return { scale: null, desc: '' }
+  // Scale description for selected method
+  const methodScaleDesc = (() => {
+    if (selectedPhuongThuc?.includes('THPT')) return 'Thang điểm 30 (tổng 3 môn thi THPT)'
+    if (selectedPhuongThuc?.includes('HSA')) return 'Thang điểm 130'
+    if (selectedPhuongThuc?.includes('V-ACT')) return 'Thang điểm 1200'
+    if (selectedPhuongThuc?.includes('TSA')) return 'Thang điểm 100'
+    if (selectedPhuongThuc?.includes('SAT')) return 'Thang điểm 1600'
+    return ''
   })()
 
   return (
@@ -187,7 +179,7 @@ export default function DiemChuan() {
             <div className="mt-3 p-3 bg-muted rounded-lg text-sm flex items-start gap-2">
               <Info className="h-4 w-4 mt-0.5 shrink-0" />
               <span>
-                <strong>{selectedPhuongThuc}</strong>: {methodScaleInfo.desc}
+                <strong>{selectedPhuongThuc}</strong>: {methodScaleDesc}
               </span>
             </div>
           )}
@@ -260,15 +252,14 @@ export default function DiemChuan() {
                     <th className="text-left p-3 font-medium">Ngành</th>
                     <th className="text-left p-3 font-medium">Tổ hợp môn</th>
                     <th className="text-center p-3 font-medium">Điểm chuẩn</th>
-                    <th className="text-center p-3 font-medium">Thang</th>
                     <th className="text-left p-3 font-medium">Ghi chú</th>
                   </tr>
                 </thead>
                 <tbody>
                   {loading ? (
-                    <tr><td colSpan="7" className="text-center py-8 text-muted-foreground">Đang tải...</td></tr>
+                    <tr><td colSpan="6" className="text-center py-8 text-muted-foreground">Đang tải...</td></tr>
                   ) : results.length === 0 ? (
-                    <tr><td colSpan="7" className="text-center py-8 text-muted-foreground">Không tìm thấy kết quả</td></tr>
+                    <tr><td colSpan="6" className="text-center py-8 text-muted-foreground">Không tìm thấy kết quả</td></tr>
                   ) : (
                     results.map((item, index) => {
                       const scoreInfo = getScoreScale(item.diem_chuan, selectedPhuongThuc, item.ghi_chu)
@@ -281,11 +272,8 @@ export default function DiemChuan() {
                           <td className="p-3 text-muted-foreground text-xs max-w-[150px] truncate">{item.to_hop_mon}</td>
                           <td className="p-3 text-center">
                             <span className={`inline-block px-2 py-1 rounded text-xs font-bold border ${bgColor}`}>
-                              {scoreInfo.scale === 30 ? item.diem_chuan?.toFixed(2) : item.diem_chuan?.toFixed(0)}
+                              {scoreInfo.display}
                             </span>
-                          </td>
-                          <td className="p-3 text-center text-xs text-muted-foreground">
-                            {scoreInfo.scale === 30 ? '30' : scoreInfo.scale}
                           </td>
                           <td className="p-3 text-muted-foreground text-xs max-w-[150px] truncate">{item.ghi_chu}</td>
                         </tr>

@@ -541,7 +541,6 @@
       "mark": 23.48
     }
   },
-
   "ĐH Công nghệ - ĐHQGHN": {
     "Công nghệ thông tin": {
       "code": "CN1",
@@ -1768,11 +1767,6 @@
       "block": "A01; D01; D07",
       "mark": 28
     },
-    "Chương trình Khoa học máy tính và dữ liệu trong kinh tế và kinh doanh": {
-      "code": "KHMH2 .1",
-      "block": "A00; A01; D01; D07",
-      "mark": 36.59
-    },
     "CT ĐHPTQT Kinh tế chính trị quốc tế": {
       "code": "KTCH2.1",
       "block": "A01; D01; D07",
@@ -1828,16 +1822,6 @@
       "block": "A01; D01; D07",
       "mark": 26.2
     },
-    "CT TC Tiếng Anh thương mại": {
-      "code": "NNAH1.1",
-      "block": "D01",
-      "mark": 32.4
-    },
-    "CT CLC Tiếng Anh thương mại": {
-      "code": "NNAH2.1",
-      "block": "D01",
-      "mark": 35.3
-    },
     "CT TC Tiếng Nhật thương mại": {
       "code": "NNNH1.1",
       "block": "D01; D06",
@@ -1852,16 +1836,6 @@
       "code": "NNPH1.1",
       "block": "D01; D03",
       "mark": 30
-    },
-    "CT TC Tiếng Trung Thương mại": {
-      "code": "NNTH1.1",
-      "block": "D01; D04",
-      "mark": 35.15
-    },
-    "CT CLC Tiếng Trung thương mại": {
-      "code": "NNTH2.1",
-      "block": "D04",
-      "mark": 35
     },
     "CT ĐHNNQT Quản trị khách sạn": {
       "code": "QKSH2.1",
@@ -1897,21 +1871,6 @@
       "code": "TCHH4.1",
       "block": "A01; D01; D07",
       "mark": 28.7
-    },
-    "CT TH Trí tuệ nhân tạo cho đổi mới sáng tạo trong kinh tế và kinh doanh": {
-      "code": "",
-      "block": "A00; A01; D01; D07",
-      "mark": 34.66
-    },
-    "CT TH Khoa học dữ liệu cho đổi mới sáng tạo trong kinh tế và kinh doanh": {
-      "code": "",
-      "block": "A00; A01; D01; D07",
-      "mark": 34.66
-    },
-    "CT TH Khoa học máy tính và dữ liệu trong kinh tế và kinh doanh": {
-      "code": "",
-      "block": "A00; A01; D01; D07",
-      "mark": 34.66
     },
     "CT ĐHNNQT Kinh doanh số toàn cầu": {
       "code": "",
@@ -1972,26 +1931,6 @@
       "code": "",
       "block": "A01; D01; D07",
       "mark": 24
-    },
-    "CT TH Tiếng Anh thương mại": {
-      "code": "",
-      "block": "D01",
-      "mark": 33.88
-    },
-    "CT TH Tiếng Trung thương mại": {
-      "code": "",
-      "block": "D01; D04",
-      "mark": 36
-    },
-    "CT TH Tiếng Nhật thương mại": {
-      "code": "",
-      "block": "D01; D06",
-      "mark": 32.15
-    },
-    "CT TH Tiếng Pháp thương mại": {
-      "code": "",
-      "block": "D01; D03",
-      "mark": 32.25
     },
     "CT ĐHNNQT Quản trị nguồn\r\nnhân lực số và phát triển tổ chức": {
       "code": "",
@@ -2337,16 +2276,6 @@
     }
   },
   "ĐH Hà Nội": {
-    "Ngôn ngữ Anh": {
-      "code": "7220201",
-      "block": "D01",
-      "mark": 34.45
-    },
-    "Ngôn ngữ Anh - CTTT": {
-      "code": "7220201 TT",
-      "block": "D01",
-      "mark": 32.84
-    },
     "Ngôn ngữ Nga": {
       "code": "7220202",
       "block": "D01; D02; D03; D10",
@@ -2356,16 +2285,6 @@
       "code": "7220203",
       "block": "D01; D03",
       "mark": 25.67
-    },
-    "Ngôn ngữ Trung Quốc": {
-      "code": "7220204",
-      "block": "D01; D04",
-      "mark": 34.2
-    },
-    "Ngôn ngữ Trung Quốc - CTTT": {
-      "code": "7220204 TT",
-      "block": "D01; D04",
-      "mark": 33.15
     },
     "Ngôn ngữ Đức": {
       "code": "7220205",
@@ -2397,11 +2316,6 @@
       "block": "D01; D06",
       "mark": 29.07
     },
-    "Ngôn ngữ Hàn Quốc": {
-      "code": "7220210",
-      "block": "D01; D04; DD2; D06",
-      "mark": 32.14
-    },
     "Ngôn ngữ Hàn Quốc - CTTT": {
       "code": "7220210 TT",
       "block": "D01; D04; DD2; D06",
@@ -2417,11 +2331,6 @@
       "block": "D01",
       "mark": 26.83
     },
-    "Truyền thông đa phương tiện (dạy bằng tiếng Anh)": {
-      "code": "7320104",
-      "block": "D01",
-      "mark": 30.82
-    },
     "Truyền thông doanh nghiệp (dạy bằng tiếng Pháp)": {
       "code": "7320109",
       "block": "D01; D03",
@@ -2431,11 +2340,6 @@
       "code": "7340101",
       "block": "D01",
       "mark": 28.25
-    },
-    "Marketing (dạy bằng tiếng Anh)": {
-      "code": "7340115",
-      "block": "D01",
-      "mark": 30.17
     },
     "Tài chính - Ngân hàng (dạy bằng tiếng Anh)": {
       "code": "7340201",
@@ -2472,20 +2376,10 @@
       "block": "D01",
       "mark": 23.08
     },
-    "Ngôn ngữ Anh - thương mại": {
-      "code": "",
-      "block": "D01",
-      "mark": 31.15
-    },
     "Nghiên cứu phát triển (dạy bằng TA)": {
       "code": "",
       "block": "D01; D14; D15",
       "mark": 26.73
-    },
-    "Quan hệ quốc tế (dạy bằng TA)": {
-      "code": "",
-      "block": "D01; D14; D15",
-      "mark": 30.33
     },
     "Quốc tế học (dạy bằng TA)": {
       "code": "",
@@ -2542,21 +2436,6 @@
       "block": "D01; D10",
       "mark": 24.47
     },
-    "Ngôn ngữ Anh(Thang điểm 40)": {
-      "code": "",
-      "block": "D01",
-      "mark": 34.45
-    },
-    "Ngôn ngữ Anh - thương mại(Thang điểm 40)": {
-      "code": "",
-      "block": "D01",
-      "mark": 31.15
-    },
-    "Ngôn ngữ Anh - CTTT(Thang điểm 40)": {
-      "code": "",
-      "block": "D01",
-      "mark": 32.84
-    },
     "Ngôn ngữ Nga(Thang điểm 40)": {
       "code": "",
       "block": "D01; D02; D03; D10",
@@ -2566,16 +2445,6 @@
       "code": "",
       "block": "D01; D03",
       "mark": 25.67
-    },
-    "Ngôn ngữ Trung Quốc(Thang điểm 40)": {
-      "code": "",
-      "block": "D01; D04",
-      "mark": 34.2
-    },
-    "Ngôn ngữ Trung Quốc - CTTT(Thang điểm 40)": {
-      "code": "",
-      "block": "D01; D04",
-      "mark": 33.15
     },
     "Ngôn ngữ Đức(Thang điểm 40)": {
       "code": "",
@@ -2607,11 +2476,6 @@
       "block": "D01; D06",
       "mark": 29.07
     },
-    "Ngôn ngữ Hàn Quốc(Thang điểm 40)": {
-      "code": "",
-      "block": "D01; D04; DD2; D06",
-      "mark": 32.14
-    },
     "Ngôn ngữ Hàn Quốc - CTTT(Thang điểm 40)": {
       "code": "",
       "block": "D01; D04; DD2; D06",
@@ -2621,11 +2485,6 @@
       "code": "",
       "block": "D01; D14; D15",
       "mark": 26.73
-    },
-    "Quan hệ quốc tế (dạy bằng TA)(Thang điểm 40)": {
-      "code": "",
-      "block": "D01; D14; D15",
-      "mark": 30.33
     },
     "Quốc tế học (dạy bằng TA)(Thang điểm 40)": {
       "code": "",
@@ -3080,11 +2939,6 @@
       "code": "7140213",
       "block": "D08",
       "mark": 26.91
-    },
-    "Sư phạm Ngữ văn": {
-      "code": "7140217",
-      "block": "D01",
-      "mark": 30.3
     },
     "Sư phạm Lịch sử": {
       "code": "7140218",
@@ -4283,11 +4137,6 @@
       "block": "A00; A01; C01; X06",
       "mark": 25.78
     },
-    "Kỹ thuật robot (chuyên ngành Kỹ thuật robot &amp; trí tuệ nhân tạo)": {
-      "code": "",
-      "block": "K00",
-      "mark": 59
-    },
     "Kỹ thuật an toàn giao thông": {
       "code": "",
       "block": "A00; A01; D01; C01; X06",
@@ -4343,20 +4192,10 @@
       "block": "A00; A01; C01; X06",
       "mark": 24.83
     },
-    "Kỹ thuật cơ khí động lực (chuyên ngành: Kỹ thu��t phương tiện đường sắt; Máy xây dựng; Kỹ thuật máy động lực)": {
-      "code": "",
-      "block": "Q00",
-      "mark": 91.18
-    },
     "Toán ứng dụng (chuyên ngành Toán tin\r\nứng dụng)": {
       "code": "",
       "block": "A00; A01;\r\nD01; C01; X06",
       "mark": 27.33
-    },
-    "Kỹ thuật cơ điện t���": {
-      "code": "",
-      "block": "K00",
-      "mark": 62.61
     },
     "Khai thác vận tải (Chuyên ngành: Khai thác và quản lý đường sắt tốc độ cao, Khai thác và quản lý đường sắt đô thị)(D01; D07: Thí sinh có học môn Vật lý với ĐTB 3 năm THPT từ 5.5 trở lên)": {
       "code": "",
