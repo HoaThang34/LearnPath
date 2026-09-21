@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
   getDiemChuan,
-  getDiemChuanStats,
   getPhuongThuc,
   getNhomNganh,
   getDanhSachKhoiThi
@@ -71,7 +70,6 @@ export default function DiemChuan() {
   const [khoiThiList, setKhoiThiList] = useState([])
   const [results, setResults] = useState([])
   const [total, setTotal] = useState(0)
-  const [stats, setStats] = useState(null)
   const [loading, setLoading] = useState(false)
   const [page, setPage] = useState(1)
   const PER_PAGE = 100
@@ -80,7 +78,6 @@ export default function DiemChuan() {
     fetchPhuongThuc()
     fetchNhomNganh()
     fetchKhoiThi()
-    fetchStats()
   }, [])
 
   useEffect(() => {
@@ -95,9 +92,6 @@ export default function DiemChuan() {
   }
   const fetchKhoiThi = async () => {
     try { const res = await getDanhSachKhoiThi(); setKhoiThiList(res.data.data) } catch (e) {}
-  }
-  const fetchStats = async () => {
-    try { const res = await getDiemChuanStats(); setStats(res.data.data) } catch (e) {}
   }
   const fetchResults = async () => {
     setLoading(true)
@@ -143,15 +137,25 @@ export default function DiemChuan() {
         </div>
       </div>
 
-      {stats && (
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-          <Card><CardContent className="p-4"><div className="text-2xl font-bold">{stats.tongTruong}</div><div className="text-xs text-muted-foreground">Trường</div></CardContent></Card>
-          <Card><CardContent className="p-4"><div className="text-2xl font-bold">{stats.tongNganh}</div><div className="text-xs text-muted-foreground">Ngành</div></CardContent></Card>
-          <Card><CardContent className="p-4"><div className="text-2xl font-bold text-green-600">{stats.diemCaoNhat}</div><div className="text-xs text-muted-foreground">Điểm cao nhất</div></CardContent></Card>
-          <Card><CardContent className="p-4"><div className="text-2xl font-bold text-red-600">{stats.diemThapNhat}</div><div className="text-xs text-muted-foreground">Điểm thấp nhất</div></CardContent></Card>
-          <Card><CardContent className="p-4"><div className="text-2xl font-bold">{stats.diemTrungBinh?.toFixed(2)}</div><div className="text-xs text-muted-foreground">Điểm trung bình</div></CardContent></Card>
-        </div>
-      )}
+      {/* Hướng dẫn sử dụng */}
+      <Card className="border-dashed">
+        <CardContent className="p-5">
+          <div className="flex items-start gap-3">
+            <Info className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+            <div className="text-sm space-y-2">
+              <p className="font-medium">Hướng dẫn sử dụng:</p>
+              <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
+                <li><strong>Bước 1:</strong> Chọn phương thức xét tuyển (Điểm thi THPT, HSA, TSA, V-ACT, SAT).</li>
+                <li><strong>Bước 2:</strong> Sử dụng bộ lọc để tìm kiếm theo tên trường, khối thi, nhóm ngành và sắp xếp kết quả.</li>
+                <li><strong>Bước 3:</strong> Xem kết quả trong bảng bên dưới. Điểm chuẩn hiển thị theo thang điểm tương ứng.</li>
+              </ol>
+              <p className="text-xs text-muted-foreground">
+                Lưu ý: Mỗi phương thức có thang điểm riêng, không thể so sánh trực tiếp giữa các phương thức.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Step 1: Select Method */}
       <Card>
