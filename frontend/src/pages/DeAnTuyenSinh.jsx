@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
 import { getDeAn, getDeAnByMaTruong } from '@/lib/api'
 
 function StepIndicator({ currentStep }) {
@@ -41,6 +40,17 @@ function StepIndicator({ currentStep }) {
   )
 }
 
+// Generate heading ID matching rehype-slug behavior
+function slugify(text) {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\p{L}\p{N}-]/gu, '')
+    .replace(/--+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
 // Extract headings from markdown for TOC
 function extractHeadings(markdown) {
   const headings = []
@@ -49,13 +59,13 @@ function extractHeadings(markdown) {
     const match = line.match(/^(#{1,4})\s+(.+)/)
     if (match) {
       const level = match[1].length
-      const text = match[2].replace(/[*_`#]/g, '').trim()
-      const id = text
-        .toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-        .replace(/đ/g, 'd')
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/^-|-$/g, '')
+      // Remove markdown formatting for display text
+      const text = match[2]
+        .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')  // links
+        .replace(/[*_`~]/g, '')  // inline formatting
+        .replace(/#{1,4}\s*/g, '')  // heading markers
+        .trim()
+      const id = slugify(text)
       headings.push({ level, text, id })
     }
   }
@@ -64,18 +74,26 @@ function extractHeadings(markdown) {
 
 // Custom Markdown components for styling
 const markdownComponents = {
-  h1: ({ children, ...props }) => (
-    <h1 id={props.id} className="text-2xl font-bold mt-8 mb-4 pb-2 border-b">{children}</h1>
-  ),
-  h2: ({ children, ...props }) => (
-    <h2 id={props.id} className="text-xl font-bold mt-6 mb-3 pb-2 border-b">{children}</h2>
-  ),
-  h3: ({ children, ...props }) => (
-    <h3 id={props.id} className="text-lg font-semibold mt-5 mb-2">{children}</h3>
-  ),
-  h4: ({ children, ...props }) => (
-    <h4 id={props.id} className="text-base font-semibold mt-4 mb-2">{children}</h4>
-  ),
+  h1: ({ children, ...props }) => {
+    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
+    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
+    return <h1 id={id} className="text-2xl font-bold mt-8 mb-4 pb-2 border-b">{children}</h1>
+  },
+  h2: ({ children, ...props }) => {
+    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
+    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
+    return <h2 id={id} className="text-xl font-bold mt-6 mb-3 pb-2 border-b">{children}</h2>
+  },
+  h3: ({ children, ...props }) => {
+    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
+    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
+    return <h3 id={id} className="text-lg font-semibold mt-5 mb-2">{children}</h3>
+  },
+  h4: ({ children, ...props }) => {
+    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
+    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
+    return <h4 id={id} className="text-base font-semibold mt-4 mb-2">{children}</h4>
+  },
   p: ({ children }) => (
     <p className="mb-3 leading-relaxed">{children}</p>
   ),
@@ -150,7 +168,12 @@ function TableOfContents({ headings, isVisible, onToggle }) {
                   }`}
                   onClick={(e) => {
                     e.preventDefault()
-                    document.getElementById(h.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                    const el = document.getElementById(h.id)
+                    if (el) {
+                      const offset = 80 // header height
+                      const top = el.getBoundingClientRect().top + window.scrollY - offset
+                      window.scrollTo({ top, behavior: 'smooth' })
+                    }
                   }}
                 >
                   <ChevronRight className="h-3 w-3 inline mr-1 opacity-50" />
@@ -315,7 +338,7 @@ export default function DeAnTuyenSinh() {
                     <div className="prose prose-sm max-w-none">
                       <Markdown
                         remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw, rehypeSlug]}
+                        rehypePlugins={[rehypeRaw]}
                         components={markdownComponents}
                       >
                         {schoolDetail.noi_dung}

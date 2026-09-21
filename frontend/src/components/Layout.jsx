@@ -30,8 +30,8 @@ export default function Layout({ children }) {
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
         <div className="container mx-auto flex h-16 items-center justify-between px-4">
           <Link to="/" className="flex items-center space-x-2">
-            <GraduationCap className="h-8 w-8 text-primary" />
-            <span className="text-xl font-bold">LearnPath</span>
+            <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-10 w-auto" />
+            <span className="text-xl font-bold hidden sm:inline">LearnPath</span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -105,7 +105,7 @@ export default function Layout({ children }) {
         <div className="container mx-auto px-4 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="flex items-center space-x-2">
-              <GraduationCap className="h-5 w-5 text-muted-foreground" />
+              <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-6 w-auto opacity-60" />
               <span className="text-sm text-muted-foreground">
                 © 2026 LearnPath - Hệ thống tư vấn hướng nghiệp
               </span>

@@ -40,9 +40,7 @@ export default function TrangChu() {
       {/* Hero Section */}
       <section className="text-center space-y-6 py-12">
         <div className="flex justify-center">
-          <div className="p-4 bg-primary/10 rounded-full">
-            <GraduationCap className="h-16 w-16 text-primary" />
-          </div>
+          <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-24 w-auto" />
         </div>
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
           LearnPath
