@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getDataTables, getTableRow, listTableRows } from '@/lib/adminApi'
 import { getErrorMessage, truncate } from '@/lib/adminUtils'
+import { cn } from '@/lib/utils'
 import AdminAlert from './AdminAlert'
 import DataFormDialog, { getColumnLabel } from './DataFormDialog'
 import DeleteRowDialog from './DeleteRowDialog'
@@ -40,10 +41,10 @@ function renderCell(row, column) {
   )
 }
 
-export default function DataPanel() {
+export default function DataPanel({ initialTable, onTableChange }) {
   const [tables, setTables] = useState([])
   const [tablesError, setTablesError] = useState('')
-  const [selected, setSelected] = useState('')
+  const [selected, setSelected] = useState(initialTable || '')
   const [searchInput, setSearchInput] = useState('')
   const [query, setQuery] = useState('')
   const [page, setPage] = useState(1)
@@ -70,7 +71,10 @@ export default function DataPanel() {
         if (!active) return
         const list = response.data.data
         setTables(list)
-        if (list.length > 0) setSelected((current) => current || list[0].table)
+        if (list.length > 0) {
+          const matchInitial = initialTable && list.some((item) => item.table === initialTable)
+          setSelected((current) => current || (matchInitial ? initialTable : list[0].table))
+        }
       })
       .catch((requestError) => {
         if (active) setTablesError(getErrorMessage(requestError, 'Không thể tải danh mục bảng.'))
@@ -79,7 +83,18 @@ export default function DataPanel() {
     return () => {
       active = false
     }
-  }, [])
+  }, [initialTable])
+
+  useEffect(() => {
+    if (initialTable && tables.some((item) => item.table === initialTable) && selected !== initialTable) {
+      setSelected(initialTable)
+      setSearchInput('')
+      setQuery('')
+      setPage(1)
+      setSort('')
+      setOrder('asc')
+    }
+  }, [initialTable, tables, selected])
 
   useEffect(() => {
     const timer = window.setTimeout(() => {
@@ -121,6 +136,7 @@ export default function DataPanel() {
 
   const handleSelectTable = (table) => {
     setSelected(table)
+    onTableChange?.(table)
     setSearchInput('')
     setQuery('')
     setPage(1)
@@ -157,7 +173,7 @@ export default function DataPanel() {
     setEditingRow(null)
     setNotice({
       variant: warning ? 'warning' : 'success',
-      message: warning ? `Đã lưu thay đổi. Lưu ý: ${warning}` : 'Đã lưu thay đổi dữ liệu.',
+      message: warning ? `Đã lưu thay đổi. Lưu ý: ${warning}` : 'Đã lưu thay đổi dữ liệu thành công.',
     })
     refresh()
   }
@@ -178,14 +194,44 @@ export default function DataPanel() {
         <div>
           <h1 className="text-2xl font-semibold">Quản lý dữ liệu tuyển sinh</h1>
           <p className="text-sm text-muted-foreground">
-            Xem, thêm, sửa và xóa dữ liệu trong 5 bảng của hệ thống.
+            Xem, thêm dữ liệu mới thủ công, chỉnh sửa đề án tuyển sinh, điểm chuẩn và các bảng tuyển sinh.
           </p>
         </div>
-        <Button type="button" onClick={() => setCreating(true)} disabled={!meta}>
+        <Button
+          type="button"
+          onClick={() => setCreating(true)}
+          disabled={!meta}
+          title={`Thêm dữ liệu mới thủ công vào bảng ${meta?.label || ''}`}
+        >
           <Plus className="mr-2 h-4 w-4" />
-          Thêm dòng
+          Thêm thủ công
         </Button>
       </div>
+
+      {/* Danh mục chuyển nhanh giữa 5 bảng */}
+      {tables.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2">
+          {tables.map((table) => {
+            const isCurrent = table.table === selected
+            return (
+              <button
+                key={table.table}
+                type="button"
+                onClick={() => handleSelectTable(table.table)}
+                className={cn(
+                  'inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-xs font-medium transition-all shadow-sm',
+                  isCurrent
+                    ? 'bg-slate-900 text-white ring-2 ring-slate-900/20'
+                    : 'border bg-white text-slate-700 hover:border-slate-300 hover:bg-slate-100'
+                )}
+              >
+                <Database className="h-3.5 w-3.5" />
+                <span>{table.label}</span>
+              </button>
+            )
+          })}
+        </div>
+      )}
 
       {tablesError && <AdminAlert variant="error">{tablesError}</AdminAlert>}
       {notice && <AdminAlert variant={notice.variant}>{notice.message}</AdminAlert>}

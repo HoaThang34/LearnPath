@@ -1,10 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Loader2 } from 'lucide-react'
+import { Edit3, Eye, Loader2 } from 'lucide-react'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+import rehypeRaw from 'rehype-raw'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { createTableRow, updateTableRow } from '@/lib/adminApi'
 import { getErrorMessage } from '@/lib/adminUtils'
+import { cn } from '@/lib/utils'
 import AdminAlert from './AdminAlert'
 import AdminDialog from './AdminDialog'
 
@@ -61,6 +65,7 @@ export default function DataFormDialog({ open, tableMeta, row, onClose, onSaved 
   const isEdit = Boolean(row)
   const [values, setValues] = useState({})
   const [nullFields, setNullFields] = useState({})
+  const [markdownTab, setMarkdownTab] = useState('write')
   const [error, setError] = useState('')
   const [dependencyError, setDependencyError] = useState('')
   const [force, setForce] = useState(false)
@@ -71,6 +76,7 @@ export default function DataFormDialog({ open, tableMeta, row, onClose, onSaved 
     const initial = buildInitialState(tableMeta, row)
     setValues(initial.values)
     setNullFields(initial.nullFields)
+    setMarkdownTab('write')
     setError('')
     setDependencyError('')
     setForce(false)
@@ -150,11 +156,11 @@ export default function DataFormDialog({ open, tableMeta, row, onClose, onSaved 
   return (
     <AdminDialog
       open={open}
-      title={isEdit ? `Sửa ${tableMeta.label}` : `Thêm ${tableMeta.label}`}
+      title={isEdit ? `Chỉnh sửa ${tableMeta.label.toLowerCase()}` : `Thêm mới ${tableMeta.label.toLowerCase()} (thủ công)`}
       description={
         isEdit
-          ? `Dòng ID ${row.id}. Các trường bắt buộc được đánh dấu *.`
-          : 'Điền các trường cần thiết. Các trường bắt buộc được đánh dấu *.'
+          ? `Dòng ID ${row.id} trong bảng ${tableMeta.label}. Các trường bắt buộc được đánh dấu *.`
+          : `Nhập thông tin dữ liệu mới để thêm thủ công vào bảng ${tableMeta.label}. Các trường bắt buộc được đánh dấu *.`
       }
       onClose={submitting ? undefined : onClose}
       size="lg"
@@ -165,7 +171,7 @@ export default function DataFormDialog({ open, tableMeta, row, onClose, onSaved 
           </Button>
           <Button type="submit" form="data-form" disabled={submitting}>
             {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {submitting ? 'Đang lưu...' : isEdit ? 'Lưu thay đổi' : 'Thêm dòng'}
+            {submitting ? 'Đang lưu...' : isEdit ? 'Lưu thay đổi' : 'Thêm mới thủ công'}
           </Button>
         </>
       }
@@ -224,15 +230,56 @@ export default function DataFormDialog({ open, tableMeta, row, onClose, onSaved 
                 </div>
 
                 {isText ? (
-                  <textarea
-                    id={fieldId}
-                    value={values[column.name] ?? ''}
-                    onChange={(event) => handleChange(column.name, event.target.value)}
-                    disabled={isNull}
-                    rows={14}
-                    spellCheck={false}
-                    className="flex w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  />
+                  <div className="space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs text-muted-foreground">Hỗ trợ định dạng Markdown</span>
+                      <div className="flex items-center gap-1 rounded-md border bg-muted/40 p-0.5">
+                        <button
+                          type="button"
+                          onClick={() => setMarkdownTab('write')}
+                          className={cn(
+                            'flex items-center gap-1 rounded px-2 py-0.5 text-xs font-medium transition',
+                            markdownTab === 'write' ? 'bg-white text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                          )}
+                        >
+                          <Edit3 className="h-3 w-3" />
+                          Soạn thảo
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setMarkdownTab('preview')}
+                          className={cn(
+                            'flex items-center gap-1 rounded px-2 py-0.5 text-xs font-medium transition',
+                            markdownTab === 'preview' ? 'bg-white text-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground'
+                          )}
+                        >
+                          <Eye className="h-3 w-3" />
+                          Xem trước
+                        </button>
+                      </div>
+                    </div>
+                    {markdownTab === 'write' ? (
+                      <textarea
+                        id={fieldId}
+                        value={values[column.name] ?? ''}
+                        onChange={(event) => handleChange(column.name, event.target.value)}
+                        disabled={isNull}
+                        rows={14}
+                        spellCheck={false}
+                        className="flex w-full rounded-md border border-input bg-background px-3 py-2 font-mono text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                      />
+                    ) : (
+                      <div className="max-h-[380px] min-h-[200px] overflow-y-auto rounded-md border bg-slate-50 p-4 text-sm prose prose-sm max-w-none">
+                        {values[column.name] ? (
+                          <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                            {values[column.name]}
+                          </Markdown>
+                        ) : (
+                          <p className="text-xs italic text-muted-foreground">Chưa có nội dung để xem trước.</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 ) : (
                   <Input
                     id={fieldId}
@@ -244,9 +291,31 @@ export default function DataFormDialog({ open, tableMeta, row, onClose, onSaved 
                     maxLength={isNumber ? undefined : column.maxLength}
                     autoComplete="off"
                     spellCheck={false}
+                    list={column.name === 'phuong_thuc' ? 'phuong-thuc-list' : column.name === 'nam' ? 'nam-list' : undefined}
                   />
                 )}
 
+                {column.name === 'phuong_thuc' && (
+                  <>
+                    <datalist id="phuong-thuc-list">
+                      <option value="THPT">Tốt nghiệp THPT</option>
+                      <option value="HSA">ĐGNL ĐHQGHN (HSA)</option>
+                      <option value="TSA">ĐGTD ĐHBK Hà Nội (TSA)</option>
+                      <option value="V-ACT">ĐGNL ĐHQG TP.HCM (V-ACT)</option>
+                      <option value="SAT">Chứng chỉ quốc tế (SAT)</option>
+                    </datalist>
+                    <p className="text-xs text-muted-foreground">
+                      Gợi ý: THPT, HSA, TSA, V-ACT, SAT hoặc phương thức khác.
+                    </p>
+                  </>
+                )}
+                {column.name === 'nam' && (
+                  <datalist id="nam-list">
+                    <option value="2026" />
+                    <option value="2025" />
+                    <option value="2024" />
+                  </datalist>
+                )}
                 {column.min !== undefined && column.max !== undefined && (
                   <p className="text-xs text-muted-foreground">
                     Giá trị từ {column.min.toLocaleString('vi-VN')} đến {column.max.toLocaleString('vi-VN')}.

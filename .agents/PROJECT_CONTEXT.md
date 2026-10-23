@@ -8,7 +8,11 @@
 - **Product**: LearnPath — a career and university-admission guidance website.
 - **Users**: Vietnamese high-school students and parents.
 - **Core value**: look up admission proposals, benchmark scores, exam blocks, and THPTQG 2026 score ranking.
-- **Current scope**: admission data is read-only for normal users and editable by admins through a hidden `/admin` area. Home and auth pages are public; accounts, sessions, admins, and audit live in a separate auth DB. Normal users cannot access admin APIs.
+- **Current scope**: admission data is read-only for normal users and editable by admins through a hidden `/admin` area. Quản trị viên có thể:
+  + Chỉnh sửa đề án tuyển sinh (`de_an_tuyen_sinh`: mã trường, tên trường, nội dung Markdown với tab xem trước, nguồn).
+  + Chỉnh sửa điểm chuẩn (`diem_chuan`: mã trường, tên trường, ngành, tổ hợp môn, điểm chuẩn, ghi chú, năm, phương thức xét tuyển).
+  + Thêm dữ liệu mới (thêm thủ công) cho toàn bộ 5 bảng dữ liệu tuyển sinh (`khoi_thi`, `truong`, `diem_chuan`, `diem_thi_thptqg`, `de_an_tuyen_sinh`).
+  Home and auth pages are public; accounts, sessions, admins, and audit live in a separate auth DB. Normal users cannot access admin APIs.
 - **Out of scope for now**: application submission, personalised recommendations, multi-year comparison, self-service password reset, email verification, MFA/TOTP, admin MFA.
 
 ## 2. Features
@@ -19,7 +23,7 @@
 | Login | `/dang-nhap` | Username/password login; returns to the protected page | `/api/auth/login`, `/api/auth/me` |
 | Register | `/dang-ky` | Create account with password confirmation; auto-login | `/api/auth/register` |
 | Change password | `/doi-mat-khau` | Change password; mandatory after an admin-issued temporary password | `/api/auth/change-password` |
-| Admin | `/admin` (hidden) | Separate admin login; overview, user management, admission CRUD, audit | `/api/admin/*` |
+| Admin | `/admin` (hidden) | Separate admin login; overview, user management, admission CRUD (chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn, thêm mới thủ công cả 5 bảng), audit | `/api/admin/*` |
 | Admission proposals | `/de-an` | Pick a school → read Markdown and table of contents (login required) | `/api/de-an`, `/api/de-an/:maTruong` |
 | Benchmark scores | `/diem-chuan` | Pick a method → filter/sort → paginated table (login required) | `/api/diem-chuan`, `/phuong-thuc`, `/stats`, `/compare` |
 | Exam blocks | `/khoi-thi` | Pick a block → school → majors; compare 2–5 majors (login required) | `/api/khoi-thi`, `/api/khoi-thi/:maKhoi` |

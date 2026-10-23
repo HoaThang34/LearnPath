@@ -187,3 +187,22 @@ Admin changes are L3 when they touch auth/session/CSRF, the auth DB schema, the 
 8. Keep `/admin` lazy-loaded, noindex, and unlinked from public navigation.
 9. Test with temp auth and admission DBs: admin login/CSRF, user CRUD, data CRUD, dependency/force delete, audit redaction, logout, and real DB hash unchanged.
 10. Run `cd backend && npm test` and `cd frontend && npm run build`; update `README.md`, `ARCHITECTURE.md`, `TESTING.md`, `PROJECT_STATUS.md`, and `KNOWN_ISSUES.md`.
+
+## 11. Chỉnh sửa đề án, điểm chuẩn và thêm dữ liệu mới thủ công
+
+1. **Truy cập**: Đăng nhập trang quản trị ẩn tại `/admin`, vào tab **Dữ liệu** (hoặc nhấn trực tiếp vào thẻ số lượng của bảng tương ứng trên trang **Tổng quan**).
+2. **Chỉnh sửa đề án tuyển sinh (`de_an_tuyen_sinh`)**:
+   - Chọn bảng `Đề án tuyển sinh`, tìm kiếm theo mã trường hoặc tên trường.
+   - Nhấn **Sửa** tại dòng cần cập nhật.
+   - Form hỗ trợ chỉnh sửa `ma_truong`, `ten_truong`, `nguon`, và `noi_dung` (hỗ trợ chuyển đổi giữa tab **Soạn thảo** và tab **Xem trước Markdown** trực tiếp).
+   - Nhấn **Lưu thay đổi**; hệ thống sao lưu tự động và kiểm tra tính toàn vẹn trước khi cập nhật.
+3. **Chỉnh sửa điểm chuẩn (`diem_chuan`)**:
+   - Chọn bảng `Điểm chuẩn`, tìm kiếm theo mã trường, ngành, phương thức hoặc tổ hợp môn.
+   - Nhấn **Sửa** tại dòng cần cập nhật.
+   - Form cung cấp danh sách gợi ý cho `phuong_thuc` (`THPT`, `HSA`, `TSA`, `V-ACT`, `SAT`), gợi ý năm tuyển sinh, kiểm tra kiểu số thực của điểm chuẩn.
+   - Nhấn **Lưu thay đổi**.
+4. **Thêm dữ liệu mới (thêm thủ công)**:
+   - Chọn bảng cần thêm (ví dụ `Đề án tuyển sinh` hoặc `Điểm chuẩn`).
+   - Nhấn nút **Thêm thủ công** ở góc phải trên.
+   - Nhập các trường dữ liệu; các trường bắt buộc có dấu `*`, các trường có thể null có checkbox "Không có giá trị".
+   - Nhấn **Thêm mới thủ công**; hệ thống kiểm tra ràng buộc duy nhất và ghi DB an toàn.

@@ -340,6 +340,87 @@ test('admin data API integration', async (t) => {
     assert.equal(detail.response.status, 404);
   });
 
+  await t.test('updates admission proposal (chỉnh sửa đề án tuyển sinh)', async () => {
+    const updated = await request('/api/admin/data/de_an_tuyen_sinh/1', {
+      method: 'PATCH',
+      cookie: state.cookie,
+      csrf: state.csrf,
+      body: {
+        noi_dung: '# Đề án BKA 2026 (Đã cập nhật)\nNội dung chi tiết được chỉnh sửa bởi quản trị viên.',
+        nguon: 'https://ts.hust.edu.vn/de-an-2026',
+      },
+    });
+    assert.equal(updated.response.status, 200);
+    assert.match(updated.data.data.noi_dung, /Đã cập nhật/);
+    assert.equal(updated.data.data.nguon, 'https://ts.hust.edu.vn/de-an-2026');
+
+    const detail = await request('/api/admin/data/de_an_tuyen_sinh/1', {
+      cookie: state.cookie,
+    });
+    assert.equal(detail.response.status, 200);
+    assert.match(detail.data.data.noi_dung, /chỉnh sửa bởi quản trị viên/);
+  });
+
+  await t.test('updates benchmark score (chỉnh sửa điểm chuẩn)', async () => {
+    const updated = await request('/api/admin/data/diem_chuan/1', {
+      method: 'PATCH',
+      cookie: state.cookie,
+      csrf: state.csrf,
+      body: {
+        diem_chuan: 28.65,
+        ghi_chu: 'Tiêu chí phụ: Điểm Toán >= 9.2',
+        nam: 2026,
+      },
+    });
+    assert.equal(updated.response.status, 200);
+    assert.equal(updated.data.data.diem_chuan, 28.65);
+    assert.equal(updated.data.data.ghi_chu, 'Tiêu chí phụ: Điểm Toán >= 9.2');
+    assert.equal(updated.data.data.nam, 2026);
+
+    const detail = await request('/api/admin/data/diem_chuan/1', {
+      cookie: state.cookie,
+    });
+    assert.equal(detail.response.status, 200);
+    assert.equal(detail.data.data.diem_chuan, 28.65);
+  });
+
+  await t.test('manually creates new proposal and benchmark score (thêm dữ liệu mới thủ công)', async () => {
+    const newProposal = await request('/api/admin/data/de_an_tuyen_sinh', {
+      method: 'POST',
+      cookie: state.cookie,
+      csrf: state.csrf,
+      body: {
+        ma_truong: 'XYZ',
+        ten_truong: 'Trường XYZ',
+        noi_dung: '# Đề án tuyển sinh Trường XYZ\nNội dung tuyển sinh mới được thêm thủ công.',
+        nguon: 'https://xyz.edu.vn/tuyensinh',
+      },
+    });
+    assert.equal(newProposal.response.status, 201);
+    assert.equal(newProposal.data.data.ma_truong, 'XYZ');
+    assert.match(newProposal.data.data.noi_dung, /thêm thủ công/);
+
+    const newScore = await request('/api/admin/data/diem_chuan', {
+      method: 'POST',
+      cookie: state.cookie,
+      csrf: state.csrf,
+      body: {
+        ma_truong: 'XYZ',
+        truong: 'Trường XYZ',
+        nganh: 'Kỹ thuật Phần mềm',
+        to_hop_mon: 'A00',
+        diem_chuan: 26.5,
+        ghi_chu: 'Chỉ tiêu 120',
+        nam: 2026,
+        phuong_thuc: 'THPT',
+      },
+    });
+    assert.equal(newScore.response.status, 201);
+    assert.equal(newScore.data.data.ma_truong, 'XYZ');
+    assert.equal(newScore.data.data.nganh, 'Kỹ thuật Phần mềm');
+    assert.equal(newScore.data.data.diem_chuan, 26.5);
+  });
+
   await t.test('blocks a school code change with dependencies and allows an explicit force update', async () => {
     const school = await request('/api/admin/data/truong', {
       method: 'POST',

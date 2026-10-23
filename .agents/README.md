@@ -21,7 +21,7 @@ Purpose: help the next agent/session understand LearnPath **in a few minutes**, 
 ## 30-second overview
 
 - **Product**: LearnPath, a career/education guidance website for Vietnamese high-school students and parents.
-- **Scope**: admission data is read-only for users and editable by admins through a hidden `/admin` area; home and auth pages are public.
+- **Scope**: admission data is read-only for users and editable by admins through a hidden `/admin` area (sửa đề án tuyển sinh, sửa điểm chuẩn, thêm dữ liệu mới thủ công); home and auth pages are public.
 - **Frontend**: React 18 + Vite 5 + Tailwind 3; 4 protected feature pages plus home, login, register, change password, and a lazy admin area.
 - **Backend**: Express 4 + `sql.js`; the admission DB is loaded into RAM and admin writes go through a guarded engine; auth uses a separate small writable auth DB (schema v2).
 - **Data**: 307 proposal Markdown files; 2,617 score rows; 1,131,975 candidates; 260 schools; 245 blocks in the current DB.
@@ -31,7 +31,7 @@ Purpose: help the next agent/session understand LearnPath **in a few minutes**, 
 
 | Item | Result | Evidence |
 |---|---|---|
-| Frontend build | Pass | `npm run build`: 2,661 modules; `AdminPage` 61.79 kB (gzip 16.22 kB); main JS 1,016.01 kB (gzip 306.89 kB); CSS 32.73 kB (gzip 6.22 kB); Vite still warns about the main chunk > 500 kB |
+| Frontend build | Pass | `npm run build`: 2,661 modules; `AdminPage` 65.53 kB (gzip 17.21 kB); main JS 1,016.03 kB (gzip 306.91 kB); CSS 33.50 kB (gzip 6.31 kB); Vite still warns about the main chunk > 500 kB |
 | Backend start | Pass | `Database connected`; `Auth database ready`; `Server running on http://localhost:3001` |
 | `/api/health` | 200 public | `{ status: "ok" }` |
 | Data APIs without a session | 401 | `/api/de-an`, `/api/diem-chuan`, `/api/khoi-thi`, `/api/diem-thi` |
@@ -56,7 +56,7 @@ Purpose: help the next agent/session understand LearnPath **in a few minutes**, 
 | Current DB | Loaded | 245 blocks, 260 schools, 2,617 score rows, 307 proposals, 1,131,975 candidates |
 | Import source parser | Pass in temp DB | 260 block files → 281 unique codes; 1 file skipped; 12 zero score cells preserved; 5 all-null candidate rows |
 | Browser E2E | Pass (temporary scripts) | 16 auth/route/UI checks; 19 admin checks on temp DBs |
-| Unit/integration tests | Pass 78/78 | Committed `node:test` suite; temp auth/admission DBs; real DBs untouched |
+| Unit/integration tests | Pass 81/81 | Committed `node:test` suite (bổ sung test sửa đề án, sửa điểm chuẩn, thêm thủ công); temp auth/admission DBs; real DBs untouched |
 | CI | Workflow added | `.github/workflows/ci.yml`: backend tests, frontend build, non-blocking audit; not run on GitHub until push |
 | Admission DB integrity | Pass | SHA-256 unchanged after API/UI/admin tests (`8D4F42B1F845C2E12DE875D2BBFDCBF0DF3CC7686DC285423189C80CF3559E4D`) |
 | Real auth DB | Migrated v1→v2 | 69,632 bytes, 1 user, 0 sessions, 0 admins; v1 backup `auth.db.v1-backup-20261023141514808`; cause not established (KI-24) |

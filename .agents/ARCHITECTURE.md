@@ -68,7 +68,7 @@ Environment variables:
 
 `backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 2`.
 
-`backend/src/admin/admissionWrite.js` serializes admission writes. It creates `backend/database/backups/` (max 5 files), copies the DB before the first write and before destructive operations, runs the mutation inside a transaction, checks `PRAGMA quick_check`, writes atomically, and reloads. A failed reload sets a write-block flag so the server does not continue on a stale or broken DB.
+`backend/src/admin/admissionWrite.js` serializes admission writes. It creates `backend/database/backups/` (max 5 files), copies the DB before the first write and before destructive operations, runs the mutation inside a transaction, checks `PRAGMA quick_check`, writes atomically, and reloads. A failed reload sets a write-block flag so the server does not continue on a stale or broken DB. Thao tác ghi hỗ trợ chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn và thêm dữ liệu mới thủ công.
 
 ## 3. Frontend
 

@@ -207,3 +207,4 @@ Live DB coverage:
 | 2026-10-23 | v1.0.3-auth | Username/password auth, separate auth DB, protected routes/APIs, rate limits/CORS/security headers, auth tests/E2E, docs |
 | 2026-10-23 | v1.0.4-tests | Auth hardening plan; Phase 0 backup, 49 `node:test` checks, CI, non-breaking audit fix |
 | 2026-10-23 | v1.0.5-admin | Admin panel Phases 1–5: auth DB v2, separate admin auth/CSRF/audit, user management, admission CRUD, hidden `/admin`, 78 tests, admin E2E 19 checks |
+| 2026-10-23 | v1.0.6-data-crud | Bổ sung và hoàn thiện tính năng admin: chỉnh sửa đề án tuyển sinh (Markdown preview), chỉnh sửa điểm chuẩn (gợi ý phương thức/năm), thêm dữ liệu mới thủ công 5 bảng, chuyển bảng nhanh từ Overview và DataPanel; 81 tests pass |

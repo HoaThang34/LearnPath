@@ -38,6 +38,11 @@ Before reporting completion, read `.agents/TESTING.md`.
 - Auth DB: `backend/database/auth.db` (separate, small, auto-created, **not committed**, schema v2). It holds users, sessions, admins, admin sessions, and the admin audit log. Override with `LEARNPATH_AUTH_DB_PATH`; never point it at `learnpath.db`.
 - Authentication: username/password with scrypt hashes and server-side sessions. `/api/auth/*` and `/api/health` are public; all admission data APIs and the four feature pages require login. Locked/deleted users are rejected, and accounts with a temporary password must change it before using data APIs.
 - Admin area: hidden `/admin` with a **separate** admin login, cookie, CSRF token, and audit log. Admin APIs live under `/api/admin/*`; there is no public link. Bootstrap the first admin with `cd backend && npm run admin:create -- --username <name>`.
+- Admin admission management: Quản trị viên có toàn quyền:
+  1. **Chỉnh sửa đề án tuyển sinh** (`de_an_tuyen_sinh`: mã trường, tên trường, nội dung Markdown với tab xem trước, nguồn).
+  2. **Chỉnh sửa điểm chuẩn** (`diem_chuan`: mã trường, tên trường, ngành, tổ hợp môn, điểm chuẩn, ghi chú, năm, phương thức với gợi ý chuẩn hóa).
+  3. **Thêm dữ liệu mới (thêm thủ công)** vào bất kỳ bảng nào trong 5 bảng tuyển sinh (`khoi_thi`, `truong`, `diem_chuan`, `diem_thi_thptqg`, `de_an_tuyen_sinh`).
+  Mọi thao tác ghi dữ liệu tuyển sinh đều đi qua engine tuần tự hóa `admissionWrite.js` (giao dịch, `quick_check`, backup tự động, ghi atomic và reload RAM).
 - Current admission DB counts: **245 blocks**, 260 schools, 2,617 score rows, 307 proposals, 1,131,975 candidates.
 - The importer now parses **281 blocks** from the source files. The live DB still has 245 until a rebuild is approved.
 - API uses the relative `/api` path; Vite proxies it to the backend. Production needs a reverse proxy, HTTPS, `APP_ORIGIN`, and SPA fallback.

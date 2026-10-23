@@ -30,7 +30,7 @@ function StatCard({ icon: Icon, label, value, hint }) {
   )
 }
 
-export default function AdminOverview() {
+export default function AdminOverview({ onNavigateToData }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [refreshing, setRefreshing] = useState(false)
@@ -141,15 +141,18 @@ export default function AdminOverview() {
             <CardContent>
               <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {data.tables.map((table) => (
-                  <div
+                  <button
                     key={table.table}
-                    className="flex items-center justify-between rounded-md border bg-white px-3 py-2"
+                    type="button"
+                    onClick={() => onNavigateToData?.(table.table)}
+                    className="flex items-center justify-between rounded-md border bg-white px-3 py-2 text-left transition hover:border-slate-400 hover:bg-slate-50"
+                    title={`Mở bảng ${table.label} để xem, chỉnh sửa hoặc thêm mới`}
                   >
-                    <span className="text-sm">{table.label}</span>
+                    <span className="text-sm font-medium">{table.label}</span>
                     <span className="font-mono text-sm font-semibold">
                       {table.total.toLocaleString('vi-VN')}
                     </span>
-                  </div>
+                  </button>
                 ))}
               </div>
             </CardContent>

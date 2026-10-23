@@ -30,8 +30,13 @@ const PANELS = {
 
 export default function AdminShell({ admin, onLogout }) {
   const [active, setActive] = useState('overview')
+  const [selectedTable, setSelectedTable] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
-  const ActivePanel = PANELS[active] || AdminOverview
+
+  const handleNavigateToData = (table) => {
+    if (table) setSelectedTable(table)
+    setActive('data')
+  }
 
   const handleLogout = async () => {
     setLoggingOut(true)
@@ -129,7 +134,18 @@ export default function AdminShell({ admin, onLogout }) {
           </nav>
 
           <main className="p-4 sm:p-6">
-            <ActivePanel admin={admin} />
+            {active === 'overview' && (
+              <AdminOverview admin={admin} onNavigateToData={handleNavigateToData} />
+            )}
+            {active === 'users' && <UsersPanel admin={admin} />}
+            {active === 'data' && (
+              <DataPanel
+                admin={admin}
+                initialTable={selectedTable}
+                onTableChange={setSelectedTable}
+              />
+            )}
+            {active === 'audit' && <AuditPanel admin={admin} />}
           </main>
         </div>
       </div>
