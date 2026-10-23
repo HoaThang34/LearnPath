@@ -1,21 +1,23 @@
 const fs = require('fs');
 const path = require('path');
+const { parse } = require('csv-parse/sync');
 const { getDb, saveDb, queryAll } = require('./db');
 
 const DATA_DIR = path.join(__dirname, '../../../data');
 
 function parseCSV(filePath) {
-  let content = fs.readFileSync(filePath, 'utf-8');
-  if (content.charCodeAt(0) === 0xFEFF) content = content.slice(1);
-  const lines = content.split('\n').filter(l => l.trim());
-  if (lines.length < 2) return [];
-  const headers = lines[0].split(',').map(h => h.trim().replace(/"/g, ''));
-  return lines.slice(1).map(line => {
-    const values = line.split(',').map(v => v.trim().replace(/"/g, ''));
-    const obj = {};
-    headers.forEach((h, i) => obj[h] = values[i] || '');
-    return obj;
+  const content = fs.readFileSync(filePath, 'utf-8');
+  return parse(content, {
+    bom: true,
+    columns: true,
+    skip_empty_lines: true,
+    trim: true,
   });
+}
+
+function toNumber(value) {
+  const parsed = Number.parseFloat(value);
+  return Number.isFinite(parsed) ? parsed : null;
 }
 
 // Build school name -> code mapping from theo_truong files
@@ -100,7 +102,8 @@ function findSchoolCode(name, schoolMap) {
 function importKhoiThi(db) {
   console.log('Importing khoi thi from theo_khoi_thi...');
   const khoiDir = path.join(DATA_DIR, 'khoi_thi/theo_khoi_thi');
-  const files = fs.readdirSync(khoiDir).filter(f => f.endsWith('.txt') && !f.includes('('));
+  const files = fs.readdirSync(khoiDir).filter(f => f.endsWith('.txt'));
+  const skipped = [];
   let count = 0;
 
   const stmt = db.prepare('INSERT OR IGNORE INTO khoi_thi (ma_khoi, mon_thi, so_truong) VALUES (?, ?, ?)');
@@ -109,19 +112,40 @@ function importKhoiThi(db) {
   for (const file of files) {
     try {
       const content = fs.readFileSync(path.join(khoiDir, file), 'utf-8');
-      const headerMatch = content.match(/^# Khối: (\S+)\s*\((.+?)\)/m);
-      if (headerMatch) {
-        const maKhoi = headerMatch[1];
-        const monThi = headerMatch[2];
-        const schoolCount = (content.match(/^\[[A-Z0-9]+\]/gm) || []).length;
-        stmt.run([maKhoi, monThi, schoolCount]);
-        count++;
+      const headerMatch = content.match(/^# Khối:\s*(.+?)\s*\((.+)\)\s*$/m);
+      if (!headerMatch) {
+        skipped.push(file);
+        continue;
       }
-    } catch (e) {}
+
+      const codes = headerMatch[1]
+        .split(/[,;]/)
+        .map(code => code.trim())
+        .filter(code => /^[A-Z][0-9A-Z]{1,4}$/.test(code));
+      const monThi = headerMatch[2].trim();
+      const schoolCount = (content.match(/^\[[A-Z0-9]+\]/gm) || []).length;
+
+      if (codes.length === 0) {
+        skipped.push(file);
+        continue;
+      }
+
+      for (const maKhoi of codes) {
+        stmt.run([maKhoi, monThi, schoolCount]);
+        count += db.getRowsModified();
+      }
+    } catch (e) {
+      console.error(`  Error importing block file ${file}:`, e.message);
+      skipped.push(file);
+    }
   }
   db.run('COMMIT');
   stmt.free();
   console.log(`  Imported ${count} blocks`);
+  if (skipped.length) {
+    console.warn(`  Skipped ${skipped.length} files without a valid block header:`);
+    for (const file of skipped) console.warn(`    - ${file}`);
+  }
 }
 
 function importTruong(db) {
@@ -139,8 +163,12 @@ function importTruong(db) {
       if (match) {
         stmt.run([match[1], match[2]]);
         count++;
+      } else {
+        console.warn(`  Skipped school file with invalid name: ${file}`);
       }
-    } catch (e) {}
+    } catch (e) {
+      console.error(`  Error importing school file ${file}:`, e.message);
+    }
   }
   db.run('COMMIT');
   stmt.free();
@@ -178,7 +206,7 @@ function importDiemChuan(db) {
         const maTruong = findSchoolCode(schoolName, schoolMap);
 
         for (const [majorName, info] of Object.entries(majors)) {
-          const mark = parseFloat(info.mark) || null;
+          const mark = toNumber(info.mark);
           const block = info.block || '';
           const code = info.code || '';
 
@@ -227,12 +255,12 @@ function importDiemThi(db) {
     for (const record of records) {
       stmt.run([
         record['SBD'] || '', record['Tỉnh'] || '',
-        parseFloat(record['Toán']) || null, parseFloat(record['Văn']) || null,
-        parseFloat(record['Lý']) || null, parseFloat(record['Hóa']) || null,
-        parseFloat(record['Sinh']) || null, parseFloat(record['Sử']) || null,
-        parseFloat(record['Địa']) || null, record['GD Kinh tế - Pháp luật'] || '',
-        parseFloat(record['Tin học']) || null, parseFloat(record['Công nghệ']) || null,
-        parseFloat(record['Ngoại ngữ']) || null
+        toNumber(record['Toán']), toNumber(record['Văn']),
+        toNumber(record['Lý']), toNumber(record['Hóa']),
+        toNumber(record['Sinh']), toNumber(record['Sử']),
+        toNumber(record['Địa']), record['GD Kinh tế - Pháp luật'] || '',
+        toNumber(record['Tin học']), toNumber(record['Công nghệ']),
+        toNumber(record['Ngoại ngữ'])
       ]);
       count++;
       batch++;
@@ -275,7 +303,9 @@ function importDeAn(db) {
         const data = parseMD(path.join(dir, file));
         stmt.run([data.ma_truong, data.ten_truong, data.noi_dung, '']);
         count++;
-      } catch (e) {}
+      } catch (e) {
+        console.error(`  Error importing proposal file ${file}:`, e.message);
+      }
     }
     db.run('COMMIT');
     stmt.free();
@@ -288,7 +318,7 @@ function importDeAn(db) {
 
 async function main() {
   console.log('Initializing database...');
-  const db = await getDb();
+  const db = await getDb({ createIfMissing: true });
 
   db.run('DROP TABLE IF EXISTS diem_chuan');
   db.run('DROP TABLE IF EXISTS khoi_thi');

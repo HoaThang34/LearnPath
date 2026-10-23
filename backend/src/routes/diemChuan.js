@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { getDb, queryAll, queryOne } = require('../database/db');
+const { parsePagination } = require('./queryParams');
 
 // GET /api/diem-chuan - Get benchmark scores with filters
 router.get('/', async (req, res) => {
@@ -8,9 +9,12 @@ router.get('/', async (req, res) => {
     await getDb();
     const {
       truong, nganh, phuong_thuc, khoi_thi, ma_truong,
-      sort = 'diem_desc',
-      limit = 200, offset = 0
+      sort = 'diem_desc'
     } = req.query;
+    const pagination = parsePagination(req.query, { defaultLimit: 200 });
+    if (pagination.error) {
+      return res.status(400).json({ error: pagination.error });
+    }
 
     let sql = 'SELECT * FROM diem_chuan WHERE 1=1';
     const params = [];
@@ -45,7 +49,7 @@ router.get('/', async (req, res) => {
     }
 
     sql += ' LIMIT ? OFFSET ?';
-    params.push(parseInt(limit), parseInt(offset));
+    params.push(pagination.limit, pagination.offset);
 
     const results = queryAll(sql, params);
 

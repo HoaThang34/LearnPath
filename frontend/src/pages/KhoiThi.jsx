@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Layers, Search, X, Plus, BarChart3, ChevronRight, ArrowLeft, Check } from 'lucide-react'
+import { Layers, Search, X, Plus, BarChart3, ChevronRight, ArrowLeft, Check, AlertTriangle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -12,7 +12,7 @@ import {
 } from '@/lib/api'
 
 function getScoreColor(diemChuan, phuongThuc) {
-  if (!diemChuan) return 'bg-gray-100 text-gray-500 border-gray-200'
+  if (diemChuan == null) return 'bg-gray-100 text-gray-500 border-gray-200'
   if (phuongThuc?.includes('SAT')) return 'bg-indigo-100 text-indigo-700 border-indigo-200'
   if (phuongThuc?.includes('V-ACT')) return 'bg-purple-100 text-purple-700 border-purple-200'
   if (phuongThuc?.includes('HSA')) return 'bg-cyan-100 text-cyan-700 border-cyan-200'
@@ -72,6 +72,7 @@ export default function KhoiThi() {
   const [compareList, setCompareList] = useState([])
   const [compareData, setCompareData] = useState([])
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [step, setStep] = useState(1)
 
   useEffect(() => {
@@ -83,18 +84,25 @@ export default function KhoiThi() {
     try {
       const res = await getKhoiThiList()
       setKhoiThiList(res.data.data)
-    } catch (e) {}
+    } catch (err) {
+      console.error(err)
+      setError('Không thể tải danh sách khối thi. Vui lòng thử lại.')
+    }
   }
 
   const fetchPhuongThuc = async () => {
     try {
       const res = await getPhuongThuc()
       setPhuongThucList(res.data.data)
-    } catch (e) {}
+    } catch (err) {
+      console.error(err)
+      setError('Không thể tải danh sách phương thức xét tuyển.')
+    }
   }
 
   const handleSelectKhoi = async (khoi) => {
     setLoading(true)
+    setError('')
     setSelectedKhoi(khoi.ma_khoi)
     setKhoiInfo(khoi)
     setSelectedTruong(null)
@@ -103,12 +111,16 @@ export default function KhoiThi() {
     try {
       const res = await getKhoiThiById(khoi.ma_khoi)
       setTruongList(res.data.data.truong)
-    } catch (e) {}
-    finally { setLoading(false) }
+    } catch (err) {
+      console.error(err)
+      setError('Không thể tải danh sách trường cho khối thi này. Vui lòng thử lại.')
+      setTruongList([])
+    } finally { setLoading(false) }
   }
 
   const handleSelectTruong = async (truong) => {
     setLoading(true)
+    setError('')
     setSelectedTruong(truong.ma_truong)
     setTenTruong(truong.ten_truong)
     setStep(3)
@@ -117,21 +129,28 @@ export default function KhoiThi() {
     try {
       const res = await getDiemChuan({ ma_truong: truong.ma_truong, khoi_thi: selectedKhoi, limit: 500 })
       setNganhList(res.data.data)
-    } catch (e) {}
-    finally { setLoading(false) }
+    } catch (err) {
+      console.error(err)
+      setError('Không thể tải danh sách ngành của trường này. Vui lòng thử lại.')
+      setNganhList([])
+    } finally { setLoading(false) }
   }
 
   const handleFilterPhuongThuc = async (value) => {
     setFilterPhuongThuc(value)
     if (!selectedTruong) return
     setLoading(true)
+    setError('')
     try {
       const params = { ma_truong: selectedTruong, khoi_thi: selectedKhoi, limit: 500 }
       if (value) params.phuong_thuc = value
       const res = await getDiemChuan(params)
       setNganhList(res.data.data)
-    } catch (e) {}
-    finally { setLoading(false) }
+    } catch (err) {
+      console.error(err)
+      setError('Không thể lọc danh sách ngành. Vui lòng thử lại.')
+      setNganhList([])
+    } finally { setLoading(false) }
   }
 
   const handleAddCompare = (item) => {
@@ -146,13 +165,18 @@ export default function KhoiThi() {
 
   const handleCompare = async () => {
     if (compareList.length < 2) return
+    setError('')
     try {
       const res = await compareDiemChuan(compareList.map(c => c.id))
       setCompareData(res.data.data)
-    } catch (e) {}
+    } catch (err) {
+      console.error(err)
+      setError('Không thể so sánh các ngành đã chọn. Vui lòng thử lại.')
+    }
   }
 
   const goBack = () => {
+    setError('')
     if (step === 3) {
       setStep(2)
       setSelectedTruong(null)
@@ -191,6 +215,13 @@ export default function KhoiThi() {
       {/* Step Indicator */}
       <StepIndicator currentStep={step} />
 
+      {error && (
+        <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
+
       {/* STEP 1: Chọn khối thi */}
       {step === 1 && (
         <div>
@@ -216,7 +247,7 @@ export default function KhoiThi() {
                 <div className="text-xl font-bold text-primary group-hover:text-primary">{khoi.ma_khoi}</div>
                 <div className="text-xs text-muted-foreground mt-2 line-clamp-2 min-h-[32px]">{khoi.mon_thi}</div>
                 <div className="flex items-center justify-between mt-3">
-                  <span className="text-xs text-muted-foreground">{khoi.so_truong} trường</span>
+                  <span className="text-xs text-muted-foreground">{khoi.so_truong} trường xét tuyển</span>
                   <ChevronRight className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                 </div>
               </button>
@@ -240,6 +271,11 @@ export default function KhoiThi() {
             <div className="flex items-center gap-2">
               <span className="px-2.5 py-1 rounded-lg bg-primary/10 text-primary font-bold text-sm">{selectedKhoi}</span>
               <span className="text-sm text-muted-foreground">— {khoiInfo?.mon_thi}</span>
+              {!loading && (
+                <span className="text-xs text-muted-foreground">
+                  ({truongList.length} trường có dữ liệu điểm chuẩn)
+                </span>
+              )}
             </div>
           </div>
 

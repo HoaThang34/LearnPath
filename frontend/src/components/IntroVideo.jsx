@@ -8,9 +8,12 @@ const IntroVideo = ({ onComplete }) => {
   useEffect(() => {
     if (videoRef.current) {
       videoRef.current.play().catch(error => {
-        console.log("Autoplay with sound failed, falling back to muted autoplay", error);
+        console.warn("Autoplay with sound failed, falling back to muted autoplay", error);
         setIsMuted(true);
-        videoRef.current.play();
+        videoRef.current.muted = true;
+        videoRef.current.play().catch(mutedError => {
+          console.error("Muted autoplay also failed", mutedError);
+        });
       });
     }
   }, []);

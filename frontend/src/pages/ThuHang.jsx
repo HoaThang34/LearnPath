@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Trophy, Calculator, TrendingUp } from 'lucide-react'
+import { Trophy, Calculator, TrendingUp, AlertTriangle } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -31,6 +31,7 @@ export default function ThuHang() {
   const [scores, setScores] = useState({})
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
 
   const handleScoreChange = (key, value) => {
     const numValue = parseFloat(value)
@@ -45,6 +46,7 @@ export default function ThuHang() {
   const handleCalculate = async (e) => {
     e.preventDefault()
     setLoading(true)
+    setError('')
     try {
       const params = {}
       Object.keys(scores).forEach(key => {
@@ -54,8 +56,10 @@ export default function ThuHang() {
       })
       const response = await getRanking(params)
       setResult(response.data.data)
-    } catch (error) {
-      console.error('Error:', error)
+    } catch (err) {
+      console.error('Error:', err)
+      setError('Không thể tính thứ hạng. Vui lòng kiểm tra kết nối và thử lại.')
+      setResult(null)
     } finally {
       setLoading(false)
     }
@@ -69,6 +73,14 @@ export default function ThuHang() {
           <h1 className="text-2xl font-bold">Tra cứu thứ hạng THPTQG 2026</h1>
           <p className="text-muted-foreground">Nhập điểm thi để biết thứ hạng của bạn</p>
         </div>
+      </div>
+
+      <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+        <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+        <span>
+          Lưu ý: thứ hạng hiện được tính bằng tổng điểm các môn bạn nhập so với tổng điểm
+          tất cả môn của từng thí sinh, chưa theo tổ hợp xét tuyển. Kết quả chỉ mang tính tham khảo.
+        </span>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -97,7 +109,7 @@ export default function ThuHang() {
                       min="0"
                       max="10"
                       placeholder="0 - 10"
-                      value={scores[mon.key] || ''}
+                      value={scores[mon.key] ?? ''}
                       onChange={(e) => handleScoreChange(mon.key, e.target.value)}
                     />
                   </div>
@@ -117,6 +129,12 @@ export default function ThuHang() {
             <CardTitle>Kết quả</CardTitle>
           </CardHeader>
           <CardContent>
+            {error && (
+              <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
             {result ? (
               <div className="space-y-6">
                 {/* Ranking Info */}

@@ -19,16 +19,32 @@ router.get('/:maKhoi', async (req, res) => {
     await getDb();
     const maKhoi = req.params.maKhoi;
 
-    // Get schools that have this block in diem_chuan
-    const results = queryAll(
-      `SELECT DISTINCT t.ma_truong, t.ten_truong, COUNT(d.id) as so_nganh
+    // Get schools that have this block in diem_chuan. Count distinct majors
+    // case-insensitively because the source data contains capitalization variants
+    // of the same major name.
+    const rows = queryAll(
+      `SELECT t.ma_truong, t.ten_truong, d.nganh
        FROM truong t
        INNER JOIN diem_chuan d ON t.ma_truong = d.ma_truong
        WHERE d.to_hop_mon LIKE ?
-       GROUP BY t.ma_truong, t.ten_truong
-       ORDER BY t.ten_truong`,
+       ORDER BY t.ten_truong, t.ma_truong`,
       [`%${maKhoi}%`]
     );
+    const schools = new Map();
+    for (const row of rows) {
+      if (!schools.has(row.ma_truong)) {
+        schools.set(row.ma_truong, {
+          ma_truong: row.ma_truong,
+          ten_truong: row.ten_truong,
+          majors: new Set()
+        });
+      }
+      schools.get(row.ma_truong).majors.add(String(row.nganh || '').toLowerCase());
+    }
+    const results = Array.from(schools.values()).map(({ majors, ...school }) => ({
+      ...school,
+      so_nganh: majors.size
+    }));
 
     // Get block info
     const blockInfo = queryAll(

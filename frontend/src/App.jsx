@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import Layout from './components/Layout'
+import ProtectedRoute from './components/ProtectedRoute'
+import AuthPage from './pages/AuthPage'
 import TrangChu from './pages/TrangChu'
 import DeAnTuyenSinh from './pages/DeAnTuyenSinh'
 import DiemChuan from './pages/DiemChuan'
@@ -25,10 +27,40 @@ function App() {
         <Layout>
           <Routes>
             <Route path="/" element={<TrangChu />} />
-            <Route path="/de-an" element={<DeAnTuyenSinh />} />
-            <Route path="/diem-chuan" element={<DiemChuan />} />
-            <Route path="/khoi-thi" element={<KhoiThi />} />
-            <Route path="/thu-hang" element={<ThuHang />} />
+            <Route path="/dang-nhap" element={<AuthPage mode="login" />} />
+            <Route path="/dang-ky" element={<AuthPage mode="register" />} />
+            <Route
+              path="/de-an"
+              element={
+                <ProtectedRoute>
+                  <DeAnTuyenSinh />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/diem-chuan"
+              element={
+                <ProtectedRoute>
+                  <DiemChuan />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/khoi-thi"
+              element={
+                <ProtectedRoute>
+                  <KhoiThi />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/thu-hang"
+              element={
+                <ProtectedRoute>
+                  <ThuHang />
+                </ProtectedRoute>
+              }
+            />
           </Routes>
         </Layout>
       )}

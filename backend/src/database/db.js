@@ -2,11 +2,13 @@ const initSqlJs = require('sql.js');
 const fs = require('fs');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, '../../database/learnpath.db');
+const DB_PATH = process.env.LEARNPATH_DB_PATH
+  ? path.resolve(process.env.LEARNPATH_DB_PATH)
+  : path.join(__dirname, '../../database/learnpath.db');
 
 let db = null;
 
-async function getDb() {
+async function getDb({ createIfMissing = false } = {}) {
   if (db) return db;
 
   const SQL = await initSqlJs();
@@ -14,10 +16,14 @@ async function getDb() {
   if (fs.existsSync(DB_PATH)) {
     const buffer = fs.readFileSync(DB_PATH);
     db = new SQL.Database(buffer);
-  } else {
+  } else if (createIfMissing) {
+    // Only the importer should create an empty database. Schema creation
+    // belongs to init.js so there is a single source of truth.
     db = new SQL.Database();
-    createTables();
-    saveDb();
+  } else {
+    throw new Error(
+      `Database not found at ${DB_PATH}. Run "npm run db:init" in backend/ to create and import it.`
+    );
   }
 
   return db;
@@ -32,54 +38,6 @@ function saveDb() {
     fs.mkdirSync(dbDir, { recursive: true });
   }
   fs.writeFileSync(DB_PATH, buffer);
-}
-
-function createTables() {
-  db.run(`
-    CREATE TABLE IF NOT EXISTS diem_chuan (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      truong TEXT NOT NULL,
-      nganh TEXT NOT NULL,
-      to_hop_mon TEXT,
-      diem_chuan REAL,
-      ghi_chu TEXT,
-      nam INTEGER DEFAULT 2024
-    );
-
-    CREATE TABLE IF NOT EXISTS khoi_thi (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      ma_khoi TEXT NOT NULL,
-      mon_xet_tuyen TEXT,
-      ma_truong TEXT,
-      ten_truong TEXT,
-      so_nganh TEXT
-    );
-
-    CREATE TABLE IF NOT EXISTS diem_thi_thptqg (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      sbd TEXT UNIQUE,
-      tinh TEXT,
-      toan REAL,
-      van REAL,
-      ly REAL,
-      hoa REAL,
-      sinh REAL,
-      su REAL,
-      dia REAL,
-      gd_kt_pl TEXT,
-      tin_hoc REAL,
-      cong_nghe REAL,
-      ngoai_ngu REAL
-    );
-
-    CREATE TABLE IF NOT EXISTS de_an_tuyen_sinh (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      ma_truong TEXT UNIQUE,
-      ten_truong TEXT,
-      noi_dung TEXT,
-      nguon TEXT
-    );
-  `);
 }
 
 // Helper: run query and return all rows

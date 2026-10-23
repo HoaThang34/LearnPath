@@ -3,7 +3,28 @@ import axios from 'axios';
 const api = axios.create({
   baseURL: '/api',
   timeout: 30000,
+  withCredentials: true,
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    const status = error.response?.status;
+    const url = error.config?.url || '';
+
+    if (status === 401 && !url.startsWith('/auth/') && typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('auth:unauthorized'));
+    }
+
+    return Promise.reject(error);
+  }
+);
+
+// Auth
+export const registerUser = (payload) => api.post('/auth/register', payload);
+export const loginUser = (payload) => api.post('/auth/login', payload);
+export const getCurrentUser = () => api.get('/auth/me');
+export const logoutUser = () => api.post('/auth/logout');
 
 // Diem Chuan
 export const getDiemChuan = (params) => api.get('/diem-chuan', { params });

@@ -1,11 +1,13 @@
-import { useState, useEffect, useMemo } from 'react'
-import { Search, BookOpen, ArrowLeft, Check, FileText, List, ChevronRight } from 'lucide-react'
+import { useState, useEffect, useMemo, useRef } from 'react'
+import { Search, BookOpen, ArrowLeft, Check, FileText, List, ChevronRight, AlertTriangle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
+import GithubSlugger from 'github-slugger'
 import { getDeAn, getDeAnByMaTruong } from '@/lib/api'
 
 function StepIndicator({ currentStep }) {
@@ -40,22 +42,19 @@ function StepIndicator({ currentStep }) {
   )
 }
 
-// Generate heading ID matching rehype-slug behavior
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\p{L}\p{N}-]/gu, '')
-    .replace(/--+/g, '-')
-    .replace(/^-|-$/g, '')
-}
-
-// Extract headings from markdown for TOC
+// Extract headings from markdown for TOC. Use the same slugger as
+// rehype-slug so duplicate headings get the same -1, -2 suffixes.
 function extractHeadings(markdown) {
   const headings = []
+  const slugger = new GithubSlugger()
   const lines = markdown.split('\n')
+  let inFence = false
   for (const line of lines) {
+    if (/^\s*(```|~~~)/.test(line)) {
+      inFence = !inFence
+      continue
+    }
+    if (inFence) continue
     const match = line.match(/^(#{1,4})\s+(.+)/)
     if (match) {
       const level = match[1].length
@@ -65,7 +64,7 @@ function extractHeadings(markdown) {
         .replace(/[*_`~]/g, '')  // inline formatting
         .replace(/#{1,4}\s*/g, '')  // heading markers
         .trim()
-      const id = slugify(text)
+      const id = slugger.slug(text)
       headings.push({ level, text, id })
     }
   }
@@ -74,26 +73,18 @@ function extractHeadings(markdown) {
 
 // Custom Markdown components for styling
 const markdownComponents = {
-  h1: ({ children, ...props }) => {
-    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
-    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
-    return <h1 id={id} className="text-2xl font-bold mt-8 mb-4 pb-2 border-b">{children}</h1>
-  },
-  h2: ({ children, ...props }) => {
-    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
-    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
-    return <h2 id={id} className="text-xl font-bold mt-6 mb-3 pb-2 border-b">{children}</h2>
-  },
-  h3: ({ children, ...props }) => {
-    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
-    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
-    return <h3 id={id} className="text-lg font-semibold mt-5 mb-2">{children}</h3>
-  },
-  h4: ({ children, ...props }) => {
-    const text = typeof children === 'string' ? children : props.node?.children?.[0]?.value || ''
-    const id = slugify(String(text).replace(/[*_`#]/g, '').trim())
-    return <h4 id={id} className="text-base font-semibold mt-4 mb-2">{children}</h4>
-  },
+  h1: ({ children, node, ...props }) => (
+    <h1 {...props} className="text-2xl font-bold mt-8 mb-4 pb-2 border-b">{children}</h1>
+  ),
+  h2: ({ children, node, ...props }) => (
+    <h2 {...props} className="text-xl font-bold mt-6 mb-3 pb-2 border-b">{children}</h2>
+  ),
+  h3: ({ children, node, ...props }) => (
+    <h3 {...props} className="text-lg font-semibold mt-5 mb-2">{children}</h3>
+  ),
+  h4: ({ children, node, ...props }) => (
+    <h4 {...props} className="text-base font-semibold mt-4 mb-2">{children}</h4>
+  ),
   p: ({ children }) => (
     <p className="mb-3 leading-relaxed">{children}</p>
   ),
@@ -194,8 +185,10 @@ export default function DeAnTuyenSinh() {
   const [schoolDetail, setSchoolDetail] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [step, setStep] = useState(1)
   const [showToc, setShowToc] = useState(true)
+  const requestIdRef = useRef(0)
 
   useEffect(() => {
     fetchSchoolList()
@@ -203,26 +196,43 @@ export default function DeAnTuyenSinh() {
 
   const fetchSchoolList = async () => {
     setLoading(true)
+    setError('')
     try {
       const res = await getDeAn({ limit: 500 })
       setSchoolList(res.data.data)
-    } catch (e) {}
-    finally { setLoading(false) }
+    } catch (err) {
+      console.error(err)
+      setError('Không thể tải danh sách trường. Vui lòng thử lại.')
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleSelectSchool = async (school) => {
+    const requestId = ++requestIdRef.current
     setLoading(true)
+    setError('')
     setSelectedSchool(school)
+    setSchoolDetail(null)
     setStep(2)
     setShowToc(true)
     try {
       const res = await getDeAnByMaTruong(school.ma_truong)
+      if (requestId !== requestIdRef.current) return
       setSchoolDetail(res.data.data)
-    } catch (e) {}
-    finally { setLoading(false) }
+    } catch (err) {
+      if (requestId !== requestIdRef.current) return
+      console.error(err)
+      setError('Không thể tải đề án tuyển sinh của trường này. Vui lòng thử lại.')
+    } finally {
+      if (requestId === requestIdRef.current) setLoading(false)
+    }
   }
 
   const goBack = () => {
+    requestIdRef.current += 1
+    setLoading(false)
+    setError('')
     setStep(1)
     setSelectedSchool(null)
     setSchoolDetail(null)
@@ -268,6 +278,13 @@ export default function DeAnTuyenSinh() {
             />
           </div>
 
+          {error && (
+            <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+              <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+              <span>{error}</span>
+            </div>
+          )}
+
           {loading ? (
             <div className="text-center py-12 text-muted-foreground">Đang tải...</div>
           ) : (
@@ -289,7 +306,7 @@ export default function DeAnTuyenSinh() {
                   </div>
                 </button>
               ))}
-              {filteredSchools.length === 0 && (
+              {filteredSchools.length === 0 && !error && (
                 <div className="col-span-full text-center py-8 text-muted-foreground">
                   Không tìm thấy trường nào
                 </div>
@@ -316,6 +333,18 @@ export default function DeAnTuyenSinh() {
 
           {loading ? (
             <div className="text-center py-12 text-muted-foreground">Đang tải...</div>
+          ) : error ? (
+            <Card>
+              <CardContent className="py-12">
+                <div className="flex flex-col items-center text-center text-red-700">
+                  <AlertTriangle className="h-10 w-10 mb-3" />
+                  <p>{error}</p>
+                  <Button variant="outline" size="sm" className="mt-4" onClick={() => handleSelectSchool(selectedSchool)}>
+                    Thử lại
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           ) : schoolDetail ? (
             <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
               {/* Table of Contents - sidebar */}
@@ -338,7 +367,7 @@ export default function DeAnTuyenSinh() {
                     <div className="prose prose-sm max-w-none">
                       <Markdown
                         remarkPlugins={[remarkGfm]}
-                        rehypePlugins={[rehypeRaw]}
+                        rehypePlugins={[rehypeRaw, rehypeSlug]}
                         components={markdownComponents}
                       >
                         {schoolDetail.noi_dung}

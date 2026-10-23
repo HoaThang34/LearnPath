@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Search, BarChart3, BookOpen, Trophy, ArrowRight, GraduationCap, Users, School } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
+import { useAuth } from '@/context/AuthContext'
 
 const features = [
   {
@@ -35,6 +36,8 @@ const features = [
 ]
 
 export default function TrangChu() {
+  const { user } = useAuth()
+
   return (
     <div className="space-y-12">
       {/* Hero Section */}
@@ -48,13 +51,19 @@ export default function TrangChu() {
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Hệ thống tư vấn hướng nghiệp giúp bạn tìm ra ngành học và trường đại học phù hợp
         </p>
-        <div className="flex justify-center gap-4">
-          <Button asChild size="lg">
-            <Link to="/de-an">
-              Bắt đầu khám phá
-              <ArrowRight className="ml-2 h-4 w-4" />
-            </Link>
-          </Button>
+        <div className="flex flex-col items-center justify-center gap-3">
+          <Link
+            to={user ? '/de-an' : '/dang-ky'}
+            className={buttonVariants({ size: 'lg' })}
+          >
+            {user ? 'Bắt đầu khám phá' : 'Tạo tài khoản để bắt đầu'}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Link>
+          {!user && (
+            <p className="text-sm text-muted-foreground">
+              Đăng nhập hoặc tạo tài khoản để sử dụng các tính năng.
+            </p>
+          )}
         </div>
       </section>
 
@@ -112,12 +121,10 @@ export default function TrangChu() {
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <Button asChild variant="outline" className="w-full">
-                    <Link to={feature.link}>
-                      Khám phá ngay
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Link>
-                  </Button>
+                  <Link to={feature.link} className={buttonVariants({ variant: 'outline', className: 'w-full' })}>
+                    Khám phá ngay
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Link>
                 </CardContent>
               </Card>
             )

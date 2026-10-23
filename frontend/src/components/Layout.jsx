@@ -1,4 +1,4 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import {
   GraduationCap,
   Search,
@@ -6,10 +6,14 @@ import {
   BookOpen,
   Trophy,
   Menu,
-  X
+  X,
+  LogIn,
+  LogOut,
+  UserPlus,
 } from 'lucide-react'
 import { useState } from 'react'
-import { Button } from './ui/button'
+import { Button, buttonVariants } from './ui/button'
+import { useAuth } from '@/context/AuthContext'
 import { cn } from '@/lib/utils'
 
 const menuItems = [
@@ -22,20 +26,42 @@ const menuItems = [
 
 export default function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [logoutError, setLogoutError] = useState('')
+  const [loggingOut, setLoggingOut] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
+  const { user, loading, logout } = useAuth()
+
+  const handleLogout = async () => {
+    setLogoutError('')
+    setLoggingOut(true)
+
+    try {
+      await logout()
+      setMobileMenuOpen(false)
+      navigate('/')
+    } catch (error) {
+      setLogoutError(
+        error.response?.data?.error ||
+          'Không thể đăng xuất. Vui lòng kiểm tra kết nối và thử lại.'
+      )
+    } finally {
+      setLoggingOut(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
-        <div className="container mx-auto flex h-16 items-center justify-between px-4">
-          <Link to="/" className="flex items-center space-x-2">
+        <div className="container mx-auto flex h-16 items-center justify-between gap-3 px-4">
+          <Link to="/" className="flex shrink-0 items-center space-x-2">
             <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-10 w-auto" />
-            <span className="text-xl font-bold hidden sm:inline">LearnPath</span>
+            <span className="hidden text-xl font-bold sm:inline">LearnPath</span>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-1">
+          <nav className="hidden items-center space-x-1 lg:flex">
             {menuItems.map((item) => {
               const Icon = item.icon
               const isActive = location.pathname === item.path
@@ -57,12 +83,49 @@ export default function Layout({ children }) {
             })}
           </nav>
 
+          <div className="hidden items-center gap-2 md:flex">
+            {loading ? (
+              <div className="h-9 w-28 animate-pulse rounded-md bg-muted" aria-hidden="true" />
+            ) : user ? (
+              <>
+                <span className="hidden max-w-[9rem] truncate text-sm text-muted-foreground xl:inline">
+                  Xin chào, <strong className="font-medium text-foreground">{user.username}</strong>
+                </span>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleLogout}
+                  disabled={loggingOut}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  {loggingOut ? 'Đang đăng xuất...' : 'Đăng xuất'}
+                </Button>
+              </>
+            ) : (
+              <>
+                <Link
+                  to="/dang-nhap"
+                  className={buttonVariants({ variant: 'ghost', size: 'sm' })}
+                >
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Đăng nhập
+                </Link>
+                <Link to="/dang-ky" className={buttonVariants({ size: 'sm' })}>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Đăng ký
+                </Link>
+              </>
+            )}
+          </div>
+
           {/* Mobile Menu Button */}
           <Button
             variant="ghost"
             size="icon"
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            aria-label={mobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
+            aria-expanded={mobileMenuOpen}
           >
             {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
@@ -70,28 +133,79 @@ export default function Layout({ children }) {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <nav className="md:hidden border-t p-4 space-y-2">
-            {menuItems.map((item) => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.path
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={cn(
-                    "flex items-center space-x-3 px-4 py-3 rounded-md text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  )}
-                >
-                  <Icon className="h-5 w-5" />
-                  <span>{item.label}</span>
-                </Link>
-              )
-            })}
+          <nav className="border-t p-4 lg:hidden">
+            <div className="space-y-2">
+              {menuItems.map((item) => {
+                const Icon = item.icon
+                const isActive = location.pathname === item.path
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={cn(
+                      "flex items-center space-x-3 px-4 py-3 rounded-md text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    <Icon className="h-5 w-5" />
+                    <span>{item.label}</span>
+                  </Link>
+                )
+              })}
+            </div>
+
+            <div className="mt-3 space-y-2 border-t pt-3">
+              {loading ? (
+                <div className="h-10 w-full animate-pulse rounded-md bg-muted" aria-hidden="true" />
+              ) : user ? (
+                <>
+                  <p className="px-4 py-2 text-sm text-muted-foreground">
+                    Xin chào, <strong className="font-medium text-foreground">{user.username}</strong>
+                  </p>
+                  <Button
+                    variant="outline"
+                    className="w-full"
+                    onClick={handleLogout}
+                    disabled={loggingOut}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    {loggingOut ? 'Đang đăng xuất...' : 'Đăng xuất'}
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to="/dang-nhap"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={buttonVariants({ variant: 'outline', className: 'w-full' })}
+                  >
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Đăng nhập
+                  </Link>
+                  <Link
+                    to="/dang-ky"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={buttonVariants({ className: 'w-full' })}
+                  >
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Đăng ký
+                  </Link>
+                </>
+              )}
+            </div>
           </nav>
+        )}
+
+        {logoutError && (
+          <div
+            className="border-t bg-destructive/10 px-4 py-2 text-center text-sm text-destructive"
+            role="alert"
+          >
+            {logoutError}
+          </div>
         )}
       </header>
 

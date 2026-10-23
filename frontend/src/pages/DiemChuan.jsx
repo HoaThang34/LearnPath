@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { BarChart3, Search, Filter, ArrowUpDown, ChevronDown, X, Info, AlertTriangle } from 'lucide-react'
+import { useState, useEffect, useRef } from 'react'
+import { BarChart3, Search, X, Info, AlertTriangle } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -7,13 +7,12 @@ import { Label } from '@/components/ui/label'
 import {
   getDiemChuan,
   getPhuongThuc,
-  getNhomNganh,
   getDanhSachKhoiThi
 } from '@/lib/api'
 
 // Determine score scale info based on method
 function getScoreScale(diemChuan, phuongThuc, ghiChu) {
-  if (!diemChuan) return { scale: 30, note: '', display: '-' }
+  if (diemChuan == null) return { scale: 30, note: '', display: '-' }
 
   // SAT → 1600 scale
   if (phuongThuc?.includes('SAT')) {
@@ -44,7 +43,7 @@ function getScoreScale(diemChuan, phuongThuc, ghiChu) {
 }
 
 function getScoreColor(diemChuan, scale) {
-  if (!diemChuan) return 'bg-gray-100 text-gray-500'
+  if (diemChuan == null) return 'bg-gray-100 text-gray-500'
 
   if (scale === 30) {
     if (diemChuan >= 27) return 'bg-green-100 text-green-700 border-green-200'
@@ -65,56 +64,92 @@ export default function DiemChuan() {
   const [searchTerm, setSearchTerm] = useState('')
   const [sort, setSort] = useState('diem_desc')
   const [filterKhoiThi, setFilterKhoiThi] = useState('')
-  const [filterNhomNganh, setFilterNhomNganh] = useState('')
-  const [nhomNganhList, setNhomNganhList] = useState([])
   const [khoiThiList, setKhoiThiList] = useState([])
   const [results, setResults] = useState([])
   const [total, setTotal] = useState(0)
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState('')
   const [page, setPage] = useState(1)
+  const [searchNonce, setSearchNonce] = useState(0)
+  const requestIdRef = useRef(0)
   const PER_PAGE = 100
 
   useEffect(() => {
     fetchPhuongThuc()
-    fetchNhomNganh()
     fetchKhoiThi()
   }, [])
 
   useEffect(() => {
     if (selectedPhuongThuc) fetchResults()
-  }, [selectedPhuongThuc, sort, filterKhoiThi, filterNhomNganh, page])
+  }, [selectedPhuongThuc, sort, filterKhoiThi, page, searchNonce])
 
   const fetchPhuongThuc = async () => {
-    try { const res = await getPhuongThuc(); setPhuongThucList(res.data.data) } catch (e) {}
+    try {
+      const res = await getPhuongThuc()
+      setPhuongThucList(res.data.data)
+    } catch (err) {
+      console.error(err)
+      setError('Không thể tải danh sách phương thức xét tuyển.')
+    }
   }
-  const fetchNhomNganh = async () => {
-    try { const res = await getNhomNganh(); setNhomNganhList(res.data.data) } catch (e) {}
-  }
+
   const fetchKhoiThi = async () => {
-    try { const res = await getDanhSachKhoiThi(); setKhoiThiList(res.data.data) } catch (e) {}
+    try {
+      const res = await getDanhSachKhoiThi()
+      setKhoiThiList(res.data.data)
+    } catch (err) {
+      console.error(err)
+      setError('Không thể tải danh sách khối thi.')
+    }
   }
+
   const fetchResults = async () => {
+    const requestId = ++requestIdRef.current
     setLoading(true)
+    setError('')
     try {
       const res = await getDiemChuan({
         phuong_thuc: selectedPhuongThuc,
         truong: searchTerm || undefined,
         khoi_thi: filterKhoiThi || undefined,
-        nhom_nganh: filterNhomNganh || undefined,
         sort,
         limit: PER_PAGE,
         offset: (page - 1) * PER_PAGE
       })
+      if (requestId !== requestIdRef.current) return
       setResults(res.data.data)
       setTotal(res.data.total)
-    } catch (e) { console.error(e) }
-    finally { setLoading(false) }
+    } catch (err) {
+      if (requestId !== requestIdRef.current) return
+      console.error(err)
+      setError('Không thể tải dữ liệu điểm chuẩn. Vui lòng thử lại.')
+      setResults([])
+      setTotal(0)
+    } finally {
+      if (requestId === requestIdRef.current) setLoading(false)
+    }
   }
 
-  const handleSearch = (e) => { e.preventDefault(); setPage(1); fetchResults() }
-  const handleSelectMethod = (method) => { setSelectedPhuongThuc(method); setPage(1) }
-  const clearFilters = () => { setSearchTerm(''); setSort('diem_desc'); setFilterKhoiThi(''); setFilterNhomNganh(''); setPage(1) }
-  const hasActiveFilters = searchTerm || sort !== 'diem_desc' || filterKhoiThi || filterNhomNganh
+  const handleSearch = (e) => {
+    e.preventDefault()
+    setPage(1)
+    setSearchNonce((value) => value + 1)
+  }
+
+  const handleSelectMethod = (method) => {
+    setSelectedPhuongThuc(method)
+    setPage(1)
+  }
+
+  const clearFilters = () => {
+    setSearchTerm('')
+    setSort('diem_desc')
+    setFilterKhoiThi('')
+    setPage(1)
+    setSearchNonce((value) => value + 1)
+  }
+
+  const hasActiveFilters = searchTerm || sort !== 'diem_desc' || filterKhoiThi
   const totalPages = Math.ceil(total / PER_PAGE)
 
   // Scale description for selected method
@@ -146,7 +181,7 @@ export default function DiemChuan() {
               <p className="font-medium">Hướng dẫn sử dụng:</p>
               <ol className="list-decimal list-inside space-y-1 text-muted-foreground">
                 <li><strong>Bước 1:</strong> Chọn phương thức xét tuyển (Điểm thi THPT, HSA, TSA, V-ACT, SAT).</li>
-                <li><strong>Bước 2:</strong> Sử dụng bộ lọc để tìm kiếm theo tên trường, khối thi, nhóm ngành và sắp xếp kết quả.</li>
+                <li><strong>Bước 2:</strong> Sử dụng bộ lọc để tìm kiếm theo tên trường, khối thi và sắp xếp kết quả.</li>
                 <li><strong>Bước 3:</strong> Xem kết quả trong bảng bên dưới. Điểm chuẩn hiển thị theo thang điểm tương ứng.</li>
               </ol>
               <p className="text-xs text-muted-foreground">
@@ -156,6 +191,13 @@ export default function DiemChuan() {
           </div>
         </CardContent>
       </Card>
+
+      {error && (
+        <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+          <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+          <span>{error}</span>
+        </div>
+      )}
 
       {/* Step 1: Select Method */}
       <Card>
@@ -203,7 +245,7 @@ export default function DiemChuan() {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               <div className="space-y-2">
                 <Label>Tìm trường</Label>
                 <Input placeholder="Tên trường..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && handleSearch(e)} />
@@ -222,13 +264,6 @@ export default function DiemChuan() {
                 <select value={filterKhoiThi} onChange={(e) => { setFilterKhoiThi(e.target.value); setPage(1) }} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
                   <option value="">Tất cả</option>
                   {khoiThiList.map((k) => (<option key={k.ma_khoi} value={k.ma_khoi}>{k.ma_khoi}</option>))}
-                </select>
-              </div>
-              <div className="space-y-2">
-                <Label>Nhóm ngành</Label>
-                <select value={filterNhomNganh} onChange={(e) => { setFilterNhomNganh(e.target.value); setPage(1) }} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-                  <option value="">Tất cả</option>
-                  {nhomNganhList.map((n) => (<option key={n} value={n}>{n}</option>))}
                 </select>
               </div>
             </div>
