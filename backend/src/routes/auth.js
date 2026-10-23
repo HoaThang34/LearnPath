@@ -1,7 +1,18 @@
 const express = require('express');
-const { getAuthDb, queryOne, runSql, lastInsertId, saveAuthDb } = require('../auth/authDb');
+const {
+  getAuthDb,
+  queryOne,
+  runSql,
+  lastInsertId,
+  saveAuthDb,
+  runAuthMutation,
+} = require('../auth/authDb');
 const { hashPassword, verifyPassword, verifyDummyPassword } = require('../auth/password');
-const { validateRegistration, validateLogin } = require('../auth/validation');
+const {
+  validateRegistration,
+  validateLogin,
+  validateChangePassword,
+} = require('../auth/validation');
 const {
   checkLoginRateLimit,
   recordLoginFailure,
@@ -13,6 +24,9 @@ const {
 const {
   createSession,
   destroySession,
+  getSessionToken,
+  hashSessionToken,
+  revokeOtherSessions,
   setSessionCookie,
   clearSessionCookie,
   requireAuth,
@@ -42,6 +56,8 @@ function toPublicUser(row, createdAt) {
   return {
     id: Number(row.id),
     username: row.username,
+    status: row.status || 'active',
+    mustChangePassword: Boolean(Number(row.must_change_password || 0)),
     createdAt: createdAt || new Date(Number(row.created_at)).toISOString(),
   };
 }
@@ -78,24 +94,16 @@ router.post('/register', async (req, res, next) => {
     const passwordHash = await hashPassword(validation.password);
     const now = Date.now();
 
-    runSql('BEGIN');
-    try {
+    userId = await runAuthMutation(() => {
       runSql(
-        'INSERT INTO users (username, username_lower, password_hash, created_at) VALUES (?, ?, ?, ?)',
-        [validation.username, validation.usernameLower, passwordHash, now]
+        `INSERT INTO users
+           (username, username_lower, password_hash, created_at, status, updated_at,
+            must_change_password)
+         VALUES (?, ?, ?, ?, 'active', ?, 0)`,
+        [validation.username, validation.usernameLower, passwordHash, now, now]
       );
-      userId = lastInsertId();
-      runSql('COMMIT');
-    } catch (transactionError) {
-      try {
-        runSql('ROLLBACK');
-      } catch (rollbackError) {
-        // The original error is more useful; the transaction may already be closed.
-      }
-      throw transactionError;
-    }
-
-    saveAuthDb();
+      return lastInsertId();
+    });
 
     const session = await createSession(userId);
     setSessionCookie(res, session.token);
@@ -105,6 +113,8 @@ router.post('/register', async (req, res, next) => {
         user: {
           id: userId,
           username: validation.username,
+          status: 'active',
+          mustChangePassword: false,
           createdAt: new Date(now).toISOString(),
         },
       },
@@ -137,7 +147,9 @@ router.post('/login', async (req, res, next) => {
     await getAuthDb();
 
     const row = queryOne(
-      'SELECT id, username, password_hash, created_at FROM users WHERE username_lower = ?',
+      `SELECT id, username, password_hash, created_at, status, must_change_password
+         FROM users
+        WHERE username_lower = ?`,
       [validation.usernameLower]
     );
 
@@ -150,7 +162,29 @@ router.post('/login', async (req, res, next) => {
       return res.status(401).json({ error: 'Tên đăng nhập hoặc mật khẩu không đúng.' });
     }
 
+    if (row.status === 'locked') {
+      return res.status(403).json({
+        code: 'ACCOUNT_LOCKED',
+        error: 'Tài khoản đã bị khóa. Vui lòng liên hệ quản trị viên.',
+      });
+    }
+
+    if (row.status === 'deleted') {
+      return res.status(403).json({
+        code: 'ACCOUNT_DELETED',
+        error: 'Tài khoản đã bị xóa. Vui lòng liên hệ quản trị viên.',
+      });
+    }
+
     clearLoginFailures(ip, validation.usernameLower);
+
+    const now = Date.now();
+    runSql('UPDATE users SET last_login_at = ?, updated_at = ? WHERE id = ?', [
+      now,
+      now,
+      row.id,
+    ]);
+    saveAuthDb();
 
     const session = await createSession(row.id);
     setSessionCookie(res, session.token);
@@ -167,6 +201,63 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/me', requireAuth, (req, res) => {
   res.json({ data: { user: req.user } });
+});
+
+router.post('/change-password', requireAuth, async (req, res, next) => {
+  const validation = validateChangePassword(req.body);
+  if (!validation.ok) {
+    return res.status(400).json({ error: validation.error });
+  }
+
+  try {
+    await getAuthDb();
+    const row = queryOne('SELECT id, username, password_hash, created_at FROM users WHERE id = ?', [
+      req.user.id,
+    ]);
+
+    if (!row) {
+      clearSessionCookie(res);
+      return res.status(401).json({ error: 'Vui lòng đăng nhập lại để tiếp tục.' });
+    }
+
+    const currentMatches = await verifyPassword(
+      validation.currentPassword,
+      row.password_hash
+    );
+
+    if (!currentMatches) {
+      return res.status(401).json({ error: 'Mật khẩu hiện tại không đúng.' });
+    }
+
+    const passwordHash = await hashPassword(validation.newPassword);
+    const now = Date.now();
+    const token = getSessionToken(req);
+    const currentTokenHash = token ? hashSessionToken(token) : '';
+
+    await runAuthMutation(() => {
+      runSql(
+        `UPDATE users
+            SET password_hash = ?, must_change_password = 0, updated_at = ?
+          WHERE id = ?`,
+        [passwordHash, now, row.id]
+      );
+      revokeOtherSessions(row.id, currentTokenHash);
+    });
+
+    return res.json({
+      data: {
+        user: {
+          id: Number(row.id),
+          username: row.username,
+          status: 'active',
+          mustChangePassword: false,
+          createdAt: new Date(Number(row.created_at)).toISOString(),
+        },
+      },
+    });
+  } catch (error) {
+    return next(error);
+  }
 });
 
 router.post('/logout', async (req, res, next) => {

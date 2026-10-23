@@ -23,5 +23,9 @@ export default function ProtectedRoute({ children }) {
     return <Navigate to="/dang-nhap" state={{ from: location }} replace />
   }
 
+  if (user.mustChangePassword) {
+    return <Navigate to="/doi-mat-khau" replace />
+  }
+
   return children
 }

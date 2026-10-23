@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import {
+  changePassword as changePasswordRequest,
   getCurrentUser,
   loginUser,
   logoutUser,
@@ -63,9 +64,16 @@ export function AuthProvider({ children }) {
     setUser(null)
   }, [])
 
+  const changePassword = useCallback(async (payload) => {
+    const response = await changePasswordRequest(payload)
+    const nextUser = response.data.data.user
+    setUser(nextUser)
+    return nextUser
+  }, [])
+
   const value = useMemo(
-    () => ({ user, loading, login, register, logout }),
-    [user, loading, login, register, logout]
+    () => ({ user, loading, login, register, logout, changePassword }),
+    [user, loading, login, register, logout, changePassword]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

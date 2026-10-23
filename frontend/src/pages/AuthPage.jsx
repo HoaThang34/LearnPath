@@ -110,6 +110,9 @@ export default function AuthPage({ mode = 'login' }) {
   }
 
   if (user) {
+    if (user.mustChangePassword) {
+      return <Navigate to="/doi-mat-khau" replace />
+    }
     return <Navigate to={redirectTo} replace />
   }
 

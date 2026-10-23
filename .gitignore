@@ -41,3 +41,5 @@ yarn-error.log*
 
 # Data (keep structure, ignore generated files)
 backend/database/*.db
+# Auth DB migration backups contain real password hashes; never commit them
+backend/database/*.db.v*-backup-*

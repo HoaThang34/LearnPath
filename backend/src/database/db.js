@@ -40,6 +40,29 @@ function saveDb() {
   fs.writeFileSync(DB_PATH, buffer);
 }
 
+/**
+ * Drop the in-memory copy and reload the database from disk.
+ * Used after a failed admin write so memory cannot drift from the file.
+ */
+async function reloadDb() {
+  if (db) {
+    try {
+      db.close();
+    } catch (error) {
+      // The old in-memory copy is discarded; continue with a fresh open.
+    }
+  }
+  db = null;
+
+  if (!fs.existsSync(DB_PATH)) {
+    throw new Error(`Database not found at ${DB_PATH}.`);
+  }
+
+  const SQL = await initSqlJs();
+  db = new SQL.Database(fs.readFileSync(DB_PATH));
+  return db;
+}
+
 // Helper: run query and return all rows
 function queryAll(sql, params = []) {
   const stmt = db.prepare(sql);
@@ -65,4 +88,4 @@ function runSql(sql, params = []) {
   db.run(sql, params);
 }
 
-module.exports = { getDb, saveDb, queryAll, queryOne, runSql };
+module.exports = { DB_PATH, getDb, saveDb, reloadDb, queryAll, queryOne, runSql };

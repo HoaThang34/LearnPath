@@ -12,7 +12,7 @@ Classify **before** editing. Higher levels need more evidence and user approval.
 | **L0 — Docs** | README, `.agents/*`, comments | Read relevant code; no build required; update dates/facts |
 | **L1 — UI only** | Text, colour, spacing, component, responsive layout | Read page + API client; `npm run build`; manual flow check |
 | **L2 — Behaviour/API** | New filter, endpoint, query change, display logic | Impact map; backend + client + UI; API smoke; regression |
-| **L3 — Destructive/Contract** | Schema, DB import/reset, school mapping, table deletion, response contract, new dependency, auth/session/cookie behavior, auth DB schema | **Ask the user first**; backup; rollback plan; data validation; security test |
+| **L3 — Destructive/Contract** | Schema, DB import/reset, school mapping, table deletion, response contract, new dependency, auth/session/cookie behavior, auth DB schema, admin session/CSRF/audit policy, admission write engine/backup/force-delete semantics | **Ask the user first**; backup; rollback plan; data validation; security test |
 
 **Golden rule**: if you are unsure whether a task is L2 or L3, treat it as **L3** and ask.
 
@@ -186,6 +186,7 @@ Bad subagent tasks:
 - [ ] Frontend build passes.
 - [ ] API smoke and error paths checked.
 - [ ] Auth/session checked (401, cookie flags, no token storage, temp auth DB) when touched.
+- [ ] Admin changes checked (separate cookie/CSRF, audit redaction, temp auth/admission DB) when touched.
 - [ ] Data check run read-only (or isolated DB).
 - [ ] Admission DB hash unchanged; default auth DB not polluted.
 - [ ] Docs/facts updated.

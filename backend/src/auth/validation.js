@@ -2,6 +2,7 @@ const USERNAME_MIN_LENGTH = 3;
 const USERNAME_MAX_LENGTH = 32;
 const PASSWORD_MIN_LENGTH = 8;
 const PASSWORD_MAX_LENGTH = 128;
+const ADMIN_PASSWORD_MIN_LENGTH = 12;
 
 // 3–32 characters: must start and end with a letter or digit.
 const USERNAME_PATTERN = /^[A-Za-z0-9](?:[A-Za-z0-9._-]{1,30})[A-Za-z0-9]$/;
@@ -91,6 +92,86 @@ function validateRegistration(body) {
   };
 }
 
+function validateAdminPassword(password) {
+  if (typeof password !== 'string') {
+    return { ok: false, error: 'Mật khẩu quản trị không hợp lệ.' };
+  }
+
+  if (password.length < ADMIN_PASSWORD_MIN_LENGTH) {
+    return {
+      ok: false,
+      error: `Mật khẩu quản trị phải có ít nhất ${ADMIN_PASSWORD_MIN_LENGTH} ký tự.`,
+    };
+  }
+
+  if (password.length > PASSWORD_MAX_LENGTH) {
+    return {
+      ok: false,
+      error: `Mật khẩu quản trị không được dài quá ${PASSWORD_MAX_LENGTH} ký tự.`,
+    };
+  }
+
+  if (!/\p{L}/u.test(password) || !/\p{Nd}/u.test(password)) {
+    return {
+      ok: false,
+      error: 'Mật khẩu quản trị phải có ít nhất một chữ cái và một chữ số.',
+    };
+  }
+
+  return { ok: true };
+}
+
+function validateAdminLogin(body) {
+  if (!body || typeof body !== 'object') {
+    return { ok: false, error: 'Vui lòng nhập tên đăng nhập và mật khẩu quản trị.' };
+  }
+
+  const username = typeof body.username === 'string' ? body.username.trim() : '';
+  const password = body.password;
+
+  if (!username || typeof password !== 'string' || password.length === 0) {
+    return { ok: false, error: 'Vui lòng nhập tên đăng nhập và mật khẩu quản trị.' };
+  }
+
+  if (username.length > USERNAME_MAX_LENGTH || password.length > PASSWORD_MAX_LENGTH) {
+    return { ok: false, error: 'Tên đăng nhập hoặc mật khẩu không đúng.' };
+  }
+
+  return {
+    ok: true,
+    usernameLower: username.toLowerCase(),
+    username,
+    password,
+  };
+}
+
+function validateChangePassword(body) {
+  if (!body || typeof body !== 'object') {
+    return { ok: false, error: 'Dữ liệu đổi mật khẩu không hợp lệ.' };
+  }
+
+  if (typeof body.currentPassword !== 'string' || body.currentPassword.length === 0) {
+    return { ok: false, error: 'Vui lòng nhập mật khẩu hiện tại.' };
+  }
+
+  const passwordResult = validatePassword(body.newPassword);
+  if (!passwordResult.ok) return passwordResult;
+
+  if (body.newPassword !== body.newPasswordConfirm) {
+    return { ok: false, error: 'Mật khẩu xác nhận không khớp.' };
+  }
+
+  if (body.currentPassword === body.newPassword) {
+    return { ok: false, error: 'Mật khẩu mới phải khác mật khẩu hiện tại.' };
+  }
+
+  return {
+    ok: true,
+    currentPassword: body.currentPassword,
+    newPassword: body.newPassword,
+  };
+}
+
 function validateLogin(body) {
   if (!body || typeof body !== 'object') {
     return { ok: false, error: 'Vui lòng nhập tên đăng nhập và mật khẩu.' };
@@ -119,8 +200,12 @@ module.exports = {
   USERNAME_MAX_LENGTH,
   PASSWORD_MIN_LENGTH,
   PASSWORD_MAX_LENGTH,
+  ADMIN_PASSWORD_MIN_LENGTH,
   validateUsername,
   validatePassword,
+  validateAdminPassword,
+  validateAdminLogin,
+  validateChangePassword,
   validateRegistration,
   validateLogin,
 };

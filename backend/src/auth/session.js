@@ -88,10 +88,10 @@ async function getSessionUser(req) {
   await getAuthDb();
 
   const row = queryOne(
-    `SELECT u.id, u.username, u.created_at, s.expires_at
+    `SELECT u.id, u.username, u.created_at, u.status, u.must_change_password, s.expires_at
        FROM sessions s
        JOIN users u ON u.id = s.user_id
-      WHERE s.token_hash = ? AND s.expires_at > ?`,
+      WHERE s.token_hash = ? AND s.expires_at > ? AND u.status = 'active'`,
     [hashToken(token), Date.now()]
   );
 
@@ -100,6 +100,8 @@ async function getSessionUser(req) {
   return {
     id: Number(row.id),
     username: row.username,
+    status: row.status,
+    mustChangePassword: Boolean(Number(row.must_change_password || 0)),
     createdAt: new Date(Number(row.created_at)).toISOString(),
   };
 }
@@ -142,15 +144,41 @@ async function requireAuth(req, res, next) {
   }
 }
 
+function requirePasswordChanged(req, res, next) {
+  if (req.user && req.user.mustChangePassword) {
+    return res.status(403).json({
+      code: 'PASSWORD_CHANGE_REQUIRED',
+      error: 'Bạn phải đổi mật khẩu trước khi tiếp tục sử dụng tính năng này.',
+    });
+  }
+  return next();
+}
+
+function hashSessionToken(token) {
+  return hashToken(token);
+}
+
+async function revokeOtherSessions(userId, currentTokenHash) {
+  await getAuthDb();
+  runSql('DELETE FROM sessions WHERE user_id = ? AND token_hash <> ?', [
+    userId,
+    currentTokenHash,
+  ]);
+  return getRowsModified();
+}
+
 module.exports = {
   SESSION_COOKIE_NAME,
   SESSION_TTL_MS,
   parseCookies,
   getSessionToken,
+  hashSessionToken,
   createSession,
   getSessionUser,
   destroySession,
+  revokeOtherSessions,
   setSessionCookie,
   clearSessionCookie,
   requireAuth,
+  requirePasswordChanged,
 };

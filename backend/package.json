@@ -6,7 +6,12 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "db:init": "node src/database/init.js"
+    "db:init": "node src/database/init.js",
+    "admin:create": "node scripts/admin-create.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "test:unit": "node --test \"test/unit/*.test.js\"",
+    "test:integration": "node --test \"test/integration/*.test.js\"",
+    "test:db": "node --test \"test/db/*.test.js\""
   },
   "keywords": ["education", "career-guidance", "university"],
   "author": "",

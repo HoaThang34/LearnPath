@@ -96,8 +96,39 @@ async function verifyDummyPassword(password) {
   return false;
 }
 
+const TEMP_PASSWORD_ALPHABET =
+  'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789';
+const TEMP_PASSWORD_LENGTH = 16;
+
+/**
+ * Generate a temporary password that satisfies the user password policy.
+ * Avoids ambiguous characters so it can be copied or printed safely.
+ */
+function generateTemporaryPassword() {
+  const characters = [];
+  const randomIndex = () => randomBytes(1)[0] % TEMP_PASSWORD_ALPHABET.length;
+
+  // Guarantee at least one letter and one digit, then fill the rest.
+  characters.push('ABCDEFGHJKLMNPQRSTUVWXYZ'[randomBytes(1)[0] % 24]);
+  characters.push('23456789'[randomBytes(1)[0] % 8]);
+
+  while (characters.length < TEMP_PASSWORD_LENGTH) {
+    characters.push(TEMP_PASSWORD_ALPHABET[randomIndex()]);
+  }
+
+  // Fisher-Yates shuffle with cryptographically strong randomness.
+  for (let index = characters.length - 1; index > 0; index -= 1) {
+    const swapIndex = randomBytes(1)[0] % (index + 1);
+    [characters[index], characters[swapIndex]] = [characters[swapIndex], characters[index]];
+  }
+
+  return characters.join('');
+}
+
 module.exports = {
   hashPassword,
   verifyPassword,
   verifyDummyPassword,
+  generateTemporaryPassword,
+  TEMP_PASSWORD_LENGTH,
 };

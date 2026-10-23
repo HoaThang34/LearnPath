@@ -25,6 +25,7 @@ export const registerUser = (payload) => api.post('/auth/register', payload);
 export const loginUser = (payload) => api.post('/auth/login', payload);
 export const getCurrentUser = () => api.get('/auth/me');
 export const logoutUser = () => api.post('/auth/logout');
+export const changePassword = (payload) => api.post('/auth/change-password', payload);
 
 // Diem Chuan
 export const getDiemChuan = (params) => api.get('/diem-chuan', { params });

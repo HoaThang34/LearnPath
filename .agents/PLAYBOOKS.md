@@ -32,7 +32,7 @@ Example: add a real `nam` filter, or re-enable `nhom_nganh` only after implement
 
 ### Verify
 
-Authenticate first (see `TESTING.md` 2.3), then pass `-WebSession $session`:
+Authenticate first (see `TESTING.md` 2.4), then pass `-WebSession $session`:
 
 ```powershell
 Invoke-RestMethod "http://localhost:3001/api/diem-chuan?limit=2" -WebSession $session
@@ -161,7 +161,7 @@ Copy-Item backend\database\learnpath.db "$env:TEMP\learnpath-backup-$(Get-Date -
 
 Auth changes are security-sensitive and touch multiple layers. Ask before changing contracts, cookie names/flags, rate limits, or the auth DB schema.
 
-1. Re-read `plans/user-auth.md`, `ARCHITECTURE.md` (Auth), and `TESTING.md` 2.3.
+1. Re-read `plans/user-auth.md`, `plans/auth-hardening.md`, `ARCHITECTURE.md` (Auth), and `TESTING.md` 2.4/2.7.
 2. Keep the auth DB separate from `learnpath.db`; never add users/sessions to the admission schema.
 3. If the schema changes, bump `SCHEMA_VERSION` in `backend/src/auth/authDb.js` and add a migration path. Do not silently recreate an existing DB with accounts.
 4. Password changes must keep scrypt parameters and per-user salt. Do not log passwords, hashes, cookies, or raw tokens.
@@ -172,3 +172,18 @@ Auth changes are security-sensitive and touch multiple layers. Ask before changi
 9. Test with a temporary auth DB: register/login/logout/me, 401s, duplicate/mismatch, cookie flags, rate limits, untrusted origin, session persistence, and main DB hash unchanged.
 10. Test production cookie flags with `NODE_ENV=production`, and document required `APP_ORIGIN`/HTTPS setup.
 11. Update `ARCHITECTURE.md`, `TESTING.md`, `PROJECT_CONTEXT.md`, `KNOWN_ISSUES.md`, `README.md`, and `PROJECT_STATUS.md`.
+
+## 10. Change admin panel behaviour
+
+Admin changes are L3 when they touch auth/session/CSRF, the auth DB schema, the admission write engine, backup policy, force-delete semantics, or audit retention. Ask first.
+
+1. Re-read `plans/admin-panel.md`, `ARCHITECTURE.md` (Admin), and `TESTING.md` 2.7.
+2. Keep admins separate from users: `admins`/`admin_sessions`, own cookie, own CSRF header. Never let a user session call `/api/admin/*`.
+3. Any non-GET admin route must keep `requireAdminCsrf` and the trusted-origin check. Do not add a mutation endpoint that bypasses them.
+4. Auth DB schema changes must bump `SCHEMA_VERSION` and add a v2→v3 migration path; v2 is already in use.
+5. Admission writes must go through `admissionWrite.js`. Do not call `saveDb()` directly from a route or add a second write path.
+6. Preserve the backup/`quick_check`/reload/write-block behavior. Do not weaken force-delete confirmation or dependency checks.
+7. Audit every user/data mutation and login/logout. Never put passwords, hashes, tokens, CSRF values, cookies, authorization headers, or raw IPs in `admin_audit`.
+8. Keep `/admin` lazy-loaded, noindex, and unlinked from public navigation.
+9. Test with temp auth and admission DBs: admin login/CSRF, user CRUD, data CRUD, dependency/force delete, audit redaction, logout, and real DB hash unchanged.
+10. Run `cd backend && npm test` and `cd frontend && npm run build`; update `README.md`, `ARCHITECTURE.md`, `TESTING.md`, `PROJECT_STATUS.md`, and `KNOWN_ISSUES.md`.

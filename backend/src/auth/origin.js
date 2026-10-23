@@ -14,7 +14,14 @@ function isOriginAllowed(origin) {
 }
 
 function requireTrustedOrigin(req, res, next) {
-  if (req.method !== 'POST') return next();
+  if (req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS') {
+    return next();
+  }
+
+  const fetchSite = req.get('Sec-Fetch-Site');
+  if (fetchSite && fetchSite !== 'same-origin' && fetchSite !== 'none') {
+    return res.status(403).json({ error: 'Nguồn yêu cầu không hợp lệ.' });
+  }
 
   const origin = req.get('Origin');
   // Non-browser clients do not send Origin. Browsers do for state-changing requests.

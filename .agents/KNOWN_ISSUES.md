@@ -24,8 +24,8 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | KI-08 | P2 | UI | Admission proposals page could show stale data or fail silently | Fixed |
 | KI-09 | P2 | UI | `Button asChild` used without Slot support | Fixed |
 | KI-10 | P2 | Media | Autoplay fallback could reject unhandled | Mitigated |
-| KI-11 | P2 | Performance | Main JS bundle is 1,009.03 kB (gzip 304.89 kB) | Open |
-| KI-12 | P2 | Quality | No committed unit/integration tests, lint, or CI | Open |
+| KI-11 | P2 | Performance | Main JS bundle is 1,016.01 kB (gzip 306.89 kB) | Open |
+| KI-12 | P2 | Quality | Backend tests/CI added; data/API/import tests, lint, E2E still missing | Mitigated |
 | KI-13 | P2 | Error handling | Empty catches left blank UI/import failures | Fixed |
 | KI-14 | P3 | Data | `so_nganh` counted rows/case variants, not distinct majors | Fixed |
 | KI-15 | P1 | Data/product | All score rows use `nam = 2025` while the UI says 2026 | Open |
@@ -35,7 +35,9 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | KI-19 | P2 | Stats | Stats mix score scales and use inconsistent distinct counts | Open |
 | KI-20 | P3 | Assets | 4.1 MB intro video; no compression/lazy strategy | Open |
 | KI-21 | P2 | UI/Markdown | TOC IDs broke on duplicate headings | Fixed |
-| KI-22 | P2 | Auth/ops | Auth is single-process; no reset/MFA; duplicate username reveals existence | Open |
+| KI-22 | P2 | Auth/ops | Auth is single-process; no self-service reset/MFA; duplicate username reveals existence | Open |
+| KI-23 | P2 | Admin/ops | Admin panel is single-process; writes block on reload failure; MFA absent | Open |
+| KI-24 | P1 | Auth DB state | Real `auth.db` was migrated v1→v2 outside the test suite; 0 admins | Mitigated |
 
 ## Data snapshot
 
@@ -55,13 +57,14 @@ Temporary import with the fixed code (`LEARNPATH_DB_PATH`):
 - 12 zero score cells; 5 all-null candidate rows.
 - 1 block file skipped because it has no block code.
 
-Auth verification (2026-10-23):
+Auth/admin verification (2026-10-23):
 
-- Temporary auth DBs only; the default `backend/database/auth.db` remained absent.
-- API integration: 29/29 checks passed (register/login/logout/me, 401s, persistence, rate limits, CORS/origin, body errors).
-- Headless Chrome E2E: 16 checks passed (redirects, register confirmation, cookie/storage, reload, logout, login, mobile menu, console).
+- Temporary auth and admission DBs only for tests/smoke; the real `backend/database/learnpath.db` hash stayed unchanged.
+- Backend suite: 78/78 tests passed (auth, admin auth/CSRF/session, user CRUD, admission CRUD, CLI, schema v2/migration).
+- Admin E2E smoke: 19 checks passed (login/CSRF, user create/login/forced change, data CRUD, bulk, lock/unlock, audit redaction, logout) on temp DBs.
+- Headless Chrome E2E from the auth session: 16 checks passed (redirects, register confirmation, cookie/storage, reload, logout, login, mobile menu, console).
 - Production cookie flags and clear-cookie flags matched.
-- Admission DB SHA-256 unchanged after API and UI tests.
+- **Real auth DB migration**: `backend/database/auth.db` is now v2 (69,632 bytes, 1 user, 0 sessions, 0 admins, SHA-256 `210F8C45E4A32DDAAF80F2B7977F4ED970E071C08EAAD2B2CBAEB45F183A3577`). A v1 backup exists at `backend/database/auth.db.v1-backup-20261023141514808` (32,768 bytes, 1 user, 0 sessions). Cause not established; do not restore/overwrite without approval. See KI-24.
 
 ## Details
 
@@ -186,7 +189,7 @@ diem-chuan?offset=-1 -> 400
 - Added loading, empty, and error states.
 - `clearFilters` is no longer rendered when no filter is active.
 
-**Verification**: `npm run build` passes (2,642 modules). A temporary headless Chrome E2E passed 16 auth/route checks; it is not a committed harness, so re-check the UI manually after changes.
+**Verification**: `npm run build` passes (2,661 modules). A temporary headless Chrome E2E passed 16 auth/route checks; it is not a committed harness, so re-check the UI manually after changes.
 
 ### KI-08 — Admission proposals page state (Fixed)
 
@@ -212,22 +215,25 @@ First `play()` rejection now sets muted mode and retries. The retry rejection is
 Current build:
 
 ```text
-2,642 modules transformed
-dist/assets/index-*.js   1,009.03 kB | gzip 304.89 kB
-dist/assets/index-*.css     27.51 kB | gzip   5.45 kB
+2,661 modules transformed
+dist/assets/AdminPage-*.js     61.79 kB | gzip  16.22 kB
+dist/assets/index-*.js      1,016.01 kB | gzip 306.89 kB
+dist/assets/index-*.css        32.73 kB | gzip   6.22 kB
 ```
 
-Vite warns that the JS chunk is > 500 kB. Consider route-level `React.lazy`/dynamic imports, especially for Recharts and Markdown. This is not a correctness bug.
+Vite warns that the main JS chunk is > 500 kB. `/admin` is already lazy-loaded; consider route-level `React.lazy`/dynamic imports for Recharts and Markdown. This is not a correctness bug.
 
-### KI-12 — No committed tests/lint/CI (Open)
+### KI-12 — No committed tests/lint/CI (Mitigated)
 
-There is no committed test framework, lint script, or CI. All verification is manual, although temporary auth smoke/E2E scripts were used in this session. The project needs at least:
+Backend tests are committed under `backend/test/` (10 files, 78 tests) covering password, validation, origin, rate limit, session parsing, auth API, auth DB v2/migration, admin auth/CSRF/session, admin user CRUD, admission CRUD, and the admin CLI. `backend/package.json` has `test`, `test:unit`, `test:integration`, and `test:db`; `.github/workflows/ci.yml` runs backend tests, the frontend build, and a non-blocking dependency audit. Tests use temporary auth and admission DBs and do not touch the real ones.
 
-- Auth integration tests for register/login/logout/me, 401/409/429, cookie flags, and rate limits against a temporary auth DB.
-- API integration tests for success/400/404 with an authenticated session.
-- A small unit test for `parsePagination`, `toNumber`, and password validation.
-- An import smoke test against a temporary admission DB.
-- A frontend build/test job.
+Still missing:
+
+- API integration tests for the public admission data routes (success/400/404) with an authenticated session.
+- An import smoke test against a temporary admission DB in CI.
+- Frontend unit/E2E tests; the production build is covered in CI.
+- Lint/format checks.
+- Committed admin browser E2E (the 19-check smoke was manual/temporary).
 
 ### KI-13 — Empty catches (Fixed)
 
@@ -247,7 +253,7 @@ All 2,617 score rows have `nam = 2025`; the UI and product name say 2026. This i
 
 ### KI-16 — Production deployment (Open)
 
-No reverse proxy, SPA fallback, TLS, health check, process manager, or CI configuration exists. Production auth additionally requires HTTPS, `NODE_ENV=production`, and the correct `APP_ORIGIN`; `TRUST_PROXY=1` is safe only behind a trusted proxy. The current setup is local-development only.
+No reverse proxy, SPA fallback, TLS, health check, process manager, or CI deployment configuration exists. Production auth/admin additionally requires HTTPS, `NODE_ENV=production`, the correct `APP_ORIGIN`, production `ADMIN_CSRF_SECRET`/`ADMIN_IP_HASH_SECRET`, and optionally `ADMIN_ALLOWED_IPS`; `TRUST_PROXY=1` is safe only behind a trusted proxy. The current setup is local-development only.
 
 ### KI-17 — CSV/zero-score import (Fixed in code; rebuild pending)
 
@@ -276,16 +282,18 @@ A real rebuild is required to apply this to the live DB.
 **Fixed in this session**:
 
 - Admission data APIs and feature routes require an authenticated session.
-- CORS now uses an explicit origin allowlist with credentials; auth POSTs additionally reject untrusted `Origin`.
-- Added auth rate limits, a 10 kB JSON body limit, security headers, and generic login errors.
-- Passwords use scrypt; cookies are HttpOnly/SameSite=Lax and `Secure` in production; sessions store only token hashes.
+- CORS now uses an explicit origin allowlist with credentials; auth/admin POSTs additionally reject untrusted `Origin`.
+- Added auth/admin rate limits, a 10 kB JSON body limit (2 MB for admin), security headers, and generic login errors.
+- Passwords use scrypt; cookies are HttpOnly/SameSite=Lax (admin: Strict) and `Secure` in production; sessions store only token hashes.
+- Admin area has a separate cookie, CSRF token, optional IP allowlist, audit log with hashed IPs, and no public link; `/admin` is noindex and disallowed in `robots.txt`.
 
 **Still open**:
 
 - `rehypeRaw` renders raw HTML from proposal Markdown. The source is currently trusted project data; sanitize it if proposals ever become user-generated.
-- No CSP and no request/audit logging.
+- No CSP and no request logging.
 - Rate limits are in-memory per process; they are not shared across instances.
-- Do not expose the API publicly without HTTPS, correct `APP_ORIGIN`, and these residual controls.
+- Admin MFA/TOTP is not implemented.
+- Do not expose the API publicly without HTTPS, correct `APP_ORIGIN`, production admin secrets, and these residual controls.
 
 ### KI-19 — Stats semantics (Open)
 
@@ -315,7 +323,7 @@ These values need a product definition before being shown as a single summary.
 - Heading components now pass through the generated `id`.
 - Fenced code blocks are skipped during TOC extraction.
 
-**Verification**: `npm run build` passes (2,642 modules). A server-render check with two repeated headings produced matching IDs in the TOC and HTML (`i-chương-trình-chuẩn` and `i-chương-trình-chuẩn-1`). A browser click-through of duplicate TOC entries is still recommended.
+**Verification**: `npm run build` passes (2,661 modules). A server-render check with two repeated headings produced matching IDs in the TOC and HTML (`i-chương-trình-chuẩn` and `i-chương-trình-chuẩn-1`). A browser click-through of duplicate TOC entries is still recommended.
 
 ### KI-22 — Auth operational limits (Open)
 
@@ -324,9 +332,35 @@ The auth feature is secure for a single-process local/demo deployment, but these
 - **Single process assumption**: `sql.js` keeps the auth DB in RAM and writes the whole file. Two backend processes writing the same `auth.db` can overwrite each other. Run one process or move to a shared database before horizontal scaling.
 - **In-memory rate limits**: counters reset on restart and are not shared across instances.
 - **Username enumeration**: `POST /api/auth/register` returns `409` for an existing username. Login stays generic. This is an intentional usability tradeoff; switch to a generic response if enumeration becomes a concern.
-- **No account recovery**: no password reset/change, email verification, MFA, admin roles, or CAPTCHA.
+- **No self-service recovery**: no forgot-password flow, email verification, MFA/TOTP, or CAPTCHA. Admin-issued temporary passwords and `change-password` are the current recovery path.
 - **Operational**: back up `auth.db`; keep it out of web roots; use HTTPS, `NODE_ENV=production`, and the real `APP_ORIGIN`.
-- **Residual web hardening**: no CSP and no request/audit logging (KI-18).
+- **Residual web hardening**: no CSP and no request logging (KI-18).
+
+### KI-23 — Admin panel operational limits (Open)
+
+- **Single process**: `sql.js` loads the whole admission DB (~109 MiB) into RAM. Admin writes are serialized only within one process; multiple backend processes must not write the same DB file.
+- **Write-block is manual recovery**: if the atomic save/reload fails, the engine blocks further writes and returns `503`. The operator must inspect/restore the DB and restart the server; there is no automatic rollback to the last backup.
+- **Local backups only**: `backend/database/backups/` keeps at most 5 files. There is no offsite copy, encryption, or scheduled retention. A disk failure loses both the DB and its backups.
+- **Force delete leaves dependents**: after explicit confirmation, deleting a referenced `truong` removes the school row but does not cascade or rewrite `diem_chuan`/`de_an_tuyen_sinh` references. They become orphans by design; the audit records `admin.data.force_delete`.
+- **No admin MFA**: a stolen admin password plus a valid origin is enough to log in. TOTP is deferred to optional Phase 6.
+- **Audit is not tamper-evident**: entries are append-only through the app and retained 180 days, but a filesystem-level attacker can edit `auth.db`.
+- **CLI default path**: `npm run admin:create` reads/writes the real `auth.db` unless `LEARNPATH_AUTH_DB_PATH` is set. Always set a temp path for experiments.
+
+### KI-24 — Real auth DB migrated v1→v2 outside the test suite (Mitigated)
+
+**Observed 2026-10-23**:
+
+- `backend/database/auth.db`: 69,632 bytes, `user_version = 2`, 1 user, 0 sessions, 0 admins.
+- SHA-256 `210F8C45E4A32DDAAF80F2B7977F4ED970E071C08EAAD2B2CBAEB45F183A3577`.
+- Migration timestamp `2026-10-23 21:15:14` local.
+- Backup: `backend/database/auth.db.v1-backup-20261023141514808` (32,768 bytes, v1, 1 user, 0 sessions).
+- Older baseline: `%TEMP%\learnpath-auth-baseline-20261023-194414.db` (32,768 bytes, v1, 1 user, 1 session).
+
+**Impact**: the single real user is preserved; sessions were not preserved (0 now). Admin login is unavailable until an admin is created with the CLI. Tests and smoke runs used temp DBs and did not cause this.
+
+**Cause**: not established. Do not claim a specific cause without evidence.
+
+**Mitigation**: v1 backup exists; docs disclose the state; the app supports v2. **Decision (2026-10-23): keep v2; do not restore v1.** The operator will create the first admin with `cd backend && npm run admin:create -- --username <name>`. No restore was performed.
 
 ## Out of scope / not changed
 
@@ -334,5 +368,5 @@ The auth feature is secure for a single-process local/demo deployment, but these
 - The real school mappings and missing school rows were not edited.
 - The ranking calculation was not changed.
 - The score year was not changed.
-- No test accounts were written to the default auth DB; it was absent after testing.
+- Tests and admin smoke used temporary auth/admission DBs. The real `auth.db` was found migrated to v2 (KI-24); it has 0 admins and no test accounts were added.
 - No commit, push, or PR was made.

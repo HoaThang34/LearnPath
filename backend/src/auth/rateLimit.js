@@ -3,6 +3,9 @@ const LOGIN_PAIR_LIMIT = 5;
 const LOGIN_IP_LIMIT = 30;
 const REGISTER_WINDOW_MS = 60 * 60 * 1000;
 const REGISTER_LIMIT = 10;
+const ADMIN_LOGIN_WINDOW_MS = 15 * 60 * 1000;
+const ADMIN_LOGIN_PAIR_LIMIT = 5;
+const ADMIN_LOGIN_IP_LIMIT = 20;
 const MAX_BUCKETS = 10000;
 
 const buckets = new Map();
@@ -65,6 +68,14 @@ function registerIpKey(ip) {
   return `register:ip:${ip}`;
 }
 
+function adminLoginPairKey(ip, usernameLower) {
+  return `admin:login:pair:${ip}|${usernameLower}`;
+}
+
+function adminLoginIpKey(ip) {
+  return `admin:login:ip:${ip}`;
+}
+
 function checkLoginRateLimit(ip, usernameLower) {
   const now = Date.now();
   const pair = checkRate(loginPairKey(ip, usernameLower), LOGIN_PAIR_LIMIT, LOGIN_WINDOW_MS, now);
@@ -94,8 +105,50 @@ function recordRegisterAttempt(ip) {
   increment(registerIpKey(ip), REGISTER_WINDOW_MS, Date.now());
 }
 
+function checkAdminLoginRateLimit(ip, usernameLower) {
+  const now = Date.now();
+  const pair = checkRate(
+    adminLoginPairKey(ip, usernameLower),
+    ADMIN_LOGIN_PAIR_LIMIT,
+    ADMIN_LOGIN_WINDOW_MS,
+    now
+  );
+  if (!pair.allowed) return pair;
+
+  const byIp = checkRate(
+    adminLoginIpKey(ip),
+    ADMIN_LOGIN_IP_LIMIT,
+    ADMIN_LOGIN_WINDOW_MS,
+    now
+  );
+  if (!byIp.allowed) return byIp;
+
+  return { allowed: true, retryAfter: 0 };
+}
+
+function recordAdminLoginFailure(ip, usernameLower) {
+  const now = Date.now();
+  const pair = increment(
+    adminLoginPairKey(ip, usernameLower),
+    ADMIN_LOGIN_WINDOW_MS,
+    now
+  );
+  increment(adminLoginIpKey(ip), ADMIN_LOGIN_WINDOW_MS, now);
+  return pair.count;
+}
+
+function clearAdminLoginFailures(ip, usernameLower) {
+  buckets.delete(adminLoginPairKey(ip, usernameLower));
+}
+
 function getClientIp(req) {
   return req.ip || req.socket?.remoteAddress || 'unknown';
+}
+
+// Test-only hook. Never call this from request handling code.
+function resetRateLimitState() {
+  buckets.clear();
+  lastCleanupAt = 0;
 }
 
 module.exports = {
@@ -104,10 +157,17 @@ module.exports = {
   LOGIN_IP_LIMIT,
   REGISTER_WINDOW_MS,
   REGISTER_LIMIT,
+  ADMIN_LOGIN_WINDOW_MS,
+  ADMIN_LOGIN_PAIR_LIMIT,
+  ADMIN_LOGIN_IP_LIMIT,
   checkLoginRateLimit,
   recordLoginFailure,
   clearLoginFailures,
   checkRegisterRateLimit,
   recordRegisterAttempt,
+  checkAdminLoginRateLimit,
+  recordAdminLoginFailure,
+  clearAdminLoginFailures,
   getClientIp,
+  resetRateLimitState,
 };

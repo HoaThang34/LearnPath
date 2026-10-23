@@ -35,13 +35,14 @@ Before reporting completion, read `.agents/TESTING.md`.
 - Frontend: React 18 + Vite 5 + Tailwind 3 + local shadcn-style components; runs at `http://localhost:5173`.
 - Backend: Express 4 + `sql.js` (SQLite WASM); runs at `http://localhost:3001`.
 - Admission DB: `backend/database/learnpath.db` (~109 MiB), **not committed**. `npm run db:init` rebuilds it.
-- Auth DB: `backend/database/auth.db` (separate, small, auto-created, **not committed**). Override with `LEARNPATH_AUTH_DB_PATH`; never point it at `learnpath.db`.
-- Authentication: username/password with scrypt hashes and server-side sessions. `/api/auth/*` and `/api/health` are public; all admission data APIs and the four feature pages require login.
+- Auth DB: `backend/database/auth.db` (separate, small, auto-created, **not committed**, schema v2). It holds users, sessions, admins, admin sessions, and the admin audit log. Override with `LEARNPATH_AUTH_DB_PATH`; never point it at `learnpath.db`.
+- Authentication: username/password with scrypt hashes and server-side sessions. `/api/auth/*` and `/api/health` are public; all admission data APIs and the four feature pages require login. Locked/deleted users are rejected, and accounts with a temporary password must change it before using data APIs.
+- Admin area: hidden `/admin` with a **separate** admin login, cookie, CSRF token, and audit log. Admin APIs live under `/api/admin/*`; there is no public link. Bootstrap the first admin with `cd backend && npm run admin:create -- --username <name>`.
 - Current admission DB counts: **245 blocks**, 260 schools, 2,617 score rows, 307 proposals, 1,131,975 candidates.
 - The importer now parses **281 blocks** from the source files. The live DB still has 245 until a rebuild is approved.
 - API uses the relative `/api` path; Vite proxies it to the backend. Production needs a reverse proxy, HTTPS, `APP_ORIGIN`, and SPA fallback.
-- UI has 4 protected feature pages plus public `/`, `/dang-nhap`, and `/dang-ky`.
-- Main schema/import source of truth: `backend/src/database/init.js`. `db.js` is the runtime loader only; it refuses to start when the main DB is missing (see KI-01). Auth schema is in `backend/src/auth/authDb.js`.
+- UI has 4 protected feature pages plus public `/`, `/dang-nhap`, `/dang-ky`, `/doi-mat-khau`, and the hidden `/admin` area.
+- Main schema/import source of truth: `backend/src/database/init.js`. `db.js` is the runtime loader only; it refuses to start when the main DB is missing (see KI-01). Auth schema is in `backend/src/auth/authDb.js`; admin data writes go through `backend/src/admin/admissionWrite.js`.
 
 ## Minimum verification
 
@@ -75,6 +76,15 @@ Invoke-RestMethod "$base/api/auth/logout" -Method Post -WebSession $session
 For isolated auth tests, set `LEARNPATH_AUTH_DB_PATH` to a temporary file before starting the backend. Do not point it at `learnpath.db`; the server rejects that path.
 
 ```bash
+# One-time admin bootstrap (writes auth.db). For tests, point LEARNPATH_AUTH_DB_PATH at a temp file first.
+cd backend
+npm run admin:create -- --username <name>
+npm run admin:create -- --list
+```
+
+Admin smoke requires the admin cookie plus the `X-Admin-CSRF` header returned by `/api/admin/auth/login`. The admin panel is at `/admin`; it is not linked from the public UI.
+
+```bash
 # Read-only DB inspection (does not modify the DB)
 node .agents/scripts/inspect-db.js
 ```
@@ -84,7 +94,8 @@ For an isolated import test, point `LEARNPATH_DB_PATH` at a temporary file befor
 ## Ask the user first
 
 - Changing schema, rebuilding/importing the whole DB, deleting data, changing the year or the meaning of a score.
-- Changing API response/query contracts, authentication/session behavior, rate limits, or the auth DB schema.
+- Changing API response/query contracts, authentication/session behavior, rate limits, the auth DB schema, admin session/CSRF policy, or audit retention.
+- Changing the admission write engine, backup policy, or force-delete semantics.
 - Adding a dependency, changing the build tool, or changing the folder structure.
 - Ambiguous business rules (for example: which subject combination, which score scale, how ranking is defined).
 - A failing baseline (build/API) whose cause is outside the task scope.
