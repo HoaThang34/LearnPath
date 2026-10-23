@@ -208,7 +208,7 @@ The original “stale detail on normal navigation” claim was not reproduced. A
 
 ### KI-10 — Intro video autoplay fallback (Mitigated)
 
-First `play()` rejection now sets muted mode and retries. The retry rejection is caught and logged. The video file is still 4,120,347 bytes and has no compression strategy (see KI-20).
+Unmuted autoplay is attempted first with full volume. If rejected by browser autoplay policy, it falls back to muted playback with a global gesture listener (`click`, `touchstart`, `pointerdown`, `keydown`) and a pulsing UI hint so the sound is unmuted seamlessly on the first interaction. The video file is still 4,120,347 bytes and has no compression strategy (see KI-20).
 
 ### KI-11 — Bundle size (Open)
 
