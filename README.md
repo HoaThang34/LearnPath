@@ -24,7 +24,7 @@ Website giúp học sinh THPT tra cứu đề án tuyển sinh, điểm chuẩn,
 | Biểu đồ / Markdown | Recharts; react-markdown + remark-gfm + rehype-raw + rehype-slug |
 | Backend | Express 4 + `sql.js` 1.10 (SQLite WASM) |
 | Database tuyển sinh | `backend/database/learnpath.db` (~109 MiB), **không commit**; API công khai chỉ đọc, admin ghi qua engine an toàn |
-| Auth DB | `backend/database/auth.db` (nhỏ, tự tạo, **không commit**, schema v5), ghi được; chứa user, session, admin, audit, user_profiles và dữ liệu phân tích nghề nghiệp |
+| Auth DB | `backend/database/auth.db` (nhỏ, tự tạo, **không commit**, schema v6), ghi được; chứa user, session, admin, audit, user_profiles, điểm cấu trúc dùng chung và dữ liệu phân tích nghề nghiệp |
 | Import dữ liệu | `backend/src/database/init.js` |
 | Xác thực | Tự viết bằng Node `crypto` (scrypt) + session phía server; admin dùng cookie/CSRF/session riêng; hồ sơ cá nhân |
 | Test / lint / CI | Backend `node:test` suite (84 test) + GitHub Actions (tests, build, non-blocking audit); lint/E2E chưa có |

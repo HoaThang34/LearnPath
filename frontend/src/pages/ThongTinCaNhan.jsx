@@ -29,20 +29,7 @@ import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/AuthContext'
 import { getUserProfile, updateUserProfile } from '@/lib/api'
 import { cn } from '@/lib/utils'
-
-const SUGGESTED_SUBJECTS = [
-  'Toán',
-  'Ngữ văn',
-  'Tiếng Anh',
-  'Vật lý',
-  'Hóa học',
-  'Sinh học',
-  'Lịch sử',
-  'Địa lí',
-  'Tin học',
-  'Công nghệ',
-  'Giáo dục kinh tế và pháp luật',
-]
+import AcademicScoresEditor, { inferAcademicClassLevel, inferAcademicTerm } from '@/components/AcademicScoresEditor'
 
 const SUGGESTED_CERTIFICATES = [
   'IELTS',
@@ -108,6 +95,8 @@ export default function ThongTinCaNhan() {
   const [passwordSubmitting, setPasswordSubmitting] = useState(false)
   const [passwordError, setPasswordError] = useState('')
   const [passwordSuccess, setPasswordSuccess] = useState('')
+  const [academicClassLevel, setAcademicClassLevel] = useState('10')
+  const [academicTerm, setAcademicTerm] = useState('Kỳ 1')
 
   const [form, setForm] = useState({
     ho_va_ten: '',
@@ -131,11 +120,14 @@ export default function ThongTinCaNhan() {
       .then((response) => {
         if (!active) return
         const p = response.data.data.profile
+        const scores = Array.isArray(p.diem_lop) ? p.diem_lop : []
+        setAcademicClassLevel(inferAcademicClassLevel(p.lop, scores))
+        setAcademicTerm(inferAcademicTerm(scores))
         setForm({
           ho_va_ten: p.ho_va_ten || '',
           lop: p.lop || '',
           truong: p.truong || '',
-          diem_lop: Array.isArray(p.diem_lop) ? p.diem_lop : [],
+          diem_lop: scores,
           chung_chi: Array.isArray(p.chung_chi) ? p.chung_chi : [],
           truong_muc_tieu: p.truong_muc_tieu || '',
           nganh_muc_tieu: p.nganh_muc_tieu || '',
@@ -156,29 +148,6 @@ export default function ThongTinCaNhan() {
       active = false
     }
   }, [])
-
-  // Điểm các môn trên lớp
-  const handleAddSubject = () => {
-    setForm((prev) => ({
-      ...prev,
-      diem_lop: [...prev.diem_lop, { mon: '', diem: '' }],
-    }))
-  }
-
-  const handleUpdateSubject = (index, field, value) => {
-    setForm((prev) => {
-      const updated = [...prev.diem_lop]
-      updated[index] = { ...updated[index], [field]: value }
-      return { ...prev, diem_lop: updated }
-    })
-  }
-
-  const handleRemoveSubject = (index) => {
-    setForm((prev) => ({
-      ...prev,
-      diem_lop: prev.diem_lop.filter((_, i) => i !== index),
-    }))
-  }
 
   // Chứng chỉ
   const handleAddCertificate = () => {
@@ -291,12 +260,15 @@ export default function ThongTinCaNhan() {
       }
 
       const response = await updateUserProfile(payload)
-      const p = response.data.data.profile
-      setForm({
+        const p = response.data.data.profile
+        const scores = Array.isArray(p.diem_lop) ? p.diem_lop : []
+        setAcademicClassLevel(inferAcademicClassLevel(p.lop, scores))
+        setAcademicTerm(inferAcademicTerm(scores))
+        setForm({
         ho_va_ten: p.ho_va_ten || '',
         lop: p.lop || '',
         truong: p.truong || '',
-        diem_lop: Array.isArray(p.diem_lop) ? p.diem_lop : [],
+          diem_lop: scores,
         chung_chi: Array.isArray(p.chung_chi) ? p.chung_chi : [],
         truong_muc_tieu: p.truong_muc_tieu || '',
         nganh_muc_tieu: p.nganh_muc_tieu || '',
@@ -492,76 +464,20 @@ export default function ThongTinCaNhan() {
                   Điểm của các môn trên lớp
                 </CardTitle>
                 <CardDescription>
-                  Không cố định số lượng môn. Bạn tự thêm môn học và điểm số đạt được (thang điểm 0 - 10).
+                  Danh sách môn học được chuẩn bị sẵn. Chọn lớp và loại điểm một lần, sau đó nhập điểm cho các môn cần thiết. Dữ liệu được dùng chung với Phân tích năng lực.
                 </CardDescription>
               </div>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleAddSubject}
-                className="h-8 text-xs"
-              >
-                <Plus className="mr-1 h-3.5 w-3.5" />
-                Thêm môn học
-              </Button>
             </div>
           </CardHeader>
           <CardContent className="space-y-3">
-            <datalist id="suggested-subjects">
-              {SUGGESTED_SUBJECTS.map((s) => (
-                <option key={s} value={s} />
-              ))}
-            </datalist>
-
-            {form.diem_lop.length === 0 ? (
-              <div className="rounded-lg border border-dashed py-8 text-center text-sm text-muted-foreground">
-                <BookOpen className="mx-auto mb-2 h-8 w-8 text-muted-foreground/40" />
-                <p>Chưa có môn học nào được thêm.</p>
-                <p className="text-xs text-muted-foreground">
-                  Nhấn nút &ldquo;Thêm môn học&rdquo; ở trên để ghi điểm các môn trên lớp của bạn.
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {form.diem_lop.map((item, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center gap-3 rounded-md border bg-slate-50/60 p-2.5 transition hover:bg-slate-50"
-                  >
-                    <div className="flex-1">
-                      <Input
-                        list="suggested-subjects"
-                        placeholder="Chọn hoặc nhập tên môn (VD: Toán, Vật lý...)"
-                        value={item.mon}
-                        onChange={(e) => handleUpdateSubject(index, 'mon', e.target.value)}
-                        className="bg-white text-sm"
-                      />
-                    </div>
-                    <div className="w-28 sm:w-32">
-                      <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        max="10"
-                        placeholder="Điểm (0 - 10)"
-                        value={item.diem}
-                        onChange={(e) => handleUpdateSubject(index, 'diem', e.target.value)}
-                        className="bg-white text-sm font-mono"
-                      />
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => handleRemoveSubject(index)}
-                      className="rounded-md p-2 text-muted-foreground transition hover:bg-red-50 hover:text-destructive"
-                      title="Xóa môn học này"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
-                  </div>
-                ))}
-              </div>
-            )}
+            <AcademicScoresEditor
+              scores={form.diem_lop}
+              onChange={(scores) => setForm((prev) => ({ ...prev, diem_lop: scores }))}
+              classLevel={academicClassLevel}
+              onClassLevelChange={setAcademicClassLevel}
+              term={academicTerm}
+              onTermChange={setAcademicTerm}
+            />
           </CardContent>
         </Card>
 

@@ -1,6 +1,8 @@
 const { queryAll, queryOne, runSql, lastInsertId, runAuthMutation } = require('./authDb');
 
-const SCORE_TYPES = new Set(['average', 'tx', 'gk', 'hk']);
+const SCORE_TYPES = new Set(['average']);
+const CLASS_LEVELS = new Set(['10', '11', '12']);
+const TERMS = new Set(['Kỳ 1', 'Kỳ 2', 'Cả năm']);
 const MAX_PINS = 5;
 const SUBJECT_ALIASES = {
   Toán: ['toán', 'toan'],
@@ -10,7 +12,7 @@ const SUBJECT_ALIASES = {
   'Sinh học': ['sinh học', 'sinh hoc', 'sinh'],
   'Tiếng Anh': ['tiếng anh', 'tieng anh', 'anh'],
   'Lịch sử': ['lịch sử', 'lich su', 'sử', 'su'],
-  'Địa lý': ['địa lý', 'dia ly', 'địa', 'dia'],
+  'Địa lý': ['địa lý', 'dia ly', 'địa lí', 'dia li', 'địa', 'dia'],
   'Tin học': ['tin học', 'tin hoc'],
 };
 
@@ -30,23 +32,26 @@ function validateScoreRows(input) {
   for (const item of input) {
     const subject = normalizeSubject(item?.subject);
     const term = String(item?.term || '').trim();
-    const schoolYear = String(item?.schoolYear || '').trim();
+    const classLevel = String(item?.classLevel || '').trim();
     const scoreType = String(item?.scoreType || 'average').trim();
+    if (item?.score === '' || item?.score === null || item?.score === undefined) {
+      return { error: `Vui lòng nhập điểm môn "${subject || 'chưa đặt tên'}".` };
+    }
     const score = Number(item?.score);
-    if (!subject || !/^([1-3]|HK[1-3]|CN)$/i.test(term) || !/^\d{4}-\d{4}$/.test(schoolYear) || !SCORE_TYPES.has(scoreType)) {
+    if (!subject || !TERMS.has(term) || !CLASS_LEVELS.has(classLevel) || !SCORE_TYPES.has(scoreType)) {
       return { error: 'Môn học, kỳ, năm học hoặc loại điểm không hợp lệ.' };
     }
     if (!Number.isFinite(score) || score < 0 || score > 10) return { error: `Điểm môn "${subject}" phải từ 0 đến 10.` };
-    const key = [subject, term, schoolYear, scoreType].join('|');
+    const key = [subject, term, classLevel, scoreType].join('|');
     if (seen.has(key)) return { error: `Bị trùng điểm môn "${subject}" trong cùng kỳ/năm học/loại điểm.` };
     seen.add(key);
-    rows.push({ subject, term, schoolYear, score: Math.round(score * 100) / 100, scoreType, source: String(item?.source || 'Học sinh tự nhập').trim().slice(0, 100) });
+    rows.push({ subject, term, classLevel, score: Math.round(score * 100) / 100, scoreType, source: String(item?.source || 'Học sinh tự nhập').trim().slice(0, 100) });
   }
   return { rows };
 }
 
 function getAcademicScores(userId) {
-  return queryAll('SELECT id, subject_name AS subject, term, school_year AS schoolYear, score_type AS scoreType, score, source, updated_at AS updatedAt FROM academic_scores WHERE user_id = ? ORDER BY school_year DESC, term, subject_name', [userId]);
+  return queryAll('SELECT id, subject_name AS subject, term, class_level AS classLevel, score_type AS scoreType, score, source, updated_at AS updatedAt FROM academic_scores WHERE user_id = ? ORDER BY id', [userId]);
 }
 
 async function saveAcademicScores(userId, input) {
@@ -60,8 +65,8 @@ async function saveAcademicScores(userId, input) {
   await runAuthMutation(() => {
     runSql('DELETE FROM academic_scores WHERE user_id = ?', [userId]);
     for (const row of validated.rows) {
-      runSql(`INSERT INTO academic_scores (user_id, subject_name, term, school_year, score_type, score, source, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [userId, row.subject, row.term, row.schoolYear, row.scoreType, row.score, row.source, now]);
+      runSql(`INSERT INTO academic_scores (user_id, subject_name, term, class_level, score_type, score, source, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [userId, row.subject, row.term, row.classLevel, row.scoreType, row.score, row.source, now]);
     }
   });
   return getAcademicScores(userId);
@@ -175,7 +180,9 @@ async function deleteRubric(id) {
 }
 
 function calculateCareerFit(scores, rubricRows) {
-  const scoreBySubject = new Map(scores.map((row) => [`${normalizeSubject(row.subject || row.subject_name)}|${row.scoreType || row.score_type || 'average'}`, Number(row.score)]));
+  const scoreBySubject = new Map(scores
+    .filter((row) => (row.scoreType || row.score_type || 'average') === 'average')
+    .map((row) => [`${normalizeSubject(row.subject || row.subject_name)}|average`, Number(row.score)]));
   const details = rubricRows.map((row) => {
     const subject = row.subject || row.subject_name;
     const score = scoreBySubject.get(`${normalizeSubject(subject)}|average`);

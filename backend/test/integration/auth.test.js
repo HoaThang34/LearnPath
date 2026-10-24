@@ -347,9 +347,9 @@ test('auth API integration', async (t) => {
       lop: '12A1',
       truong: 'THPT Chuyên Hà Nội - Amsterdam',
       diem_lop: [
-        { mon: 'Toán', diem: 9.5 },
-        { mon: 'Vật lý', diem: 9.0 },
-        { mon: 'Hóa học', diem: 8.75 },
+        { mon: 'Toán', ky_hoc: 'Kỳ 1', lop: '12', loai_diem: 'average', diem: 9.5 },
+        { mon: 'Vật lý', ky_hoc: 'Kỳ 1', lop: '12', loai_diem: 'average', diem: 9.0 },
+        { mon: 'Hóa học', ky_hoc: 'Cả năm', lop: '11', loai_diem: 'average', diem: 8.75 },
       ],
       chung_chi: [
         { loai: 'IELTS', diem: '7.5' },
@@ -374,6 +374,8 @@ test('auth API integration', async (t) => {
     assert.equal(saved.diem_lop.length, 3);
     assert.equal(saved.diem_lop[0].mon, 'Toán');
     assert.equal(saved.diem_lop[0].diem, 9.5);
+    assert.equal(saved.diem_lop[0].ky_hoc, 'Kỳ 1');
+    assert.equal(saved.diem_lop[0].lop, '12');
     assert.equal(saved.chung_chi.length, 2);
     assert.equal(saved.chung_chi[0].loai, 'IELTS');
     assert.equal(saved.chung_chi[0].diem, '7.5');
@@ -394,7 +396,7 @@ test('auth API integration', async (t) => {
       method: 'PUT',
       cookie: state.cookie,
       body: {
-        diem_lop: [{ mon: 'Toán', diem: 12 }],
+        diem_lop: [{ mon: 'Toán', ky_hoc: 'Kỳ 1', lop: '12', loai_diem: 'average', diem: 12 }],
       },
     });
     assert.equal(invalidScore.response.status, 400);
@@ -456,7 +458,7 @@ test('auth API integration', async (t) => {
         ho_va_ten: 'Lê Khảo Sát',
         lop: '12 Tin',
         truong: 'THPT Chuyên',
-        diem_lop: [{ mon: 'Toán', diem: 9.8 }],
+       diem_lop: [{ mon: 'Toán', ky_hoc: 'Kỳ 1', lop: '12', loai_diem: 'average', diem: 9.8 }],
         chung_chi: [{ loai: 'IELTS', diem: '8.0' }],
         truong_muc_tieu: 'Đại học Bách khoa Hà Nội',
         nganh_muc_tieu: 'Khoa học máy tính',

@@ -50,7 +50,7 @@ Notes:
 | Charts / Markdown | Recharts; react-markdown + remark-gfm + rehype-raw |
 | Backend | Express 4 + `sql.js` 1.10 (SQLite compiled to WebAssembly) |
 | Admission DB | `backend/database/learnpath.db` (~109 MiB), not committed; public APIs read it, admins write through a guarded engine |
-| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v5), writable |
+| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v6), writable |
 | Import | `backend/src/database/init.js` |
 | Auth | Custom username/password; Node `crypto` scrypt; server-side sessions; separate admin auth/CSRF/audit; `sql.js` auth DB; user profile |
 | Tests / lint / CI | Committed backend `node:test` suite (84 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |

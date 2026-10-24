@@ -116,6 +116,14 @@ Các mục dưới đây là dấu vết source-code đã đọc, không phải 
 - Giới hạn lựa chọn: 1 target và 5 pinned; điểm chuẩn hiển thị năm 2025 và phương thức/thang điểm nguồn.
 - Chưa triển khai AI career chat, bản đồ ngành hoặc sao chép dữ liệu từ EduMindAI.
 
+### Quyết định cập nhật hồ sơ điểm (2026-10-24)
+
+- `Thông tin cá nhân` và `Phân tích năng lực` dùng chung bảng `academic_scores`; không còn lưu hai bản sao điểm độc lập.
+- Mỗi dòng gồm: môn học, kỳ `Kỳ 1/Kỳ 2/Cả năm`, lớp `10/11/12`, loại `TB môn`, điểm 0–10.
+- Các dòng `diem_lop` cũ không có metadata sẽ bị xóa theo yêu cầu người dùng trong migration v5→v6; học sinh nhập lại theo cấu trúc mới.
+- Auth DB thật đã được backup tại `%TEMP%\learnpath-auth-before-profile-scores-v6-20261024-161111.db`, sau migration xác nhận `PRAGMA user_version = 6` và bảng điểm gồm `class_level`, không còn `school_year`.
+- Khám phá ngành chỉ dùng `Điểm thi THPT`; chỉ số khoảng cách dùng tổ hợp 3 môn của snapshot hồ sơ và điểm chuẩn 2025, cap 100%, thiếu môn/tổ hợp trả `null` và UI hiển thị “Chưa đủ dữ liệu”.
+
 ### Phase 3 — So sánh/lưu mục tiêu/ngành quan tâm (cần quyết định schema/API)
 
 - Lưu target/pinned theo khóa ngành ổn định và tiêu chí tuyển sinh cụ thể (trường, ngành, phương thức, khối, năm), không chỉ tên tự do.
@@ -216,5 +224,7 @@ Dừng và hỏi người dùng nếu source-of-truth dữ liệu mâu thuẫn, 
 - `cd backend && npm test`: 90/90 pass. `cd frontend && npm run build`: pass; còn cảnh báo bundle >500 kB như KI-11.
 - Browser smoke dùng auth DB tạm: đăng ký user, mở `/phan-tich-nang-luc`; xác nhận menu, hồ sơ, trạng thái chưa có rubric, danh sách 2025 và phân trang render. Không hoàn tất thao tác browser tương tác sâu.
 - Các smoke trước đó với temp DB đã xác nhận API score save, rubric upsert + invalid weight 400, selection create; fit test xác nhận 100% với coverage 60% khi thiếu một môn.
+- Kiểm thử ownership phát hiện route xóa selection trả 204 khi selection không thuộc user; đã sửa thành 404 và kiểm tra lại bằng temp server (`CROSS_DELETE=404`).
+- Bổ sung xử lý điểm rỗng: trả 400, trong khi điểm 0 vẫn hợp lệ; backend suite sau sửa đạt 91/91.
 - Auth DB thật đã được migration v4→v5 trong lượt trước theo phê duyệt người dùng; bản backup trước migration ở `%LOCALAPPDATA%\Temp\learnpath-auth-before-career-v5-20261024-122124.db`. Follow-up này không ghi thêm dữ liệu thật. Admission DB hash giữ `8D4F42B1F845C2E12DE875D2BBFDCBF0DF3CC7686DC285423189C80CF3559E4D`.
 - Browser smoke backend/frontend đã dừng; không commit/push/PR. Source EduMindAI không bị sửa.

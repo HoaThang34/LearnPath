@@ -300,9 +300,10 @@ Current end-to-end result for this procedure: **19 checks passed** on 2026-10-23
 
 ### Career analysis MVP
 
-- `npm test` includes structured score validation, rubric weight validation, and coverage-aware fit calculation.
+- `npm test` includes structured score validation, rubric weight validation, coverage-aware fit calculation, insufficient-data handling, and empty-vs-zero score handling.
 - Manual/API smoke should use temporary auth and admission paths. Verify `/api/career/scores` rejects invalid scores, `/api/career/overview` returns `coveragePct` and leaves missing subjects as `null`, and admin rubric writes reject weight totals other than 1 with `400`.
 - The user page is `/phan-tich-nang-luc`; the admin rubric page is `/admin_career`. Do not use the real auth DB for test accounts or rubric fixtures.
+- `Thông tin cá nhân` and `/khao-sat` use the same fixed-subject `AcademicScoresEditor`: one class and one common term/type selector, then one score field per subject.
 
 ```bash
 cd frontend

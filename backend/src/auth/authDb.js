@@ -10,7 +10,7 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 5;
+const SCHEMA_VERSION = 6;
 
 let db = null;
 let initPromise = null;
@@ -190,15 +190,15 @@ function createSchema(database) {
       user_id INTEGER NOT NULL,
       subject_name TEXT NOT NULL,
       term TEXT NOT NULL,
-      school_year TEXT NOT NULL,
+      class_level TEXT NOT NULL,
       score_type TEXT NOT NULL DEFAULT 'average',
       score REAL NOT NULL,
       source TEXT,
       updated_at INTEGER NOT NULL,
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-      UNIQUE(user_id, subject_name, term, school_year, score_type)
+      UNIQUE(user_id, subject_name, term, class_level, score_type)
     );
-    CREATE INDEX IF NOT EXISTS idx_academic_scores_user ON academic_scores(user_id, school_year, term);
+    CREATE INDEX IF NOT EXISTS idx_academic_scores_user ON academic_scores(user_id, class_level, term);
     CREATE TABLE IF NOT EXISTS career_selections (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER NOT NULL,
@@ -344,7 +344,7 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version === 1 || version === 2 || version === 3 || version === 4) {
+  if (version >= 1 && version <= 5) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
@@ -388,12 +388,13 @@ function migrateSchema(database, version) {
         database.run(`
           CREATE TABLE IF NOT EXISTS academic_scores (
             id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL,
-            subject_name TEXT NOT NULL, term TEXT NOT NULL, school_year TEXT NOT NULL,
+            subject_name TEXT NOT NULL, term TEXT NOT NULL,
+            class_level TEXT NOT NULL DEFAULT '10',
             score_type TEXT NOT NULL DEFAULT 'average', score REAL NOT NULL, source TEXT,
             updated_at INTEGER NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
-            UNIQUE(user_id, subject_name, term, school_year, score_type)
+            UNIQUE(user_id, subject_name, term, class_level, score_type)
           );
-          CREATE INDEX IF NOT EXISTS idx_academic_scores_user ON academic_scores(user_id, school_year, term);
+          CREATE INDEX IF NOT EXISTS idx_academic_scores_user ON academic_scores(user_id, class_level, term);
           CREATE TABLE IF NOT EXISTS career_selections (
             id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL,
             school_code TEXT, school_name TEXT NOT NULL, major_name TEXT NOT NULL,
@@ -415,6 +416,27 @@ function migrateSchema(database, version) {
             UNIQUE(rubric_id, subject_name)
           );
         `);
+      }
+
+      if (version === 5) {
+        database.run(`
+          DROP TABLE IF EXISTS academic_scores;
+          CREATE TABLE academic_scores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            subject_name TEXT NOT NULL,
+            term TEXT NOT NULL,
+            class_level TEXT NOT NULL DEFAULT '10',
+            score_type TEXT NOT NULL DEFAULT 'average',
+            score REAL NOT NULL,
+            source TEXT,
+            updated_at INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+            UNIQUE(user_id, subject_name, term, class_level, score_type)
+          );
+          CREATE INDEX idx_academic_scores_user ON academic_scores(user_id, class_level, term);
+        `);
+        database.run('UPDATE user_profiles SET diem_lop = ?;', ['[]']);
       }
 
       // Nâng cấp lên v4:

@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from 'react-router-dom'
 import { Loader2 } from 'lucide-react'
 import Layout from './components/Layout'
 import ProtectedRoute from './components/ProtectedRoute'
+import ErrorBoundary from './components/ErrorBoundary'
 import AuthPage from './pages/AuthPage'
 import ChangePasswordPage from './pages/ChangePasswordPage'
 import TrangChu from './pages/TrangChu'
@@ -44,19 +45,21 @@ function App() {
 
   if (isAdminRoute) {
     return (
-      <Suspense fallback={<AdminFallback />}>
-        <Routes>
-          <Route path="/admin" element={<AdminPage />} />
-          <Route path="/admin/*" element={<AdminPage />} />
-          <Route path="/admin_home" element={<AdminPage />} />
-          <Route path="/admin_user" element={<AdminPage />} />
-          <Route path="/admin_survey" element={<AdminPage />} />
-          <Route path="/admin_data" element={<AdminPage />} />
-          <Route path="/admin_career" element={<AdminPage />} />
-          <Route path="/admin_audit" element={<AdminPage />} />
-          <Route path="/admin_*" element={<AdminPage />} />
-        </Routes>
-      </Suspense>
+      <ErrorBoundary>
+        <Suspense fallback={<AdminFallback />}>
+          <Routes>
+            <Route path="/admin" element={<AdminPage />} />
+            <Route path="/admin/*" element={<AdminPage />} />
+            <Route path="/admin_home" element={<AdminPage />} />
+            <Route path="/admin_user" element={<AdminPage />} />
+            <Route path="/admin_survey" element={<AdminPage />} />
+            <Route path="/admin_data" element={<AdminPage />} />
+            <Route path="/admin_career" element={<AdminPage />} />
+            <Route path="/admin_audit" element={<AdminPage />} />
+            <Route path="/admin_*" element={<AdminPage />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     )
   }
 
@@ -65,64 +68,66 @@ function App() {
       {showIntro && <IntroVideo onComplete={handleIntroComplete} />}
       {!showIntro && (
         <Layout>
-          <Routes>
-            <Route path="/" element={<TrangChu />} />
-            <Route path="/dang-nhap" element={<AuthPage mode="login" />} />
-            <Route path="/dang-ky" element={<AuthPage mode="register" />} />
-            <Route path="/doi-mat-khau" element={<ChangePasswordPage />} />
-            <Route
-              path="/de-an"
-              element={
-                <ProtectedRoute>
-                  <DeAnTuyenSinh />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/diem-chuan"
-              element={
-                <ProtectedRoute>
-                  <DiemChuan />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/khoi-thi"
-              element={
-                <ProtectedRoute>
-                  <KhoiThi />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/thu-hang"
-              element={
-                <ProtectedRoute>
-                  <ThuHang />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/thong-tin-ca-nhan"
-              element={
-                <ProtectedRoute>
-                  <ThongTinCaNhan />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/khao-sat"
-              element={
-                <ProtectedRoute>
-                  <KhaoSat />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/phan-tich-nang-luc"
-              element={<ProtectedRoute><PhanTichNangLuc /></ProtectedRoute>}
-            />
-          </Routes>
+          <ErrorBoundary>
+            <Routes>
+              <Route path="/" element={<TrangChu />} />
+              <Route path="/dang-nhap" element={<AuthPage mode="login" />} />
+              <Route path="/dang-ky" element={<AuthPage mode="register" />} />
+              <Route path="/doi-mat-khau" element={<ChangePasswordPage />} />
+              <Route
+                path="/de-an"
+                element={
+                  <ProtectedRoute>
+                    <DeAnTuyenSinh />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/diem-chuan"
+                element={
+                  <ProtectedRoute>
+                    <DiemChuan />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/khoi-thi"
+                element={
+                  <ProtectedRoute>
+                    <KhoiThi />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/thu-hang"
+                element={
+                  <ProtectedRoute>
+                    <ThuHang />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/thong-tin-ca-nhan"
+                element={
+                  <ProtectedRoute>
+                    <ThongTinCaNhan />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/khao-sat"
+                element={
+                  <ProtectedRoute>
+                    <KhaoSat />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/phan-tich-nang-luc"
+                element={<ProtectedRoute><PhanTichNangLuc /></ProtectedRoute>}
+              />
+            </Routes>
+          </ErrorBoundary>
         </Layout>
       )}
     </>

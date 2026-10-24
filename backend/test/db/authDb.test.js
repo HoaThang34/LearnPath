@@ -34,11 +34,11 @@ function cleanupPath(filePath) {
   fs.rmSync(filePath, { force: true });
 }
 
-test('initializes schema v5 in a new auth database', async () => {
+test('initializes schema v6 in a new auth database', async () => {
   await getAuthDb();
 
   assert.equal(fs.existsSync(AUTH_DB_PATH), true);
-  assert.equal(SCHEMA_VERSION, 5);
+  assert.equal(SCHEMA_VERSION, 6);
   assert.equal(queryOne('PRAGMA user_version').user_version, SCHEMA_VERSION);
 
   const tables = queryOne(
@@ -164,7 +164,7 @@ test('refuses a newer schema version', async () => {
   const db = new SQL.Database();
   db.run('CREATE TABLE users (id INTEGER PRIMARY KEY);');
   db.run('CREATE TABLE sessions (token_hash TEXT PRIMARY KEY);');
-  db.run('PRAGMA user_version = 6;');
+  db.run('PRAGMA user_version = 7;');
   fs.writeFileSync(newerPath, Buffer.from(db.export()));
   db.close();
 
@@ -194,7 +194,7 @@ test('refuses an incomplete schema at the current version', async () => {
   const db = new SQL.Database();
   db.run('CREATE TABLE users (id INTEGER PRIMARY KEY);');
   db.run('CREATE TABLE sessions (token_hash TEXT PRIMARY KEY);');
-  db.run('PRAGMA user_version = 5;');
+  db.run('PRAGMA user_version = 6;');
   fs.writeFileSync(incompletePath, Buffer.from(db.export()));
   db.close();
 
@@ -276,7 +276,7 @@ test('migrates a v1 auth database without losing users or sessions', async () =>
   try {
     assert.equal(
       migrated.exec('PRAGMA user_version')[0].values[0][0],
-      5
+      6
     );
 
     const user = migrated.exec(
@@ -409,7 +409,7 @@ test('migrates a v2 auth database and adds user_profiles table', async () => {
 
   const migrated = new SQL.Database(fs.readFileSync(migrationPath));
   try {
-    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 5);
+    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 6);
     const tables = migrated
       .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
       .flatMap((r) => r.values.map((row) => row[0]));
@@ -535,7 +535,7 @@ test('migrates a v3 auth database and adds survey_questions and survey_completed
 
   const migrated = new SQL.Database(fs.readFileSync(migrationPath));
   try {
-    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 5);
+    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 6);
     const tables = migrated
       .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
       .flatMap((r) => r.values.map((row) => row[0]));

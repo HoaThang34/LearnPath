@@ -27,20 +27,7 @@ import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/AuthContext'
 import { getSurveyQuestions, getUserProfile, submitSurvey } from '@/lib/api'
 import { cn } from '@/lib/utils'
-
-const SUGGESTED_SUBJECTS = [
-  'Toán',
-  'Ngữ văn',
-  'Tiếng Anh',
-  'Vật lý',
-  'Hóa học',
-  'Sinh học',
-  'Lịch sử',
-  'Địa lí',
-  'Tin học',
-  'Công nghệ',
-  'Giáo dục kinh tế và pháp luật',
-]
+import AcademicScoresEditor, { inferAcademicClassLevel, inferAcademicTerm } from '@/components/AcademicScoresEditor'
 
 const SUGGESTED_CERTIFICATES = [
   'IELTS',
@@ -90,6 +77,8 @@ export default function KhaoSat() {
   // Danh sách câu hỏi custom của admin
   const [customQuestions, setCustomQuestions] = useState([])
   const [customAnswers, setCustomAnswers] = useState({})
+  const [academicClassLevel, setAcademicClassLevel] = useState('10')
+  const [academicTerm, setAcademicTerm] = useState('Kỳ 1')
 
   // Form câu hỏi cố định
   const [form, setForm] = useState({
@@ -103,10 +92,6 @@ export default function KhaoSat() {
     chung_chi: [],
     khac: '',
   })
-
-  // State thêm điểm môn học
-  const [newMon, setNewMon] = useState('')
-  const [newDiem, setNewDiem] = useState('')
 
   // State thêm chứng chỉ
   const [newCertLoai, setNewCertLoai] = useState('')
@@ -132,6 +117,9 @@ export default function KhaoSat() {
 
         const existingProfile = profileRes.data?.data?.profile
         if (existingProfile) {
+          const scores = Array.isArray(existingProfile.diem_lop) ? existingProfile.diem_lop : []
+          setAcademicClassLevel(inferAcademicClassLevel(existingProfile.lop, scores))
+          setAcademicTerm(inferAcademicTerm(scores))
           setForm({
             ho_va_ten: existingProfile.ho_va_ten || '',
             lop: existingProfile.lop || '',
@@ -141,9 +129,7 @@ export default function KhaoSat() {
             to_hop_mong_muon: Array.isArray(existingProfile.to_hop_mong_muon)
               ? existingProfile.to_hop_mong_muon
               : [],
-            diem_lop: Array.isArray(existingProfile.diem_lop)
-              ? existingProfile.diem_lop
-              : [],
+            diem_lop: scores,
             chung_chi: Array.isArray(existingProfile.chung_chi)
               ? existingProfile.chung_chi
               : [],
@@ -180,33 +166,6 @@ export default function KhaoSat() {
 
   const applyQuickCombination = (combo) => {
     setForm((prev) => ({ ...prev, to_hop_mong_muon: [...combo.subjects] }))
-  }
-
-  // Thêm điểm môn học
-  const handleAddDiemLop = () => {
-    if (!newMon.trim()) return
-    const parsed = Number(newDiem)
-    if (isNaN(parsed) || parsed < 0 || parsed > 10) {
-      alert('Điểm số phải là số hợp lệ từ 0 đến 10.')
-      return
-    }
-
-    setForm((prev) => {
-      const filtered = prev.diem_lop.filter((d) => d.mon !== newMon.trim())
-      return {
-        ...prev,
-        diem_lop: [...filtered, { mon: newMon.trim(), diem: Math.round(parsed * 100) / 100 }],
-      }
-    })
-    setNewMon('')
-    setNewDiem('')
-  }
-
-  const handleRemoveDiemLop = (mon) => {
-    setForm((prev) => ({
-      ...prev,
-      diem_lop: prev.diem_lop.filter((d) => d.mon !== mon),
-    }))
   }
 
   // Thêm chứng chỉ
@@ -592,56 +551,15 @@ export default function KhaoSat() {
                 <span className="text-xs text-muted-foreground font-normal">Tùy chọn</span>
               </Label>
 
-              <div className="flex flex-col sm:flex-row gap-2">
-                <div className="flex-1">
-                  <Input
-                    placeholder="Tên môn (Toán, Văn, Anh...)"
-                    value={newMon}
-                    onChange={(e) => setNewMon(e.target.value)}
-                    list="suggested-subjects-list"
-                  />
-                  <datalist id="suggested-subjects-list">
-                    {SUGGESTED_SUBJECTS.map((s) => (
-                      <option key={s} value={s} />
-                    ))}
-                  </datalist>
-                </div>
-                <div className="w-full sm:w-32">
-                  <Input
-                    type="number"
-                    step="0.1"
-                    min="0"
-                    max="10"
-                    placeholder="Điểm (0-10)"
-                    value={newDiem}
-                    onChange={(e) => setNewDiem(e.target.value)}
-                  />
-                </div>
-                <Button type="button" variant="outline" onClick={handleAddDiemLop}>
-                  <Plus className="mr-1 h-4 w-4" /> Thêm môn
-                </Button>
-              </div>
-
-              {form.diem_lop.length > 0 && (
-                <div className="flex flex-wrap gap-2 pt-2">
-                  {form.diem_lop.map((item) => (
-                    <span
-                      key={item.mon}
-                      className="inline-flex items-center gap-1.5 rounded-full border bg-muted/50 px-3 py-1 text-xs font-medium"
-                    >
-                      <span className="text-muted-foreground">{item.mon}:</span>
-                      <strong className="text-foreground">{item.diem}</strong>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveDiemLop(item.mon)}
-                        className="ml-1 text-muted-foreground hover:text-destructive"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
+              <p className="text-xs text-muted-foreground">Chọn lớp và loại điểm trung bình một lần; danh sách môn được chuẩn bị sẵn để bạn nhập nhanh.</p>
+              <AcademicScoresEditor
+                scores={form.diem_lop}
+                onChange={(scores) => setForm((prev) => ({ ...prev, diem_lop: scores }))}
+                classLevel={academicClassLevel}
+                onClassLevelChange={setAcademicClassLevel}
+                term={academicTerm}
+                onTermChange={setAcademicTerm}
+              />
             </div>
 
             {/* Chứng chỉ */}

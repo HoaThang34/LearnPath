@@ -66,7 +66,7 @@ Environment variables:
 - `reloadDb()` — reload the in-memory DB after the admin write engine replaces the file.
 - `queryAll(sql, params)` / `queryOne(sql, params)` / `run(sql, params)` helpers.
 
-`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 5`; v4→v5 adds structured academic scores, career selections, and admin-managed career rubric tables.
+`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 6`; v5→v6 replaces legacy unstructured profile scores with shared structured academic scores.
 
 `backend/src/admin/admissionWrite.js` serializes admission writes. It creates `backend/database/backups/` (max 5 files), copies the DB before the first write and before destructive operations, runs the mutation inside a transaction, checks `PRAGMA quick_check`, writes atomically, and reloads. A failed reload sets a write-block flag so the server does not continue on a stale or broken DB. Thao tác ghi hỗ trợ chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn và thêm dữ liệu mới thủ công.
 
@@ -323,6 +323,23 @@ Query params: `toan`, `van`, `ly`, `hoa`, `sinh`, `su`, `dia`, `tin_hoc`, `ngoai
 
 Returns total candidates and average scores for Toán, Văn, Lý, Hóa. Averaged fields ignore null values.
 
+### `GET /api/career/majors`
+
+Explores benchmark majors (THPT 2025) with dynamic distance rate calculation for candidates.
+
+| Param | Type | Default | Notes |
+|---|---|---|---|
+| `search` | string | — | `LIKE` on major name |
+| `school` | string | — | `LIKE` on school name |
+| `block` | string | — | `LIKE` on admission block |
+| `classLevel` | string | — | Candidate class level (10/11/12) for score matching |
+| `term` | string | — | Candidate academic term (Kỳ 1/Kỳ 2/Cả năm) |
+| `sort` | enum | `score_desc` | `score_desc`, `score_asc`, `rate_desc`, `rate_asc`, `school_asc`, `school_desc` |
+| `limit` | integer | 50 | Max 100 |
+| `offset` | integer | 0 | >= 0 |
+
+Returns `{ data: rows, total, limit, offset, sort, year: 2025, warning }`. When sorting by `rate_desc` or `rate_asc`, rows with computed rates appear first, with nulls last.
+
 ## 5. DB schema
 
 The schema is created by `backend/src/database/init.js`. `db.js` intentionally has no `CREATE TABLE` statements.
@@ -475,7 +492,7 @@ Indexes: `admin_audit(created_at)`, `admin_audit(admin_id)`. Retention is 180 da
 | `ho_va_ten` | TEXT | Họ và tên học sinh |
 | `lop` | TEXT | Lớp |
 | `truong` | TEXT | Trường THPT |
-| `diem_lop` | TEXT | JSON string của mảng điểm các môn: `[{mon, diem}]` |
+| `diem_lop` | TEXT | Legacy JSON field; current structured scores are stored in `academic_scores` as môn/kỳ/lớp/TB môn/điểm |
 | `chung_chi` | TEXT | JSON string của mảng chứng chỉ: `[{loai, diem}]` |
 | `truong_muc_tieu` | TEXT | Trường đại học mục tiêu |
 | `nganh_muc_tieu` | TEXT | Ngành mục tiêu |

@@ -1,4 +1,5 @@
 const { queryOne, runSql, runAuthMutation } = require('./authDb');
+const { getAcademicScores } = require('./career');
 
 function validateProfileInput(input) {
   if (!input || typeof input !== 'object' || Array.isArray(input)) {
@@ -15,11 +16,14 @@ function validateProfileInput(input) {
   // 1. Điểm các môn trên lớp
   const rawDiemLop = Array.isArray(input.diem_lop) ? input.diem_lop : [];
   const diemLop = [];
-  for (const item of rawDiemLop.slice(0, 30)) {
+  for (const item of rawDiemLop.slice(0, 100)) {
     if (!item || typeof item !== 'object') continue;
     const mon = typeof item.mon === 'string' ? item.mon.trim().slice(0, 100) : '';
     if (!mon) continue;
 
+    const kyHoc = typeof item.ky_hoc === 'string' ? item.ky_hoc.trim() : '';
+    const lop = typeof item.lop === 'string' ? item.lop.trim() : '';
+    const loaiDiem = typeof item.loai_diem === 'string' ? item.loai_diem.trim() : 'average';
     const rawDiem = item.diem;
     if (rawDiem === '' || rawDiem === null || rawDiem === undefined) continue;
 
@@ -28,8 +32,11 @@ function validateProfileInput(input) {
       return { ok: false, error: `Điểm môn "${mon}" phải là số hợp lệ từ 0 đến 10.` };
     }
 
+    if (!['Kỳ 1', 'Kỳ 2', 'Cả năm'].includes(kyHoc) || !['10', '11', '12'].includes(lop) || loaiDiem !== 'average') {
+      return { ok: false, error: `Thông tin kỳ học, lớp hoặc loại điểm của môn "${mon}" không hợp lệ.` };
+    }
     diemLop.push({
-      mon,
+      mon, ky_hoc: kyHoc, lop, loai_diem: loaiDiem,
       diem: Math.round(parsedDiem * 100) / 100,
     });
   }
@@ -92,12 +99,10 @@ function getUserProfile(userId) {
     };
   }
 
-  let diemLop = [];
-  try {
-    diemLop = row.diem_lop ? JSON.parse(row.diem_lop) : [];
-  } catch (e) {
-    diemLop = [];
-  }
+  let diemLop = getAcademicScores(userId).map((score) => ({
+    mon: score.subject, ky_hoc: score.term, lop: score.classLevel,
+    loai_diem: score.scoreType, diem: score.score,
+  }));
 
   let chungChi = [];
   try {
@@ -157,10 +162,10 @@ async function saveUserProfile(userId, input) {
          updated_at = excluded.updated_at`,
       [
         userId,
-        v.ho_va_ten,
+         v.ho_va_ten,
         v.lop,
         v.truong,
-        JSON.stringify(v.diem_lop),
+         '[]',
         JSON.stringify(v.chung_chi),
         v.truong_muc_tieu,
         v.nganh_muc_tieu,
@@ -169,6 +174,15 @@ async function saveUserProfile(userId, input) {
         now,
       ]
     );
+    runSql('DELETE FROM academic_scores WHERE user_id = ?', [userId]);
+    for (const score of v.diem_lop) {
+      runSql(`INSERT INTO academic_scores
+        (user_id, subject_name, term, class_level, score_type, score, source, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [
+        userId, score.mon, score.ky_hoc, score.lop, score.loai_diem,
+        score.diem, 'Hồ sơ cá nhân', now,
+      ]);
+    }
   });
 
   return getUserProfile(userId);

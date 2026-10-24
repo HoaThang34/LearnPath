@@ -7,16 +7,27 @@ process.env.LEARNPATH_AUTH_DB_PATH = path.join(os.tmpdir(), `learnpath-career-un
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { calculateCareerFit, validateScoreRows, validateRubric } = require('../../src/auth/career');
+const { calculateCareerFit, validateScoreRows, validateRubric, saveAcademicScores } = require('../../src/auth/career');
+const { getAuthDb, runSql } = require('../../src/auth/authDb');
+const { getDb } = require('../../src/database/db');
+const { getAdmissionRows } = require('../../src/routes/career');
+
+test('validates THPT distance score inputs through the supported subject data', () => {
+  const scores = [{ subject: 'Toán', scoreType: 'average', score: 8 }, { subject: 'Vật lý', scoreType: 'average', score: 7 }, { subject: 'Hóa học', scoreType: 'average', score: 6 }];
+  assert.equal(scores.reduce((sum, row) => sum + row.score, 0), 21);
+});
 
 test('validates structured academic scores and rejects invalid ranges and duplicates', () => {
-  const valid = validateScoreRows([{ subject: 'toan', term: '1', schoolYear: '2025-2026', scoreType: 'average', score: 8.25 }]);
+  const valid = validateScoreRows([{ subject: 'toan', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 8.25 }]);
   assert.equal(valid.rows[0].subject, 'Toán');
   assert.equal(valid.rows[0].score, 8.25);
-  assert.match(validateScoreRows([{ subject: 'Toán', term: '1', schoolYear: '2025-2026', score: 11 }]).error, /0 đến 10/);
+  assert.match(validateScoreRows([{ subject: 'Toán', term: 'Kỳ 1', classLevel: '12', score: '' }]).error, /Vui lòng nhập điểm/);
+  assert.equal(validateScoreRows([{ subject: 'Toán', term: 'Kỳ 1', classLevel: '12', score: 0 }]).rows[0].score, 0);
+  assert.match(validateScoreRows([{ subject: 'Toán', term: 'Kỳ 3', classLevel: '12', score: 8 }]).error, /không hợp lệ/);
+  assert.match(validateScoreRows([{ subject: 'Toán', term: 'Kỳ 1', classLevel: '12', score: 11 }]).error, /0 đến 10/);
   assert.match(validateScoreRows([
-    { subject: 'Toán', term: '1', schoolYear: '2025-2026', score: 8 },
-    { subject: 'toan', term: '1', schoolYear: '2025-2026', score: 9 },
+    { subject: 'Toán', term: 'Kỳ 1', classLevel: '12', score: 8 },
+    { subject: 'toan', term: 'Kỳ 1', classLevel: '12', score: 9 },
   ]).error, /trùng/);
 });
 
@@ -38,4 +49,93 @@ test('fit uses only present subjects and returns weighted coverage without treat
   assert.equal(fit.coveragePct, 60);
   assert.equal(fit.status, 'partial_data');
   assert.equal(fit.details[1].score, null);
+});
+
+test('fit reports insufficient data when no matching average scores exist', () => {
+  const fit = calculateCareerFit([{ subject: 'Toán', scoreType: 'other', score: 10 }], [
+    { subject_name: 'Toán', weight: 1, threshold: 8 },
+  ]);
+  assert.equal(fit.fitPct, null);
+  assert.equal(fit.coveragePct, 0);
+  assert.equal(fit.status, 'insufficient_data');
+});
+
+test('getAdmissionRows supports sorting by score_desc, score_asc, school_asc, school_desc, rate_desc, rate_asc', async () => {
+  await getDb();
+  await getAuthDb();
+
+  // Test score_desc
+  const scoreDesc = getAdmissionRows({ sort: 'score_desc', limit: 10, offset: 0 });
+  assert.equal(scoreDesc.sort, 'score_desc');
+  assert.ok(scoreDesc.rows.length > 0);
+  for (let i = 1; i < scoreDesc.rows.length; i++) {
+    assert.ok(Number(scoreDesc.rows[i - 1].entryScore) >= Number(scoreDesc.rows[i].entryScore));
+  }
+
+  // Test score_asc
+  const scoreAsc = getAdmissionRows({ sort: 'score_asc', limit: 10, offset: 0 });
+  assert.equal(scoreAsc.sort, 'score_asc');
+  assert.ok(scoreAsc.rows.length > 0);
+  for (let i = 1; i < scoreAsc.rows.length; i++) {
+    assert.ok(Number(scoreAsc.rows[i - 1].entryScore) <= Number(scoreAsc.rows[i].entryScore));
+  }
+
+  // Test school_asc
+  const schoolAsc = getAdmissionRows({ sort: 'school_asc', limit: 10, offset: 0 });
+  assert.equal(schoolAsc.sort, 'school_asc');
+  assert.ok(schoolAsc.rows.length > 0);
+  for (let i = 1; i < schoolAsc.rows.length; i++) {
+    assert.ok(schoolAsc.rows[i - 1].schoolName.localeCompare(schoolAsc.rows[i].schoolName, 'vi') <= 0);
+  }
+
+  // Test school_desc
+  const schoolDesc = getAdmissionRows({ sort: 'school_desc', limit: 10, offset: 0 });
+  assert.equal(schoolDesc.sort, 'school_desc');
+  assert.ok(schoolDesc.rows.length > 0);
+  for (let i = 1; i < schoolDesc.rows.length; i++) {
+    assert.ok(schoolDesc.rows[i - 1].schoolName.localeCompare(schoolDesc.rows[i].schoolName, 'vi') >= 0);
+  }
+
+  // Set up academic scores for candidate to test rate_desc & rate_asc
+  const testUserId = 99999;
+  await saveAcademicScores(testUserId, [
+    { subject: 'Toán', classLevel: '12', term: 'Kỳ 1', scoreType: 'average', score: 8.5 },
+    { subject: 'Vật lý', classLevel: '12', term: 'Kỳ 1', scoreType: 'average', score: 8.0 },
+    { subject: 'Hóa học', classLevel: '12', term: 'Kỳ 1', scoreType: 'average', score: 8.5 },
+  ]);
+
+  const rateDesc = getAdmissionRows({
+    userId: testUserId,
+    classLevel: '12',
+    term: 'Kỳ 1',
+    sort: 'rate_desc',
+    limit: 20,
+    offset: 0,
+  });
+  assert.equal(rateDesc.sort, 'rate_desc');
+  assert.ok(rateDesc.rows.length > 0);
+  // First item must have calculated distanceRate and not null
+  assert.ok(rateDesc.rows[0].distanceRate !== null);
+  for (let i = 1; i < rateDesc.rows.length; i++) {
+    if (rateDesc.rows[i].distanceRate !== null) {
+      assert.ok(rateDesc.rows[i - 1].distanceRate >= rateDesc.rows[i].distanceRate);
+    }
+  }
+
+  const rateAsc = getAdmissionRows({
+    userId: testUserId,
+    classLevel: '12',
+    term: 'Kỳ 1',
+    sort: 'rate_asc',
+    limit: 20,
+    offset: 0,
+  });
+  assert.equal(rateAsc.sort, 'rate_asc');
+  assert.ok(rateAsc.rows.length > 0);
+  // Non-null distanceRates must be ascending
+  for (let i = 1; i < rateAsc.rows.length; i++) {
+    if (rateAsc.rows[i].distanceRate !== null && rateAsc.rows[i - 1].distanceRate !== null) {
+      assert.ok(rateAsc.rows[i - 1].distanceRate <= rateAsc.rows[i].distanceRate);
+    }
+  }
 });
