@@ -400,4 +400,92 @@ test('auth API integration', async (t) => {
     assert.equal(invalidScore.response.status, 400);
     assert.match(invalidScore.data.error, /từ 0 đến 10/i);
   });
+
+  await t.test('submits survey and saves custom questions to profile khac formatted', async () => {
+    const username = `surveyuser_${Date.now()}`;
+    const registered = await request('/api/auth/register', {
+      method: 'POST',
+      body: {
+        username,
+        password: 'Password123',
+        passwordConfirm: 'Password123',
+      },
+    });
+    assert.equal(registered.response.status, 201);
+    assert.equal(registered.data.data.user.surveyCompleted, false);
+
+    const cookie = readCookie(registered.response);
+
+    // Insert an active custom question directly for test
+    const { runSql, lastInsertId } = require('../../src/auth/authDb');
+    runSql(
+      `INSERT INTO survey_questions (question, question_type, is_required, order_index, is_active, created_at, updated_at)
+       VALUES (?, 'text', 1, 1, 1, ?, ?)`,
+      ['Sở thích hoặc thế mạnh của bạn là gì?', Date.now(), Date.now()]
+    );
+    const qId = lastInsertId();
+
+    // Check questions endpoint
+    const questionsRes = await request('/api/auth/survey/questions', { cookie });
+    assert.equal(questionsRes.response.status, 200);
+    const qList = questionsRes.data.data.questions;
+    assert.ok(qList.some((q) => q.id === qId));
+
+    // Submit survey with missing required question
+    const incompleteSubmit = await request('/api/auth/survey/submit', {
+      method: 'POST',
+      cookie,
+      body: {
+        ho_va_ten: 'Lê Khảo Sát',
+        lop: '12 Tin',
+        truong: 'THPT Chuyên',
+        truong_muc_tieu: 'ĐHBK',
+        nganh_muc_tieu: 'CNTT',
+        to_hop_mong_muon: ['Toán', 'Vật lý', 'Hóa học'],
+        custom_answers: [],
+      },
+    });
+    assert.equal(incompleteSubmit.response.status, 400);
+    assert.match(incompleteSubmit.data.error, /bắt buộc/i);
+
+    // Full valid submit
+    const submitRes = await request('/api/auth/survey/submit', {
+      method: 'POST',
+      cookie,
+      body: {
+        ho_va_ten: 'Lê Khảo Sát',
+        lop: '12 Tin',
+        truong: 'THPT Chuyên',
+        diem_lop: [{ mon: 'Toán', diem: 9.8 }],
+        chung_chi: [{ loai: 'IELTS', diem: '8.0' }],
+        truong_muc_tieu: 'Đại học Bách khoa Hà Nội',
+        nganh_muc_tieu: 'Khoa học máy tính',
+        to_hop_mong_muon: ['Toán', 'Vật lý', 'Tin học'],
+        custom_answers: [
+          {
+            id: qId,
+            question: 'Sở thích hoặc thế mạnh của bạn là gì?',
+            answer: 'Thích lập trình thi đấu và nghiên cứu AI',
+          },
+        ],
+      },
+    });
+    assert.equal(submitRes.response.status, 200);
+    assert.equal(submitRes.data.data.user.surveyCompleted, true);
+
+    const savedProfile = submitRes.data.data.profile;
+    assert.equal(savedProfile.ho_va_ten, 'Lê Khảo Sát');
+    assert.equal(savedProfile.lop, '12 Tin');
+    assert.equal(savedProfile.truong, 'THPT Chuyên');
+    assert.equal(savedProfile.truong_muc_tieu, 'Đại học Bách khoa Hà Nội');
+    assert.equal(
+      savedProfile.khac,
+      'Sở thích hoặc thế mạnh của bạn là gì? - Thích lập trình thi đấu và nghiên cứu AI'
+    );
+
+    // Verify /me reflects surveyCompleted: true
+    const meRes = await request('/api/auth/me', { cookie });
+    assert.equal(meRes.response.status, 200);
+    assert.equal(meRes.data.data.user.surveyCompleted, true);
+  });
 });

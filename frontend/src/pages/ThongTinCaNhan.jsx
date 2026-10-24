@@ -783,7 +783,7 @@ export default function ThongTinCaNhan() {
               Khác (Sở thích, tính cách, thế mạnh...)
             </CardTitle>
             <CardDescription>
-              Lưu trữ tự do dưới dạng văn bản về tính cách, sở trường, sở thích hay những định hướng cá nhân của bạn.
+              Lưu trữ tự do dưới dạng văn bản về tính cách, sở trường, sở thích, câu trả lời khảo sát từ quản trị viên (định dạng: Câu hỏi - Câu trả lời) hay những định hướng cá nhân của bạn.
             </CardDescription>
           </CardHeader>
           <CardContent>

@@ -10,7 +10,7 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 3;
+const SCHEMA_VERSION = 4;
 
 let db = null;
 let initPromise = null;
@@ -130,6 +130,7 @@ function createSchema(database) {
       updated_at           INTEGER,
       last_login_at        INTEGER,
       must_change_password INTEGER NOT NULL DEFAULT 0,
+      survey_completed     INTEGER NOT NULL DEFAULT 0,
       deleted_at           INTEGER
     );
   `);
@@ -164,6 +165,25 @@ function createSchema(database) {
     );
   `);
 
+  database.run(`
+    CREATE TABLE IF NOT EXISTS survey_questions (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      question      TEXT NOT NULL,
+      question_type TEXT NOT NULL DEFAULT 'text'
+                    CHECK (question_type IN ('text', 'textarea')),
+      placeholder   TEXT,
+      is_required   INTEGER NOT NULL DEFAULT 0,
+      order_index   INTEGER NOT NULL DEFAULT 0,
+      is_active     INTEGER NOT NULL DEFAULT 1,
+      created_at    INTEGER NOT NULL,
+      updated_at    INTEGER NOT NULL
+    );
+  `);
+
+  database.run(
+    'CREATE INDEX IF NOT EXISTS idx_survey_questions_order ON survey_questions(order_index, is_active);'
+  );
+
   createAdminSchema(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
 }
@@ -177,6 +197,7 @@ function verifySchema(database) {
     'admin_sessions',
     'admin_audit',
     'user_profiles',
+    'survey_questions',
   ];
   const missingTables = requiredTables.filter((table) => !tables.includes(table));
 
@@ -190,6 +211,7 @@ function verifySchema(database) {
     'updated_at',
     'last_login_at',
     'must_change_password',
+    'survey_completed',
     'deleted_at',
   ];
   const userColumns = tables.includes('users') ? getColumnNames(database, 'users') : [];
@@ -214,7 +236,30 @@ function verifySchema(database) {
     (column) => !adminSessionColumns.includes(column)
   );
 
-  if (missingTables.length || missingUserColumns.length || missingAdminSessionColumns.length) {
+  const requiredSurveyQuestionColumns = [
+    'id',
+    'question',
+    'question_type',
+    'placeholder',
+    'is_required',
+    'order_index',
+    'is_active',
+    'created_at',
+    'updated_at',
+  ];
+  const surveyQuestionColumns = tables.includes('survey_questions')
+    ? getColumnNames(database, 'survey_questions')
+    : [];
+  const missingSurveyQuestionColumns = requiredSurveyQuestionColumns.filter(
+    (column) => !surveyQuestionColumns.includes(column)
+  );
+
+  if (
+    missingTables.length ||
+    missingUserColumns.length ||
+    missingAdminSessionColumns.length ||
+    missingSurveyQuestionColumns.length
+  ) {
     throw new Error(
       'Auth database schema is incomplete. Restore the auth database from backup ' +
         'or remove it to recreate it only when account loss is acceptable.'
@@ -233,7 +278,7 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version === 1 || version === 2) {
+  if (version === 1 || version === 2 || version === 3) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
@@ -254,22 +299,57 @@ function migrateSchema(database, version) {
         createAdminSchema(database);
       }
 
+      if (version === 1 || version === 2) {
+        database.run(`
+          CREATE TABLE IF NOT EXISTS user_profiles (
+            user_id          INTEGER PRIMARY KEY,
+            ho_va_ten        TEXT,
+            lop              TEXT,
+            truong           TEXT,
+            diem_lop         TEXT,
+            chung_chi        TEXT,
+            truong_muc_tieu  TEXT,
+            nganh_muc_tieu   TEXT,
+            to_hop_mong_muon TEXT,
+            khac             TEXT,
+            updated_at       INTEGER NOT NULL,
+            FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+          );
+        `);
+      }
+
+      // Nâng cấp lên v4:
+      ensureColumn(database, 'users', 'survey_completed', 'INTEGER NOT NULL DEFAULT 0');
+
+      // Đánh dấu các user đã có hồ sơ cá nhân là đã hoàn thành khảo sát
       database.run(`
-        CREATE TABLE IF NOT EXISTS user_profiles (
-          user_id          INTEGER PRIMARY KEY,
-          ho_va_ten        TEXT,
-          lop              TEXT,
-          truong           TEXT,
-          diem_lop         TEXT,
-          chung_chi        TEXT,
-          truong_muc_tieu  TEXT,
-          nganh_muc_tieu   TEXT,
-          to_hop_mong_muon TEXT,
-          khac             TEXT,
-          updated_at       INTEGER NOT NULL,
-          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        UPDATE users
+           SET survey_completed = 1
+         WHERE id IN (
+           SELECT user_id FROM user_profiles
+            WHERE (ho_va_ten IS NOT NULL AND TRIM(ho_va_ten) != '')
+               OR (truong_muc_tieu IS NOT NULL AND TRIM(truong_muc_tieu) != '')
+         );
+      `);
+
+      database.run(`
+        CREATE TABLE IF NOT EXISTS survey_questions (
+          id            INTEGER PRIMARY KEY AUTOINCREMENT,
+          question      TEXT NOT NULL,
+          question_type TEXT NOT NULL DEFAULT 'text'
+                        CHECK (question_type IN ('text', 'textarea')),
+          placeholder   TEXT,
+          is_required   INTEGER NOT NULL DEFAULT 0,
+          order_index   INTEGER NOT NULL DEFAULT 0,
+          is_active     INTEGER NOT NULL DEFAULT 1,
+          created_at    INTEGER NOT NULL,
+          updated_at    INTEGER NOT NULL
         );
       `);
+
+      database.run(
+        'CREATE INDEX IF NOT EXISTS idx_survey_questions_order ON survey_questions(order_index, is_active);'
+      );
 
       database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
       database.run('COMMIT');

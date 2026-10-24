@@ -88,4 +88,11 @@ export const deleteTableRow = (table, id, payload) =>
 // Audit
 export const listAudit = (params) => adminApi.get('/audit', { params });
 
+// Survey questions
+export const getAdminSurveyQuestions = () => adminApi.get('/survey/questions');
+export const createAdminSurveyQuestion = (payload) => adminApi.post('/survey/questions', payload);
+export const createSampleSurveyQuestions = () => adminApi.post('/survey/questions/sample');
+export const updateAdminSurveyQuestion = (id, payload) => adminApi.put(`/survey/questions/${id}`, payload);
+export const deleteAdminSurveyQuestion = (id) => adminApi.delete(`/survey/questions/${id}`);
+
 export default adminApi;

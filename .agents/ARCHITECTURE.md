@@ -66,7 +66,7 @@ Environment variables:
 - `reloadDb()` — reload the in-memory DB after the admin write engine replaces the file.
 - `queryAll(sql, params)` / `queryOne(sql, params)` / `run(sql, params)` helpers.
 
-`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 2`.
+`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 4`.
 
 `backend/src/admin/admissionWrite.js` serializes admission writes. It creates `backend/database/backups/` (max 5 files), copies the DB before the first write and before destructive operations, runs the mutation inside a transaction, checks `PRAGMA quick_check`, writes atomically, and reloads. A failed reload sets a write-block flag so the server does not continue on a stale or broken DB. Thao tác ghi hỗ trợ chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn và thêm dữ liệu mới thủ công.
 
@@ -78,11 +78,13 @@ Environment variables:
 | `/dang-nhap` | `pages/AuthPage.jsx` | Public | `/api/auth/login`, `/api/auth/me` |
 | `/dang-ky` | `pages/AuthPage.jsx` | Public | `/api/auth/register` |
 | `/doi-mat-khau` | `pages/ChangePasswordPage.jsx` | Authenticated | `/api/auth/change-password` |
-| `/admin/*` | `pages/AdminPage.jsx` (lazy) | Admin cookie | `/api/admin/*` |
+| `/admin/*`, `/admin_*` | `pages/AdminPage.jsx` (lazy) | Admin cookie | `/api/admin/*` |
 | `/de-an` | `pages/DeAnTuyenSinh.jsx` | Protected | `/api/de-an`, `/api/de-an/:maTruong` |
 | `/diem-chuan` | `pages/DiemChuan.jsx` | Protected | `/api/diem-chuan`, `/phuong-thuc`, `/stats` |
 | `/khoi-thi` | `pages/KhoiThi.jsx` | Protected | `/api/khoi-thi`, `/api/khoi-thi/:maKhoi`, `/api/diem-chuan` |
 | `/thu-hang` | `pages/ThuHang.jsx` | Protected | `/api/diem-thi/ranking`, `/api/diem-thi/stats` |
+| `/thong-tin-ca-nhan` | `pages/ThongTinCaNhan.jsx` | Protected | `/api/auth/profile` |
+| `/khao-sat` | `pages/KhaoSat.jsx` | Protected | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
 
 Implementation notes:
 
@@ -90,9 +92,9 @@ Implementation notes:
 - `AuthContext` calls `/api/auth/me` on startup, exposes `login`, `register`, `logout`, and `changePassword`, and clears auth state on a `401`.
 - `ProtectedRoute` redirects guests to `/dang-nhap?redirect=<encoded target>`; the auth page returns there after login/register. Users with `mustChangePassword` are redirected to `/doi-mat-khau` before any protected page or data API.
 - The session token is **not** stored in localStorage, sessionStorage, or JS-readable state; the browser holds only the HttpOnly cookie.
-- `/admin/*` is lazy-loaded outside `Layout`, has no public link, sets `document.title` and a `noindex,nofollow` meta tag, and uses `frontend/src/lib/adminApi.js` with its own cookie/CSRF handling. A user `401` must not redirect an admin to `/dang-nhap`.
+- `/admin/*` and `/admin_*` (`/admin_home`, `/admin_user`, `/admin_survey`, `/admin_data`, `/admin_audit`) are lazy-loaded outside `Layout`, have no public links, set `document.title` and a `noindex,nofollow` meta tag, and use `frontend/src/lib/adminApi.js` with its own cookie/CSRF handling. A user `401` must not redirect an admin to `/dang-nhap`.
 - The admin CSRF token lives in memory only; a reload fetches it again from `/api/admin/auth/me`. The `admin:unauthorized` event clears the admin UI without touching user auth.
-- `frontend/public/robots.txt` disallows `/admin` and `/api/`.
+- `frontend/public/robots.txt` disallows `/admin`, `/admin_`, and `/api/`.
 - Pages have loading, empty, and error states. Do not reintroduce empty `catch` blocks.
 - The Benchmark scores page triggers the score request when a method is selected; search/sort/block filters reset pagination to page 1.
 - A request-id guard prevents a late response from replacing a newer selection.
@@ -379,9 +381,14 @@ Indexes: `ma_truong`, `phuong_thuc`, `to_hop_mon`.
 
 ### Auth DB (`auth.db`)
 
-Created, migrated, and version-checked by `backend/src/auth/authDb.js`; it is **separate from the admission schema** and is never imported by `init.js`. The current schema is **v2** (`PRAGMA user_version = 2`).
+Created, migrated, and version-checked by `backend/src/auth/authDb.js`; it is **separate from the admission schema** and is never imported by `init.js`. The current schema is **v4** (`PRAGMA user_version = 4`).
 
-v1 → v2 migration adds `users.status`, `updated_at`, `last_login_at`, `must_change_password`, `deleted_at`, creates `admins`, `admin_sessions`, and `admin_audit`, and writes a backup named `auth.db.v1-backup-<timestamp>` next to the DB before changing anything. The migration runs in a transaction. Opening a DB with a newer version or missing required tables aborts startup; it never silently recreates a populated auth DB.
+Migrations:
+- v1 → v2: adds `users.status`, `updated_at`, `last_login_at`, `must_change_password`, `deleted_at`, creates `admins`, `admin_sessions`, and `admin_audit`.
+- v2 → v3: adds `user_profiles` (họ tên, lớp, trường, điểm các môn, chứng chỉ, trường/ngành mục tiêu, tổ hợp mong muốn, khác).
+- v3 → v4: adds `users.survey_completed` (đánh dấu tài khoản đã hoàn thành khảo sát) và bảng `survey_questions` (câu hỏi khảo sát tùy chỉnh do admin cấu hình).
+
+Mỗi lần di chuyển phiên bản đều tự động sao lưu bản backup có gắn dấu thời gian `auth.db.v${version}-backup-<timestamp>` trước khi chạy transaction nâng cấp.
 
 #### `users`
 
@@ -396,6 +403,7 @@ v1 → v2 migration adds `users.status`, `updated_at`, `last_login_at`, `must_ch
 | `updated_at` | INTEGER | Last profile/status/password change |
 | `last_login_at` | INTEGER | Last successful login |
 | `must_change_password` | INTEGER NOT NULL | `1` after admin create/reset; data APIs return `403 PASSWORD_CHANGE_REQUIRED` until cleared |
+| `survey_completed` | INTEGER NOT NULL | `0` for new accounts; `1` once survey is submitted |
 | `deleted_at` | INTEGER | Set on soft delete, cleared on restore |
 
 #### `sessions`
@@ -457,6 +465,38 @@ Indexes: `admin_sessions(admin_id)`, `admin_sessions(expires_at)`. At most 3 liv
 | `created_at` | INTEGER NOT NULL | Unix epoch milliseconds |
 
 Indexes: `admin_audit(created_at)`, `admin_audit(admin_id)`. Retention is 180 days; cleanup runs opportunistically at admin login.
+
+#### `user_profiles`
+
+| Column | Type | Notes |
+|---|---|---|
+| `user_id` | INTEGER PRIMARY KEY | References `users(id)` ON DELETE CASCADE |
+| `ho_va_ten` | TEXT | Họ và tên học sinh |
+| `lop` | TEXT | Lớp |
+| `truong` | TEXT | Trường THPT |
+| `diem_lop` | TEXT | JSON string của mảng điểm các môn: `[{mon, diem}]` |
+| `chung_chi` | TEXT | JSON string của mảng chứng chỉ: `[{loai, diem}]` |
+| `truong_muc_tieu` | TEXT | Trường đại học mục tiêu |
+| `nganh_muc_tieu` | TEXT | Ngành mục tiêu |
+| `to_hop_mong_muon` | TEXT | JSON string của mảng 3 môn thi: `["Toán", "Vật lý", "Hóa học"]` |
+| `khac` | TEXT | Freestyle text; bao gồm câu trả lời khảo sát tùy chỉnh (`Câu hỏi - Câu trả lời từ user`) |
+| `updated_at` | INTEGER NOT NULL | Epoch milliseconds |
+
+#### `survey_questions`
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT | |
+| `question` | TEXT NOT NULL | Nội dung câu hỏi khảo sát tùy chỉnh |
+| `question_type` | TEXT NOT NULL DEFAULT 'text' | `'text'` (văn bản ngắn) hoặc `'textarea'` (đoạn văn) |
+| `placeholder` | TEXT | Gợi ý nhập liệu |
+| `is_required` | INTEGER NOT NULL DEFAULT 0 | 1 nếu bắt buộc, 0 nếu không |
+| `order_index` | INTEGER NOT NULL DEFAULT 0 | Thứ tự hiển thị trong bài khảo sát |
+| `is_active` | INTEGER NOT NULL DEFAULT 1 | 1 nếu đang bật, 0 nếu đã tắt |
+| `created_at` | INTEGER NOT NULL | Epoch milliseconds |
+| `updated_at` | INTEGER NOT NULL | Epoch milliseconds |
+
+Indexes: `survey_questions(order_index, is_active)`.
 
 - `saveAuthDb()` exports to a temp file, fsyncs it, and renames it over `auth.db`; on Windows it first moves the previous file aside so the replacement stays close to atomic. The file is given mode `0600` where supported.
 - Auth mutations are serialized through `runAuthMutation()`. `reloadAuthDb()` reopens the file after an external replacement (used by tests/CLI); the server does not hot-reload auth writes from another process.

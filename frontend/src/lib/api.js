@@ -29,6 +29,10 @@ export const changePassword = (payload) => api.post('/auth/change-password', pay
 export const getUserProfile = () => api.get('/auth/profile');
 export const updateUserProfile = (payload) => api.put('/auth/profile', payload);
 
+// Survey
+export const getSurveyQuestions = () => api.get('/auth/survey/questions');
+export const submitSurvey = (payload) => api.post('/auth/survey/submit', payload);
+
 // Diem Chuan
 export const getDiemChuan = (params) => api.get('/diem-chuan', { params });
 export const getDiemChuanStats = () => api.get('/diem-chuan/stats');

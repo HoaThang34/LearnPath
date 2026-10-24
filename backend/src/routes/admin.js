@@ -5,6 +5,7 @@ const adminOverviewRoutes = require('./adminOverview');
 const adminUserRoutes = require('./adminUsers');
 const adminDataRoutes = require('./adminData');
 const adminAuditRoutes = require('./adminAudit');
+const adminSurveyRoutes = require('./adminSurvey');
 
 const router = express.Router();
 
@@ -50,6 +51,7 @@ router.use('/overview', adminOverviewRoutes);
 router.use('/users', adminUserRoutes);
 router.use('/data', adminDataRoutes);
 router.use('/audit', adminAuditRoutes);
+router.use('/survey', adminSurveyRoutes);
 
 router.use((req, res) => {
   res.status(404).json({ error: 'Không tìm thấy API quản trị.' });

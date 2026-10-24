@@ -34,6 +34,7 @@ const {
 } = require('../auth/session');
 const { requireTrustedOrigin } = require('../auth/origin');
 const { getUserProfile, saveUserProfile } = require('../auth/userProfile');
+const { getActiveSurveyQuestions, submitSurvey } = require('../auth/survey');
 
 const router = express.Router();
 
@@ -60,6 +61,7 @@ function toPublicUser(row, createdAt) {
     username: row.username,
     status: row.status || 'active',
     mustChangePassword: Boolean(Number(row.must_change_password || 0)),
+    surveyCompleted: Boolean(Number(row.survey_completed || 0)),
     createdAt: createdAt || new Date(Number(row.created_at)).toISOString(),
   };
 }
@@ -117,6 +119,7 @@ router.post('/register', async (req, res, next) => {
           username: validation.username,
           status: 'active',
           mustChangePassword: false,
+          surveyCompleted: false,
           createdAt: new Date(now).toISOString(),
         },
       },
@@ -149,7 +152,7 @@ router.post('/login', async (req, res, next) => {
     await getAuthDb();
 
     const row = queryOne(
-      `SELECT id, username, password_hash, created_at, status, must_change_password
+      `SELECT id, username, password_hash, created_at, status, must_change_password, survey_completed
          FROM users
         WHERE username_lower = ?`,
       [validation.usernameLower]
@@ -228,6 +231,29 @@ router.put('/profile', requireAuth, requirePasswordChanged, async (req, res, nex
   }
 });
 
+router.get('/survey/questions', async (req, res, next) => {
+  try {
+    await getAuthDb();
+    const questions = getActiveSurveyQuestions();
+    return res.json({ data: { questions } });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.post('/survey/submit', requireAuth, requirePasswordChanged, async (req, res, next) => {
+  try {
+    await getAuthDb();
+    const result = await submitSurvey(req.user.id, req.body);
+    return res.json({ data: result });
+  } catch (error) {
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+    return next(error);
+  }
+});
+
 router.post('/change-password', requireAuth, async (req, res, next) => {
   const validation = validateChangePassword(req.body);
   if (!validation.ok) {
@@ -236,9 +262,10 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
 
   try {
     await getAuthDb();
-    const row = queryOne('SELECT id, username, password_hash, created_at FROM users WHERE id = ?', [
-      req.user.id,
-    ]);
+    const row = queryOne(
+      'SELECT id, username, password_hash, created_at, survey_completed FROM users WHERE id = ?',
+      [req.user.id]
+    );
 
     if (!row) {
       clearSessionCookie(res);
@@ -276,6 +303,7 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
           username: row.username,
           status: 'active',
           mustChangePassword: false,
+          surveyCompleted: Boolean(Number(row.survey_completed || 0)),
           createdAt: new Date(Number(row.created_at)).toISOString(),
         },
       },

@@ -578,6 +578,84 @@ test('admin API integration', async (t) => {
     state.latestCsrf = fresh.csrf;
   });
 
+  await t.test('manages custom survey questions with audit trail', async () => {
+    // 1. Create
+    const createRes = await request('/api/admin/survey/questions', {
+      method: 'POST',
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+      body: {
+        question: 'Bạn có dự định du học không?',
+        questionType: 'text',
+        placeholder: 'Ví dụ: Có / Chưa rõ...',
+        isRequired: true,
+        orderIndex: 2,
+        isActive: true,
+      },
+    });
+    assert.equal(createRes.response.status, 201);
+    const createdId = createRes.data.data.id;
+    assert.ok(createdId > 0);
+    assert.equal(createRes.data.data.question, 'Bạn có dự định du học không?');
+    assert.equal(createRes.data.data.isRequired, true);
+
+    // 2. List
+    const listRes = await request('/api/admin/survey/questions', {
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+    });
+    assert.equal(listRes.response.status, 200);
+    assert.ok(listRes.data.data.some((q) => q.id === createdId));
+
+    // 3. Update
+    const updateRes = await request(`/api/admin/survey/questions/${createdId}`, {
+      method: 'PUT',
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+      body: {
+        question: 'Bạn có dự định du học sau đại học không?',
+        questionType: 'textarea',
+        placeholder: 'Chi tiết kế hoạch...',
+        isRequired: false,
+        orderIndex: 3,
+        isActive: true,
+      },
+    });
+    assert.equal(updateRes.response.status, 200);
+    assert.equal(updateRes.data.data.question, 'Bạn có dự định du học sau đại học không?');
+    assert.equal(updateRes.data.data.questionType, 'textarea');
+    assert.equal(updateRes.data.data.isRequired, false);
+
+    // 4. Delete
+    const deleteRes = await request(`/api/admin/survey/questions/${createdId}`, {
+      method: 'DELETE',
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+    });
+    assert.equal(deleteRes.response.status, 204);
+
+    // 5. Seed sample questions
+    const seedRes = await request('/api/admin/survey/questions/sample', {
+      method: 'POST',
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+    });
+    assert.equal(seedRes.response.status, 201);
+    assert.equal(seedRes.data.count, 5);
+    assert.equal(seedRes.data.data.length, 5);
+
+    // Check audit entries
+    const auditRes = await request('/api/admin/audit?limit=20', {
+      cookie: state.latestCookie,
+    });
+    assert.equal(auditRes.response.status, 200);
+    const actions = auditRes.data.data.map((entry) => entry.action);
+    assert.ok(actions.includes('admin.survey_question.create'));
+    assert.ok(actions.includes('admin.survey_question.update'));
+    assert.ok(actions.includes('admin.survey_question.delete'));
+    assert.ok(actions.includes('admin.survey_question.seed_sample'));
+  });
+
   await t.test('lists audit entries without secrets', async () => {
     const result = await request('/api/admin/audit?limit=100', {
       cookie: state.latestCookie,

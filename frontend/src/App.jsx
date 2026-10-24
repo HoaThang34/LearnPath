@@ -11,6 +11,7 @@ import DiemChuan from './pages/DiemChuan'
 import KhoiThi from './pages/KhoiThi'
 import ThuHang from './pages/ThuHang'
 import ThongTinCaNhan from './pages/ThongTinCaNhan'
+import KhaoSat from './pages/KhaoSat'
 import IntroVideo from './components/IntroVideo'
 
 const AdminPage = lazy(() => import('./pages/AdminPage'))
@@ -27,7 +28,9 @@ function AdminFallback() {
 function App() {
   const location = useLocation()
   const isAdminRoute =
-    location.pathname === '/admin' || location.pathname.startsWith('/admin/')
+    location.pathname === '/admin' ||
+    location.pathname.startsWith('/admin/') ||
+    location.pathname.startsWith('/admin_')
 
   const [showIntro, setShowIntro] = useState(() => {
     return !sessionStorage.getItem('hasSeenIntro')
@@ -42,7 +45,14 @@ function App() {
     return (
       <Suspense fallback={<AdminFallback />}>
         <Routes>
+          <Route path="/admin" element={<AdminPage />} />
           <Route path="/admin/*" element={<AdminPage />} />
+          <Route path="/admin_home" element={<AdminPage />} />
+          <Route path="/admin_user" element={<AdminPage />} />
+          <Route path="/admin_survey" element={<AdminPage />} />
+          <Route path="/admin_data" element={<AdminPage />} />
+          <Route path="/admin_audit" element={<AdminPage />} />
+          <Route path="/admin_*" element={<AdminPage />} />
         </Routes>
       </Suspense>
     )
@@ -95,6 +105,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ThongTinCaNhan />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/khao-sat"
+              element={
+                <ProtectedRoute>
+                  <KhaoSat />
                 </ProtectedRoute>
               }
             />

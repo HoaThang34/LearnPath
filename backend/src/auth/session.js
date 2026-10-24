@@ -88,7 +88,7 @@ async function getSessionUser(req) {
   await getAuthDb();
 
   const row = queryOne(
-    `SELECT u.id, u.username, u.created_at, u.status, u.must_change_password, s.expires_at
+    `SELECT u.id, u.username, u.created_at, u.status, u.must_change_password, u.survey_completed, s.expires_at
        FROM sessions s
        JOIN users u ON u.id = s.user_id
       WHERE s.token_hash = ? AND s.expires_at > ? AND u.status = 'active'`,
@@ -102,6 +102,7 @@ async function getSessionUser(req) {
     username: row.username,
     status: row.status,
     mustChangePassword: Boolean(Number(row.must_change_password || 0)),
+    surveyCompleted: Boolean(Number(row.survey_completed || 0)),
     createdAt: new Date(Number(row.created_at)).toISOString(),
   };
 }

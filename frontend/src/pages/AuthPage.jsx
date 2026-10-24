@@ -113,6 +113,9 @@ export default function AuthPage({ mode = 'login' }) {
     if (user.mustChangePassword) {
       return <Navigate to="/doi-mat-khau" replace />
     }
+    if (isRegister || !user.surveyCompleted) {
+      return <Navigate to="/khao-sat" replace />
+    }
     return <Navigate to={redirectTo} replace />
   }
 

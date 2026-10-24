@@ -12,6 +12,8 @@ import {
   ShieldCheck,
   User,
   UserPlus,
+  Sparkles,
+  ChevronRight,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button, buttonVariants } from './ui/button'
@@ -252,6 +254,26 @@ export default function Layout({ children }) {
           </div>
         )}
       </header>
+
+      {user && !user.surveyCompleted && location.pathname !== '/khao-sat' && (
+        <div className="bg-gradient-to-r from-primary to-indigo-600 text-primary-foreground py-2.5 px-4 shadow-sm border-b">
+          <div className="container mx-auto flex flex-col sm:flex-row items-center justify-between gap-2 text-xs sm:text-sm">
+            <div className="flex items-center gap-2">
+              <Sparkles className="h-4 w-4 shrink-0 text-amber-300 animate-pulse" />
+              <span>
+                👋 Chào mừng bạn! Hãy hoàn thành <strong>bài khảo sát khởi đầu</strong> để kích hoạt đầy đủ tính năng tư vấn và cá nhân hóa lộ trình tuyển sinh.
+              </span>
+            </div>
+            <Link
+              to="/khao-sat"
+              className="shrink-0 inline-flex items-center gap-1.5 rounded-full bg-white px-3.5 py-1 text-xs font-semibold text-primary shadow-sm hover:bg-slate-100 transition-colors"
+            >
+              <span>Làm khảo sát ngay</span>
+              <ChevronRight className="h-3.5 w-3.5" />
+            </Link>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">

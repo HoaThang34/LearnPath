@@ -1,5 +1,7 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import {
+  ClipboardList,
   Database,
   LayoutDashboard,
   LogOut,
@@ -13,29 +15,71 @@ import AdminOverview from './AdminOverview'
 import UsersPanel from './UsersPanel'
 import DataPanel from './DataPanel'
 import AuditPanel from './AuditPanel'
+import SurveySettingsPanel from './SurveySettingsPanel'
 
 const NAV_ITEMS = [
-  { id: 'overview', label: 'Tổng quan', icon: LayoutDashboard },
-  { id: 'users', label: 'Người dùng', icon: Users },
-  { id: 'data', label: 'Dữ liệu', icon: Database },
-  { id: 'audit', label: 'Nhật ký', icon: ScrollText },
+  {
+    id: 'overview',
+    path: '/admin_home',
+    alias: ['/admin', '/admin/', '/admin/overview'],
+    label: 'Tổng quan',
+    icon: LayoutDashboard,
+  },
+  {
+    id: 'users',
+    path: '/admin_user',
+    alias: ['/admin/users'],
+    label: 'Người dùng',
+    icon: Users,
+  },
+  {
+    id: 'survey',
+    path: '/admin_survey',
+    alias: ['/admin/survey'],
+    label: 'Cài đặt khảo sát',
+    icon: ClipboardList,
+  },
+  {
+    id: 'data',
+    path: '/admin_data',
+    alias: ['/admin/data'],
+    label: 'Dữ liệu',
+    icon: Database,
+  },
+  {
+    id: 'audit',
+    path: '/admin_audit',
+    alias: ['/admin/audit'],
+    label: 'Nhật ký',
+    icon: ScrollText,
+  },
 ]
 
-const PANELS = {
-  overview: AdminOverview,
-  users: UsersPanel,
-  data: DataPanel,
-  audit: AuditPanel,
-}
-
 export default function AdminShell({ admin, onLogout }) {
-  const [active, setActive] = useState('overview')
+  const location = useLocation()
+  const navigate = useNavigate()
+
   const [selectedTable, setSelectedTable] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
 
+  const activeItem =
+    NAV_ITEMS.find(
+      (item) => item.path === location.pathname || item.alias?.includes(location.pathname)
+    ) || NAV_ITEMS[0]
+
+  useEffect(() => {
+    if (location.pathname === '/admin' || location.pathname === '/admin/') {
+      navigate('/admin_home', { replace: true })
+    }
+  }, [location.pathname, navigate])
+
+  useEffect(() => {
+    document.title = `Quản trị LearnPath - ${activeItem.label}`
+  }, [activeItem])
+
   const handleNavigateToData = (table) => {
     if (table) setSelectedTable(table)
-    setActive('data')
+    navigate('/admin_data')
   }
 
   const handleLogout = async () => {
@@ -83,17 +127,17 @@ export default function AdminShell({ admin, onLogout }) {
           <nav className="sticky top-16 space-y-1 p-3" aria-label="Điều hướng quản trị">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon
-              const isActive = active === item.id
+              const isActive = activeItem.id === item.id
               return (
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setActive(item.id)}
+                  onClick={() => navigate(item.path)}
                   aria-current={isActive ? 'page' : undefined}
                   className={cn(
                     'flex w-full items-center gap-3 rounded-md px-3 py-2 text-left text-sm font-medium transition-colors',
                     isActive
-                      ? 'bg-slate-900 text-white'
+                      ? 'bg-slate-900 text-white shadow-sm'
                       : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
                   )}
                 >
@@ -112,12 +156,12 @@ export default function AdminShell({ admin, onLogout }) {
           >
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon
-              const isActive = active === item.id
+              const isActive = activeItem.id === item.id
               return (
                 <button
                   key={item.id}
                   type="button"
-                  onClick={() => setActive(item.id)}
+                  onClick={() => navigate(item.path)}
                   aria-current={isActive ? 'page' : undefined}
                   className={cn(
                     'flex shrink-0 items-center gap-2 rounded-md px-3 py-2 text-sm font-medium',
@@ -134,18 +178,19 @@ export default function AdminShell({ admin, onLogout }) {
           </nav>
 
           <main className="p-4 sm:p-6">
-            {active === 'overview' && (
+            {activeItem.id === 'overview' && (
               <AdminOverview admin={admin} onNavigateToData={handleNavigateToData} />
             )}
-            {active === 'users' && <UsersPanel admin={admin} />}
-            {active === 'data' && (
+            {activeItem.id === 'users' && <UsersPanel admin={admin} />}
+            {activeItem.id === 'survey' && <SurveySettingsPanel admin={admin} />}
+            {activeItem.id === 'data' && (
               <DataPanel
                 admin={admin}
                 initialTable={selectedTable}
                 onTableChange={setSelectedTable}
               />
             )}
-            {active === 'audit' && <AuditPanel admin={admin} />}
+            {activeItem.id === 'audit' && <AuditPanel admin={admin} />}
           </main>
         </div>
       </div>
