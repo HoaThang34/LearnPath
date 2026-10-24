@@ -55,4 +55,13 @@ export const getDeAnByMaTruong = (maTruong) => api.get(`/de-an/${maTruong}`);
 // Diem Thi
 export const getRanking = (params) => api.get('/diem-thi/ranking', { params });
 
+// Career guidance
+export const getCareerOverview = (params) => api.get('/career/overview', params ? { params } : undefined);
+export const getCareerScores = () => api.get('/career/scores');
+export const saveCareerScores = (scores) => api.put('/career/scores', { scores });
+export const getCareerSelections = () => api.get('/career/selections');
+export const addCareerSelection = (selection) => api.post('/career/selections', selection);
+export const removeCareerSelection = (id) => api.delete(`/career/selections/${id}`);
+export const getCareerMajors = (params) => api.get('/career/majors', { params });
+
 export default api;

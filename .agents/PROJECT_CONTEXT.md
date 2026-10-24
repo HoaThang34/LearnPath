@@ -30,6 +30,7 @@
 | THPTQG ranking | `/thu-hang` | Enter scores → rank and distribution chart (login required) | `/api/diem-thi/ranking`, `/api/diem-thi/stats` |
 | Personal Profile | `/thong-tin-ca-nhan` | Xem/điền thông tin: họ tên, lớp, trường, điểm các môn, chứng chỉ (IELTS, TSA, HSA...), mục tiêu, tổ hợp thi 3 môn, freestyle | `/api/auth/profile` |
 | Onboarding Survey | `/khao-sat` | Khảo sát thông tin tuyển sinh khởi đầu: câu hỏi cố định lưu vào profile, câu hỏi custom của admin lưu vào `khac` (định dạng `Câu hỏi - Câu trả lời`) | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
+| Career analysis | `/phan-tich-nang-luc` | Nhập điểm theo môn/kỳ/năm, chọn snapshot, xem fit theo rubric có độ phủ, khám phá và lưu lựa chọn điểm chuẩn 2025 | `/api/career/*` |
 
 Notes:
 
@@ -49,7 +50,7 @@ Notes:
 | Charts / Markdown | Recharts; react-markdown + remark-gfm + rehype-raw |
 | Backend | Express 4 + `sql.js` 1.10 (SQLite compiled to WebAssembly) |
 | Admission DB | `backend/database/learnpath.db` (~109 MiB), not committed; public APIs read it, admins write through a guarded engine |
-| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v4), writable |
+| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v5), writable |
 | Import | `backend/src/database/init.js` |
 | Auth | Custom username/password; Node `crypto` scrypt; server-side sessions; separate admin auth/CSRF/audit; `sql.js` auth DB; user profile |
 | Tests / lint / CI | Committed backend `node:test` suite (84 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |

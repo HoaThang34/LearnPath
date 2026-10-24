@@ -56,7 +56,7 @@ Purpose: help the next agent/session understand LearnPath **in a few minutes**, 
 | Current DB | Loaded | 245 blocks, 260 schools, 2,617 score rows, 307 proposals, 1,131,975 candidates |
 | Import source parser | Pass in temp DB | 260 block files → 281 unique codes; 1 file skipped; 12 zero score cells preserved; 5 all-null candidate rows |
 | Browser E2E | Pass (temporary scripts) | 16 auth/route/UI checks; 19 admin checks on temp DBs |
-| Unit/integration tests | Pass 87/87 | Committed `node:test` suite (bổ sung test khảo sát người dùng, custom questions admin CRUD, schema v4 migration); temp auth/admission DBs; real DBs untouched |
+| Unit/integration tests | Pass 90/90 | Backend `node:test` suite (career score/rubric validation, onboarding, custom questions admin CRUD, schema v5 migration); temp auth/admission DBs; real admission DB untouched |
 | CI | Workflow added | `.github/workflows/ci.yml`: backend tests, frontend build, non-blocking audit; not run on GitHub until push |
 | Admission DB integrity | Pass | SHA-256 unchanged after API/UI/admin tests (`8D4F42B1F845C2E12DE875D2BBFDCBF0DF3CC7686DC285423189C80CF3559E4D`) |
 | Real auth DB | Migrated v1→v2 | 69,632 bytes, 1 user, 0 sessions, 0 admins; v1 backup `auth.db.v1-backup-20261023141514808`; cause not established (KI-24) |

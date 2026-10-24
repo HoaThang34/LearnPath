@@ -13,6 +13,7 @@ import ThuHang from './pages/ThuHang'
 import ThongTinCaNhan from './pages/ThongTinCaNhan'
 import KhaoSat from './pages/KhaoSat'
 import IntroVideo from './components/IntroVideo'
+import PhanTichNangLuc from './pages/PhanTichNangLuc'
 
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 
@@ -51,6 +52,7 @@ function App() {
           <Route path="/admin_user" element={<AdminPage />} />
           <Route path="/admin_survey" element={<AdminPage />} />
           <Route path="/admin_data" element={<AdminPage />} />
+          <Route path="/admin_career" element={<AdminPage />} />
           <Route path="/admin_audit" element={<AdminPage />} />
           <Route path="/admin_*" element={<AdminPage />} />
         </Routes>
@@ -115,6 +117,10 @@ function App() {
                   <KhaoSat />
                 </ProtectedRoute>
               }
+            />
+            <Route
+              path="/phan-tich-nang-luc"
+              element={<ProtectedRoute><PhanTichNangLuc /></ProtectedRoute>}
             />
           </Routes>
         </Layout>

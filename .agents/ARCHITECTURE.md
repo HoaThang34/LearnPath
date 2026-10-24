@@ -66,7 +66,7 @@ Environment variables:
 - `reloadDb()` — reload the in-memory DB after the admin write engine replaces the file.
 - `queryAll(sql, params)` / `queryOne(sql, params)` / `run(sql, params)` helpers.
 
-`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 4`.
+`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 5`; v4→v5 adds structured academic scores, career selections, and admin-managed career rubric tables.
 
 `backend/src/admin/admissionWrite.js` serializes admission writes. It creates `backend/database/backups/` (max 5 files), copies the DB before the first write and before destructive operations, runs the mutation inside a transaction, checks `PRAGMA quick_check`, writes atomically, and reloads. A failed reload sets a write-block flag so the server does not continue on a stale or broken DB. Thao tác ghi hỗ trợ chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn và thêm dữ liệu mới thủ công.
 
@@ -85,6 +85,7 @@ Environment variables:
 | `/thu-hang` | `pages/ThuHang.jsx` | Protected | `/api/diem-thi/ranking`, `/api/diem-thi/stats` |
 | `/thong-tin-ca-nhan` | `pages/ThongTinCaNhan.jsx` | Protected | `/api/auth/profile` |
 | `/khao-sat` | `pages/KhaoSat.jsx` | Protected | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
+| `/phan-tich-nang-luc` | `pages/PhanTichNangLuc.jsx` | Protected | `/api/career/overview`, `/api/career/scores`, `/api/career/majors`, `/api/career/selections` |
 
 Implementation notes:
 

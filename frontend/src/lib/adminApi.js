@@ -94,5 +94,8 @@ export const createAdminSurveyQuestion = (payload) => adminApi.post('/survey/que
 export const createSampleSurveyQuestions = () => adminApi.post('/survey/questions/sample');
 export const updateAdminSurveyQuestion = (id, payload) => adminApi.put(`/survey/questions/${id}`, payload);
 export const deleteAdminSurveyQuestion = (id) => adminApi.delete(`/survey/questions/${id}`);
+export const getCareerRubrics = () => adminApi.get('/career/rubrics');
+export const saveCareerRubric = (payload) => adminApi.put('/career/rubrics', payload);
+export const deleteCareerRubric = (id) => adminApi.delete(`/career/rubrics/${id}`);
 
 export default adminApi;

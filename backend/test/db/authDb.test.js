@@ -34,17 +34,17 @@ function cleanupPath(filePath) {
   fs.rmSync(filePath, { force: true });
 }
 
-test('initializes schema v4 in a new auth database', async () => {
+test('initializes schema v5 in a new auth database', async () => {
   await getAuthDb();
 
   assert.equal(fs.existsSync(AUTH_DB_PATH), true);
-  assert.equal(SCHEMA_VERSION, 4);
+  assert.equal(SCHEMA_VERSION, 5);
   assert.equal(queryOne('PRAGMA user_version').user_version, SCHEMA_VERSION);
 
   const tables = queryOne(
     "SELECT group_concat(name, ',') AS names FROM sqlite_master WHERE type = 'table'"
   ).names.split(',');
-  for (const table of ['users', 'sessions', 'admins', 'admin_sessions', 'admin_audit', 'user_profiles', 'survey_questions']) {
+  for (const table of ['users', 'sessions', 'admins', 'admin_sessions', 'admin_audit', 'user_profiles', 'survey_questions', 'academic_scores', 'career_selections', 'career_rubrics', 'career_rubric_subjects']) {
     assert.ok(tables.includes(table), `expected table ${table}`);
   }
 
@@ -164,7 +164,7 @@ test('refuses a newer schema version', async () => {
   const db = new SQL.Database();
   db.run('CREATE TABLE users (id INTEGER PRIMARY KEY);');
   db.run('CREATE TABLE sessions (token_hash TEXT PRIMARY KEY);');
-  db.run('PRAGMA user_version = 5;');
+  db.run('PRAGMA user_version = 6;');
   fs.writeFileSync(newerPath, Buffer.from(db.export()));
   db.close();
 
@@ -194,7 +194,7 @@ test('refuses an incomplete schema at the current version', async () => {
   const db = new SQL.Database();
   db.run('CREATE TABLE users (id INTEGER PRIMARY KEY);');
   db.run('CREATE TABLE sessions (token_hash TEXT PRIMARY KEY);');
-  db.run('PRAGMA user_version = 4;');
+  db.run('PRAGMA user_version = 5;');
   fs.writeFileSync(incompletePath, Buffer.from(db.export()));
   db.close();
 
@@ -276,7 +276,7 @@ test('migrates a v1 auth database without losing users or sessions', async () =>
   try {
     assert.equal(
       migrated.exec('PRAGMA user_version')[0].values[0][0],
-      4
+      5
     );
 
     const user = migrated.exec(
@@ -409,12 +409,15 @@ test('migrates a v2 auth database and adds user_profiles table', async () => {
 
   const migrated = new SQL.Database(fs.readFileSync(migrationPath));
   try {
-    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 4);
+    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 5);
     const tables = migrated
       .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
       .flatMap((r) => r.values.map((row) => row[0]));
     assert.ok(tables.includes('user_profiles'), 'expected user_profiles table in v4');
     assert.ok(tables.includes('survey_questions'), 'expected survey_questions table in v4');
+    assert.ok(tables.includes('academic_scores'), 'expected academic_scores table in v5');
+    assert.ok(tables.includes('career_selections'), 'expected career_selections table in v5');
+    assert.ok(tables.includes('career_rubrics'), 'expected career_rubrics table in v5');
   } finally {
     migrated.close();
   }
@@ -532,11 +535,12 @@ test('migrates a v3 auth database and adds survey_questions and survey_completed
 
   const migrated = new SQL.Database(fs.readFileSync(migrationPath));
   try {
-    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 4);
+    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 5);
     const tables = migrated
       .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
       .flatMap((r) => r.values.map((row) => row[0]));
     assert.ok(tables.includes('survey_questions'), 'expected survey_questions table in v4');
+    assert.ok(tables.includes('academic_scores'), 'expected academic_scores table in v5');
 
     const userCols = migrated
       .exec("PRAGMA table_info(users)")[0]

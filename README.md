@@ -13,6 +13,7 @@ Website giúp học sinh THPT tra cứu đề án tuyển sinh, điểm chuẩn,
 - **Điểm chuẩn** — 2.617 dòng theo 5 phương thức: THPT, ĐGNL HSA, ĐGTD TSA, ĐGNL V-ACT, SAT.
 - **Khối thi** — 245 khối trong DB hiện tại; mã import mới đọc được 281 khối từ nguồn, chờ rebuild; xem trường và ngành theo khối, so sánh tối đa 5 ngành.
 - **Thứ hạng THPTQG** — nhập điểm, xem thứ hạng và biểu đồ phân bố (xem cảnh báo bên dưới).
+- **Phân tích năng lực & Định hướng ngành** — nhập điểm theo môn/kỳ/năm, chọn snapshot, xem phân tích theo rubric có độ phủ, khám phá và lưu ngành mục tiêu/ngành quan tâm theo dữ liệu điểm chuẩn 2025.
 
 ## Tech stack
 
@@ -23,7 +24,7 @@ Website giúp học sinh THPT tra cứu đề án tuyển sinh, điểm chuẩn,
 | Biểu đồ / Markdown | Recharts; react-markdown + remark-gfm + rehype-raw + rehype-slug |
 | Backend | Express 4 + `sql.js` 1.10 (SQLite WASM) |
 | Database tuyển sinh | `backend/database/learnpath.db` (~109 MiB), **không commit**; API công khai chỉ đọc, admin ghi qua engine an toàn |
-| Auth DB | `backend/database/auth.db` (nhỏ, tự tạo, **không commit**, schema v3), ghi được; chứa user, session, admin, admin session, audit và user_profiles |
+| Auth DB | `backend/database/auth.db` (nhỏ, tự tạo, **không commit**, schema v5), ghi được; chứa user, session, admin, audit, user_profiles và dữ liệu phân tích nghề nghiệp |
 | Import dữ liệu | `backend/src/database/init.js` |
 | Xác thực | Tự viết bằng Node `crypto` (scrypt) + session phía server; admin dùng cookie/CSRF/session riêng; hồ sơ cá nhân |
 | Test / lint / CI | Backend `node:test` suite (84 test) + GitHub Actions (tests, build, non-blocking audit); lint/E2E chưa có |
@@ -184,6 +185,10 @@ Base URL: `/api`. Response thành công thường có dạng `{ "data": ... }`; 
 | GET | `/api/khoi-thi/:maKhoi/truong/:maTruong` | Ngành của trường theo khối |
 | GET | `/api/diem-thi/ranking` | Xếp hạng theo điểm nhập vào |
 | GET | `/api/diem-thi/stats` | Thống kê điểm thi |
+| GET/PUT | `/api/career/scores` | Điểm phân tích theo môn/kỳ/năm/loại điểm |
+| GET | `/api/career/overview` | Snapshot, lựa chọn đã lưu và fit/rubric có độ phủ |
+| GET | `/api/career/majors` | Khám phá dòng điểm chuẩn năm 2025 theo bộ lọc |
+| GET/POST/DELETE | `/api/career/selections` | Lưu 1 ngành mục tiêu hoặc tối đa 5 ngành quan tâm |
 
 ### API quản trị
 
@@ -203,6 +208,7 @@ Tất cả nằm dưới `/api/admin`, yêu cầu cookie admin riêng. Request t
 | GET/POST | `/api/admin/data/:table` | Danh sách/tìm kiếm/sắp xếp/phân trang; thêm dòng |
 | GET/PATCH/DELETE | `/api/admin/data/:table/:id` | Chi tiết, sửa, xóa; hỗ trợ `force` sau cảnh báo phụ thuộc |
 | GET | `/api/admin/audit` | Nhật ký quản trị (lọc action/admin/thời gian) |
+| GET/PUT/DELETE | `/api/admin/career/rubrics` | Quản trị rubric tuyển sinh; tổng trọng số phải bằng 1 |
 
 Chi tiết query, response và lỗi: [`.agents/ARCHITECTURE.md`](.agents/ARCHITECTURE.md).
 

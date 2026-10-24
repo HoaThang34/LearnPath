@@ -10,7 +10,7 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 4;
+const SCHEMA_VERSION = 5;
 
 let db = null;
 let initPromise = null;
@@ -184,6 +184,59 @@ function createSchema(database) {
     'CREATE INDEX IF NOT EXISTS idx_survey_questions_order ON survey_questions(order_index, is_active);'
   );
 
+  database.run(`
+    CREATE TABLE IF NOT EXISTS academic_scores (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      subject_name TEXT NOT NULL,
+      term TEXT NOT NULL,
+      school_year TEXT NOT NULL,
+      score_type TEXT NOT NULL DEFAULT 'average',
+      score REAL NOT NULL,
+      source TEXT,
+      updated_at INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      UNIQUE(user_id, subject_name, term, school_year, score_type)
+    );
+    CREATE INDEX IF NOT EXISTS idx_academic_scores_user ON academic_scores(user_id, school_year, term);
+    CREATE TABLE IF NOT EXISTS career_selections (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER NOT NULL,
+      school_code TEXT,
+      school_name TEXT NOT NULL,
+      major_name TEXT NOT NULL,
+      method TEXT NOT NULL,
+      admission_block TEXT,
+      year INTEGER NOT NULL,
+      kind TEXT NOT NULL CHECK (kind IN ('target', 'pinned')),
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_career_selections_user ON career_selections(user_id, kind);
+    CREATE TABLE IF NOT EXISTS career_rubrics (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      school_code TEXT,
+      school_name TEXT NOT NULL,
+      major_name TEXT NOT NULL,
+      method TEXT NOT NULL,
+      admission_block TEXT,
+      year INTEGER NOT NULL,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL,
+      UNIQUE(school_code, school_name, major_name, method, admission_block, year)
+    );
+    CREATE TABLE IF NOT EXISTS career_rubric_subjects (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      rubric_id INTEGER NOT NULL,
+      subject_name TEXT NOT NULL,
+      weight REAL NOT NULL,
+      threshold REAL NOT NULL,
+      FOREIGN KEY (rubric_id) REFERENCES career_rubrics(id) ON DELETE CASCADE,
+      UNIQUE(rubric_id, subject_name)
+    );
+  `);
+
   createAdminSchema(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
 }
@@ -198,6 +251,10 @@ function verifySchema(database) {
     'admin_audit',
     'user_profiles',
     'survey_questions',
+    'academic_scores',
+    'career_selections',
+    'career_rubrics',
+    'career_rubric_subjects',
   ];
   const missingTables = requiredTables.filter((table) => !tables.includes(table));
 
@@ -265,6 +322,15 @@ function verifySchema(database) {
         'or remove it to recreate it only when account loss is acceptable.'
     );
   }
+
+  const requiredCareerTables = ['academic_scores', 'career_selections', 'career_rubrics', 'career_rubric_subjects'];
+  const missingCareerTables = requiredCareerTables.filter((table) => !tables.includes(table));
+  if (missingCareerTables.length) {
+    throw new Error(
+      'Auth database schema is incomplete. Restore the auth database from backup ' +
+        'or remove it to recreate it only when account loss is acceptable.'
+    );
+  }
 }
 
 function backupBeforeMigration(version) {
@@ -278,7 +344,7 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version === 1 || version === 2 || version === 3) {
+  if (version === 1 || version === 2 || version === 3 || version === 4) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
@@ -314,6 +380,39 @@ function migrateSchema(database, version) {
             khac             TEXT,
             updated_at       INTEGER NOT NULL,
             FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+          );
+        `);
+      }
+
+      if (version <= 4) {
+        database.run(`
+          CREATE TABLE IF NOT EXISTS academic_scores (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL,
+            subject_name TEXT NOT NULL, term TEXT NOT NULL, school_year TEXT NOT NULL,
+            score_type TEXT NOT NULL DEFAULT 'average', score REAL NOT NULL, source TEXT,
+            updated_at INTEGER NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+            UNIQUE(user_id, subject_name, term, school_year, score_type)
+          );
+          CREATE INDEX IF NOT EXISTS idx_academic_scores_user ON academic_scores(user_id, school_year, term);
+          CREATE TABLE IF NOT EXISTS career_selections (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL,
+            school_code TEXT, school_name TEXT NOT NULL, major_name TEXT NOT NULL,
+            method TEXT NOT NULL, admission_block TEXT, year INTEGER NOT NULL,
+            kind TEXT NOT NULL CHECK (kind IN ('target', 'pinned')), created_at INTEGER NOT NULL,
+            updated_at INTEGER NOT NULL, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+          );
+          CREATE INDEX IF NOT EXISTS idx_career_selections_user ON career_selections(user_id, kind);
+          CREATE TABLE IF NOT EXISTS career_rubrics (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, school_code TEXT, school_name TEXT NOT NULL,
+            major_name TEXT NOT NULL, method TEXT NOT NULL, admission_block TEXT, year INTEGER NOT NULL,
+            created_at INTEGER NOT NULL, updated_at INTEGER NOT NULL,
+            UNIQUE(school_code, school_name, major_name, method, admission_block, year)
+          );
+          CREATE TABLE IF NOT EXISTS career_rubric_subjects (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, rubric_id INTEGER NOT NULL,
+            subject_name TEXT NOT NULL, weight REAL NOT NULL, threshold REAL NOT NULL,
+            FOREIGN KEY (rubric_id) REFERENCES career_rubrics(id) ON DELETE CASCADE,
+            UNIQUE(rubric_id, subject_name)
           );
         `);
       }

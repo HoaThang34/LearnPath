@@ -298,6 +298,12 @@ Current end-to-end result for this procedure: **19 checks passed** on 2026-10-23
 
 ## 3. Frontend
 
+### Career analysis MVP
+
+- `npm test` includes structured score validation, rubric weight validation, and coverage-aware fit calculation.
+- Manual/API smoke should use temporary auth and admission paths. Verify `/api/career/scores` rejects invalid scores, `/api/career/overview` returns `coveragePct` and leaves missing subjects as `null`, and admin rubric writes reject weight totals other than 1 with `400`.
+- The user page is `/phan-tich-nang-luc`; the admin rubric page is `/admin_career`. Do not use the real auth DB for test accounts or rubric fixtures.
+
 ```bash
 cd frontend
 npm install
@@ -339,6 +345,10 @@ A temporary headless Chrome E2E passed 16 checks in this session, but it is not 
 - [ ] Exam blocks: source count is labelled “trường xét tuyển”; joined count is shown separately.
 - [ ] Exam blocks: a failed school/major request shows an error, not a blank panel.
 - [ ] Ranking: entering `0` displays `0` in the input; the warning is visible; failure shows an error.
+- [ ] Career analysis: profile summary and link to profile display; adding/removing scores and saving persists after reload.
+- [ ] Career analysis: selecting an existing term/year snapshot loads rubric fit; missing subjects stay “Chưa có điểm” and coverage is disclosed.
+- [ ] Career analysis: search filters and pagination update results/count; admission methods are ordered/grouped without implying scores from different scales are comparable.
+- [ ] Career analysis: pin/target limits and removal work; admin rubric create/edit/delete and invalid weight validation work.
 - [ ] Intro video: autoplay with sound, muted fallback, skip, and unmute controls work.
 
 ### Admin UI checklist

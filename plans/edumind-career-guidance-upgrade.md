@@ -1,8 +1,8 @@
 # Kế hoạch khảo sát và đề xuất nâng cấp “Phân tích năng lực & Định hướng ngành”
 
-> **Trạng thái:** Bản plan khảo sát/đề xuất — chờ người dùng duyệt; chưa cho phép triển khai tại LearnPath.  
+> **Trạng thái:** MVP đã triển khai; hoàn tất các phần follow-up trong phạm vi đã duyệt (2026-10-24).
 > **Ngày lập:** 2026-10-24  
-> **Phạm vi hiện tại:** Chỉ đọc mã EduMindAI và LearnPath, lập bằng chứng và phương án; không sửa mã, dữ liệu, cấu hình hay chạy migration.  
+> **Phạm vi được duyệt:** Schema auth v5 cho điểm cấu trúc/lựa chọn/rubric; profile phân tích minh bạch; fit/radar theo độ phủ; admin CRUD rubric; điểm chuẩn năm 2025; không làm AI.
 > **Nguồn tham khảo:** `Source_demo (no copy)/EduMind-AI` — đọc trực tiếp, không sao chép mã/tài sản/dữ liệu.  
 > **Phân loại triển khai dự kiến:** có thể từ **L2 đến L3**, tùy quyết định về schema auth, dữ liệu ngành, ý nghĩa điểm/phù hợp, AI và hợp đồng API. Phân loại cuối cùng phải xác nhận trước khi triển khai.
 
@@ -43,7 +43,7 @@ Các mục dưới đây là dấu vết source-code đã đọc, không phải 
 
 ### 3.1. LearnPath hiện có (đã đối chiếu source)
 
-- Hồ sơ: `backend/src/auth/authDb.js` (schema hiện tại v4, `user_profiles`), `backend/src/auth/userProfile.js`, `backend/src/routes/auth.js`, `frontend/src/pages/ThongTinCaNhan.jsx`.
+- Hồ sơ: `backend/src/auth/authDb.js` (schema hiện tại v5, `user_profiles` và `academic_scores`), `backend/src/auth/userProfile.js`, `backend/src/routes/auth.js`, `frontend/src/pages/ThongTinCaNhan.jsx`.
 - Các trường đã lưu: họ tên, lớp, trường, `diem_lop` (môn/điểm tự nhập), chứng chỉ, mục tiêu trường/ngành dạng text, tổ hợp 3 môn mong muốn, ghi chú tự do. Khảo sát onboarding dùng chung profile.
 - API dữ liệu admission: `/api/diem-chuan`, `/api/diem-chuan/compare`, `/api/khoi-thi`, `/api/khoi-thi/:maKhoi` và school/block detail; đang bảo vệ bằng user session.
 - `diem_chuan` hiện là dữ liệu tuyển sinh theo nhiều phương thức/thang điểm; schema có `ma_truong`, `nganh`, `to_hop_mon`, `diem_chuan`, `nam`, `phuong_thuc`. Có vấn đề coverage/mapping/năm và dữ liệu tổ hợp thiếu đã ghi trong `.agents/KNOWN_ISSUES.md`.
@@ -106,6 +106,15 @@ Các mục dưới đây là dấu vết source-code đã đọc, không phải 
 - Chỉ sau khi duyệt: bổ sung cấu trúc điểm theo môn, kỳ/năm, loại điểm, thang điểm, nguồn/ngày cập nhật; kiểm tra canonical subject names và validation range theo loại điểm.
 - Cân nhắc giữ dữ liệu trong auth DB riêng, migration có backup và đường rollback; không đặt hồ sơ cá nhân trong admission DB.
 - Giữ tương thích profile/survey cũ; định nghĩa chuyển đổi bảo toàn dữ liệu, không tự gán kỳ/năm hoặc diễn giải dữ liệu freestyle thành dữ liệu có cấu trúc.
+
+### Quyết định đã duyệt cho MVP (2026-10-24)
+
+- Điểm cấu trúc lưu trong `academic_scores`; lựa chọn tuyển sinh lưu trong `career_selections`; rubric lưu trong `career_rubrics` và `career_rubric_subjects`.
+- Rubric gắn với trường, ngành, phương thức, khối và năm; tổng trọng số backend bắt buộc bằng 1.
+- Học sinh chọn snapshot kỳ/năm; chỉ điểm `average` của snapshot được tính.
+- Fit dùng `min(điểm / ngưỡng, 1) × trọng số`, chỉ tính trên môn có điểm; trả `coveragePct`, không coi môn thiếu là 0.
+- Giới hạn lựa chọn: 1 target và 5 pinned; điểm chuẩn hiển thị năm 2025 và phương thức/thang điểm nguồn.
+- Chưa triển khai AI career chat, bản đồ ngành hoặc sao chép dữ liệu từ EduMindAI.
 
 ### Phase 3 — So sánh/lưu mục tiêu/ngành quan tâm (cần quyết định schema/API)
 
@@ -189,9 +198,23 @@ Dừng và hỏi người dùng nếu source-of-truth dữ liệu mâu thuẫn, 
 - [ ] Review xác nhận không có mã/dữ liệu/tài sản được sao chép từ EduMindAI và không có code LearnPath đã được triển khai.
 - [ ] Source EduMindAI và DB LearnPath/auth DB không bị sửa bởi hoạt động khảo sát.
 
+## 9.1. Trạng thái triển khai LearnPath
+
+- [x] Trang phân tích đọc hồ sơ hiện có và cho cập nhật hồ sơ qua link.
+- [x] Điểm có cấu trúc theo môn/kỳ/năm/loại; fit chỉ lấy điểm TB môn của snapshot đã chọn.
+- [x] Rubric có CRUD admin (tạo, sửa, xóa), validate tổng weight; API validation trả 400.
+- [x] Danh sách điểm chuẩn 2025 lọc, hiển thị cảnh báo scale/năm và phân trang server-side.
+- [x] Target/pinned lấy năm từ bản ghi nguồn; hạn mức 1 target + 5 pinned.
+- [x] Backend tests và frontend build pass; browser smoke xác nhận route/menu/profile/empty-rubric/listing render được.
+- [ ] Browser E2E hoàn chỉnh cho nhập/lưu điểm, rubric CRUD, pin/target và responsive/error state chưa hoàn thành; giới hạn do browser automation trong phiên.
+- AI career chat và bản đồ ngành vẫn ngoài phạm vi MVP đã duyệt.
+
 ## 10. Nhật ký thay đổi và xác minh của plan
 
 - File được tạo: `plans/edumind-career-guidance-upgrade.md`.
-- Giai đoạn hiện tại chỉ tạo/chỉnh plan này; không sửa source LearnPath hay EduMindAI.
-- Đã đọc lại toàn bộ plan và rà paths, phạm vi, dữ liệu demo, quyết định mở, rủi ro và checklist. `git diff --check` không báo lỗi whitespace; diff chỉ ghi nhận plan mới cùng trạng thái modified có sẵn của submodule `Source_demo (no copy)/EduMind-AI`.
-- Đã chạy `git status --short` và `git log -1 --oneline` tại LearnPath; kết quả log: `b9ff63a update form and user info`. Không chạy build/test vì không có thay đổi code; không chạy app/script ở source tham khảo.
+- Follow-up bổ sung profile context, phân trang server-side danh sách majors, thứ tự theo phương thức để tránh đặt các thang điểm SAT/THPT cạnh nhau như cùng scale, và edit rubric qua admin UI.
+- `cd backend && npm test`: 90/90 pass. `cd frontend && npm run build`: pass; còn cảnh báo bundle >500 kB như KI-11.
+- Browser smoke dùng auth DB tạm: đăng ký user, mở `/phan-tich-nang-luc`; xác nhận menu, hồ sơ, trạng thái chưa có rubric, danh sách 2025 và phân trang render. Không hoàn tất thao tác browser tương tác sâu.
+- Các smoke trước đó với temp DB đã xác nhận API score save, rubric upsert + invalid weight 400, selection create; fit test xác nhận 100% với coverage 60% khi thiếu một môn.
+- Auth DB thật đã được migration v4→v5 trong lượt trước theo phê duyệt người dùng; bản backup trước migration ở `%LOCALAPPDATA%\Temp\learnpath-auth-before-career-v5-20261024-122124.db`. Follow-up này không ghi thêm dữ liệu thật. Admission DB hash giữ `8D4F42B1F845C2E12DE875D2BBFDCBF0DF3CC7686DC285423189C80CF3559E4D`.
+- Browser smoke backend/frontend đã dừng; không commit/push/PR. Source EduMindAI không bị sửa.

@@ -8,6 +8,7 @@ import {
   ScrollText,
   ShieldCheck,
   Users,
+  SlidersHorizontal,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -16,6 +17,7 @@ import UsersPanel from './UsersPanel'
 import DataPanel from './DataPanel'
 import AuditPanel from './AuditPanel'
 import SurveySettingsPanel from './SurveySettingsPanel'
+import CareerRubricsPanel from './CareerRubricsPanel'
 
 const NAV_ITEMS = [
   {
@@ -45,6 +47,13 @@ const NAV_ITEMS = [
     alias: ['/admin/data'],
     label: 'Dữ liệu',
     icon: Database,
+  },
+  {
+    id: 'career',
+    path: '/admin_career',
+    alias: ['/admin/career'],
+    label: 'Rubric năng lực',
+    icon: SlidersHorizontal,
   },
   {
     id: 'audit',
@@ -190,6 +199,7 @@ export default function AdminShell({ admin, onLogout }) {
                 onTableChange={setSelectedTable}
               />
             )}
+            {activeItem.id === 'career' && <CareerRubricsPanel admin={admin} />}
             {activeItem.id === 'audit' && <AuditPanel admin={admin} />}
           </main>
         </div>

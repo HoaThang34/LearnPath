@@ -35,7 +35,7 @@ Before reporting completion, read `.agents/TESTING.md`.
 - Frontend: React 18 + Vite 5 + Tailwind 3 + local shadcn-style components; runs at `http://localhost:5173`.
 - Backend: Express 4 + `sql.js` (SQLite WASM); runs at `http://localhost:3001`.
 - Admission DB: `backend/database/learnpath.db` (~109 MiB), **not committed**. `npm run db:init` rebuilds it.
-- Auth DB: `backend/database/auth.db` (separate, small, auto-created, **not committed**, schema v4). It holds users (với `survey_completed`), sessions, admins, admin sessions, the admin audit log, `user_profiles` (Họ tên, lớp, trường, điểm các môn trên lớp, chứng chỉ, mục tiêu, tổ hợp mong muốn, freestyle text), và `survey_questions` (câu hỏi khảo sát tùy chỉnh do quản trị viên quản lý). Override with `LEARNPATH_AUTH_DB_PATH`; never point it at `learnpath.db`.
+- Auth DB: `backend/database/auth.db` (separate, small, auto-created, **not committed**, schema v5). It holds users, sessions, admins, audit, profiles, structured academic scores, career selections, admin-managed career rubrics, and survey questions. Override with `LEARNPATH_AUTH_DB_PATH`; never point it at `learnpath.db`.
 - Authentication & User Profile: username/password with scrypt hashes and server-side sessions. `/api/auth/*` and `/api/health` are public; all admission data APIs, user profile (`/api/auth/profile`), and the protected feature pages require login. Locked/deleted users are rejected, and accounts with a temporary password must change it before using data APIs.
 - Admin area: hidden `/admin` with a **separate** admin login, cookie, CSRF token, and audit log. Admin APIs live under `/api/admin/*`; there is no public link. Bootstrap the first admin with `cd backend && npm run admin:create -- --username <name>`.
 - Admin admission management: Quản trị viên có toàn quyền:
@@ -46,7 +46,7 @@ Before reporting completion, read `.agents/TESTING.md`.
 - Current admission DB counts: **245 blocks**, 260 schools, 2,617 score rows, 307 proposals, 1,131,975 candidates.
 - The importer now parses **281 blocks** from the source files. The live DB still has 245 until a rebuild is approved.
 - API uses the relative `/api` path; Vite proxies it to the backend. Production needs a reverse proxy, HTTPS, `APP_ORIGIN`, and SPA fallback.
-- UI has 6 protected feature pages (`/de-an`, `/diem-chuan`, `/khoi-thi`, `/thu-hang`, `/thong-tin-ca-nhan`, `/khao-sat`) plus public `/`, `/dang-nhap`, `/dang-ky`, `/doi-mat-khau`, and the hidden `/admin` area.
+- UI has 7 protected feature pages, including `/phan-tich-nang-luc`, plus public auth pages and the hidden `/admin` area.
 - Main schema/import source of truth: `backend/src/database/init.js`. `db.js` is the runtime loader only; it refuses to start when the main DB is missing (see KI-01). Auth schema is in `backend/src/auth/authDb.js`; admin data writes go through `backend/src/admin/admissionWrite.js`.
 
 ## Minimum verification

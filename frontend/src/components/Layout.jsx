@@ -14,6 +14,7 @@ import {
   UserPlus,
   Sparkles,
   ChevronRight,
+  Activity,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button, buttonVariants } from './ui/button'
@@ -26,6 +27,7 @@ const menuItems = [
   { path: '/diem-chuan', label: 'Điểm chuẩn', icon: BarChart3 },
   { path: '/khoi-thi', label: 'Khối thi', icon: BookOpen },
   { path: '/thu-hang', label: 'Thứ hạng THPTQG', icon: Trophy },
+  { path: '/phan-tich-nang-luc', label: 'Phân tích năng lực', icon: Activity },
 ]
 
 export default function Layout({ children }) {
