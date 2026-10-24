@@ -10,6 +10,7 @@ import DeAnTuyenSinh from './pages/DeAnTuyenSinh'
 import DiemChuan from './pages/DiemChuan'
 import KhoiThi from './pages/KhoiThi'
 import ThuHang from './pages/ThuHang'
+import ThongTinCaNhan from './pages/ThongTinCaNhan'
 import IntroVideo from './components/IntroVideo'
 
 const AdminPage = lazy(() => import('./pages/AdminPage'))
@@ -86,6 +87,14 @@ function App() {
               element={
                 <ProtectedRoute>
                   <ThuHang />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/thong-tin-ca-nhan"
+              element={
+                <ProtectedRoute>
+                  <ThongTinCaNhan />
                 </ProtectedRoute>
               }
             />

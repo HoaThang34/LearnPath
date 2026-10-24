@@ -46,8 +46,8 @@ app.use(
 // Admin routes own their JSON parser because proposal content can be large.
 app.use('/api/admin', adminRoutes);
 
-// User-facing auth keeps the small body limit.
-app.use(express.json({ limit: '10kb' }));
+// User-facing auth keeps the bounded body limit.
+app.use(express.json({ limit: '50kb' }));
 
 // Public auth routes
 app.use('/api/auth', authRoutes);

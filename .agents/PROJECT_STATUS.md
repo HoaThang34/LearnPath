@@ -208,3 +208,5 @@ Live DB coverage:
 | 2026-10-23 | v1.0.4-tests | Auth hardening plan; Phase 0 backup, 49 `node:test` checks, CI, non-breaking audit fix |
 | 2026-10-23 | v1.0.5-admin | Admin panel Phases 1–5: auth DB v2, separate admin auth/CSRF/audit, user management, admission CRUD, hidden `/admin`, 78 tests, admin E2E 19 checks |
 | 2026-10-23 | v1.0.6-data-crud | Bổ sung và hoàn thiện tính năng admin: chỉnh sửa đề án tuyển sinh (Markdown preview), chỉnh sửa điểm chuẩn (gợi ý phương thức/năm), thêm dữ liệu mới thủ công 5 bảng, chuyển bảng nhanh từ Overview và DataPanel; 81 tests pass |
+| 2026-10-23 | v1.0.7-profile | Bổ sung mục "Thông tin cá nhân" (họ tên, lớp, trường, điểm các môn trên lớp tự do, chứng chỉ TSA/HSA/IELTS..., mục tiêu trường/ngành, tổ hợp 3 môn thi, freestyle text), auth DB schema v3 (`user_profiles`), API `GET/PUT /api/auth/profile`, 84 tests pass |
+| 2026-10-24 | v1.0.8-profile-password | Bổ sung hiển thị `username` chỉ xem (read-only, không thể sửa) trên trang Thông tin cá nhân; bổ sung tính năng đổi mật khẩu trực tiếp qua Modal/Card bảo mật và trên thanh điều hướng Layout (Desktop + Mobile); kiểm thử 84/84 tests pass và frontend build thành công |

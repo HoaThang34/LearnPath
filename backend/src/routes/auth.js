@@ -30,8 +30,10 @@ const {
   setSessionCookie,
   clearSessionCookie,
   requireAuth,
+  requirePasswordChanged,
 } = require('../auth/session');
 const { requireTrustedOrigin } = require('../auth/origin');
+const { getUserProfile, saveUserProfile } = require('../auth/userProfile');
 
 const router = express.Router();
 
@@ -201,6 +203,29 @@ router.post('/login', async (req, res, next) => {
 
 router.get('/me', requireAuth, (req, res) => {
   res.json({ data: { user: req.user } });
+});
+
+router.get('/profile', requireAuth, requirePasswordChanged, async (req, res, next) => {
+  try {
+    await getAuthDb();
+    const profile = getUserProfile(req.user.id);
+    return res.json({ data: { profile } });
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.put('/profile', requireAuth, requirePasswordChanged, async (req, res, next) => {
+  try {
+    await getAuthDb();
+    const profile = await saveUserProfile(req.user.id, req.body);
+    return res.json({ data: { profile } });
+  } catch (error) {
+    if (error.statusCode) {
+      return res.status(error.statusCode).json({ error: error.message });
+    }
+    return next(error);
+  }
 });
 
 router.post('/change-password', requireAuth, async (req, res, next) => {

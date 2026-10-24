@@ -329,4 +329,75 @@ test('auth API integration', async (t) => {
       db.close();
     }
   });
+
+  await t.test('rejects profile request without a session', async () => {
+    const unauth = await request('/api/auth/profile');
+    assert.equal(unauth.response.status, 401);
+  });
+
+  await t.test('gets empty profile for newly registered user and saves profile', async () => {
+    const getInitial = await request('/api/auth/profile', { cookie: state.cookie });
+    assert.equal(getInitial.response.status, 200);
+    assert.equal(getInitial.data.data.profile.ho_va_ten, '');
+    assert.deepEqual(getInitial.data.data.profile.diem_lop, []);
+    assert.deepEqual(getInitial.data.data.profile.chung_chi, []);
+
+    const payload = {
+      ho_va_ten: 'Nguyễn Văn A',
+      lop: '12A1',
+      truong: 'THPT Chuyên Hà Nội - Amsterdam',
+      diem_lop: [
+        { mon: 'Toán', diem: 9.5 },
+        { mon: 'Vật lý', diem: 9.0 },
+        { mon: 'Hóa học', diem: 8.75 },
+      ],
+      chung_chi: [
+        { loai: 'IELTS', diem: '7.5' },
+        { loai: 'TSA', diem: '82/100' },
+      ],
+      truong_muc_tieu: 'Đại học Bách khoa Hà Nội',
+      nganh_muc_tieu: 'Khoa học máy tính',
+      to_hop_mong_muon: ['Toán', 'Vật lý', 'Hóa học'],
+      khac: 'Đam mê lập trình web và AI, tính cách hướng nội, cẩn thận.',
+    };
+
+    const saveResult = await request('/api/auth/profile', {
+      method: 'PUT',
+      cookie: state.cookie,
+      body: payload,
+    });
+    assert.equal(saveResult.response.status, 200);
+    const saved = saveResult.data.data.profile;
+    assert.equal(saved.ho_va_ten, 'Nguyễn Văn A');
+    assert.equal(saved.lop, '12A1');
+    assert.equal(saved.truong, 'THPT Chuyên Hà Nội - Amsterdam');
+    assert.equal(saved.diem_lop.length, 3);
+    assert.equal(saved.diem_lop[0].mon, 'Toán');
+    assert.equal(saved.diem_lop[0].diem, 9.5);
+    assert.equal(saved.chung_chi.length, 2);
+    assert.equal(saved.chung_chi[0].loai, 'IELTS');
+    assert.equal(saved.chung_chi[0].diem, '7.5');
+    assert.equal(saved.truong_muc_tieu, 'Đại học Bách khoa Hà Nội');
+    assert.equal(saved.nganh_muc_tieu, 'Khoa học máy tính');
+    assert.deepEqual(saved.to_hop_mong_muon, ['Toán', 'Vật lý', 'Hóa học']);
+    assert.equal(saved.khac, 'Đam mê lập trình web và AI, tính cách hướng nội, cẩn thận.');
+    assert.ok(typeof saved.updated_at === 'number');
+
+    // Read back via GET
+    const readBack = await request('/api/auth/profile', { cookie: state.cookie });
+    assert.equal(readBack.response.status, 200);
+    assert.equal(readBack.data.data.profile.ho_va_ten, 'Nguyễn Văn A');
+    assert.equal(readBack.data.data.profile.diem_lop.length, 3);
+
+    // Rejects invalid score
+    const invalidScore = await request('/api/auth/profile', {
+      method: 'PUT',
+      cookie: state.cookie,
+      body: {
+        diem_lop: [{ mon: 'Toán', diem: 12 }],
+      },
+    });
+    assert.equal(invalidScore.response.status, 400);
+    assert.match(invalidScore.data.error, /từ 0 đến 10/i);
+  });
 });

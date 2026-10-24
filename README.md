@@ -6,7 +6,8 @@ Website giúp học sinh THPT tra cứu đề án tuyển sinh, điểm chuẩn,
 
 ## Tính năng
 
-- **Tài khoản** — đăng ký bằng tên đăng nhập + mật khẩu nhập hai lần, đăng nhập/đăng xuất, đổi mật khẩu; bốn trang tính năng và API dữ liệu yêu cầu đăng nhập.
+- **Tài khoản** — đăng ký bằng tên đăng nhập + mật khẩu nhập hai lần, đăng nhập/đăng xuất, đổi mật khẩu; các trang tính năng, hồ sơ và API dữ liệu yêu cầu đăng nhập.
+- **Thông tin cá nhân** — quản lý hồ sơ học sinh: Họ và tên, lớp, trường, điểm các môn trên lớp (tự do thêm môn và điểm), chứng chỉ đạt được (TSA, HSA, V-ACT, IELTS...), mục tiêu trường/ngành, tổ hợp thi 3 môn THPTQG mong muốn, ghi chú freestyle (sở thích, tính cách).
 - **Quản trị** — khu vực ẩn `/admin` với đăng nhập quản trị riêng; chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn, thêm dữ liệu mới thủ công vào cả 5 bảng tuyển sinh, quản lý tài khoản (khóa, xóa mềm, khôi phục, đặt lại mật khẩu, tạo hàng loạt) và nhật ký thao tác.
 - **Đề án tuyển sinh** — 307 đề án Markdown, tìm theo trường, xem nội dung + mục lục.
 - **Điểm chuẩn** — 2.617 dòng theo 5 phương thức: THPT, ĐGNL HSA, ĐGTD TSA, ĐGNL V-ACT, SAT.
@@ -22,10 +23,10 @@ Website giúp học sinh THPT tra cứu đề án tuyển sinh, điểm chuẩn,
 | Biểu đồ / Markdown | Recharts; react-markdown + remark-gfm + rehype-raw + rehype-slug |
 | Backend | Express 4 + `sql.js` 1.10 (SQLite WASM) |
 | Database tuyển sinh | `backend/database/learnpath.db` (~109 MiB), **không commit**; API công khai chỉ đọc, admin ghi qua engine an toàn |
-| Auth DB | `backend/database/auth.db` (nhỏ, tự tạo, **không commit**, schema v2), ghi được; chứa user, session, admin, admin session và audit |
+| Auth DB | `backend/database/auth.db` (nhỏ, tự tạo, **không commit**, schema v3), ghi được; chứa user, session, admin, admin session, audit và user_profiles |
 | Import dữ liệu | `backend/src/database/init.js` |
-| Xác thực | Tự viết bằng Node `crypto` (scrypt) + session phía server; admin dùng cookie/CSRF/session riêng |
-| Test / lint / CI | Backend `node:test` suite (81 test) + GitHub Actions (tests, build, non-blocking audit); lint/E2E chưa có |
+| Xác thực | Tự viết bằng Node `crypto` (scrypt) + session phía server; admin dùng cookie/CSRF/session riêng; hồ sơ cá nhân |
+| Test / lint / CI | Backend `node:test` suite (84 test) + GitHub Actions (tests, build, non-blocking audit); lint/E2E chưa có |
 
 `sql.js` đọc toàn bộ file DB tuyển sinh vào RAM khi server khởi động. API công khai chỉ đọc dữ liệu tuyển sinh; admin có thể ghi qua engine tuần tự hóa, có backup và kiểm tra toàn vẹn. Tài khoản và session nằm trong file auth DB riêng, nhỏ hơn nhiều.
 

@@ -9,6 +9,8 @@ import {
   X,
   LogIn,
   LogOut,
+  ShieldCheck,
+  User,
   UserPlus,
 } from 'lucide-react'
 import { useState } from 'react'
@@ -88,17 +90,36 @@ export default function Layout({ children }) {
               <div className="h-9 w-28 animate-pulse rounded-md bg-muted" aria-hidden="true" />
             ) : user ? (
               <>
-                <span className="hidden max-w-[9rem] truncate text-sm text-muted-foreground xl:inline">
-                  Xin chào, <strong className="font-medium text-foreground">{user.username}</strong>
-                </span>
+                <Link
+                  to="/thong-tin-ca-nhan"
+                  className={buttonVariants({
+                    variant: location.pathname === '/thong-tin-ca-nhan' ? 'default' : 'outline',
+                    size: 'sm',
+                  })}
+                  title="Xem và chỉnh sửa thông tin cá nhân"
+                >
+                  <User className="mr-1.5 h-4 w-4" />
+                  <span>Thông tin cá nhân</span>
+                </Link>
+                <Link
+                  to="/doi-mat-khau"
+                  className={buttonVariants({
+                    variant: location.pathname === '/doi-mat-khau' ? 'default' : 'ghost',
+                    size: 'sm',
+                  })}
+                  title="Đổi mật khẩu tài khoản"
+                >
+                  <ShieldCheck className="mr-1.5 h-4 w-4" />
+                  <span>Đổi mật khẩu</span>
+                </Link>
                 <Button
-                  variant="outline"
+                  variant="ghost"
                   size="sm"
                   onClick={handleLogout}
                   disabled={loggingOut}
                 >
-                  <LogOut className="mr-2 h-4 w-4" />
-                  {loggingOut ? 'Đang đăng xuất...' : 'Đăng xuất'}
+                  <LogOut className="mr-1.5 h-4 w-4" />
+                  {loggingOut ? 'Đang...' : 'Đăng xuất'}
                 </Button>
               </>
             ) : (
@@ -162,12 +183,35 @@ export default function Layout({ children }) {
                 <div className="h-10 w-full animate-pulse rounded-md bg-muted" aria-hidden="true" />
               ) : user ? (
                 <>
-                  <p className="px-4 py-2 text-sm text-muted-foreground">
-                    Xin chào, <strong className="font-medium text-foreground">{user.username}</strong>
-                  </p>
+                  <div className="flex items-center justify-between px-2 py-1 text-sm text-muted-foreground">
+                    <span>Tài khoản:</span>
+                    <strong className="font-medium text-foreground">{user.username}</strong>
+                  </div>
+                  <Link
+                    to="/thong-tin-ca-nhan"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={buttonVariants({
+                      variant: location.pathname === '/thong-tin-ca-nhan' ? 'default' : 'outline',
+                      className: 'w-full justify-start',
+                    })}
+                  >
+                    <User className="mr-2 h-4 w-4" />
+                    Thông tin cá nhân
+                  </Link>
+                  <Link
+                    to="/doi-mat-khau"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={buttonVariants({
+                      variant: location.pathname === '/doi-mat-khau' ? 'default' : 'outline',
+                      className: 'w-full justify-start',
+                    })}
+                  >
+                    <ShieldCheck className="mr-2 h-4 w-4" />
+                    Đổi mật khẩu
+                  </Link>
                   <Button
                     variant="outline"
-                    className="w-full"
+                    className="w-full justify-start"
                     onClick={handleLogout}
                     disabled={loggingOut}
                   >

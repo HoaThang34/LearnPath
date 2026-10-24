@@ -26,6 +26,8 @@ export const loginUser = (payload) => api.post('/auth/login', payload);
 export const getCurrentUser = () => api.get('/auth/me');
 export const logoutUser = () => api.post('/auth/logout');
 export const changePassword = (payload) => api.post('/auth/change-password', payload);
+export const getUserProfile = () => api.get('/auth/profile');
+export const updateUserProfile = (payload) => api.put('/auth/profile', payload);
 
 // Diem Chuan
 export const getDiemChuan = (params) => api.get('/diem-chuan', { params });

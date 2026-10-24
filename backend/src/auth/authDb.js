@@ -10,7 +10,7 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 2;
+const SCHEMA_VERSION = 3;
 
 let db = null;
 let initPromise = null;
@@ -147,13 +147,37 @@ function createSchema(database) {
   database.run('CREATE INDEX IF NOT EXISTS idx_sessions_user_id ON sessions(user_id);');
   database.run('CREATE INDEX IF NOT EXISTS idx_sessions_expires_at ON sessions(expires_at);');
 
+  database.run(`
+    CREATE TABLE IF NOT EXISTS user_profiles (
+      user_id          INTEGER PRIMARY KEY,
+      ho_va_ten        TEXT,
+      lop              TEXT,
+      truong           TEXT,
+      diem_lop         TEXT,
+      chung_chi        TEXT,
+      truong_muc_tieu  TEXT,
+      nganh_muc_tieu   TEXT,
+      to_hop_mong_muon TEXT,
+      khac             TEXT,
+      updated_at       INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+
   createAdminSchema(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
 }
 
 function verifySchema(database) {
   const tables = getTableNames(database);
-  const requiredTables = ['users', 'sessions', 'admins', 'admin_sessions', 'admin_audit'];
+  const requiredTables = [
+    'users',
+    'sessions',
+    'admins',
+    'admin_sessions',
+    'admin_audit',
+    'user_profiles',
+  ];
   const missingTables = requiredTables.filter((table) => !tables.includes(table));
 
   const requiredUserColumns = [
@@ -209,24 +233,44 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version === 1) {
+  if (version === 1 || version === 2) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
     try {
-      ensureColumn(database, 'users', 'status', "TEXT NOT NULL DEFAULT 'active'");
-      ensureColumn(database, 'users', 'updated_at', 'INTEGER');
-      ensureColumn(database, 'users', 'last_login_at', 'INTEGER');
-      ensureColumn(
-        database,
-        'users',
-        'must_change_password',
-        'INTEGER NOT NULL DEFAULT 0'
-      );
-      ensureColumn(database, 'users', 'deleted_at', 'INTEGER');
+      if (version === 1) {
+        ensureColumn(database, 'users', 'status', "TEXT NOT NULL DEFAULT 'active'");
+        ensureColumn(database, 'users', 'updated_at', 'INTEGER');
+        ensureColumn(database, 'users', 'last_login_at', 'INTEGER');
+        ensureColumn(
+          database,
+          'users',
+          'must_change_password',
+          'INTEGER NOT NULL DEFAULT 0'
+        );
+        ensureColumn(database, 'users', 'deleted_at', 'INTEGER');
 
-      database.run('UPDATE users SET updated_at = created_at WHERE updated_at IS NULL;');
-      createAdminSchema(database);
+        database.run('UPDATE users SET updated_at = created_at WHERE updated_at IS NULL;');
+        createAdminSchema(database);
+      }
+
+      database.run(`
+        CREATE TABLE IF NOT EXISTS user_profiles (
+          user_id          INTEGER PRIMARY KEY,
+          ho_va_ten        TEXT,
+          lop              TEXT,
+          truong           TEXT,
+          diem_lop         TEXT,
+          chung_chi        TEXT,
+          truong_muc_tieu  TEXT,
+          nganh_muc_tieu   TEXT,
+          to_hop_mong_muon TEXT,
+          khac             TEXT,
+          updated_at       INTEGER NOT NULL,
+          FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+        );
+      `);
+
       database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
       database.run('COMMIT');
     } catch (error) {

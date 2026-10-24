@@ -34,17 +34,17 @@ function cleanupPath(filePath) {
   fs.rmSync(filePath, { force: true });
 }
 
-test('initializes schema v2 in a new auth database', async () => {
+test('initializes schema v3 in a new auth database', async () => {
   await getAuthDb();
 
   assert.equal(fs.existsSync(AUTH_DB_PATH), true);
-  assert.equal(SCHEMA_VERSION, 2);
+  assert.equal(SCHEMA_VERSION, 3);
   assert.equal(queryOne('PRAGMA user_version').user_version, SCHEMA_VERSION);
 
   const tables = queryOne(
     "SELECT group_concat(name, ',') AS names FROM sqlite_master WHERE type = 'table'"
   ).names.split(',');
-  for (const table of ['users', 'sessions', 'admins', 'admin_sessions', 'admin_audit']) {
+  for (const table of ['users', 'sessions', 'admins', 'admin_sessions', 'admin_audit', 'user_profiles']) {
     assert.ok(tables.includes(table), `expected table ${table}`);
   }
 
@@ -163,7 +163,7 @@ test('refuses a newer schema version', async () => {
   const db = new SQL.Database();
   db.run('CREATE TABLE users (id INTEGER PRIMARY KEY);');
   db.run('CREATE TABLE sessions (token_hash TEXT PRIMARY KEY);');
-  db.run('PRAGMA user_version = 3;');
+  db.run('PRAGMA user_version = 4;');
   fs.writeFileSync(newerPath, Buffer.from(db.export()));
   db.close();
 
@@ -193,7 +193,7 @@ test('refuses an incomplete schema at the current version', async () => {
   const db = new SQL.Database();
   db.run('CREATE TABLE users (id INTEGER PRIMARY KEY);');
   db.run('CREATE TABLE sessions (token_hash TEXT PRIMARY KEY);');
-  db.run('PRAGMA user_version = 2;');
+  db.run('PRAGMA user_version = 3;');
   fs.writeFileSync(incompletePath, Buffer.from(db.export()));
   db.close();
 
@@ -275,7 +275,7 @@ test('migrates a v1 auth database without losing users or sessions', async () =>
   try {
     assert.equal(
       migrated.exec('PRAGMA user_version')[0].values[0][0],
-      2
+      3
     );
 
     const user = migrated.exec(
@@ -303,7 +303,7 @@ test('migrates a v1 auth database without losing users or sessions', async () =>
     const tables = migrated
       .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
       .flatMap((result) => result.values.map((row) => row[0]));
-    for (const table of ['admins', 'admin_sessions', 'admin_audit']) {
+    for (const table of ['admins', 'admin_sessions', 'admin_audit', 'user_profiles']) {
       assert.ok(tables.includes(table), `expected migrated table ${table}`);
     }
   } finally {
@@ -315,6 +315,113 @@ test('migrates a v1 auth database without losing users or sessions', async () =>
   const backups = fs
     .readdirSync(directory)
     .filter((name) => name.startsWith(`${prefix}.v1-backup-`));
+
+  assert.equal(backups.length, 1);
+  EXTRA_FILES.push(path.join(directory, backups[0]));
+});
+
+test('migrates a v2 auth database and adds user_profiles table', async () => {
+  const migrationPath = path.join(
+    os.tmpdir(),
+    `learnpath-auth-migration-v2-${process.pid}-${Date.now()}.db`
+  );
+  EXTRA_FILES.push(migrationPath);
+
+  const SQL = await initSqlJs();
+  const db = new SQL.Database();
+  db.run(`
+    CREATE TABLE users (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL,
+      username_lower TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active',
+      updated_at INTEGER,
+      last_login_at INTEGER,
+      must_change_password INTEGER NOT NULL DEFAULT 0,
+      deleted_at INTEGER
+    );
+  `);
+  db.run(`
+    CREATE TABLE sessions (
+      token_hash TEXT PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      created_at INTEGER NOT NULL,
+      expires_at INTEGER NOT NULL
+    );
+  `);
+  db.run(`
+    CREATE TABLE admins (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      username TEXT NOT NULL,
+      username_lower TEXT NOT NULL UNIQUE,
+      password_hash TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'active',
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL,
+      last_login_at INTEGER
+    );
+  `);
+  db.run(`
+    CREATE TABLE admin_sessions (
+      token_hash TEXT PRIMARY KEY,
+      admin_id INTEGER NOT NULL,
+      created_at INTEGER NOT NULL,
+      expires_at INTEGER NOT NULL,
+      last_seen_at INTEGER NOT NULL,
+      csrf_hash TEXT NOT NULL,
+      user_agent TEXT,
+      ip_hash TEXT
+    );
+  `);
+  db.run(`
+    CREATE TABLE admin_audit (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      admin_id INTEGER,
+      admin_username TEXT NOT NULL,
+      action TEXT NOT NULL,
+      entity TEXT,
+      entity_id TEXT,
+      details TEXT,
+      ip_hash TEXT,
+      created_at INTEGER NOT NULL
+    );
+  `);
+  db.run('PRAGMA user_version = 2;');
+  fs.writeFileSync(migrationPath, Buffer.from(db.export()));
+  db.close();
+
+  const script = `
+    process.env.LEARNPATH_AUTH_DB_PATH = ${JSON.stringify(migrationPath)};
+    require(${JSON.stringify(MODULE_PATH)}).getAuthDb()
+      .then(() => process.exit(0))
+      .catch((error) => { console.error(error.message); process.exit(3); });
+  `;
+
+  const result = spawnSync(process.execPath, ['-e', script], {
+    encoding: 'utf8',
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /backup created/i);
+
+  const migrated = new SQL.Database(fs.readFileSync(migrationPath));
+  try {
+    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 3);
+    const tables = migrated
+      .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
+      .flatMap((r) => r.values.map((row) => row[0]));
+    assert.ok(tables.includes('user_profiles'), 'expected user_profiles table in v3');
+  } finally {
+    migrated.close();
+  }
+
+  const directory = path.dirname(migrationPath);
+  const prefix = path.basename(migrationPath);
+  const backups = fs
+    .readdirSync(directory)
+    .filter((name) => name.startsWith(`${prefix}.v2-backup-`));
 
   assert.equal(backups.length, 1);
   EXTRA_FILES.push(path.join(directory, backups[0]));

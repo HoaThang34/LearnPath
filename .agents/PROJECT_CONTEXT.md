@@ -28,10 +28,11 @@
 | Benchmark scores | `/diem-chuan` | Pick a method → filter/sort → paginated table (login required) | `/api/diem-chuan`, `/phuong-thuc`, `/stats`, `/compare` |
 | Exam blocks | `/khoi-thi` | Pick a block → school → majors; compare 2–5 majors (login required) | `/api/khoi-thi`, `/api/khoi-thi/:maKhoi` |
 | THPTQG ranking | `/thu-hang` | Enter scores → rank and distribution chart (login required) | `/api/diem-thi/ranking`, `/api/diem-thi/stats` |
+| Personal Profile | `/thong-tin-ca-nhan` | Xem/điền thông tin: họ tên, lớp, trường, điểm các môn, chứng chỉ (IELTS, TSA, HSA...), mục tiêu, tổ hợp thi 3 môn, freestyle | `/api/auth/profile` |
 
 Notes:
 
-- The four feature routes and their data APIs require a valid `lp_session` cookie. `/api/health` and `/api/auth/*` are public.
+- The five feature routes and their data APIs require a valid `lp_session` cookie. `/api/health` and `/api/auth/*` are public.
 - `/admin` uses a separate admin cookie and CSRF token; it is lazy-loaded, noindex, and not linked from the public UI. A normal user session never grants admin access.
 - Users with `mustChangePassword` are redirected to `/doi-mat-khau` before any protected page or data API.
 - The Benchmark scores page no longer exposes `nhom_nganh`; the backend endpoint and the ignored query parameter remain for legacy compatibility.
@@ -47,10 +48,10 @@ Notes:
 | Charts / Markdown | Recharts; react-markdown + remark-gfm + rehype-raw |
 | Backend | Express 4 + `sql.js` 1.10 (SQLite compiled to WebAssembly) |
 | Admission DB | `backend/database/learnpath.db` (~109 MiB), not committed; public APIs read it, admins write through a guarded engine |
-| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v2), writable |
+| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v3), writable |
 | Import | `backend/src/database/init.js` |
-| Auth | Custom username/password; Node `crypto` scrypt; server-side sessions; separate admin auth/CSRF/audit; `sql.js` auth DB |
-| Tests / lint / CI | Committed backend `node:test` suite (78 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |
+| Auth | Custom username/password; Node `crypto` scrypt; server-side sessions; separate admin auth/CSRF/audit; `sql.js` auth DB; user profile |
+| Tests / lint / CI | Committed backend `node:test` suite (84 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |
 
 Runtime facts:
 
