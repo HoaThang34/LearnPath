@@ -103,3 +103,29 @@ test('APP_ORIGIN overrides and normalizes the allowlist', (t) => {
   assert.equal(isOriginAllowed('https://learnpath.example.com'), true);
   assert.equal(isOriginAllowed('http://localhost:5173'), false);
 });
+
+test('allows ngrok and dev tunnel domains automatically', () => {
+  assert.equal(isOriginAllowed('https://random-subdomain.ngrok-free.app'), true);
+  assert.equal(isOriginAllowed('https://my-app.ngrok.app'), true);
+  assert.equal(isOriginAllowed('https://demo.ngrok.io'), true);
+  assert.equal(isOriginAllowed('https://demo.loca.lt'), true);
+  assert.equal(isOriginAllowed('https://malicious-ngrok-free.app.evil.com'), false);
+  assert.equal(isOriginAllowed('https://evil.example'), false);
+
+  const { res, nextCalled } = runMiddleware({ origin: 'https://random-subdomain.ngrok-free.app' });
+  assert.equal(nextCalled, true);
+  assert.equal(res.statusCode, 200);
+});
+
+test('supports wildcard in APP_ORIGIN', (t) => {
+  const previous = process.env.APP_ORIGIN;
+  t.after(() => {
+    if (previous === undefined) delete process.env.APP_ORIGIN;
+    else process.env.APP_ORIGIN = previous;
+  });
+
+  process.env.APP_ORIGIN = 'https://*.mycustomdomain.com';
+  assert.equal(isOriginAllowed('https://app.mycustomdomain.com'), true);
+  assert.equal(isOriginAllowed('https://staging.mycustomdomain.com'), true);
+  assert.equal(isOriginAllowed('https://otherdomain.com'), false);
+});

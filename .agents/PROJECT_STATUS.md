@@ -52,7 +52,7 @@
 | Invalid pagination | 400 authenticated | `de-an` and `diem-chuan` invalid `limit`/`offset` |
 | Temp import | Pass | 281 blocks, 12 zero cells, 5 all-null rows |
 | Browser E2E | Pass (temporary) | Headless Chrome: 16 auth/route/UI checks; admin smoke: 19 checks on temp DBs |
-| Unit/integration tests | Pass 93/93 | Committed `node:test` suite; temp auth/admission DBs; real DBs untouched |
+| Unit/integration tests | Pass 95/95 | Committed `node:test` suite; temp auth/admission DBs; real DBs untouched |
 | Admission DB integrity | Pass | SHA-256 unchanged after API/UI/admin tests |
 | Data audit | Gaps | See `KNOWN_ISSUES.md` KI-03, KI-15, KI-17 |
 
@@ -215,3 +215,4 @@ Live DB coverage:
 | 2026-10-24 | v1.1.0-career-analysis | Triển khai MVP Phân tích năng lực & Định hướng ngành: auth DB schema v6, điểm cấu trúc dùng chung profile/survey/career, lựa chọn target/pinned, rubric admin, API career, UI `/phan-tich-nang-luc`, fit/radar theo độ phủ và dữ liệu điểm chuẩn 2025 |
 | 2026-10-24 | v1.1.1-fix-blank-pages | Khắc phục triệt để lỗi trang trắng tại "Thông tin cá nhân" (thiếu import Plus, Trash2 từ lucide-react) và "Phân tích năng lực" (thiếu import Label, Input và bổ sung defensive null check trong RadarChart/fit.details); bổ sung ErrorBoundary bọc toàn bộ route Layout & Admin để bắt mọi lỗi render đột xuất kèm fallback tiếng Việt thân thiện; 92 tests pass, frontend build pass |
 | 2026-10-24 | v1.1.2-major-sorting | Bổ sung tính năng sắp xếp đa tiêu chí cho mục "Khám phá ngành và điểm chuẩn" (theo trường A-Z/Z-A, theo điểm chuẩn cao-thấp/thấp-cao, theo tỉ lệ đỗ cao-thấp/thấp-cao) trên cả 2 tầng Backend API (`/api/career/majors?sort=...`) và Frontend UI; tính toán tỉ lệ đỗ toàn tập trước phân trang và đưa null về cuối; 93 tests pass, frontend build pass |
+| 2026-10-24 | v1.1.3-ngrok-support | Khắc phục lỗi "Nguồn yêu cầu không hợp lệ" (HTTP 403) khi đăng nhập qua ngrok: mở rộng `isOriginAllowed` tự động chấp nhận domain tunnel ngrok (*.ngrok-free.app, *.ngrok.app, *.ngrok.io, *.loca.lt) và wildcard trong APP_ORIGIN; bổ sung header `ngrok-skip-browser-warning` trong API client; 95 tests pass, frontend build pass |

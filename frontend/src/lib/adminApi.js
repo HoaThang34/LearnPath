@@ -20,6 +20,9 @@ const adminApi = axios.create({
   baseURL: '/api/admin',
   timeout: 60000,
   withCredentials: true,
+  headers: {
+    'ngrok-skip-browser-warning': 'true',
+  },
 });
 
 adminApi.interceptors.request.use((config) => {
