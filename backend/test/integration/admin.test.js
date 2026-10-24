@@ -656,6 +656,41 @@ test('admin API integration', async (t) => {
     assert.ok(actions.includes('admin.survey_question.seed_sample'));
   });
 
+  await t.test('manages career rubrics and seeds sample rubrics with audit trail', async () => {
+    // 1. Search admission majors
+    const searchRes = await request('/api/admin/career/admission-majors?search=Bách khoa', {
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+    });
+    assert.equal(searchRes.response.status, 200);
+    assert.ok(Array.isArray(searchRes.data.data));
+
+    // 2. Seed rubrics
+    const seedRes = await request('/api/admin/career/rubrics/seed', {
+      method: 'POST',
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+    });
+    assert.equal(seedRes.response.status, 200);
+    assert.ok(seedRes.data.data.rubrics.length >= 6);
+
+    // 3. List rubrics
+    const listRes = await request('/api/admin/career/rubrics', {
+      cookie: state.latestCookie,
+      csrf: state.latestCsrf,
+    });
+    assert.equal(listRes.response.status, 200);
+    assert.ok(listRes.data.data.length >= 6);
+
+    // 4. Check audit
+    const auditRes = await request('/api/admin/audit?limit=20', {
+      cookie: state.latestCookie,
+    });
+    assert.equal(auditRes.response.status, 200);
+    const actions = auditRes.data.data.map((entry) => entry.action);
+    assert.ok(actions.includes('admin.career_rubric.seed'));
+  });
+
   await t.test('lists audit entries without secrets', async () => {
     const result = await request('/api/admin/audit?limit=100', {
       cookie: state.latestCookie,

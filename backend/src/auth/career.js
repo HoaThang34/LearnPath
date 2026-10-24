@@ -190,11 +190,119 @@ function calculateCareerFit(scores, rubricRows) {
   });
   const present = details.filter((row) => row.score !== null);
   const coverage = Math.round(present.reduce((sum, row) => sum + row.weight, 0) * 1000) / 10;
-  if (!present.length) return { fitPct: null, coveragePct: 0, status: 'insufficient_data', details };
+  const needImprovement = details
+    .filter((row) => row.score !== null && row.gap !== null && row.gap < 0)
+    .sort((a, b) => b.weight - a.weight || a.gap - b.gap);
+  const prioritySubject = needImprovement.length > 0 ? needImprovement[0].subject : null;
+  if (!present.length) return { fitPct: null, coveragePct: 0, status: 'insufficient_data', details, prioritySubject: null };
   const denominator = present.reduce((sum, row) => sum + row.weight, 0);
   const numerator = present.reduce((sum, row) => sum + (row.threshold > 0 ? Math.min(row.score / row.threshold, 1) : 1) * row.weight, 0);
   const fitPct = Math.round((numerator / denominator) * 1000) / 10;
-  return { fitPct, coveragePct: coverage, status: coverage < 100 ? 'partial_data' : 'complete', details };
+  return { fitPct, coveragePct: coverage, status: coverage < 100 ? 'partial_data' : 'complete', details, prioritySubject };
 }
 
-module.exports = { getAcademicScores, saveAcademicScores, getCareerSelections, addCareerSelection, removeCareerSelection, getRubrics, saveRubric, deleteRubric, calculateCareerFit, validateScoreRows, validateRubric };
+const SAMPLE_RUBRICS = [
+  {
+    schoolCode: 'BKA',
+    schoolName: 'ĐHBK Hà Nội',
+    majorName: 'Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)',
+    method: 'Điểm thi THPT',
+    admissionBlock: 'A00',
+    year: 2025,
+    subjects: [
+      { subject: 'Toán', weight: 0.40, threshold: 8.5 },
+      { subject: 'Vật lý', weight: 0.35, threshold: 8.0 },
+      { subject: 'Tiếng Anh', weight: 0.25, threshold: 7.0 },
+    ],
+  },
+  {
+    schoolCode: 'BKA',
+    schoolName: 'ĐHBK Hà Nội',
+    majorName: 'Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)',
+    method: 'Điểm thi THPT',
+    admissionBlock: 'A00',
+    year: 2025,
+    subjects: [
+      { subject: 'Toán', weight: 0.45, threshold: 9.0 },
+      { subject: 'Tin học', weight: 0.30, threshold: 8.5 },
+      { subject: 'Tiếng Anh', weight: 0.25, threshold: 8.0 },
+    ],
+  },
+  {
+    schoolCode: 'KHA',
+    schoolName: 'ĐH Kinh tế Quốc dân',
+    majorName: 'Kinh tế quốc tế',
+    method: 'Điểm thi THPT',
+    admissionBlock: 'D01',
+    year: 2025,
+    subjects: [
+      { subject: 'Toán', weight: 0.35, threshold: 8.0 },
+      { subject: 'Tiếng Anh', weight: 0.40, threshold: 8.5 },
+      { subject: 'Ngữ văn', weight: 0.25, threshold: 7.5 },
+    ],
+  },
+  {
+    schoolCode: 'KHA',
+    schoolName: 'ĐH Kinh tế Quốc dân',
+    majorName: 'Quản trị kinh doanh',
+    method: 'Điểm thi THPT',
+    admissionBlock: 'A00',
+    year: 2025,
+    subjects: [
+      { subject: 'Toán', weight: 0.40, threshold: 7.5 },
+      { subject: 'Vật lý', weight: 0.30, threshold: 7.0 },
+      { subject: 'Hóa học', weight: 0.30, threshold: 7.0 },
+    ],
+  },
+  {
+    schoolCode: 'NTH',
+    schoolName: 'ĐH Ngoại thương',
+    majorName: 'CT TT Kinh tế đối ngoại',
+    method: 'Điểm thi THPT',
+    admissionBlock: 'A01',
+    year: 2025,
+    subjects: [
+      { subject: 'Tiếng Anh', weight: 0.45, threshold: 9.0 },
+      { subject: 'Toán', weight: 0.35, threshold: 8.5 },
+      { subject: 'Vật lý', weight: 0.20, threshold: 8.0 },
+    ],
+  },
+  {
+    schoolCode: 'SPH',
+    schoolName: 'ĐH Sư phạm Hà Nội',
+    majorName: 'Sư phạm Toán học',
+    method: 'Điểm thi THPT',
+    admissionBlock: 'A00',
+    year: 2025,
+    subjects: [
+      { subject: 'Toán', weight: 0.50, threshold: 9.0 },
+      { subject: 'Vật lý', weight: 0.25, threshold: 8.0 },
+      { subject: 'Ngữ văn', weight: 0.25, threshold: 7.5 },
+    ],
+  },
+];
+
+async function seedSampleRubrics(force = false) {
+  const existing = getRubrics();
+  if (existing.length > 0 && !force) return existing;
+  for (const item of SAMPLE_RUBRICS) {
+    await saveRubric(item);
+  }
+  return getRubrics();
+}
+
+module.exports = {
+  getAcademicScores,
+  saveAcademicScores,
+  getCareerSelections,
+  addCareerSelection,
+  removeCareerSelection,
+  getRubrics,
+  saveRubric,
+  deleteRubric,
+  calculateCareerFit,
+  validateScoreRows,
+  validateRubric,
+  seedSampleRubrics,
+  SAMPLE_RUBRICS,
+};

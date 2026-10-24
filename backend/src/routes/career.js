@@ -4,7 +4,7 @@ const { queryAll, queryOne } = require('../database/db');
 const { parsePagination } = require('./queryParams');
 const {
   getAcademicScores, saveAcademicScores, getCareerSelections, addCareerSelection,
-  removeCareerSelection, getRubrics, calculateCareerFit,
+  removeCareerSelection, getRubrics, calculateCareerFit, seedSampleRubrics,
 } = require('../auth/career');
 
 const router = express.Router();
@@ -114,25 +114,88 @@ function getAdmissionRows(query = {}) {
   return { rows, total, limit: pagination.limit, offset: pagination.offset, sort };
 }
 
-router.get('/overview', (req, res) => {
-  const scores = getAcademicScores(req.user.id);
-  const selections = getCareerSelections(req.user.id);
-  const rubrics = getRubrics();
-  const grouped = new Map();
-  for (const rubric of rubrics) {
-    if (!grouped.has(rubric.id)) grouped.set(rubric.id, []);
-    grouped.get(rubric.id).push(rubric);
+router.get('/overview', async (req, res) => {
+  try {
+    const scores = getAcademicScores(req.user.id);
+    const selections = getCareerSelections(req.user.id);
+    let rubrics = getRubrics();
+    if (rubrics.length === 0) {
+      try {
+        rubrics = await seedSampleRubrics(false);
+      } catch (e) {
+        console.warn('[career] Auto-seed rubrics failed:', e.message);
+      }
+    }
+    const grouped = new Map();
+    for (const rubric of rubrics) {
+      if (!grouped.has(rubric.id)) grouped.set(rubric.id, []);
+      grouped.get(rubric.id).push(rubric);
+    }
+
+    let selectedClassLevel = typeof req.query.classLevel === 'string' ? req.query.classLevel : '';
+    let selectedTerm = typeof req.query.term === 'string' ? req.query.term : '';
+    if (!selectedClassLevel && !selectedTerm && scores.length > 0) {
+      selectedClassLevel = scores[0].classLevel;
+      selectedTerm = scores[0].term;
+    }
+
+    const selectedScores = scores.filter((score) => (!selectedClassLevel || score.classLevel === selectedClassLevel) && (!selectedTerm || score.term === selectedTerm));
+    const selectedSnapshotScores = selectedScores.filter((score) => score.scoreType === 'average');
+
+    function normalizeStr(s) {
+      return String(s || '').trim().toLowerCase();
+    }
+
+    function matchesSelection(sel, rub) {
+      if (normalizeStr(sel.schoolName) !== normalizeStr(rub.schoolName)) return false;
+      if (normalizeStr(sel.majorName) !== normalizeStr(rub.majorName)) return false;
+      if (sel.method && rub.method && normalizeStr(sel.method) !== normalizeStr(rub.method)) return false;
+      if (sel.year && rub.year && Number(sel.year) !== Number(rub.year)) return false;
+      return true;
+    }
+
+    const fits = [];
+    for (const [id, rows] of (selectedClassLevel && selectedTerm ? grouped : [])) {
+      const fit = calculateCareerFit(selectedSnapshotScores, rows);
+      const rub = rows[0];
+      const matchedSel = selections.find((sel) => matchesSelection(sel, rub));
+      const isTarget = matchedSel?.kind === 'target';
+      const isPinned = matchedSel?.kind === 'pinned';
+      const selectionKind = matchedSel ? matchedSel.kind : null;
+      const selectionId = matchedSel ? matchedSel.id : null;
+
+      fits.push({
+        rubricId: id,
+        schoolCode: rub.schoolCode,
+        schoolName: rub.schoolName,
+        majorName: rub.majorName,
+        method: rub.method,
+        admissionBlock: rub.admissionBlock,
+        year: rub.year,
+        isTarget,
+        isPinned,
+        selectionKind,
+        selectionId,
+        ...fit,
+      });
+    }
+
+    fits.sort((a, b) => {
+      if (a.isTarget && !b.isTarget) return -1;
+      if (!a.isTarget && b.isTarget) return 1;
+      if (a.isPinned && !b.isPinned) return -1;
+      if (!a.isPinned && b.isPinned) return 1;
+      return String(a.majorName || '').localeCompare(String(b.majorName || ''), 'vi');
+    });
+
+    const unmatchedSelections = selections.filter((sel) => {
+      return !fits.some((fit) => matchesSelection(sel, fit));
+    });
+
+    return res.json({ data: { scores, selections, fits, unmatchedSelections, selectedClassLevel, selectedTerm } });
+  } catch (error) {
+    return sendCareerError(res, error);
   }
-  const selectedClassLevel = typeof req.query.classLevel === 'string' ? req.query.classLevel : '';
-  const selectedTerm = typeof req.query.term === 'string' ? req.query.term : '';
-  const selectedScores = scores.filter((score) => (!selectedClassLevel || score.classLevel === selectedClassLevel) && (!selectedTerm || score.term === selectedTerm));
-  const fits = [];
-  const selectedSnapshotScores = selectedScores.filter((score) => score.scoreType === 'average');
-  for (const [id, rows] of (selectedClassLevel && selectedTerm ? grouped : [])) {
-    const fit = calculateCareerFit(selectedSnapshotScores, rows);
-    fits.push({ rubricId: id, schoolCode: rows[0].schoolCode, schoolName: rows[0].schoolName, majorName: rows[0].majorName, method: rows[0].method, admissionBlock: rows[0].admissionBlock, year: rows[0].year, ...fit });
-  }
-  res.json({ data: { scores, selections, fits, selectedClassLevel, selectedTerm } });
 });
 
 router.get('/scores', (req, res) => res.json({ data: getAcademicScores(req.user.id) }));

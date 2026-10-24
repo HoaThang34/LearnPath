@@ -18,6 +18,7 @@ const express = require('express');
 const initSqlJs = require('sql.js');
 
 const authRoutes = require('../../src/routes/auth');
+const careerRoutes = require('../../src/routes/career');
 
 const DB_PATH = process.env.LEARNPATH_AUTH_DB_PATH;
 
@@ -25,6 +26,7 @@ const app = express();
 app.disable('x-powered-by');
 app.use(express.json({ limit: '10kb' }));
 app.use('/api/auth', authRoutes);
+app.use('/api/career', careerRoutes);
 app.use((err, req, res, next) => {
   if (err && err.type === 'entity.too.large') {
     return res.status(413).json({ error: 'Dữ liệu gửi lên quá lớn.' });
@@ -489,5 +491,81 @@ test('auth API integration', async (t) => {
     const meRes = await request('/api/auth/me', { cookie });
     assert.equal(meRes.response.status, 200);
     assert.equal(meRes.data.data.user.surveyCompleted, true);
+  });
+
+  await t.test('gets career overview with matched target/pinned rubrics and unmatched selections', async () => {
+    const username = `careeruser_${Date.now()}`;
+    const registered = await request('/api/auth/register', {
+      method: 'POST',
+      body: {
+        username,
+        password: 'Password123',
+        passwordConfirm: 'Password123',
+      },
+    });
+    assert.equal(registered.response.status, 201);
+    const cookie = readCookie(registered.response);
+
+    // Save academic scores
+    const saveScoresRes = await request('/api/career/scores', {
+      method: 'PUT',
+      cookie,
+      body: {
+        scores: [
+          { subject: 'Toán', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 9.0 },
+          { subject: 'Vật lý', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 8.5 },
+          { subject: 'Tiếng Anh', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 8.0 },
+        ],
+      },
+    });
+    assert.equal(saveScoresRes.response.status, 200);
+
+    // Save a target selection that matches a seeded rubric
+    const targetSelRes = await request('/api/career/selections', {
+      method: 'POST',
+      cookie,
+      body: {
+        schoolCode: 'BKA',
+        schoolName: 'ĐHBK Hà Nội',
+        majorName: 'Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)',
+        method: 'Điểm thi THPT',
+        admissionBlock: 'A00',
+        year: 2025,
+        kind: 'target',
+      },
+    });
+    assert.equal(targetSelRes.response.status, 201);
+
+    // Save a pinned selection that does not have a rubric
+    const pinnedSelRes = await request('/api/career/selections', {
+      method: 'POST',
+      cookie,
+      body: {
+        schoolCode: 'TEST',
+        schoolName: 'Trường Thử Nghiệm Chưa Có Rubric',
+        majorName: 'Ngành Thử Nghiệm',
+        method: 'Điểm thi THPT',
+        admissionBlock: 'A00',
+        year: 2025,
+        kind: 'pinned',
+      },
+    });
+    assert.equal(pinnedSelRes.response.status, 201);
+
+    // Call overview
+    const overviewRes = await request('/api/career/overview?classLevel=12&term=Kỳ 1', { cookie });
+    assert.equal(overviewRes.response.status, 200);
+    const overviewData = overviewRes.data.data;
+
+    assert.ok(overviewData.fits.length > 0);
+    // First fit should be the target selection
+    assert.equal(overviewData.fits[0].isTarget, true);
+    assert.equal(overviewData.fits[0].majorName, 'Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)');
+    assert.ok(overviewData.fits[0].fitPct >= 90);
+    assert.equal(overviewData.fits[0].coveragePct, 100);
+
+    // Check unmatched selections
+    assert.equal(overviewData.unmatchedSelections.length, 1);
+    assert.equal(overviewData.unmatchedSelections[0].majorName, 'Ngành Thử Nghiệm');
   });
 });

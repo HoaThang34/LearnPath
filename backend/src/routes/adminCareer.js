@@ -2,7 +2,8 @@ const express = require('express');
 const { requireAdmin, requireAdminCsrf } = require('../auth/adminSession');
 const { writeAudit } = require('../auth/adminAudit');
 const { getClientIp } = require('../auth/rateLimit');
-const { getRubrics, saveRubric, deleteRubric } = require('../auth/career');
+const { getRubrics, saveRubric, deleteRubric, seedSampleRubrics } = require('../auth/career');
+const { queryAll } = require('../database/db');
 const { asyncRoute, parseId } = require('../admin/routeUtils');
 const { HttpError } = require('../admin/errors');
 
@@ -14,6 +15,34 @@ async function audit(req, action, id, details) {
 }
 
 router.get('/rubrics', asyncRoute(async (req, res) => res.json({ data: getRubrics() })));
+router.post('/rubrics/seed', asyncRoute(async (req, res) => {
+  const rubrics = await seedSampleRubrics(true);
+  await audit(req, 'admin.career_rubric.seed', null, { seededCount: rubrics.length });
+  return res.json({ data: { rubrics } });
+}));
+router.get('/admission-majors', asyncRoute(async (req, res) => {
+  try {
+    await getDb();
+  } catch (e) {
+    return res.json({ data: [] });
+  }
+  const search = typeof req.query.search === 'string' ? req.query.search.trim().slice(0, 100) : '';
+  const clauses = ['nam = 2025', "phuong_thuc = 'Điểm thi THPT'"];
+  const params = [];
+  if (search) {
+    clauses.push('(nganh LIKE ? OR truong LIKE ? OR ma_truong LIKE ?)');
+    params.push(`%${search}%`, `%${search}%`, `%${search}%`);
+  }
+  let rows = [];
+  try {
+    rows = queryAll(`SELECT DISTINCT ma_truong AS schoolCode, truong AS schoolName, nganh AS majorName,
+      to_hop_mon AS admissionBlock, phuong_thuc AS method, diem_chuan AS entryScore
+      FROM diem_chuan WHERE ${clauses.join(' AND ')} ORDER BY truong, nganh LIMIT 50`, params);
+  } catch (err) {
+    rows = [];
+  }
+  return res.json({ data: rows });
+}));
 router.put('/rubrics', asyncRoute(async (req, res) => {
   let id;
   try {

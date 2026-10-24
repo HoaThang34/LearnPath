@@ -7,7 +7,7 @@ process.env.LEARNPATH_AUTH_DB_PATH = path.join(os.tmpdir(), `learnpath-career-un
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { calculateCareerFit, validateScoreRows, validateRubric, saveAcademicScores } = require('../../src/auth/career');
+const { calculateCareerFit, validateScoreRows, validateRubric, saveAcademicScores, seedSampleRubrics, getRubrics } = require('../../src/auth/career');
 const { getAuthDb, runSql } = require('../../src/auth/authDb');
 const { getDb } = require('../../src/database/db');
 const { getAdmissionRows } = require('../../src/routes/career');
@@ -138,4 +138,31 @@ test('getAdmissionRows supports sorting by score_desc, score_asc, school_asc, sc
       assert.ok(rateAsc.rows[i - 1].distanceRate <= rateAsc.rows[i].distanceRate);
     }
   }
+});
+
+test('calculateCareerFit identifies priority subject with highest weight among negative gaps', () => {
+  const fit = calculateCareerFit(
+    [
+      { subject: 'Toán', scoreType: 'average', score: 7 }, // threshold 8.5 -> gap -1.5, weight 0.5
+      { subject: 'Vật lý', scoreType: 'average', score: 7 }, // threshold 8.0 -> gap -1.0, weight 0.25
+      { subject: 'Tiếng Anh', scoreType: 'average', score: 9 }, // threshold 8.0 -> gap +1.0, weight 0.25
+    ],
+    [
+      { subject_name: 'Toán', weight: 0.5, threshold: 8.5 },
+      { subject_name: 'Vật lý', weight: 0.25, threshold: 8.0 },
+      { subject_name: 'Tiếng Anh', weight: 0.25, threshold: 8.0 },
+    ]
+  );
+  assert.equal(fit.prioritySubject, 'Toán');
+  assert.ok(fit.fitPct > 0);
+  assert.equal(fit.coveragePct, 100);
+});
+
+test('seedSampleRubrics populates standard sample rubrics if empty or forced', async () => {
+  await getAuthDb();
+  const seeded = await seedSampleRubrics(true);
+  assert.ok(seeded.length >= 6);
+  const mathMajor = seeded.find((r) => r.majorName.includes('Sư phạm Toán'));
+  assert.ok(mathMajor);
+  assert.equal(mathMajor.schoolCode, 'SPH');
 });

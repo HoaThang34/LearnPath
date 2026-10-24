@@ -100,5 +100,7 @@ export const deleteAdminSurveyQuestion = (id) => adminApi.delete(`/survey/questi
 export const getCareerRubrics = () => adminApi.get('/career/rubrics');
 export const saveCareerRubric = (payload) => adminApi.put('/career/rubrics', payload);
 export const deleteCareerRubric = (id) => adminApi.delete(`/career/rubrics/${id}`);
+export const seedCareerRubrics = () => adminApi.post('/career/rubrics/seed');
+export const searchAdmissionMajors = (search) => adminApi.get('/career/admission-majors', { params: { search } });
 
 export default adminApi;

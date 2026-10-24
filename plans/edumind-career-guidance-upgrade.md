@@ -213,13 +213,24 @@ Dừng và hỏi người dùng nếu source-of-truth dữ liệu mâu thuẫn, 
 - [x] Rubric có CRUD admin (tạo, sửa, xóa), validate tổng weight; API validation trả 400.
 - [x] Danh sách điểm chuẩn 2025 lọc, hiển thị cảnh báo scale/năm và phân trang server-side.
 - [x] Target/pinned lấy năm từ bản ghi nguồn; hạn mức 1 target + 5 pinned.
-- [x] Backend tests và frontend build pass; browser smoke xác nhận route/menu/profile/empty-rubric/listing render được.
+- [x] Chức năng "Kết quả rubric" hoàn chỉnh:
+  - Liên kết rubric với ngành mục tiêu (`target`) và quan tâm (`pinned`), đẩy lên đầu danh sách và gắn badge nổi bật.
+  - Phân loại mức độ phù hợp: Rất phù hợp (≥90%), Phù hợp (75-89%), Cần nỗ lực (<75%), Chưa đủ dữ liệu.
+  - Bảng chi tiết môn học kèm trọng số (weight%), điểm vs ngưỡng, độ lệch (gap), thanh tiến độ trực quan.
+  - Tự động gợi ý ưu tiên cải thiện (`prioritySubject`) cho môn có gap âm và trọng số cao nhất.
+  - Mô phỏng điểm giả định (Score Simulation) tính toán real-time và vẽ đa giác radar nét đứt tím.
+  - Đối chiếu so sánh 2 rubric song song (Compare Rubrics) với bảng đối chiếu từng môn và nhận định.
+  - Bộ 6 rubric mẫu chuẩn hóa cho các trường hot năm 2025 (BKA, KHA, NTH, SPH) và nút nạp mẫu nhanh trong Admin.
+  - Admin hỗ trợ tìm kiếm nhanh từ `diem_chuan` và mẫu template môn theo khối thi (A00, A01, B00, C00, D01, D07).
+  - Cảnh báo các ngành đã lưu chưa có rubric cấu hình (`unmatchedSelections`).
+- [x] Backend tests (99/99 pass) và frontend build pass (4.23s).
 - [ ] Browser E2E hoàn chỉnh cho nhập/lưu điểm, rubric CRUD, pin/target và responsive/error state chưa hoàn thành; giới hạn do browser automation trong phiên.
 - AI career chat và bản đồ ngành vẫn ngoài phạm vi MVP đã duyệt.
 
 ## 10. Nhật ký thay đổi và xác minh của plan
 
 - File được tạo: `plans/edumind-career-guidance-upgrade.md`.
+- Follow-up hoàn thiện chức năng "Kết quả rubric": liên kết target/pinned, mô phỏng điểm giả định, đối chiếu rubric 2 ngành, gợi ý môn ưu tiên, seed rubric mẫu và template khối thi trong Admin; 99/99 tests pass, frontend build thành công.
 - Follow-up bổ sung profile context, phân trang server-side danh sách majors, thứ tự theo phương thức để tránh đặt các thang điểm SAT/THPT cạnh nhau như cùng scale, và edit rubric qua admin UI.
 - `cd backend && npm test`: 90/90 pass. `cd frontend && npm run build`: pass; còn cảnh báo bundle >500 kB như KI-11.
 - Browser smoke dùng auth DB tạm: đăng ký user, mở `/phan-tich-nang-luc`; xác nhận menu, hồ sơ, trạng thái chưa có rubric, danh sách 2025 và phân trang render. Không hoàn tất thao tác browser tương tác sâu.
