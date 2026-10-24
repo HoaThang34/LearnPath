@@ -1,7 +1,7 @@
 # Kế hoạch khảo sát và đề xuất nâng cấp “Phân tích năng lực & Định hướng ngành”
 
-> **Trạng thái:** MVP đã triển khai; hoàn tất các phần follow-up trong phạm vi đã duyệt (2026-10-24).
-> **Ngày lập:** 2026-10-24  
+> **Trạng thái:** Hoàn tất trọn vẹn cả 2 giai đoạn: MVP Phân tích năng lực (schema v6, academic scores, radar, rubric) và Giao diện duyệt ngành chuẩn EduMind AI (145 rubric từ source EduMind AI, bộ lọc đa tiêu chí, mô phỏng điểm real-time, đối chiếu so sánh side-by-side).
+> **Ngày lập:** 2026-10-24 | Cập nhật hoàn thành: 2026-10-25
 > **Phạm vi được duyệt:** Schema auth v5 cho điểm cấu trúc/lựa chọn/rubric; profile phân tích minh bạch; fit/radar theo độ phủ; admin CRUD rubric; điểm chuẩn năm 2025; không làm AI.
 > **Nguồn tham khảo:** `Source_demo (no copy)/EduMind-AI` — đọc trực tiếp, không sao chép mã/tài sản/dữ liệu.  
 > **Phân loại triển khai dự kiến:** có thể từ **L2 đến L3**, tùy quyết định về schema auth, dữ liệu ngành, ý nghĩa điểm/phù hợp, AI và hợp đồng API. Phân loại cuối cùng phải xác nhận trước khi triển khai.

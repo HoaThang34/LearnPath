@@ -1,0 +1,3922 @@
+[
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 28.16,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 28.8,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 9
+      },
+      {
+        "subject": "Tin học",
+        "weight": 0.3,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 8
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Kinh tế quốc tế",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 28,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Quản trị kinh doanh",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 27.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "NTH",
+    "schoolName": "ĐH Ngoại thương",
+    "majorName": "CT TT Kinh tế đối ngoại",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A01",
+    "entryScore": 28.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.45,
+        "threshold": 9
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.2,
+        "threshold": 8
+      }
+    ]
+  },
+  {
+    "schoolCode": "SPH",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Sư phạm Toán học",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 28.95,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 9
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHI",
+    "schoolName": "ĐH Công nghệ - ĐHQGHN",
+    "majorName": "Khoa học Máy tính",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 26.86,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Công nghệ - ĐHQGHN",
+    "majorName": "Kỹ thuật Phần mềm",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHI",
+    "schoolName": "ĐH Công nghệ - ĐHQGHN",
+    "majorName": "Trí tuệ Nhân tạo",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 26.26,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Công nghệ Thông tin",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 27.97,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Điện tử - Viễn thông",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 28.13,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Cơ điện tử",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 27.83,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Hóa học",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 25.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.45,
+        "threshold": 8
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Xây dựng",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Điện",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 27.55,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.5,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.15,
+        "threshold": 5.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Vật lý Kỹ thuật",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 26.41,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.55,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.1,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "FPT",
+    "schoolName": "ĐH FPT",
+    "majorName": "Công nghệ Thông tin",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH FPT",
+    "majorName": "Kỹ thuật Phần mềm",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.2,
+        "threshold": 5.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH FPT",
+    "majorName": "Trí tuệ Nhân tạo",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Công nghệ - ĐHQGHN",
+    "majorName": "An toàn Thông tin",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Khoa học Dữ liệu",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 26.06,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.55,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Toán học",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 26.35,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.7,
+        "threshold": 9
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.2,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.1,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK TP.HCM",
+    "majorName": "Công nghệ Thông tin",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK TP.HCM",
+    "majorName": "Kỹ thuật Hàng không",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.5,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.15,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK TP.HCM",
+    "majorName": "Kỹ thuật Sinh học",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Môi trường",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 23.72,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Quản trị Kinh doanh",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 27.1,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Kinh tế",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 26.52,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Tài chính - Ngân hàng",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 27.34,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Kế toán",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 27.1,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Marketing",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 28.12,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "NTH",
+    "schoolName": "ĐH Ngoại thương",
+    "majorName": "Thương mại Quốc tế",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "NTH",
+    "schoolName": "ĐH Ngoại thương",
+    "majorName": "Kinh doanh Quốc tế",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 27.75,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.5,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Ngoại thương",
+    "majorName": "Logistic và Quản lý Chuỗi cung ứng",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "UEF",
+    "schoolName": "ĐH Kinh tế TP.HCM",
+    "majorName": "Quản trị Kinh doanh",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24.3,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "UEF",
+    "schoolName": "ĐH Kinh tế TP.HCM",
+    "majorName": "Tài chính",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "UEF",
+    "schoolName": "ĐH Kinh tế TP.HCM",
+    "majorName": "Quản trị Khách sạn",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24.2,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "RMIT Việt Nam",
+    "majorName": "Quản trị Kinh doanh",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.55,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.15,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "RMIT Việt Nam",
+    "majorName": "Công nghệ Thông tin",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.5,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.15,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "RMIT Việt Nam",
+    "majorName": "Thiết kế Đồ họa",
+    "majorGroup": "Nghệ thuật",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "YHB",
+    "schoolName": "ĐH Y Hà Nội",
+    "majorName": "Y khoa",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "B00",
+    "entryScore": 28.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 8.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Y Hà Nội",
+    "majorName": "Răng Hàm Mặt",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 25.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.4,
+        "threshold": 9
+      }
+    ]
+  },
+  {
+    "schoolCode": "DKH",
+    "schoolName": "ĐH Dược Hà Nội",
+    "majorName": "Dược học",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 23.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.45,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.3,
+        "threshold": 8
+      }
+    ]
+  },
+  {
+    "schoolCode": "YHB",
+    "schoolName": "ĐH Y Hà Nội",
+    "majorName": "Y tế Công cộng",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.8,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.3,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.4,
+        "threshold": 8
+      }
+    ]
+  },
+  {
+    "schoolCode": "YHB",
+    "schoolName": "ĐH Y Hà Nội",
+    "majorName": "Điều dưỡng",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 22.25,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Y sinh",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 26.74,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Sinh học",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.2,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.45,
+        "threshold": 8.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Công nghệ Sinh học",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "SPH",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Sư phạm Toán",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 28.95,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.65,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.15,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Sư phạm Văn",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.65,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.2,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.15,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "SPH",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Sư phạm Tiếng Anh",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "M10",
+    "entryScore": 22.25,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.65,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.1,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Sư phạm Vật lý",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.55,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.1,
+        "threshold": 5.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "7440112",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Sư phạm Hóa học",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.6,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.15,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "SPH",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Sư phạm Sinh học",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "B00",
+    "entryScore": 28.28,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.55,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.1,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "SPH",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Giáo dục Mầm non",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "M00",
+    "entryScore": 23.93,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "SPH",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Giáo dục Tiểu học",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 28.15,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "SPS",
+    "schoolName": "ĐH Sư phạm TP.HCM",
+    "majorName": "Sư phạm Tin học",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 25.8,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "LPH",
+    "schoolName": "ĐH Luật Hà Nội",
+    "majorName": "Luật",
+    "majorGroup": "Luật - Hành chính",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A01",
+    "entryScore": 24.38,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "LPH",
+    "schoolName": "ĐH Luật Hà Nội",
+    "majorName": "Luật Kinh tế",
+    "majorGroup": "Luật - Hành chính",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A01",
+    "entryScore": 26.21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Nội vụ Hà Nội",
+    "majorName": "Hành chính học",
+    "majorGroup": "Luật - Hành chính",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Quản trị Nhà nước và Chính sách",
+    "majorGroup": "Luật - Hành chính",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Ngôn ngữ Anh",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.6,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.1,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHX",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Báo chí",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.5,
+        "threshold": 8
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Quan hệ Quốc tế",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHX",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Tâm lý học",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 25,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHX",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Xã hội học",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.43,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHX",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Triết học",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21.25,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHX",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Lịch sử",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.5,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.15,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Địa lý",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24.2,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Truyền thông Đa phương tiện",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "7220204",
+    "schoolName": "ĐH Hà Nội",
+    "majorName": "Ngôn ngữ Trung Quốc",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 34.35,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.3,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "NHF",
+    "schoolName": "ĐH Hà Nội",
+    "majorName": "Ngôn ngữ Nhật",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 29.07,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "NHF",
+    "schoolName": "ĐH Hà Nội",
+    "majorName": "Ngôn ngữ Hàn Quốc",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 29.46,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHX",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Du lịch",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Nông nghiệp Hà Nội",
+    "majorName": "Nông học",
+    "majorGroup": "Nông Lâm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "HVN",
+    "schoolName": "ĐH Nông nghiệp Hà Nội",
+    "majorName": "Chăn nuôi",
+    "majorGroup": "Nông Lâm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 17,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.5,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "HVN",
+    "schoolName": "ĐH Nông nghiệp Hà Nội",
+    "majorName": "Thú y",
+    "majorGroup": "Nông Lâm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.3,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.5,
+        "threshold": 8
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.15,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Lâm nghiệp",
+    "majorName": "Lâm học",
+    "majorGroup": "Nông Lâm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Sinh học",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Nha Trang",
+    "majorName": "Nuôi trồng Thủy sản",
+    "majorGroup": "Nông Lâm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "KTA",
+    "schoolName": "ĐH Kiến trúc Hà Nội",
+    "majorName": "Kiến trúc",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "V00",
+    "entryScore": 28.27,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Kiến trúc Hà Nội",
+    "majorName": "Quy hoạch Vùng và Đô thị",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "MTU",
+    "schoolName": "ĐH Mỹ thuật Công nghiệp",
+    "majorName": "Thiết kế Nội thất",
+    "majorGroup": "Nghệ thuật",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "H00",
+    "entryScore": 23.36,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Mỹ thuật Việt Nam",
+    "majorName": "Hội họa",
+    "majorGroup": "Nghệ thuật",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 19.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.5,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "NHB",
+    "schoolName": "Nhạc viện Hà Nội",
+    "majorName": "Âm nhạc học",
+    "majorGroup": "Nghệ thuật",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "N00",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.5,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.2,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Sân khấu - Điện ảnh Hà Nội",
+    "majorName": "Điện ảnh",
+    "majorGroup": "Nghệ thuật",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.6,
+        "threshold": 8
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.15,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "MTU",
+    "schoolName": "ĐH Mỹ thuật Công nghiệp",
+    "majorName": "Thiết kế Đồ họa",
+    "majorGroup": "Nghệ thuật",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "H00",
+    "entryScore": 24.26,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Nông nghiệp Hà Nội",
+    "majorName": "Kinh tế Nông nghiệp",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.3,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "TLA",
+    "schoolName": "ĐH Thủy lợi",
+    "majorName": "Kỹ thuật Tài nguyên nước",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 19.42,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Địa chất học",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23.23,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "MDA",
+    "schoolName": "ĐH Mỏ - Địa chất",
+    "majorName": "Kỹ thuật Dầu khí",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 19.6,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "7850103",
+    "schoolName": "ĐH Tài nguyên và Môi trường Hà Nội",
+    "majorName": "Quản lý Đất đai",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Vật lý",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 24.74,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.55,
+        "threshold": 9
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.1,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Hóa học",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 24.73,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.6,
+        "threshold": 9
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.15,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Công nghệ Thực phẩm",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Kinh tế TP.HCM",
+    "majorName": "Quản trị Du lịch và Lữ hành",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "NTH",
+    "schoolName": "ĐH Ngoại thương",
+    "majorName": "Kế toán - Kiểm toán",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 25.7,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH FPT",
+    "majorName": "Khởi nghiệp và Đổi mới Sáng tạo",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "YDS",
+    "schoolName": "ĐH Y Dược TP.HCM",
+    "majorName": "Điều dưỡng",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D07",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "YDS",
+    "schoolName": "ĐH Y Dược TP.HCM",
+    "majorName": "Y khoa",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "B00",
+    "entryScore": 27.95,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 9
+      }
+    ]
+  },
+  {
+    "schoolCode": "GHA",
+    "schoolName": "ĐH Giao thông Vận tải",
+    "majorName": "Kỹ thuật Giao thông",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 17.94,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Hàng hải Việt Nam",
+    "majorName": "Kỹ thuật Hàng hải",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Điều khiển học",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.15,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHBK TP.HCM",
+    "majorName": "Kỹ thuật Ô tô",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.5,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.15,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Năng lượng Tái tạo",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 27.29,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.5,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.15,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHI",
+    "schoolName": "ĐH Công nghệ - ĐHQGHN",
+    "majorName": "Mạng Máy tính và Truyền thông Dữ liệu",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 26,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Hệ thống Thông tin",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 27.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Khoa học Tự nhiên",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 31.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.25,
+        "threshold": 8
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.2,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Quản lý Nguồn nhân lực",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 26.79,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Kinh tế Đầu tư",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 26.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Bất động sản",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 25.41,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 7
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Vật liệu",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 23.7,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.4,
+        "threshold": 8
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐHQG Hà Nội",
+    "majorName": "Công nghệ Nano",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 25,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.4,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 8.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "BKA",
+    "schoolName": "ĐHBK Hà Nội",
+    "majorName": "Kỹ thuật Hạt nhân",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "B03",
+    "entryScore": 25.07,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.55,
+        "threshold": 9
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.15,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Công nghiệp Hà Nội",
+    "majorName": "Công nghệ May và Thời trang",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.35,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "HCP",
+    "schoolName": "Học viện Hành chính Quốc gia",
+    "majorName": "Quản lý Nhà nước",
+    "majorGroup": "Luật - Hành chính",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.95,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "DLX",
+    "schoolName": "ĐH Lao động - Xã hội",
+    "majorName": "Công tác Xã hội",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "C00",
+    "entryScore": 23.6,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.45,
+        "threshold": 7
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.25,
+        "threshold": 6
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.3,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "HTC",
+    "schoolName": "Học viện Tài chính",
+    "majorName": "Bảo hiểm",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 25.52,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.55,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KHA",
+    "schoolName": "ĐH Kinh tế Quốc dân",
+    "majorName": "Thống kê",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 26.79,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.6,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.15,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Quản lý Giáo dục",
+    "majorGroup": "Sư phạm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Công nghệ - ĐHQGHN",
+    "majorName": "Thiết kế Vi mạch",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.45,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.15,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Công nghệ - ĐHQGHN",
+    "majorName": "Điện tử Viễn thông",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Kinh tế - ĐHQGHN",
+    "majorName": "Kinh tế Chính trị",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Lao động - Xã hội",
+    "majorName": "Quan hệ Lao động",
+    "majorGroup": "Luật - Hành chính",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "NHF",
+    "schoolName": "ĐH Hà Nội",
+    "majorName": "Ngôn ngữ Nga",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23.73,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "NHF",
+    "schoolName": "ĐH Hà Nội",
+    "majorName": "Ngôn ngữ Pháp",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 25.67,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHX",
+    "schoolName": "ĐH Khoa học Xã hội và Nhân văn - ĐHQGHN",
+    "majorName": "Văn học",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23.91,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.65,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.1,
+        "threshold": 6
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Kinh tế - ĐHQGHN",
+    "majorName": "Nghiên cứu Phát triển",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Hà Nội",
+    "majorName": "Dịch thuật",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 23.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.6,
+        "threshold": 9
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Lịch sử",
+        "weight": 0.05,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Sư phạm Hà Nội",
+    "majorName": "Tin học Ứng dụng",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 20.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Thương mại",
+    "majorName": "Kinh doanh Thương mại",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Công nghiệp Hà Nội",
+    "majorName": "Công nghệ Ô tô",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.5,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH FPT",
+    "majorName": "Game Design",
+    "majorGroup": "Nghệ thuật",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Khoa học Vũ trụ và Viễn thám",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.55,
+        "threshold": 9
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.1,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "GHA",
+    "schoolName": "ĐH Giao thông Vận tải",
+    "majorName": "Logistics và Quản lý Chuỗi cung ứng",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 26.44,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "QHT",
+    "schoolName": "ĐH Khoa học Tự nhiên - ĐHQGHN",
+    "majorName": "Khoa học Môi trường",
+    "majorGroup": "Nông Lâm",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.23,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.3,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH FPT",
+    "majorName": "Khởi nghiệp Xã hội",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 21,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH TDTT Bắc Ninh",
+    "majorName": "Quản lý Thể thao",
+    "majorGroup": "Xã hội - Nhân văn",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 19.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.3,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KTA",
+    "schoolName": "ĐH Kiến trúc Hà Nội",
+    "majorName": "Kiến trúc Cảnh quan",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "V00",
+    "entryScore": 25.92,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 6.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "YHB",
+    "schoolName": "ĐH Y Hà Nội",
+    "majorName": "Y học Cổ truyền",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 24.7,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Hóa học",
+        "weight": 0.3,
+        "threshold": 8
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.4,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "YDS",
+    "schoolName": "ĐH Y Dược TP.HCM",
+    "majorName": "Phục hồi Chức năng",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D07",
+    "entryScore": 21.6,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Sinh học",
+        "weight": 0.45,
+        "threshold": 8
+      },
+      {
+        "subject": "Hóa học",
+        "weight": 0.3,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Toán",
+        "weight": 0.25,
+        "threshold": 7
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "Học viện Hàng không Việt Nam",
+    "majorName": "Kiểm soát Không lưu",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 24.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 8.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "HTC",
+    "schoolName": "Học viện Tài chính",
+    "majorName": "Tài chính Doanh nghiệp",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 26.31,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 8
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Y Hà Nội",
+    "majorName": "Quản lý Bệnh viện",
+    "majorGroup": "Y Dược",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22.5,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Sinh học",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "KMA",
+    "schoolName": "Học viện Kỹ thuật Mật mã",
+    "majorName": "An toàn Thông tin",
+    "majorGroup": "Kỹ thuật - Công nghệ",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "A00",
+    "entryScore": 24.42,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7.5
+      }
+    ]
+  },
+  {
+    "schoolCode": "",
+    "schoolName": "ĐH Kinh tế - ĐHQGHN",
+    "majorName": "Kinh tế Quốc tế",
+    "majorGroup": "Kinh tế - Quản trị",
+    "method": "Điểm thi THPT",
+    "admissionBlock": "D01",
+    "entryScore": 22,
+    "year": 2025,
+    "subjects": [
+      {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.2,
+        "threshold": 6.5
+      }
+    ]
+  }
+]

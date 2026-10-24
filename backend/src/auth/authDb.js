@@ -222,6 +222,8 @@ function createSchema(database) {
       method TEXT NOT NULL,
       admission_block TEXT,
       year INTEGER NOT NULL,
+      major_group TEXT,
+      entry_score REAL,
       created_at INTEGER NOT NULL,
       updated_at INTEGER NOT NULL,
       UNIQUE(school_code, school_name, major_name, method, admission_block, year)
@@ -236,6 +238,9 @@ function createSchema(database) {
       UNIQUE(rubric_id, subject_name)
     );
   `);
+
+  ensureColumn(database, 'career_rubrics', 'major_group', 'TEXT');
+  ensureColumn(database, 'career_rubrics', 'entry_score', 'REAL');
 
   createAdminSchema(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
@@ -524,6 +529,22 @@ async function initialize() {
   } else {
     if (version < SCHEMA_VERSION) {
       migrateSchema(database, version);
+    }
+    const tables = getTableNames(database);
+    if (tables.includes('career_rubrics')) {
+      const rubricsCols = getColumnNames(database, 'career_rubrics');
+      let changed = false;
+      if (!rubricsCols.includes('major_group')) {
+        ensureColumn(database, 'career_rubrics', 'major_group', 'TEXT');
+        changed = true;
+      }
+      if (!rubricsCols.includes('entry_score')) {
+        ensureColumn(database, 'career_rubrics', 'entry_score', 'REAL');
+        changed = true;
+      }
+      if (changed) {
+        writeDatabaseToDisk(database);
+      }
     }
     verifySchema(database);
     if (version < SCHEMA_VERSION) {

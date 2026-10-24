@@ -155,7 +155,7 @@ router.get('/overview', async (req, res) => {
     }
 
     const fits = [];
-    for (const [id, rows] of (selectedClassLevel && selectedTerm ? grouped : [])) {
+    for (const [id, rows] of grouped) {
       const fit = calculateCareerFit(selectedSnapshotScores, rows);
       const rub = rows[0];
       const matchedSel = selections.find((sel) => matchesSelection(sel, rub));
@@ -169,6 +169,8 @@ router.get('/overview', async (req, res) => {
         schoolCode: rub.schoolCode,
         schoolName: rub.schoolName,
         majorName: rub.majorName,
+        majorGroup: rub.majorGroup || 'Khác',
+        entryScore: rub.entryScore !== null && rub.entryScore !== undefined ? Number(rub.entryScore) : null,
         method: rub.method,
         admissionBlock: rub.admissionBlock,
         year: rub.year,

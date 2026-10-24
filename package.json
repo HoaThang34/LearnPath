@@ -1,0 +1,14 @@
+{
+  "name": "learnpath-workspace",
+  "version": "1.0.0",
+  "description": "LearnPath - Hệ thống tư vấn hướng nghiệp và tuyển sinh đại học",
+  "private": true,
+  "scripts": {
+    "dev": "npm --prefix backend run dev",
+    "start": "npm --prefix backend start",
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "test": "npm --prefix backend test",
+    "build:frontend": "npm --prefix frontend run build"
+  }
+}

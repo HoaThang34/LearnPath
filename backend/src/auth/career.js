@@ -123,6 +123,8 @@ function validateRubric(input) {
   const method = String(input?.method || '').trim().slice(0, 100);
   const schoolCode = String(input?.schoolCode || '').trim().slice(0, 32) || null;
   const block = String(input?.admissionBlock || '').trim().slice(0, 32) || null;
+  const majorGroup = String(input?.majorGroup || '').trim().slice(0, 100) || null;
+  const entryScore = (input?.entryScore !== undefined && input?.entryScore !== null && input?.entryScore !== '') ? Number(input.entryScore) : null;
   const year = Number(input?.year);
   if (!schoolName || !majorName || !method || !Number.isInteger(year) || year !== 2025) return { error: 'Định danh lựa chọn tuyển sinh năm 2025 chưa hợp lệ.' };
   if (!Array.isArray(input.subjects) || input.subjects.length < 1 || input.subjects.length > 20) return { error: 'Rubric cần từ 1 đến 20 môn.' };
@@ -138,12 +140,13 @@ function validateRubric(input) {
   }
   const total = subjects.reduce((sum, row) => sum + row.weight, 0);
   if (Math.abs(total - 1) > 0.001) return { error: `Tổng trọng số phải bằng 1 (hiện tại ${total.toFixed(3)}).` };
-  return { value: { schoolName, majorName, method, schoolCode, block, year, subjects } };
+  return { value: { schoolName, majorName, method, schoolCode, block, majorGroup, entryScore, year, subjects } };
 }
 
 function getRubrics() {
   return queryAll(`SELECT r.id, r.school_code AS schoolCode, r.school_name AS schoolName, r.major_name AS majorName,
-      r.method, r.admission_block AS admissionBlock, r.year, r.updated_at AS updatedAt,
+      r.method, r.admission_block AS admissionBlock, r.major_group AS majorGroup, r.entry_score AS entryScore,
+      r.year, r.updated_at AS updatedAt,
       s.subject_name AS subject, s.weight, s.threshold
     FROM career_rubrics r JOIN career_rubric_subjects s ON s.rubric_id = r.id
     ORDER BY r.school_name, r.major_name, r.method, r.admission_block, s.subject_name`);
@@ -160,11 +163,11 @@ async function saveRubric(input) {
   await runAuthMutation(() => {
     if (existing) {
       rubricId = Number(existing.id);
-      runSql('UPDATE career_rubrics SET updated_at = ? WHERE id = ?', [now, rubricId]);
+      runSql('UPDATE career_rubrics SET major_group = ?, entry_score = ?, updated_at = ? WHERE id = ?', [value.majorGroup, value.entryScore, now, rubricId]);
       runSql('DELETE FROM career_rubric_subjects WHERE rubric_id = ?', [rubricId]);
     } else {
-      runSql(`INSERT INTO career_rubrics (school_code, school_name, major_name, method, admission_block, year, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)`, [value.schoolCode, value.schoolName, value.majorName, value.method, value.block, value.year, now, now]);
+      runSql(`INSERT INTO career_rubrics (school_code, school_name, major_name, method, admission_block, major_group, entry_score, year, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [value.schoolCode, value.schoolName, value.majorName, value.method, value.block, value.majorGroup, value.entryScore, value.year, now, now]);
       rubricId = lastInsertId();
     }
     for (const subject of value.subjects) runSql('INSERT INTO career_rubric_subjects (rubric_id, subject_name, weight, threshold) VALUES (?, ?, ?, ?)', [rubricId, subject.subject, subject.weight, subject.threshold]);
@@ -201,7 +204,14 @@ function calculateCareerFit(scores, rubricRows) {
   return { fitPct, coveragePct: coverage, status: coverage < 100 ? 'partial_data' : 'complete', details, prioritySubject };
 }
 
-const SAMPLE_RUBRICS = [
+let EDUMIND_RUBRICS = [];
+try {
+  EDUMIND_RUBRICS = require('../data/edumind_rubrics.json');
+} catch (e) {
+  // fallback
+}
+
+const SAMPLE_RUBRICS = (Array.isArray(EDUMIND_RUBRICS) && EDUMIND_RUBRICS.length > 0) ? EDUMIND_RUBRICS : [
   {
     schoolCode: 'BKA',
     schoolName: 'ĐHBK Hà Nội',

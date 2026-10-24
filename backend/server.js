@@ -103,8 +103,18 @@ async function start() {
       );
     }
 
-    app.listen(PORT, () => {
+    const server = app.listen(PORT, () => {
       console.log(`Server running on http://localhost:${PORT}`);
+    });
+
+    server.on('error', (error) => {
+      if (error.code === 'EADDRINUSE') {
+        console.error(`[backend] Cổng ${PORT} hiện đang bị chiếm dụng bởi tiến trình khác (EADDRINUSE).`);
+        console.error(`Vui lòng tắt tiến trình đang chạy cổng ${PORT} hoặc chạy với biến môi trường PORT khác.`);
+      } else {
+        console.error('[backend] Lỗi máy chủ:', error);
+      }
+      process.exit(1);
     });
   } catch (error) {
     console.error('Failed to start server:', error);

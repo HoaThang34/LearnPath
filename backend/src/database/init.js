@@ -382,4 +382,8 @@ async function main() {
   console.log('Database initialization complete!');
 }
 
-main().catch(console.error);
+if (require.main === module) {
+  main().catch(console.error);
+}
+
+module.exports = { main, initDatabase };
