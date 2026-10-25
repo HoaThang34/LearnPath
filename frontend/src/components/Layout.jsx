@@ -37,6 +37,8 @@ export default function Layout({ children }) {
   const location = useLocation()
   const navigate = useNavigate()
   const { user, loading, logout } = useAuth()
+  const isAuthPage = location.pathname === '/dang-nhap' || location.pathname === '/dang-ky'
+  const hideNavMenu = (!user && location.pathname === '/') || isAuthPage
 
   const handleLogout = async () => {
     setLogoutError('')
@@ -67,29 +69,31 @@ export default function Layout({ children }) {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden items-center space-x-1 lg:flex">
-            {menuItems.map((item) => {
-              const Icon = item.icon
-              const isActive = location.pathname === item.path
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={cn(
-                    "flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
-                    isActive
-                      ? "bg-primary text-primary-foreground"
-                      : "text-muted-foreground hover:bg-muted hover:text-foreground"
-                  )}
-                >
-                  <Icon className="h-4 w-4" />
-                  <span>{item.label}</span>
-                </Link>
-              )
-            })}
-          </nav>
+          {!hideNavMenu && (
+            <nav className="hidden items-center space-x-1 lg:flex">
+              {menuItems.map((item) => {
+                const Icon = item.icon
+                const isActive = location.pathname === item.path
+                return (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    className={cn(
+                      "flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors",
+                      isActive
+                        ? "bg-primary text-primary-foreground"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    )}
+                  >
+                    <Icon className="h-4 w-4" />
+                    <span>{item.label}</span>
+                  </Link>
+                )
+              })}
+            </nav>
+          )}
 
-          <div className="hidden items-center gap-2 md:flex">
+          <div className={cn("items-center gap-2", hideNavMenu ? "flex" : "hidden md:flex")}>
             {loading ? (
               <div className="h-9 w-28 animate-pulse rounded-md bg-muted" aria-hidden="true" />
             ) : user ? (
@@ -128,36 +132,42 @@ export default function Layout({ children }) {
               </>
             ) : (
               <>
-                <Link
-                  to="/dang-nhap"
-                  className={buttonVariants({ variant: 'ghost', size: 'sm' })}
-                >
-                  <LogIn className="mr-2 h-4 w-4" />
-                  Đăng nhập
-                </Link>
-                <Link to="/dang-ky" className={buttonVariants({ size: 'sm' })}>
-                  <UserPlus className="mr-2 h-4 w-4" />
-                  Đăng ký
-                </Link>
+                {location.pathname !== '/dang-nhap' && (
+                  <Link
+                    to="/dang-nhap"
+                    className={buttonVariants({ variant: 'ghost', size: 'sm' })}
+                  >
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Đăng nhập
+                  </Link>
+                )}
+                {location.pathname !== '/dang-ky' && (
+                  <Link to="/dang-ky" className={buttonVariants({ size: 'sm' })}>
+                    <UserPlus className="mr-2 h-4 w-4" />
+                    Đăng ký
+                  </Link>
+                )}
               </>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            className="lg:hidden"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label={mobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
-            aria-expanded={mobileMenuOpen}
-          >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </Button>
+          {/* Mobile Menu Button (ẩn khi ở trang chủ chưa đăng nhập) */}
+          {!hideNavMenu && (
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
+              aria-expanded={mobileMenuOpen}
+            >
+              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </Button>
+          )}
         </div>
 
         {/* Mobile Navigation */}
-        {mobileMenuOpen && (
+        {!hideNavMenu && mobileMenuOpen && (
           <nav className="border-t p-4 lg:hidden">
             <div className="space-y-2">
               {menuItems.map((item) => {
