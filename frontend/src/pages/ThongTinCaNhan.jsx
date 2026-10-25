@@ -30,6 +30,7 @@ import { useAuth } from '@/context/AuthContext'
 import { getUserProfile, updateUserProfile } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import AcademicScoresEditor, { inferAcademicClassLevel, inferAcademicTerm } from '@/components/AcademicScoresEditor'
+import TargetMajorSelector from '@/components/TargetMajorSelector'
 
 const SUGGESTED_CERTIFICATES = [
   'IELTS',
@@ -561,46 +562,29 @@ export default function ThongTinCaNhan() {
         </Card>
 
         {/* Phần 4: Mục tiêu xét tuyển */}
-        <Card>
+        <Card className="relative z-20">
           <CardHeader className="pb-4">
             <CardTitle className="flex items-center gap-2 text-lg">
               <Target className="h-5 w-5 text-primary" />
               Mục tiêu xét tuyển
             </CardTitle>
             <CardDescription>
-              Ngôi trường đại học hoặc ngành nghề bạn ước mơ được theo học.
+              Chọn trường đại học và ngành nghề bạn ước mơ được theo học. Dữ liệu được liên kết trực tiếp với Phân tích năng lực.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-1.5">
-                <Label htmlFor="truong_muc_tieu" className="flex items-center gap-1.5">
-                  <School className="h-4 w-4 text-muted-foreground" />
-                  Trường mong muốn vào
-                </Label>
-                <Input
-                  id="truong_muc_tieu"
-                  placeholder="Ví dụ: Đại học Bách khoa Hà Nội, Đại học Ngoại thương..."
-                  value={form.truong_muc_tieu}
-                  onChange={(e) => setForm({ ...form, truong_muc_tieu: e.target.value })}
-                  maxLength={255}
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="nganh_muc_tieu" className="flex items-center gap-1.5">
-                  <Compass className="h-4 w-4 text-muted-foreground" />
-                  Ngành mong muốn vào
-                </Label>
-                <Input
-                  id="nganh_muc_tieu"
-                  placeholder="Ví dụ: Khoa học máy tính, Kinh tế đối ngoại, Y đa khoa..."
-                  value={form.nganh_muc_tieu}
-                  onChange={(e) => setForm({ ...form, nganh_muc_tieu: e.target.value })}
-                  maxLength={255}
-                />
-              </div>
-            </div>
+            <TargetMajorSelector
+              schoolValue={form.truong_muc_tieu}
+              majorValue={form.nganh_muc_tieu}
+              onChange={({ schoolName, majorName }) => {
+                setForm((prev) => ({
+                  ...prev,
+                  truong_muc_tieu: schoolName,
+                  nganh_muc_tieu: majorName,
+                }))
+              }}
+              showAnalysisLink={true}
+            />
           </CardContent>
         </Card>
 

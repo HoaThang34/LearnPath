@@ -491,6 +491,13 @@ test('auth API integration', async (t) => {
     const meRes = await request('/api/auth/me', { cookie });
     assert.equal(meRes.response.status, 200);
     assert.equal(meRes.data.data.user.surveyCompleted, true);
+
+    // Verify career target selection is synchronized from survey submission
+    const careerSelRes = await request('/api/career/selections', { cookie });
+    assert.equal(careerSelRes.response.status, 200);
+    const surveyTarget = careerSelRes.data.data.find((s) => s.kind === 'target');
+    assert.ok(surveyTarget, 'Target should be created from survey submission');
+    assert.equal(surveyTarget.majorName, 'Khoa học máy tính');
   });
 
   await t.test('gets career overview with matched target/pinned rubrics and unmatched selections', async () => {
@@ -582,5 +589,92 @@ test('auth API integration', async (t) => {
     assert.equal(targetMajor.majorName, 'Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)');
     assert.ok(targetMajor.weightVector);
     assert.ok(targetMajor.fitPct >= 90);
+  });
+
+  await t.test('syncs target between profile, career target-options and career selections', async () => {
+    const username = `syncuser_${Date.now()}`;
+    const registered = await request('/api/auth/register', {
+      method: 'POST',
+      body: {
+        username,
+        password: 'Password123',
+        passwordConfirm: 'Password123',
+      },
+    });
+    assert.equal(registered.response.status, 201);
+    const cookie = readCookie(registered.response);
+
+    // 1. Target options should return available targets and currentTarget=null initially
+    const optRes1 = await request('/api/career/target-options', { cookie });
+    assert.equal(optRes1.response.status, 200);
+    assert.ok(Array.isArray(optRes1.data.data.targets));
+    assert.ok(optRes1.data.data.targets.length > 0);
+    assert.equal(optRes1.data.data.currentTarget, null);
+
+    // 2. Save target in user profile -> should automatically sync to career_selections (kind = 'target')
+    const saveProfileRes = await request('/api/auth/profile', {
+      method: 'PUT',
+      cookie,
+      body: {
+        ho_va_ten: 'Lê Văn Đồng Bộ',
+        lop: '12A1',
+        truong: 'THPT Chu Văn An',
+        truong_muc_tieu: 'ĐHBK Hà Nội',
+        nganh_muc_tieu: 'Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)',
+        to_hop_mong_muon: ['Toán', 'Tin học', 'Tiếng Anh'],
+        diem_lop: [],
+        chung_chi: [],
+      },
+    });
+    assert.equal(saveProfileRes.response.status, 200);
+
+    // Check career selections
+    const selRes = await request('/api/career/selections', { cookie });
+    assert.equal(selRes.response.status, 200);
+    const targetSel = selRes.data.data.find((s) => s.kind === 'target');
+    assert.ok(targetSel, 'Target selection should be created automatically');
+    assert.equal(targetSel.schoolName, 'ĐHBK Hà Nội');
+    assert.equal(targetSel.majorName, 'Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)');
+    assert.equal(targetSel.schoolCode, 'BKA');
+
+    // Target options now reports currentTarget
+    const optRes2 = await request('/api/career/target-options', { cookie });
+    assert.equal(optRes2.response.status, 200);
+    assert.equal(optRes2.data.data.currentTarget?.majorName, 'Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)');
+
+    // 3. Switch target via /api/career/selections -> should replace target and sync back to user_profiles
+    const switchTargetRes = await request('/api/career/selections', {
+      method: 'POST',
+      cookie,
+      body: {
+        schoolCode: 'KHA',
+        schoolName: 'ĐH Kinh tế Quốc dân',
+        majorName: 'Kinh tế quốc tế',
+        method: 'Điểm thi THPT',
+        admissionBlock: 'D01',
+        year: 2025,
+        kind: 'target',
+      },
+    });
+    assert.equal(switchTargetRes.response.status, 201);
+
+    // Verify user profile is synced
+    const profileRes = await request('/api/auth/profile', { cookie });
+    assert.equal(profileRes.response.status, 200);
+    assert.equal(profileRes.data.data.profile.truong_muc_tieu, 'ĐH Kinh tế Quốc dân');
+    assert.equal(profileRes.data.data.profile.nganh_muc_tieu, 'Kinh tế quốc tế');
+
+    // 4. Remove target selection -> should clear truong_muc_tieu and nganh_muc_tieu
+    const newTargetSel = switchTargetRes.data.data.selections.find((s) => s.kind === 'target');
+    assert.ok(newTargetSel);
+    const deleteRes = await request(`/api/career/selections/${newTargetSel.id}`, {
+      method: 'DELETE',
+      cookie,
+    });
+    assert.equal(deleteRes.response.status, 204);
+
+    const clearedProfileRes = await request('/api/auth/profile', { cookie });
+    assert.equal(clearedProfileRes.data.data.profile.truong_muc_tieu, '');
+    assert.equal(clearedProfileRes.data.data.profile.nganh_muc_tieu, '');
   });
 });

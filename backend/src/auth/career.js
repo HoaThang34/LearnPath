@@ -100,20 +100,45 @@ async function addCareerSelection(userId, input) {
   await runAuthMutation(() => {
     const existing = queryOne('SELECT id FROM career_selections WHERE user_id = ? AND kind = ? AND school_name = ? AND major_name = ? AND method = ? AND COALESCE(admission_block, \'\') = COALESCE(?, \'\') AND year = ?', [userId, value.kind, value.schoolName, value.majorName, value.method, value.block, value.year]);
     if (existing) return;
-    const count = queryOne('SELECT COUNT(*) AS total FROM career_selections WHERE user_id = ? AND kind = ?', [userId, value.kind]);
-    if (value.kind === 'target' && Number(count.total) >= 1) { const e = new Error('Bạn chỉ có thể lưu một ngành mục tiêu.'); e.statusCode = 409; throw e; }
-    if (value.kind === 'pinned' && Number(count.total) >= MAX_PINS) { const e = new Error(`Bạn chỉ có thể lưu tối đa ${MAX_PINS} ngành quan tâm.`); e.statusCode = 409; throw e; }
+    if (value.kind === 'target') {
+      // Replace existing target
+      runSql('DELETE FROM career_selections WHERE user_id = ? AND kind = ?', [userId, 'target']);
+    } else {
+      const count = queryOne('SELECT COUNT(*) AS total FROM career_selections WHERE user_id = ? AND kind = ?', [userId, value.kind]);
+      if (value.kind === 'pinned' && Number(count.total) >= MAX_PINS) {
+        const e = new Error(`Bạn chỉ có thể lưu tối đa ${MAX_PINS} ngành quan tâm.`);
+        e.statusCode = 409;
+        throw e;
+      }
+    }
     runSql(`INSERT INTO career_selections
       (user_id, school_code, school_name, major_name, method, admission_block, year, kind, created_at, updated_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [userId, value.schoolCode, value.schoolName, value.majorName, value.method, value.block, value.year, value.kind, now, now]);
+
+    if (value.kind === 'target') {
+      const profileRow = queryOne('SELECT user_id FROM user_profiles WHERE user_id = ?', [userId]);
+      if (profileRow) {
+        runSql('UPDATE user_profiles SET truong_muc_tieu = ?, nganh_muc_tieu = ?, updated_at = ? WHERE user_id = ?',
+          [value.schoolName, value.majorName, now, userId]);
+      } else {
+        runSql(`INSERT INTO user_profiles (user_id, ho_va_ten, lop, truong, diem_lop, chung_chi, truong_muc_tieu, nganh_muc_tieu, to_hop_mong_muon, khac, updated_at)
+          VALUES (?, '', '', '', '[]', '[]', ?, ?, '[]', '', ?)`,
+          [userId, value.schoolName, value.majorName, now]);
+      }
+    }
   });
   return getCareerSelections(userId);
 }
 
 async function removeCareerSelection(userId, id) {
-  const row = queryOne('SELECT id FROM career_selections WHERE id = ? AND user_id = ?', [id, userId]);
+  const row = queryOne('SELECT id, kind, school_name, major_name FROM career_selections WHERE id = ? AND user_id = ?', [id, userId]);
   if (!row) return false;
-  await runAuthMutation(() => runSql('DELETE FROM career_selections WHERE id = ? AND user_id = ?', [id, userId]));
+  await runAuthMutation(() => {
+    runSql('DELETE FROM career_selections WHERE id = ? AND user_id = ?', [id, userId]);
+    if (row.kind === 'target') {
+      runSql('UPDATE user_profiles SET truong_muc_tieu = \'\', nganh_muc_tieu = \'\', updated_at = ? WHERE user_id = ?', [Date.now(), userId]);
+    }
+  });
   return true;
 }
 

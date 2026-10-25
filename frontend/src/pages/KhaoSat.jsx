@@ -28,6 +28,7 @@ import { useAuth } from '@/context/AuthContext'
 import { getSurveyQuestions, getUserProfile, submitSurvey } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import AcademicScoresEditor, { inferAcademicClassLevel, inferAcademicTerm } from '@/components/AcademicScoresEditor'
+import TargetMajorSelector from '@/components/TargetMajorSelector'
 
 const SUGGESTED_CERTIFICATES = [
   'IELTS',
@@ -417,7 +418,7 @@ export default function KhaoSat() {
         </Card>
 
         {/* Phần 2: Mục tiêu xét tuyển */}
-        <Card className="shadow-sm">
+        <Card className="shadow-sm relative z-20">
           <CardHeader className="pb-4">
             <div className="flex items-center gap-2 text-primary font-semibold text-sm">
               <Target className="h-4 w-4" />
@@ -425,39 +426,31 @@ export default function KhaoSat() {
             </div>
             <CardTitle className="text-xl">Mục tiêu xét tuyển đại học</CardTitle>
             <CardDescription>
-              Trường và ngành học bạn mong muốn trúng tuyển nhất trong kỳ thi tuyển sinh tới.
+              Chọn trường và ngành học bạn mong muốn trúng tuyển nhất để liên kết với Phân tích năng lực.
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="space-y-1.5">
-                <Label htmlFor="truong_muc_tieu">
-                  Trường đại học mục tiêu <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="truong_muc_tieu"
-                  placeholder="Ví dụ: Đại học Bách khoa Hà Nội"
-                  value={form.truong_muc_tieu}
-                  onChange={(e) => setForm({ ...form, truong_muc_tieu: e.target.value })}
-                  maxLength={255}
-                  required
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <Label htmlFor="nganh_muc_tieu">
-                  Ngành học mục tiêu <span className="text-destructive">*</span>
-                </Label>
-                <Input
-                  id="nganh_muc_tieu"
-                  placeholder="Ví dụ: Khoa học máy tính, Kỹ thuật điện..."
-                  value={form.nganh_muc_tieu}
-                  onChange={(e) => setForm({ ...form, nganh_muc_tieu: e.target.value })}
-                  maxLength={255}
-                  required
-                />
-              </div>
-            </div>
+            <TargetMajorSelector
+              schoolValue={form.truong_muc_tieu}
+              majorValue={form.nganh_muc_tieu}
+              required={true}
+              onChange={({ schoolName, majorName, admissionBlock }) => {
+                setForm((prev) => {
+                  const next = {
+                    ...prev,
+                    truong_muc_tieu: schoolName,
+                    nganh_muc_tieu: majorName,
+                  }
+                  if (prev.to_hop_mong_muon.length === 0 && admissionBlock) {
+                    const foundCombo = QUICK_COMBINATIONS.find((c) => c.code === admissionBlock)
+                    if (foundCombo) {
+                      next.to_hop_mong_muon = [...foundCombo.subjects]
+                    }
+                  }
+                  return next
+                })
+              }}
+            />
 
             {/* Tổ hợp môn mong muốn */}
             <div className="space-y-3 pt-2 border-t">

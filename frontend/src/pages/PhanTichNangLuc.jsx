@@ -738,6 +738,19 @@ export default function PhanTichNangLuc() {
               <span className="text-muted-foreground">Lớp: {profile?.lop || '12'}</span>
               <span className="text-muted-foreground">·</span>
               <span className="text-muted-foreground">Trường: {profile?.truong || 'THPT'}</span>
+              {(profile?.truong_muc_tieu || profile?.nganh_muc_tieu) && (
+                <>
+                  <span className="text-muted-foreground">·</span>
+                  <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2.5 py-0.5 text-xs font-semibold text-primary border border-primary/20">
+                    <Target className="h-3 w-3" />
+                    <span>Mục tiêu:</span>
+                    <span className="font-bold">{profile.nganh_muc_tieu}</span>
+                    {profile.truong_muc_tieu && (
+                      <span className="opacity-80 font-normal">({profile.truong_muc_tieu})</span>
+                    )}
+                  </span>
+                </>
+              )}
               <a href="/thong-tin-ca-nhan" className="text-xs font-semibold text-primary hover:underline">
                 Cập nhật điểm hồ sơ →
               </a>

@@ -63,6 +63,7 @@ export const getCareerOverview = (params) => api.get('/career/overview', params 
 export const getCareerScores = () => api.get('/career/scores');
 export const saveCareerScores = (scores) => api.put('/career/scores', { scores });
 export const getCareerSelections = () => api.get('/career/selections');
+export const getCareerTargetOptions = () => api.get('/career/target-options');
 export const addCareerSelection = (selection) => api.post('/career/selections', selection);
 export const removeCareerSelection = (id) => api.delete(`/career/selections/${id}`);
 export const getCareerMajors = (params) => api.get('/career/majors', { params });

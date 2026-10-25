@@ -118,14 +118,27 @@ function getUserProfile(userId) {
     toHop = [];
   }
 
+  let truongMucTieu = row.truong_muc_tieu || '';
+  let nganhMucTieu = row.nganh_muc_tieu || '';
+  if (!truongMucTieu || !nganhMucTieu) {
+    const targetSel = queryOne(
+      'SELECT school_name, major_name FROM career_selections WHERE user_id = ? AND kind = ? LIMIT 1',
+      [userId, 'target']
+    );
+    if (targetSel) {
+      truongMucTieu = truongMucTieu || targetSel.school_name || '';
+      nganhMucTieu = nganhMucTieu || targetSel.major_name || '';
+    }
+  }
+
   return {
     ho_va_ten: row.ho_va_ten || '',
     lop: row.lop || '',
     truong: row.truong || '',
     diem_lop: Array.isArray(diemLop) ? diemLop : [],
     chung_chi: Array.isArray(chungChi) ? chungChi : [],
-    truong_muc_tieu: row.truong_muc_tieu || '',
-    nganh_muc_tieu: row.nganh_muc_tieu || '',
+    truong_muc_tieu: truongMucTieu,
+    nganh_muc_tieu: nganhMucTieu,
     to_hop_mong_muon: Array.isArray(toHop) ? toHop : [],
     khac: row.khac || '',
     updated_at: row.updated_at ? Number(row.updated_at) : null,
@@ -182,6 +195,38 @@ async function saveUserProfile(userId, input) {
         userId, score.mon, score.ky_hoc, score.lop, score.loai_diem,
         score.diem, 'Hồ sơ cá nhân', now,
       ]);
+    }
+
+    // Sync career target selection
+    if (v.truong_muc_tieu && v.nganh_muc_tieu) {
+      const rubric = queryOne(
+        `SELECT school_code, school_name, major_name, method, admission_block, year
+           FROM career_rubrics
+          WHERE LOWER(TRIM(school_name)) = LOWER(TRIM(?))
+            AND LOWER(TRIM(major_name)) = LOWER(TRIM(?))
+          LIMIT 1`,
+        [v.truong_muc_tieu, v.nganh_muc_tieu]
+      );
+      runSql('DELETE FROM career_selections WHERE user_id = ? AND kind = ?', [userId, 'target']);
+      runSql(
+        `INSERT INTO career_selections (
+           user_id, school_code, school_name, major_name, method, admission_block, year, kind, created_at, updated_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          userId,
+          rubric?.school_code || null,
+          rubric?.school_name || v.truong_muc_tieu,
+          rubric?.major_name || v.nganh_muc_tieu,
+          rubric?.method || 'Điểm thi THPT',
+          rubric?.admission_block || null,
+          rubric?.year || 2025,
+          'target',
+          now,
+          now,
+        ]
+      );
+    } else if (!v.truong_muc_tieu && !v.nganh_muc_tieu) {
+      runSql('DELETE FROM career_selections WHERE user_id = ? AND kind = ?', [userId, 'target']);
     }
   });
 

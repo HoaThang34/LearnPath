@@ -276,6 +276,49 @@ router.put('/scores', async (req, res) => {
 });
 
 router.get('/selections', (req, res) => res.json({ data: getCareerSelections(req.user.id) }));
+router.get('/target-options', async (req, res) => {
+  try {
+    let rubrics = getRubrics();
+    if (rubrics.length === 0) {
+      try {
+        rubrics = await seedSampleRubrics(false);
+      } catch (e) {
+        console.warn('[career] Auto-seed rubrics failed:', e.message);
+      }
+    }
+    const grouped = new Map();
+    for (const r of rubrics) {
+      if (!grouped.has(r.id)) {
+        grouped.set(r.id, {
+          id: r.id,
+          schoolCode: r.schoolCode,
+          schoolName: r.schoolName,
+          majorName: r.majorName,
+          majorGroup: r.majorGroup || 'Khác',
+          admissionBlock: r.admissionBlock,
+          entryScore: r.entryScore !== null && r.entryScore !== undefined ? Number(r.entryScore) : null,
+          method: r.method,
+          year: r.year,
+        });
+      }
+    }
+    const targets = Array.from(grouped.values()).sort((a, b) =>
+      String(a.schoolName || '').localeCompare(String(b.schoolName || ''), 'vi') ||
+      String(a.majorName || '').localeCompare(String(b.majorName || ''), 'vi')
+    );
+    const selections = getCareerSelections(req.user.id);
+    const currentTarget = selections.find((s) => s.kind === 'target') || null;
+
+    return res.json({
+      data: {
+        targets,
+        currentTarget,
+      },
+    });
+  } catch (error) {
+    return sendCareerError(res, error);
+  }
+});
 router.post('/selections', async (req, res) => {
   try { return res.status(201).json({ data: { selections: await addCareerSelection(req.user.id, req.body) } }); } catch (error) { return sendCareerError(res, error); }
 });
