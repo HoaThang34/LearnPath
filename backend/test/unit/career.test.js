@@ -10,7 +10,7 @@ const assert = require('node:assert/strict');
 const { calculateCareerFit, validateScoreRows, validateRubric, saveAcademicScores, seedSampleRubrics, getRubrics } = require('../../src/auth/career');
 const { getAuthDb, runSql } = require('../../src/auth/authDb');
 const { getDb } = require('../../src/database/db');
-const { getAdmissionRows } = require('../../src/routes/career');
+const { getAdmissionRows, getMapData } = require('../../src/routes/career');
 
 test('validates THPT distance score inputs through the supported subject data', () => {
   const scores = [{ subject: 'Toán', scoreType: 'average', score: 8 }, { subject: 'Vật lý', scoreType: 'average', score: 7 }, { subject: 'Hóa học', scoreType: 'average', score: 6 }];
@@ -165,4 +165,32 @@ test('seedSampleRubrics populates standard sample rubrics if empty or forced', a
   const mathMajor = seeded.find((r) => r.majorName.includes('Sư phạm Toán'));
   assert.ok(mathMajor);
   assert.equal(mathMajor.schoolCode, 'SPH');
+});
+
+test('getMapData returns vector embeddings and major nodes for career map', async () => {
+  await getAuthDb();
+  await seedSampleRubrics(false);
+  const testUserId = 88888;
+  await saveAcademicScores(testUserId, [
+    { subject: 'Toán', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 9.0 },
+    { subject: 'Vật lý', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 8.5 },
+  ]);
+
+  const mapData = getMapData(testUserId, { classLevel: '12', term: 'Kỳ 1' });
+  assert.ok(mapData);
+  assert.equal(mapData.selectedClassLevel, '12');
+  assert.equal(mapData.selectedTerm, 'Kỳ 1');
+  assert.equal(mapData.studentVector['Toán'], 9.0);
+  assert.equal(mapData.studentVector['Vật lý'], 8.5);
+  assert.ok(Array.isArray(mapData.majors));
+  assert.ok(mapData.majors.length > 0);
+
+  const first = mapData.majors[0];
+  assert.ok(first.id);
+  assert.ok(first.majorName);
+  assert.ok(first.schoolName);
+  assert.ok(first.majorGroup);
+  assert.ok(first.weightVector);
+  assert.equal(typeof first.weightVector, 'object');
+  assert.ok(first.fitPct !== undefined);
 });

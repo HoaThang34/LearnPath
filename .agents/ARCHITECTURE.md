@@ -85,7 +85,7 @@ Environment variables:
 | `/thu-hang` | `pages/ThuHang.jsx` | Protected | `/api/diem-thi/ranking`, `/api/diem-thi/stats` |
 | `/thong-tin-ca-nhan` | `pages/ThongTinCaNhan.jsx` | Protected | `/api/auth/profile` |
 | `/khao-sat` | `pages/KhaoSat.jsx` | Protected | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
-| `/phan-tich-nang-luc` | `pages/PhanTichNangLuc.jsx` | Protected | `/api/career/overview`, `/api/career/scores`, `/api/career/majors`, `/api/career/selections` |
+| `/phan-tich-nang-luc` | `pages/PhanTichNangLuc.jsx` | Protected | `/api/career/overview`, `/api/career/scores`, `/api/career/majors`, `/api/career/selections`, `/api/career/map-data` |
 
 Implementation notes:
 
@@ -339,6 +339,17 @@ Explores benchmark majors (THPT 2025) with dynamic distance rate calculation for
 | `offset` | integer | 0 | >= 0 |
 
 Returns `{ data: rows, total, limit, offset, sort, year: 2025, warning }`. When sorting by `rate_desc` or `rate_asc`, rows with computed rates appear first, with nulls last.
+
+### `GET /api/career/map-data`
+
+Returns student vector embeddings, rubric major weight vectors, fit percentages, benchmark scores, and selection states for rendering the interactive force-directed career map.
+
+| Param | Type | Default | Notes |
+|---|---|---|---|
+| `classLevel` | string | — | Candidate class level (10/11/12) for academic snapshot |
+| `term` | string | — | Candidate academic term (Kỳ 1/Kỳ 2/Cả năm) |
+
+Returns `{ data: { studentVector, majors, selectedClassLevel, selectedTerm } }` where each major includes `id`, `schoolCode`, `schoolName`, `majorName`, `majorGroup`, `admissionBlock`, `entryScore`, `fitPct`, `coveragePct`, `weightVector`, `details`, `isTarget`, `isPinned`.
 
 ## 5. DB schema
 

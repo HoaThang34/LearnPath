@@ -567,5 +567,20 @@ test('auth API integration', async (t) => {
     // Check unmatched selections
     assert.equal(overviewData.unmatchedSelections.length, 1);
     assert.equal(overviewData.unmatchedSelections[0].majorName, 'Ngành Thử Nghiệm');
+
+    // Call career map-data
+    const mapRes = await request('/api/career/map-data?classLevel=12&term=Kỳ 1', { cookie });
+    assert.equal(mapRes.response.status, 200);
+    const mapData = mapRes.data.data;
+    assert.ok(mapData);
+    assert.equal(mapData.selectedClassLevel, '12');
+    assert.equal(mapData.selectedTerm, 'Kỳ 1');
+    assert.equal(mapData.studentVector['Toán'], 9.0);
+    assert.ok(mapData.majors.length > 0);
+    const targetMajor = mapData.majors.find((m) => m.isTarget);
+    assert.ok(targetMajor);
+    assert.equal(targetMajor.majorName, 'Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)');
+    assert.ok(targetMajor.weightVector);
+    assert.ok(targetMajor.fitPct >= 90);
   });
 });

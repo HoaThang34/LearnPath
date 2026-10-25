@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   AlertCircle, ArrowLeftRight, Bookmark, Check, CheckCircle2, ChevronDown, ChevronUp,
-  Crosshair, Filter, Info, Loader2, RotateCcw, Search, Sliders, Sparkles, Star, Target, Trash2, X,
+  Compass, Crosshair, Filter, Info, Loader2, RotateCcw, Search, Sliders, Sparkles, Star, Target, Trash2, X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -9,9 +9,10 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/AuthContext'
 import {
-  addCareerSelection, getCareerOverview, removeCareerSelection,
+  addCareerSelection, getCareerMapData, getCareerOverview, removeCareerSelection,
   getUserProfile,
 } from '@/lib/api'
+import CareerMap from '@/components/career/CareerMap'
 
 // Helper: Normalize subject names for comparison
 function normalizeSubject(val) {
@@ -305,6 +306,15 @@ export default function PhanTichNangLuc() {
   const [success, setSuccess] = useState('')
   const requestId = useRef(0)
 
+  // View Switcher: 'browse' (Phân tích năng lực & Duyệt ngành học) | 'map' (Bản đồ)
+  const [activeTab, setActiveTab] = useState('browse')
+
+  // Map Data State
+  const [mapData, setMapData] = useState(null)
+  const [mapLoading, setMapLoading] = useState(false)
+  const [mapError, setMapError] = useState('')
+  const mapRequestId = useRef(0)
+
   // EduMind Filter States
   const [search, setSearch] = useState('')
   const [universityFilter, setUniversityFilter] = useState('')
@@ -355,6 +365,29 @@ export default function PhanTichNangLuc() {
   }, [snapshot])
 
   useEffect(() => { load() }, [load])
+
+  const loadMapData = useCallback(async () => {
+    const currentRequest = ++mapRequestId.current
+    setMapLoading(true)
+    setMapError('')
+    try {
+      const res = await getCareerMapData(snapshot)
+      if (currentRequest !== mapRequestId.current) return
+      setMapData(res.data?.data || null)
+    } catch (err) {
+      if (currentRequest !== mapRequestId.current) return
+      console.error('Career map load failed', err)
+      setMapError(err.response?.data?.error || 'Không thể tải dữ liệu bản đồ ngành.')
+    } finally {
+      if (currentRequest === mapRequestId.current) setMapLoading(false)
+    }
+  }, [snapshot])
+
+  useEffect(() => {
+    if (activeTab === 'map') {
+      loadMapData()
+    }
+  }, [activeTab, loadMapData])
 
   const snapshots = useMemo(() => [...new Set(scores.map((row) => `${row.classLevel}|${row.term}`))], [scores])
   const visibleScores = scores.filter((row) => row.classLevel === snapshot.classLevel && row.term === snapshot.term)
@@ -507,28 +540,35 @@ export default function PhanTichNangLuc() {
   }
 
   const comparedFits = useMemo(() => {
-    return compareIds.map((id) => processedFits.find((f) => f.rubricId === id)).filter(Boolean)
+    return compareIds.map((id) => processedFits.find((f) => String(f.rubricId) === String(id))).filter(Boolean)
   }, [compareIds, processedFits])
 
   // Pin & Target handlers
   const handlePin = async (fit) => {
     try {
-      if (fit.isPinned && fit.selectionId) {
-        await removeCareerSelection(fit.selectionId)
+      const existingId = fit.selectionId
+        || (overview?.selections || []).find((s) => s.kind === 'pinned' && s.schoolName === fit.schoolName && s.majorName === fit.majorName)?.id
+        || (mapData?.majors || []).find((m) => m.isPinned && m.schoolName === fit.schoolName && m.majorName === fit.majorName)?.selectionId
+
+      if (fit.isPinned && existingId) {
+        await removeCareerSelection(existingId)
         setSuccess(`Đã bỏ ghim ngành "${fit.majorName}".`)
       } else {
         await addCareerSelection({
           schoolCode: fit.schoolCode,
           schoolName: fit.schoolName,
           majorName: fit.majorName,
-          method: fit.method,
+          method: fit.method || 'Điểm thi THPT',
           admissionBlock: fit.admissionBlock,
-          year: fit.year,
+          year: fit.year || 2025,
           kind: 'pinned',
         })
         setSuccess(`Đã ghim ngành "${fit.majorName}".`)
       }
       await load()
+      if (activeTab === 'map') {
+        await loadMapData()
+      }
     } catch (err) {
       console.error('Pin action failed', err)
       setError(err.response?.data?.error || 'Không thể cập nhật ghim ngành.')
@@ -537,22 +577,29 @@ export default function PhanTichNangLuc() {
 
   const handleTarget = async (fit) => {
     try {
-      if (fit.isTarget && fit.selectionId) {
-        await removeCareerSelection(fit.selectionId)
+      const existingId = fit.selectionId
+        || (overview?.selections || []).find((s) => s.kind === 'target' && s.schoolName === fit.schoolName && s.majorName === fit.majorName)?.id
+        || (mapData?.majors || []).find((m) => m.isTarget && m.schoolName === fit.schoolName && m.majorName === fit.majorName)?.selectionId
+
+      if (fit.isTarget && existingId) {
+        await removeCareerSelection(existingId)
         setSuccess(`Đã hủy mục tiêu ngành "${fit.majorName}".`)
       } else {
         await addCareerSelection({
           schoolCode: fit.schoolCode,
           schoolName: fit.schoolName,
           majorName: fit.majorName,
-          method: fit.method,
+          method: fit.method || 'Điểm thi THPT',
           admissionBlock: fit.admissionBlock,
-          year: fit.year,
+          year: fit.year || 2025,
           kind: 'target',
         })
         setSuccess(`Đã đặt "${fit.majorName}" làm ngành mục tiêu!`)
       }
       await load()
+      if (activeTab === 'map') {
+        await loadMapData()
+      }
     } catch (err) {
       console.error('Target action failed', err)
       setError(err.response?.data?.error || 'Không thể lưu ngành mục tiêu.')
@@ -630,8 +677,56 @@ export default function PhanTichNangLuc() {
       {error && <div role="alert" className="rounded-md border border-destructive/30 bg-destructive/10 p-3 text-sm text-destructive">{error}</div>}
       {success && <div role="status" className="rounded-md border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">{success}</div>}
 
-      {/* Section 1 & 2: Hồ sơ điểm phân tích & Chọn Snapshot (Compact bar) */}
-      <Card className="border border-border shadow-xs">
+      {/* 2-Option View Switcher */}
+      <div className="flex border-b border-border pb-1">
+        <div className="inline-flex rounded-lg bg-muted p-1 text-muted-foreground">
+          <button
+            type="button"
+            onClick={() => setActiveTab('browse')}
+            className={`inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'browse'
+                ? 'bg-background text-foreground shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Sliders className="h-4 w-4" />
+            Phân tích năng lực & Duyệt ngành học
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('map')}
+            className={`inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'map'
+                ? 'bg-background text-foreground shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Compass className="h-4 w-4" />
+            Bản đồ (xem vị trí của bạn nằm ở đâu và phù hợp với ngành học nào)
+          </button>
+        </div>
+      </div>
+
+      {activeTab === 'map' && (
+        <CareerMap
+          mapData={mapData}
+          loading={mapLoading}
+          error={mapError}
+          compareIds={compareIds}
+          onToggleCompare={toggleCompare}
+          onOpenCompare={() => setShowCompareModal(true)}
+          onSetTarget={handleTarget}
+          onTogglePin={handlePin}
+          snapshot={snapshot}
+          snapshots={snapshots}
+          onSnapshotChange={(classLevel, term) => setSnapshot({ classLevel, term })}
+        />
+      )}
+
+      {activeTab === 'browse' && (
+        <>
+          {/* Section 1 & 2: Hồ sơ điểm phân tích & Chọn Snapshot (Compact bar) */}
+          <Card className="border border-border shadow-xs">
         <CardContent className="p-4 sm:p-5">
           <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             <div className="flex flex-wrap items-center gap-3 text-sm">
@@ -1086,6 +1181,8 @@ export default function PhanTichNangLuc() {
               </Button>
             </div>
           )}
+        </>
+      )}
         </>
       )}
 

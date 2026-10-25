@@ -45,6 +45,88 @@ function getDistanceRate(admissionBlock, entryScore, scores) {
   return Math.round(Math.min(Math.max(Math.max(...totals) / Number(entryScore) * 100, 0), 100) * 10) / 10;
 }
 
+function normalizeStr(s) {
+  return String(s || '').trim().toLowerCase();
+}
+
+function matchesSelection(sel, rub) {
+  if (normalizeStr(sel.schoolName) !== normalizeStr(rub.schoolName)) return false;
+  if (normalizeStr(sel.majorName) !== normalizeStr(rub.majorName)) return false;
+  if (sel.method && rub.method && normalizeStr(sel.method) !== normalizeStr(rub.method)) return false;
+  if (sel.year && rub.year && Number(sel.year) !== Number(rub.year)) return false;
+  return true;
+}
+
+function getMapData(userId, query = {}) {
+  const scores = getAcademicScores(userId);
+  const selections = getCareerSelections(userId);
+  const rubrics = getRubrics();
+
+  const grouped = new Map();
+  for (const rubric of rubrics) {
+    if (!grouped.has(rubric.id)) grouped.set(rubric.id, []);
+    grouped.get(rubric.id).push(rubric);
+  }
+
+  let selectedClassLevel = typeof query.classLevel === 'string' ? query.classLevel : '';
+  let selectedTerm = typeof query.term === 'string' ? query.term : '';
+  if (!selectedClassLevel && !selectedTerm && scores.length > 0) {
+    selectedClassLevel = scores[0].classLevel;
+    selectedTerm = scores[0].term;
+  }
+
+  const selectedScores = scores.filter((score) => (!selectedClassLevel || score.classLevel === selectedClassLevel) && (!selectedTerm || score.term === selectedTerm));
+  const selectedSnapshotScores = selectedScores.filter((score) => score.scoreType === 'average');
+
+  const studentVector = {};
+  for (const row of selectedSnapshotScores) {
+    if (row.subject && Number.isFinite(Number(row.score))) {
+      studentVector[row.subject] = Number(row.score);
+    }
+  }
+
+  const majors = [];
+  for (const [id, rows] of grouped) {
+    const rub = rows[0];
+    const fit = calculateCareerFit(selectedSnapshotScores, rows);
+    const weightVector = {};
+    for (const r of rows) {
+      if (r.subject) {
+        weightVector[r.subject] = Number(r.weight);
+      }
+    }
+    const matchedSel = selections.find((sel) => matchesSelection(sel, rub));
+    const isTarget = matchedSel?.kind === 'target';
+    const isPinned = matchedSel?.kind === 'pinned';
+    const selectionKind = matchedSel ? matchedSel.kind : null;
+    const selectionId = matchedSel ? matchedSel.id : null;
+
+    majors.push({
+      id,
+      schoolCode: rub.schoolCode,
+      schoolName: rub.schoolName,
+      majorName: rub.majorName,
+      majorGroup: rub.majorGroup || 'Khác',
+      admissionBlock: rub.admissionBlock,
+      entryScore: rub.entryScore !== null && rub.entryScore !== undefined ? Number(rub.entryScore) : null,
+      method: rub.method,
+      year: rub.year,
+      fitPct: fit.fitPct,
+      coveragePct: fit.coveragePct,
+      status: fit.status,
+      weightVector,
+      prioritySubject: fit.prioritySubject,
+      details: fit.details,
+      isTarget,
+      isPinned,
+      selectionKind,
+      selectionId,
+    });
+  }
+
+  return { majors, studentVector, selectedClassLevel, selectedTerm };
+}
+
 function sendCareerError(res, error) {
   if (error.statusCode) return res.status(error.statusCode).json({ error: error.message });
   console.error('[career] Request failed:', error);
@@ -142,18 +224,6 @@ router.get('/overview', async (req, res) => {
     const selectedScores = scores.filter((score) => (!selectedClassLevel || score.classLevel === selectedClassLevel) && (!selectedTerm || score.term === selectedTerm));
     const selectedSnapshotScores = selectedScores.filter((score) => score.scoreType === 'average');
 
-    function normalizeStr(s) {
-      return String(s || '').trim().toLowerCase();
-    }
-
-    function matchesSelection(sel, rub) {
-      if (normalizeStr(sel.schoolName) !== normalizeStr(rub.schoolName)) return false;
-      if (normalizeStr(sel.majorName) !== normalizeStr(rub.majorName)) return false;
-      if (sel.method && rub.method && normalizeStr(sel.method) !== normalizeStr(rub.method)) return false;
-      if (sel.year && rub.year && Number(sel.year) !== Number(rub.year)) return false;
-      return true;
-    }
-
     const fits = [];
     for (const [id, rows] of grouped) {
       const fit = calculateCareerFit(selectedSnapshotScores, rows);
@@ -224,7 +294,25 @@ router.get('/majors', (req, res) => {
   } catch (error) { return sendCareerError(res, error); }
 });
 
+router.get('/map-data', async (req, res) => {
+  try {
+    let rubrics = getRubrics();
+    if (rubrics.length === 0) {
+      try {
+        await seedSampleRubrics(false);
+      } catch (e) {
+        console.warn('[career] Auto-seed rubrics failed:', e.message);
+      }
+    }
+    const result = getMapData(req.user.id, req.query);
+    return res.json({ data: result });
+  } catch (error) {
+    return sendCareerError(res, error);
+  }
+});
+
 router.getAdmissionRows = getAdmissionRows;
 router.getDistanceRate = getDistanceRate;
+router.getMapData = getMapData;
 
 module.exports = router;

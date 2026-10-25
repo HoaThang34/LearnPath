@@ -66,5 +66,6 @@ export const getCareerSelections = () => api.get('/career/selections');
 export const addCareerSelection = (selection) => api.post('/career/selections', selection);
 export const removeCareerSelection = (id) => api.delete(`/career/selections/${id}`);
 export const getCareerMajors = (params) => api.get('/career/majors', { params });
+export const getCareerMapData = (params) => api.get('/career/map-data', params ? { params } : undefined);
 
 export default api;

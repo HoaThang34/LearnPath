@@ -223,9 +223,15 @@ Dừng và hỏi người dùng nếu source-of-truth dữ liệu mâu thuẫn, 
   - Bộ 6 rubric mẫu chuẩn hóa cho các trường hot năm 2025 (BKA, KHA, NTH, SPH) và nút nạp mẫu nhanh trong Admin.
   - Admin hỗ trợ tìm kiếm nhanh từ `diem_chuan` và mẫu template môn theo khối thi (A00, A01, B00, C00, D01, D07).
   - Cảnh báo các ngành đã lưu chưa có rubric cấu hình (`unmatchedSelections`).
-- [x] Backend tests (99/99 pass) và frontend build pass (4.23s).
-- [ ] Browser E2E hoàn chỉnh cho nhập/lưu điểm, rubric CRUD, pin/target và responsive/error state chưa hoàn thành; giới hạn do browser automation trong phiên.
-- AI career chat và bản đồ ngành vẫn ngoài phạm vi MVP đã duyệt.
+- [x] Chức năng Bản đồ ngành học (Career Map v2):
+  - 2 lựa chọn tại tab "Phân tích năng lực": "Phân tích năng lực & Duyệt ngành học" và "Bản đồ (xem vị trí của bạn nằm ở đâu và phù hợp với ngành học nào)".
+  - Đồ thị liên kết lực (Force-directed graph với D3): Node "Bạn" (vị trí năng lực với hiệu ứng phát sáng đa lớp), node ngành có màu theo nhóm ngành và kích thước theo điểm chuẩn 2025.
+  - Phân cụm góc theo nhóm ngành (angular clustering) và khoảng cách bán kính hướng tâm theo mức độ phù hợp (fit %).
+  - Đường nối tương tự yêu cầu môn (cosine similarity) và đường nối đỏ top ngành phù hợp nhất từng nhóm.
+  - Bộ lọc đa năng: tìm kiếm ngành/trường, bật/tắt nhóm ngành, ẩn ngành < 50% fit, điều khiển zoom (+, -, reset view).
+  - Ngăn kéo chi tiết (Slide-out Detail Drawer) hiển thị phân tích môn học, trọng số, điểm số, gap, đặt mục tiêu, ghim quan tâm, thêm vào so sánh.
+  - Endpoint backend `GET /api/career/map-data` trả vector điểm học sinh và vector trọng số ngành; test coverage 100/100 pass.
+- [x] Backend tests (100/100 pass) và frontend build pass (4.49s).
 
 ## 10. Nhật ký thay đổi và xác minh của plan
 
