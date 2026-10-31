@@ -1,7 +1,8 @@
 'use strict';
 
-const { getAcademicScores, getCareerSelections, getRubrics, calculateCareerFit } = require('../auth/career');
+const { getAcademicScores, getCareerSelections, getRubrics, calculateCareerFit, normalizeSubject } = require('../auth/career');
 const { getExamScoreMap } = require('./examScores');
+const { getBlockSubjects } = require('./subjects');
 const { getLatestResult } = require('../interest/store');
 const {
   getWeightsMap,
@@ -76,11 +77,23 @@ async function buildRecommendations(userId, query = {}) {
   const pinnedKeys = new Set(
     selections.filter((row) => row.kind === 'pinned').map(selectionKey)
   );
-  const classLevel = typeof query.classLevel === 'string' ? query.classLevel.trim() : '';
-  const term = typeof query.term === 'string' ? query.term.trim() : '';
+  let selectedClassLevel = typeof query.classLevel === 'string' ? query.classLevel.trim() : '';
+  let selectedTerm = typeof query.term === 'string' ? query.term.trim() : '';
+  if (!selectedClassLevel && !selectedTerm && scores.length > 0) {
+    selectedClassLevel = scores[0].classLevel;
+    selectedTerm = scores[0].term;
+  }
   const legacyScores = scores.filter(
-    (row) => (!classLevel || row.classLevel === classLevel) && (!term || row.term === term)
+    (row) => (!selectedClassLevel || row.classLevel === selectedClassLevel) && (!selectedTerm || row.term === selectedTerm)
   );
+
+  const academicScoreBySubject = new Map();
+  for (const row of legacyScores) {
+    const sub = normalizeSubject(row.subject || row.subject_name);
+    if (sub && Number.isFinite(Number(row.score))) {
+      academicScoreBySubject.set(sub, Number(row.score));
+    }
+  }
 
   const rows = [];
   for (const [id, rubricRows] of grouped) {
@@ -88,14 +101,36 @@ async function buildRecommendations(userId, query = {}) {
     const combo = rubricBlock(rubric);
     const entryScore =
       rubric.entryScore === null || rubric.entryScore === undefined ? null : Number(rubric.entryScore);
-    const tStudent = combo ? examScores.get(combo) ?? null : null;
+
+    let tStudent = combo ? examScores.get(combo) ?? null : null;
+    let tStudentSource = tStudent !== null ? 'exam_scores' : null;
+
+    if (tStudent === null && combo) {
+      const comboSubjects = getBlockSubjects(combo);
+      if (comboSubjects && comboSubjects.length > 0) {
+        const studentSubjectScores = comboSubjects.map((sub) => academicScoreBySubject.get(normalizeSubject(sub)));
+        const allPresent = studentSubjectScores.every((sc) => sc !== undefined && sc !== null && Number.isFinite(sc));
+        if (allPresent) {
+          tStudent = Math.round(studentSubjectScores.reduce((acc, sc) => acc + sc, 0) * 100) / 100;
+          tStudentSource = 'academic_scores';
+        }
+      }
+    }
+
+    let effectiveEntryScore = entryScore;
+    let isScale40 = false;
+    if (entryScore !== null && entryScore > 30 && entryScore <= 40) {
+      effectiveEntryScore = Math.round((entryScore * 30 / 40) * 100) / 100;
+      isScale40 = true;
+    }
+
     const stats = combo ? statsMap.get(combo) || null : null;
     const legacyFitPct = calculateCareerFit(legacyScores, rubricRows).fitPct;
 
     const hoc = hocLucFit({
       tStudent,
       combo,
-      entryScore,
+      entryScore: effectiveEntryScore,
       stats,
       legacyFitPct,
       mode: Number(config.hoc_luc_mode),
@@ -109,7 +144,7 @@ async function buildRecommendations(userId, query = {}) {
     let pBenchValue = null;
     if (rubric.method === 'Điểm thi THPT') {
       if (tStudent !== null && stats) pBenchValue = pBench(tStudent, stats);
-      else reasons.push(REASONS.THIEU_DIEM_THI);
+      else if (tStudent === null) reasons.push(REASONS.THIEU_DIEM_THI);
     } else {
       reasons.push(REASONS.PHUONG_THUC_KHAC);
     }
@@ -125,6 +160,10 @@ async function buildRecommendations(userId, query = {}) {
       method: rubric.method,
       year: rubric.year,
       entryScore,
+      effectiveEntryScore,
+      isScale40,
+      tStudent,
+      tStudentSource,
       hocLucFit: hoc.value,
       coveragePct: hoc.coveragePct,
       hocLucMethod: hoc.method,

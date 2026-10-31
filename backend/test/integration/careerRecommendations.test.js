@@ -19,7 +19,7 @@ const assert = require('node:assert/strict');
 const initSqlJs = require('sql.js');
 
 const { getAuthDb, queryOne, runSql, lastInsertId } = require('../../src/auth/authDb');
-const { saveRubric } = require('../../src/auth/career');
+const { saveRubric, saveAcademicScores } = require('../../src/auth/career');
 const { saveExamScores } = require('../../src/career/examScores');
 const { buildRecommendations } = require('../../src/career/recommendations');
 const { REASONS } = require('../../src/career/match');
@@ -211,4 +211,20 @@ test('career recommendations use only the current user and expose null reasons',
   assert.ok(dEng.reasons.includes(REASONS.CHUA_DU_CAU_TRA_LOI));
   assert.equal(dEng.hocLucFit, null);
   assert.ok(dEng.reasons.includes(REASONS.THIEU_DIEM_THI));
+
+  const userE = insertUser('rec_e');
+  await saveAcademicScores(userE, [
+    { subject: 'Toán', term: 'Cả năm', classLevel: '12', score: 8, scoreType: 'average' },
+    { subject: 'Vật lý', term: 'Cả năm', classLevel: '12', score: 8, scoreType: 'average' },
+    { subject: 'Hóa học', term: 'Cả năm', classLevel: '12', score: 8, scoreType: 'average' },
+  ]);
+  insertInterestResult(userE, { R: 45, I: 40, A: 30, S: 20, E: 15, C: 10 });
+  const e = await buildRecommendations(userE, {});
+  const eEng = e.data.find((row) => row.majorName === 'Kỹ thuật Điều khiển');
+  assert.ok(eEng);
+  assert.notEqual(eEng.hocLucFit, null, 'derived tStudent from academic scores should calculate hocLucFit');
+  assert.equal(eEng.tStudent, 24);
+  assert.equal(eEng.tStudentSource, 'academic_scores');
+  assert.notEqual(eEng.tongHopFit, null);
+  assert.equal(eEng.reasons.length, 0);
 });

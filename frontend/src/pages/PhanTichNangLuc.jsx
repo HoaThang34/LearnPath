@@ -571,10 +571,12 @@ export default function PhanTichNangLuc() {
 
     result.sort((a, b) => {
       if (sortBy === 'fit') {
-        if (a.fitPct !== null && b.fitPct === null) return -1
-        if (a.fitPct === null && b.fitPct !== null) return 1
-        if (a.fitPct !== null && b.fitPct !== null && b.fitPct !== a.fitPct) {
-          return b.fitPct - a.fitPct
+        const aFit = recommendations.get(String(a.rubricId))?.hocLucFit ?? a.fitPct
+        const bFit = recommendations.get(String(b.rubricId))?.hocLucFit ?? b.fitPct
+        if (aFit !== null && bFit === null) return -1
+        if (aFit === null && bFit !== null) return 1
+        if (aFit !== null && bFit !== null && bFit !== aFit) {
+          return bFit - aFit
         }
         return (Number(b.entryScore) || 0) - (Number(a.entryScore) || 0)
       }
@@ -1121,6 +1123,21 @@ export default function PhanTichNangLuc() {
               const fitStyle = getFitStyle(fit.fitPct)
               const isChecked = compareIds.includes(fit.rubricId)
               const recommendation = recommendations.get(String(fit.rubricId)) || null
+              const effectiveRecommendation = recommendation ? {
+                ...recommendation,
+                hocLucFit: hasActiveSim
+                  ? (fit.fitPct ?? recommendation.hocLucFit)
+                  : (recommendation.hocLucFit ?? (fit.fitPct !== null ? fit.fitPct : null)),
+                tongHopFit: hasActiveSim && fit.fitPct !== null && recommendation.tinhCachFit !== null
+                  ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * fit.fitPct + (recommendationConfig?.w_tinh_cach ?? 0.4) * recommendation.tinhCachFit) * 10) / 10
+                  : recommendation.tongHopFit,
+              } : (fit.fitPct !== null ? {
+                rubricId: fit.rubricId,
+                hocLucFit: fit.fitPct,
+                tinhCachFit: null,
+                tongHopFit: null,
+                reasons: [],
+              } : null)
 
               return (
                 <div
@@ -1191,19 +1208,19 @@ export default function PhanTichNangLuc() {
                     </div>
 
                     {/* Three fit ratios */}
-                    <FitBars data={recommendation} config={recommendationConfig} />
-                    <TinhCachMatrix cell={recommendation?.matrixCell} compact />
+                    <FitBars data={effectiveRecommendation} config={recommendationConfig} />
+                    <TinhCachMatrix cell={effectiveRecommendation?.matrixCell} compact />
 
                     {/* EduMind Radar Chart */}
                     <MiniRadar
                       details={fit.details}
                       simulated={hasActiveSim ? simulatedScores : null}
                       rings={
-                        recommendation
+                        effectiveRecommendation
                           ? {
-                              hocLucFit: recommendation.hocLucFit,
-                              tinhCachFit: recommendation.tinhCachFit,
-                              tongHopFit: recommendation.tongHopFit,
+                              hocLucFit: effectiveRecommendation.hocLucFit,
+                              tinhCachFit: effectiveRecommendation.tinhCachFit,
+                              tongHopFit: effectiveRecommendation.tongHopFit,
                             }
                           : null
                       }

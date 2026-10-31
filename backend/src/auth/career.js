@@ -336,6 +336,7 @@ module.exports = {
   saveRubric,
   deleteRubric,
   calculateCareerFit,
+  normalizeSubject,
   validateScoreRows,
   validateRubric,
   seedSampleRubrics,
