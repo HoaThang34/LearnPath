@@ -1,6 +1,16 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { AlertCircle, ArrowRight, ClipboardList, Loader2, RotateCcw, Sparkles } from 'lucide-react'
+import {
+  AlertCircle,
+  ArrowRight,
+  ClipboardList,
+  Compass,
+  HelpCircle,
+  Loader2,
+  RotateCcw,
+  Sparkles,
+  Target,
+} from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import {
@@ -90,7 +100,7 @@ export default function InterestLanding() {
           {instrument?.title || 'Khám phá sở thích nghề nghiệp'}
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
-          Holland/RIASEC và 4 cặp xu hướng · 108 câu · khoảng 12–15 phút
+          Trắc nghiệm xu hướng tính cách & sở thích nghề nghiệp · 108 câu hỏi tự nhiên · khoảng 12–15 phút (tự lưu)
         </p>
       </div>
 
@@ -99,6 +109,53 @@ export default function InterestLanding() {
           {error}
         </div>
       )}
+
+      {/* Thẻ giải thích cho người không có chuyên môn */}
+      <Card className="border-indigo-100 bg-gradient-to-br from-indigo-50/70 via-white to-blue-50/50 shadow-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center gap-2 text-base text-indigo-950">
+            <HelpCircle className="h-5 w-5 text-indigo-600" />
+            Tính năng này là gì và giúp gì cho bạn?
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4 text-sm text-slate-700">
+          <p className="leading-relaxed">
+            Khi chọn ngành học, điểm số chỉ giúp bạn biết mình <strong>đủ điểm đỗ trường nào (Vừa sức)</strong>. Nhưng bài trắc nghiệm này đóng vai trò như một chiếc la bàn giúp bạn trả lời câu hỏi cốt lõi: <strong>mình thực sự đam mê công việc dạng gì và phong cách làm việc nào khiến mình hạnh phúc, gắn bó dài lâu (Hợp ngành)</strong>.
+          </p>
+
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 pt-1">
+            <div className="rounded-lg border border-indigo-100/80 bg-white p-3 shadow-xs">
+              <div className="flex items-center gap-2 font-semibold text-xs text-indigo-900 mb-1">
+                <Target className="h-4 w-4 text-indigo-600 shrink-0" />
+                <span>1. Đo lường sở thích</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Đánh giá bạn hứng thú với việc: kỹ thuật máy móc, nghiên cứu tư duy, sáng tạo nghệ thuật, giao tiếp con người, lãnh đạo kinh doanh hay làm việc với số liệu quy củ.
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-indigo-100/80 bg-white p-3 shadow-xs">
+              <div className="flex items-center gap-2 font-semibold text-xs text-indigo-900 mb-1">
+                <Compass className="h-4 w-4 text-indigo-600 shrink-0" />
+                <span>2. Xác định phong cách</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Nhận biết bạn làm việc hiệu quả nhất khi: hướng ngoại hay độc lập, bám sát thực tế hay giàu ý tưởng, ra quyết định bằng logic hay cảm xúc, tuân thủ kế hoạch hay ứng biến linh hoạt.
+              </p>
+            </div>
+
+            <div className="rounded-lg border border-indigo-100/80 bg-white p-3 shadow-xs">
+              <div className="flex items-center gap-2 font-semibold text-xs text-indigo-900 mb-1">
+                <Sparkles className="h-4 w-4 text-indigo-600 shrink-0" />
+                <span>3. Ghép nối ngành học</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Hệ thống LearnPath sẽ tự động kết hợp <strong>Điểm thi học tập + Sở thích tính cách</strong> để gợi ý danh sách ngành học vừa sức đỗ vừa đúng đam mê.
+              </p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       <Card>
         <CardHeader>
