@@ -16,6 +16,8 @@ import {
   ChevronRight,
   Activity,
   Compass,
+  PanelLeft,
+  PanelLeftClose,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button, buttonVariants } from './ui/button'
@@ -34,6 +36,13 @@ const menuItems = [
 
 export default function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try {
+      return localStorage.getItem('learnpath_sidebar_collapsed') === 'true'
+    } catch {
+      return false
+    }
+  })
   const [logoutError, setLogoutError] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
   const [interestBannerDismissed, setInterestBannerDismissed] = useState(
@@ -44,6 +53,29 @@ export default function Layout({ children }) {
   const { user, loading, logout } = useAuth()
   const isAuthPage = location.pathname === '/dang-nhap' || location.pathname === '/dang-ky'
   const hideNavMenu = (!user && location.pathname === '/') || isAuthPage
+
+  const toggleSidebar = () => {
+    setSidebarCollapsed((prev) => {
+      const next = !prev
+      try {
+        localStorage.setItem('learnpath_sidebar_collapsed', String(next))
+      } catch {}
+      return next
+    })
+  }
+
+  // Keyboard shortcut Ctrl + B to toggle sidebar
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'b') {
+        if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return
+        e.preventDefault()
+        toggleSidebar()
+      }
+    }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   // Automatically close mobile menu when navigating
   useEffect(() => {
@@ -88,20 +120,61 @@ export default function Layout({ children }) {
     <div className="min-h-screen bg-slate-50/30">
       {/* Desktop Left Vertical Sidebar */}
       {!hideNavMenu && (
-        <aside className="fixed inset-y-0 left-0 z-40 hidden w-64 flex-col border-r bg-white shadow-sm lg:flex">
+        <aside
+          className={cn(
+            "fixed inset-y-0 left-0 z-40 hidden flex-col border-r bg-white shadow-sm transition-all duration-300 ease-in-out lg:flex",
+            sidebarCollapsed ? "w-[72px]" : "w-64"
+          )}
+        >
           {/* Logo & Brand Header */}
-          <div className="flex h-16 shrink-0 items-center border-b px-5">
-            <Link to="/" className="flex items-center space-x-2.5">
-              <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-9 w-auto" />
-              <span className="text-xl font-bold tracking-tight text-foreground">LearnPath</span>
-            </Link>
+          <div
+            className={cn(
+              "flex h-16 shrink-0 items-center border-b transition-all duration-300",
+              sidebarCollapsed ? "justify-center px-2" : "justify-between px-4"
+            )}
+          >
+            {!sidebarCollapsed ? (
+              <>
+                <Link to="/" className="flex items-center space-x-2.5 overflow-hidden">
+                  <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-9 w-auto shrink-0" />
+                  <span className="text-xl font-bold tracking-tight text-foreground truncate">LearnPath</span>
+                </Link>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleSidebar}
+                  className="h-8 w-8 text-muted-foreground hover:text-foreground shrink-0"
+                  title="Thu nhỏ menu (Ctrl + B)"
+                  aria-label="Thu nhỏ menu"
+                >
+                  <PanelLeftClose className="h-4 w-4" />
+                </Button>
+              </>
+            ) : (
+              <button
+                type="button"
+                onClick={toggleSidebar}
+                className="group relative flex h-10 w-10 items-center justify-center rounded-lg hover:bg-muted transition-colors"
+                title="Mở rộng menu (Ctrl + B)"
+                aria-label="Mở rộng menu"
+              >
+                <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-8 w-auto transition-transform group-hover:scale-105" />
+                <span className="absolute -bottom-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-xs">
+                  <ChevronRight className="h-2.5 w-2.5" />
+                </span>
+              </button>
+            )}
           </div>
 
           {/* Navigation Menu */}
-          <div className="flex-1 overflow-y-auto px-3 py-4">
-            <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
-              Menu chính
-            </p>
+          <div className="flex-1 overflow-y-auto px-2 py-4">
+            {!sidebarCollapsed ? (
+              <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Menu chính
+              </p>
+            ) : (
+              <div className="my-2 border-t border-slate-100" />
+            )}
             <nav className="space-y-1">
               {menuItems.map((item) => {
                 const Icon = item.icon
@@ -110,15 +183,25 @@ export default function Layout({ children }) {
                   <Link
                     key={item.path}
                     to={item.path}
+                    title={sidebarCollapsed ? item.label : undefined}
                     className={cn(
-                      "flex items-center space-x-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all",
+                      "flex items-center rounded-lg text-sm font-medium transition-all group relative",
+                      sidebarCollapsed
+                        ? "justify-center h-10 w-10 mx-auto"
+                        : "space-x-3 px-3 py-2.5",
                       active
                         ? "bg-primary text-primary-foreground shadow-sm"
                         : "text-muted-foreground hover:bg-muted hover:text-foreground"
                     )}
                   >
                     <Icon className="h-4 w-4 shrink-0" />
-                    <span className="truncate">{item.label}</span>
+                    {!sidebarCollapsed && <span className="truncate">{item.label}</span>}
+                    {/* Tooltip on hover when collapsed */}
+                    {sidebarCollapsed && (
+                      <span className="absolute left-full ml-3 hidden group-hover:flex items-center rounded-md bg-slate-900 text-white text-xs px-2.5 py-1 font-medium whitespace-nowrap shadow-lg z-50 pointer-events-none animate-in fade-in duration-150">
+                        {item.label}
+                      </span>
+                    )}
                   </Link>
                 )
               })}
@@ -127,40 +210,82 @@ export default function Layout({ children }) {
 
           {/* User Account & Actions Footer */}
           {user && (
-            <div className="shrink-0 border-t bg-slate-50/80 p-3">
-              <div className="flex items-center gap-3 px-2 py-1.5">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-sm">
-                  {user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username?.charAt(0)?.toUpperCase() || 'U'}
-                </div>
-                <div className="min-w-0 flex-1">
-                  <p className="truncate text-sm font-medium text-foreground">{user.fullName || user.username}</p>
-                  <p className="truncate text-xs text-muted-foreground">@{user.username}</p>
-                </div>
-              </div>
-              <div className="mt-2 flex items-center gap-1 border-t border-slate-200/70 pt-2">
-                <Link
-                  to="/doi-mat-khau"
-                  className={cn(
-                    buttonVariants({ variant: 'ghost', size: 'sm' }),
-                    "h-8 flex-1 justify-start px-2 text-xs text-muted-foreground hover:text-foreground"
-                  )}
-                  title="Đổi mật khẩu tài khoản"
-                >
-                  <ShieldCheck className="mr-1.5 h-3.5 w-3.5 shrink-0" />
-                  <span className="truncate">Đổi mật khẩu</span>
-                </Link>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleLogout}
-                  disabled={loggingOut}
-                  className="h-8 px-2 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
-                  title="Đăng xuất"
-                >
-                  <LogOut className="mr-1 h-3.5 w-3.5 shrink-0" />
-                  <span>{loggingOut ? '...' : 'Đăng xuất'}</span>
-                </Button>
-              </div>
+            <div
+              className={cn(
+                "shrink-0 border-t bg-slate-50/80 transition-all duration-300",
+                sidebarCollapsed ? "p-2 flex flex-col items-center gap-2" : "p-3"
+              )}
+            >
+              {!sidebarCollapsed ? (
+                <>
+                  <div className="flex items-center gap-3 px-2 py-1.5">
+                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-sm">
+                      {user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username?.charAt(0)?.toUpperCase() || 'U'}
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="truncate text-sm font-medium text-foreground">{user.fullName || user.username}</p>
+                      <p className="truncate text-xs text-muted-foreground">@{user.username}</p>
+                    </div>
+                  </div>
+                  <div className="mt-2 flex items-center gap-1 border-t border-slate-200/70 pt-2">
+                    <Link
+                      to="/doi-mat-khau"
+                      className={cn(
+                        buttonVariants({ variant: 'ghost', size: 'sm' }),
+                        "h-8 flex-1 justify-start px-2 text-xs text-muted-foreground hover:text-foreground"
+                      )}
+                      title="Đổi mật khẩu tài khoản"
+                    >
+                      <ShieldCheck className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+                      <span className="truncate">Đổi mật khẩu</span>
+                    </Link>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleLogout}
+                      disabled={loggingOut}
+                      className="h-8 px-2 text-xs text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      title="Đăng xuất"
+                    >
+                      <LogOut className="mr-1 h-3.5 w-3.5 shrink-0" />
+                      <span>{loggingOut ? '...' : 'Đăng xuất'}</span>
+                    </Button>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-sm cursor-pointer"
+                    title={`${user.fullName || user.username} (@${user.username})`}
+                  >
+                    {user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username?.charAt(0)?.toUpperCase() || 'U'}
+                  </div>
+                  <div className="flex flex-col gap-1 w-full items-center pt-1 border-t border-slate-200/70">
+                    <Link
+                      to="/doi-mat-khau"
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors group relative"
+                      title="Đổi mật khẩu"
+                    >
+                      <ShieldCheck className="h-4 w-4 shrink-0" />
+                      <span className="absolute left-full ml-3 hidden group-hover:flex items-center rounded-md bg-slate-900 text-white text-xs px-2.5 py-1 font-medium whitespace-nowrap shadow-lg z-50 pointer-events-none animate-in fade-in duration-150">
+                        Đổi mật khẩu
+                      </span>
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      disabled={loggingOut}
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-destructive hover:bg-destructive/10 transition-colors group relative"
+                      title="Đăng xuất"
+                    >
+                      <LogOut className="h-4 w-4 shrink-0" />
+                      <span className="absolute left-full ml-3 hidden group-hover:flex items-center rounded-md bg-slate-900 text-white text-xs px-2.5 py-1 font-medium whitespace-nowrap shadow-lg z-50 pointer-events-none animate-in fade-in duration-150">
+                        Đăng xuất
+                      </span>
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
           )}
         </aside>
@@ -275,7 +400,12 @@ export default function Layout({ children }) {
       )}
 
       {/* Main Content Area (Offset by sidebar width on desktop when nav is shown) */}
-      <div className={cn("min-h-screen flex flex-col transition-all", !hideNavMenu && "lg:pl-64")}>
+      <div
+        className={cn(
+          "min-h-screen flex flex-col transition-all duration-300 ease-in-out",
+          !hideNavMenu && (sidebarCollapsed ? "lg:pl-[72px]" : "lg:pl-64")
+        )}
+      >
         {/* Header */}
         <header className="sticky top-0 z-30 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
           <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
@@ -291,6 +421,24 @@ export default function Layout({ children }) {
                   aria-expanded={mobileMenuOpen}
                 >
                   {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                </Button>
+              )}
+
+              {/* Desktop Toggle Button on Navbar */}
+              {!hideNavMenu && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="hidden lg:inline-flex h-8 w-8 text-muted-foreground hover:text-foreground"
+                  onClick={toggleSidebar}
+                  title={sidebarCollapsed ? "Mở rộng menu (Ctrl + B)" : "Thu nhỏ menu (Ctrl + B)"}
+                  aria-label={sidebarCollapsed ? "Mở rộng menu" : "Thu nhỏ menu"}
+                >
+                  {sidebarCollapsed ? (
+                    <PanelLeft className="h-4 w-4" />
+                  ) : (
+                    <PanelLeftClose className="h-4 w-4" />
+                  )}
                 </Button>
               )}
 
