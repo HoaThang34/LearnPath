@@ -50,12 +50,19 @@ function shortSubject(s) {
   return map[s] || s
 }
 
-// SVG Radar Chart (240x240)
-function MiniRadar({ details = [], simulated = null, rings = null }) {
+// SVG Radar Chart (280x280)
+function MiniRadar({
+  details = [],
+  simulated = null,
+  rings = null,
+  className = 'h-64 w-64 sm:h-72 sm:w-72 select-none mx-auto',
+  size = 280,
+}) {
   const safeDetails = Array.isArray(details) ? details : []
-  const size = 240
   const center = size / 2
-  const radius = 72
+  const isMulti = safeDetails.length > 5
+  const radius = isMulti ? 86 : 96
+  const [hoveredSubject, setHoveredSubject] = useState(null)
 
   if (safeDetails.length < 3) {
     return (
@@ -100,150 +107,210 @@ function MiniRadar({ details = [], simulated = null, rings = null }) {
     return `${c.x.toFixed(1)},${c.y.toFixed(1)}`
   }).join(' ') : ''
 
+  const hoveredItem = hoveredSubject ? safeDetails.find((d) => d.subject === hoveredSubject) : null
+  const hoveredEffScore = hoveredItem
+    ? ((hasSimulated && simulated[hoveredItem.subject] !== undefined) ? simulated[hoveredItem.subject] : hoveredItem.score)
+    : null
+  const hoveredGap = hoveredItem && hoveredEffScore !== null && hoveredEffScore !== undefined
+    ? Math.round((Number(hoveredEffScore) - Number(hoveredItem.threshold)) * 100) / 100
+    : null
+
   return (
     <div className="py-1">
       <div className="flex justify-center">
-      <svg viewBox={`0 0 ${size} ${size}`} className="h-56 w-56 select-none" role="img" aria-label="Biểu đồ radar năng lực">
-        {/* Concentric webs */}
-        {[0.25, 0.5, 0.75, 1.0].map((scale) => {
-          const webPts = safeDetails.map((_, idx) => {
-            const angle = -Math.PI / 2 + (2 * Math.PI * idx) / safeDetails.length
-            const r = radius * scale
-            return `${(center + Math.cos(angle) * r).toFixed(1)},${(center + Math.sin(angle) * r).toFixed(1)}`
-          }).join(' ')
-          return (
-            <polygon
-              key={scale}
-              points={webPts}
-              fill="none"
-              stroke="#e2e8f0"
-              strokeWidth="1"
-            />
-          )
-        })}
-
-        {/* Axis spokes and vertex labels */}
-        {safeDetails.map((item, idx) => {
-          const angle = -Math.PI / 2 + (2 * Math.PI * idx) / safeDetails.length
-          const xSpoke = center + Math.cos(angle) * radius
-          const ySpoke = center + Math.sin(angle) * radius
-          const labelDist = radius + 22
-          const xLabel = center + Math.cos(angle) * labelDist
-          const yLabel = center + Math.sin(angle) * labelDist
-
-          const effScore = (hasSimulated && simulated[item.subject] !== undefined)
-            ? simulated[item.subject]
-            : item.score
-
-          return (
-            <g key={item.subject}>
-              <line
-                x1={center}
-                y1={center}
-                x2={xSpoke}
-                y2={ySpoke}
-                stroke="#cbd5e1"
+        <svg
+          viewBox={`0 0 ${size} ${size}`}
+          className={className}
+          role="img"
+          aria-label="Biểu đồ radar năng lực"
+        >
+          {/* Concentric webs */}
+          {[0.25, 0.5, 0.75, 1.0].map((scale) => {
+            const webPts = safeDetails.map((_, idx) => {
+              const angle = -Math.PI / 2 + (2 * Math.PI * idx) / safeDetails.length
+              const r = radius * scale
+              return `${(center + Math.cos(angle) * r).toFixed(1)},${(center + Math.sin(angle) * r).toFixed(1)}`
+            }).join(' ')
+            return (
+              <polygon
+                key={scale}
+                points={webPts}
+                fill="none"
+                stroke="#e2e8f0"
                 strokeWidth="1"
-                strokeDasharray="2 2"
               />
-              <text
-                x={xLabel}
-                y={yLabel}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize="10"
-                fontWeight="600"
-                fill="#334155"
+            )
+          })}
+
+          {/* Axis spokes and vertex labels */}
+          {safeDetails.map((item, idx) => {
+            const angle = -Math.PI / 2 + (2 * Math.PI * idx) / safeDetails.length
+            const xSpoke = center + Math.cos(angle) * radius
+            const ySpoke = center + Math.sin(angle) * radius
+            const labelDist = radius + (isMulti ? 18 : 22)
+            const xLabel = center + Math.cos(angle) * labelDist
+            const yLabel = center + Math.sin(angle) * labelDist
+            const isItemHovered = hoveredSubject === item.subject
+
+            return (
+              <g
+                key={item.subject}
+                className="cursor-pointer"
+                onMouseEnter={() => setHoveredSubject(item.subject)}
+                onMouseLeave={() => setHoveredSubject(null)}
               >
-                {shortSubject(item.subject)}
-              </text>
-              <text
-                x={xLabel}
-                y={yLabel + 11}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fontSize="9"
-                fill="#64748b"
-              >
-                {effScore !== null && effScore !== undefined ? `${effScore}` : '—'}/{item.threshold}
-              </text>
-            </g>
-          )
-        })}
+                {/* Spoke line */}
+                <line
+                  x1={center}
+                  y1={center}
+                  x2={xSpoke}
+                  y2={ySpoke}
+                  stroke={isItemHovered ? '#0284c7' : '#cbd5e1'}
+                  strokeWidth={isItemHovered ? '2' : '1'}
+                  strokeDasharray={isItemHovered ? undefined : '2 2'}
+                  className="transition-colors"
+                />
 
-        {/* Three fit rings (concentric, not radar vertices) */}
-        {ringRows.map((ring) => {
-          if (ring.value === null || ring.value === undefined) return null
-          const r = radius * Math.max(0, Math.min(Number(ring.value) / 100, 1))
-          return (
-            <circle
-              key={ring.key}
-              cx={center}
-              cy={center}
-              r={r}
-              fill="none"
-              stroke={ring.color}
-              strokeWidth="1.5"
-              strokeDasharray={ring.dash || undefined}
-              opacity="0.9"
-            />
-          )
-        })}
+                {/* Invisible wider line for easier hover hitting */}
+                <line
+                  x1={center}
+                  y1={center}
+                  x2={xSpoke}
+                  y2={ySpoke}
+                  stroke="transparent"
+                  strokeWidth="24"
+                />
 
-        {/* Required Threshold Polygon (Orange Dashed) */}
-        <polygon
-          points={thresholdPoints}
-          fill="rgba(249,115,22,0.08)"
-          stroke="#f97316"
-          strokeWidth="1.5"
-          strokeDasharray="4 3"
-        />
+                {/* Clean Subject Label - No cramped numbers at rest */}
+                <text
+                  x={xLabel}
+                  y={yLabel}
+                  textAnchor="middle"
+                  dominantBaseline="middle"
+                  fontSize={isMulti ? '10' : '11'}
+                  fontWeight={isItemHovered ? '800' : item.isCore ? '700' : '500'}
+                  fill={isItemHovered ? '#0284c7' : item.isCore ? '#0f172a' : '#64748b'}
+                  className="transition-colors select-none"
+                >
+                  {shortSubject(item.subject)}{item.isCore ? '★' : ''}
+                </text>
+              </g>
+            )
+          })}
 
-        {/* Student Score Polygon (Blue Solid) */}
-        <polygon
-          points={studentPoints}
-          fill="rgba(0,112,243,0.14)"
-          stroke="#0070f3"
-          strokeWidth="1.5"
-        />
+          {/* Three fit rings (concentric, not radar vertices) */}
+          {ringRows.map((ring) => {
+            if (ring.value === null || ring.value === undefined) return null
+            const r = radius * Math.max(0, Math.min(Number(ring.value) / 100, 1))
+            return (
+              <circle
+                key={ring.key}
+                cx={center}
+                cy={center}
+                r={r}
+                fill="none"
+                stroke={ring.color}
+                strokeWidth="1.5"
+                strokeDasharray={ring.dash || undefined}
+                opacity="0.9"
+              />
+            )
+          })}
 
-        {/* Simulated Score Polygon (Purple Dashed) */}
-        {hasSimulated && (
+          {/* Required Threshold Polygon (Orange Dashed) */}
           <polygon
-            points={simulatedPoints}
-            fill="rgba(147,51,234,0.12)"
-            stroke="#9333ea"
+            points={thresholdPoints}
+            fill="rgba(249,115,22,0.08)"
+            stroke="#f97316"
             strokeWidth="1.5"
-            strokeDasharray="3 2"
+            strokeDasharray="4 3"
           />
-        )}
 
-        {/* Vertex dots */}
-        {safeDetails.map((item, idx) => {
-          const cThresh = getCoord(idx, item.threshold)
-          const cStudent = getCoord(idx, item.score ?? 0)
-          return (
-            <g key={`dots-${item.subject}`}>
-              <circle cx={cThresh.x} cy={cThresh.y} r="2.5" fill="#f97316" />
-              {item.score !== null && (
-                <circle cx={cStudent.x} cy={cStudent.y} r="2.5" fill="#0070f3" />
-              )}
-            </g>
-          )
-        })}
-      </svg>
+          {/* Student Score Polygon (Blue Solid) */}
+          <polygon
+            points={studentPoints}
+            fill="rgba(0,112,243,0.14)"
+            stroke="#0070f3"
+            strokeWidth="1.5"
+          />
+
+          {/* Simulated Score Polygon (Purple Dashed) */}
+          {hasSimulated && (
+            <polygon
+              points={simulatedPoints}
+              fill="rgba(147,51,234,0.12)"
+              stroke="#9333ea"
+              strokeWidth="1.5"
+              strokeDasharray="3 2"
+            />
+          )}
+
+          {/* Vertex dots */}
+          {safeDetails.map((item, idx) => {
+            const cThresh = getCoord(idx, item.threshold)
+            const cStudent = getCoord(idx, item.score ?? 0)
+            const isItemHovered = hoveredSubject === item.subject
+            return (
+              <g
+                key={`dots-${item.subject}`}
+                className="cursor-pointer"
+                onMouseEnter={() => setHoveredSubject(item.subject)}
+                onMouseLeave={() => setHoveredSubject(null)}
+              >
+                <circle
+                  cx={cThresh.x}
+                  cy={cThresh.y}
+                  r={isItemHovered ? 4.5 : 2.5}
+                  fill="#f97316"
+                  className="transition-all duration-150"
+                />
+                {item.score !== null && (
+                  <circle
+                    cx={cStudent.x}
+                    cy={cStudent.y}
+                    r={isItemHovered ? 5 : 2.5}
+                    fill="#0070f3"
+                    className="transition-all duration-150"
+                  />
+                )}
+              </g>
+            )
+          })}
+        </svg>
       </div>
-      {ringRows.length > 0 && (
-        <div className="mt-1 flex flex-wrap justify-center gap-3 text-[10px] text-muted-foreground">
-          {ringRows.map((ring) => (
-            <span key={ring.key} className="inline-flex items-center gap-1">
-              <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: ring.color }} />
-              {ring.label} —{' '}
-              {ring.value === null || ring.value === undefined ? '—' : `${Number(ring.value).toFixed(0)} %`}
+
+      {/* Dynamic Status Pill on Hover OR 3-Ring Legend at Rest */}
+      <div className="mt-1.5 min-h-[26px] flex items-center justify-center">
+        {hoveredItem ? (
+          <div className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-3 py-0.5 text-[11px] text-sky-900 shadow-xs animate-in fade-in duration-150">
+            <span className="font-bold text-sky-950">
+              {hoveredItem.subject}{hoveredItem.isCore ? '★ (chính 75%)' : ' (nền tảng 25%)'}:
             </span>
-          ))}
-        </div>
-      )}
+            <span>
+              Bạn: <strong className="font-semibold text-blue-700">{hoveredEffScore !== null && hoveredEffScore !== undefined ? hoveredEffScore : '—'}đ</strong>
+            </span>
+            <span>/</span>
+            <span>
+              Ngưỡng: <strong className="font-semibold text-orange-700">{hoveredItem.threshold}đ</strong>
+            </span>
+            {hoveredGap !== null && (
+              <span className={`font-bold ml-0.5 ${hoveredGap >= 0 ? 'text-emerald-700' : 'text-rose-700'}`}>
+                ({hoveredGap >= 0 ? `+${hoveredGap}` : hoveredGap}đ)
+              </span>
+            )}
+          </div>
+        ) : ringRows.length > 0 ? (
+          <div className="flex flex-wrap justify-center gap-3 text-[10px] text-muted-foreground">
+            {ringRows.map((ring) => (
+              <span key={ring.key} className="inline-flex items-center gap-1">
+                <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: ring.color }} />
+                {ring.label} —{' '}
+                {ring.value === null || ring.value === undefined ? '—' : `${Number(ring.value).toFixed(0)} %`}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </div>
     </div>
   )
 }
@@ -337,6 +404,290 @@ const COMMON_SUBJECTS = [
   'Toán', 'Ngữ văn', 'Tiếng Anh', 'Vật lý', 'Hóa học', 'Sinh học', 'Lịch sử', 'Địa lý',
 ]
 
+// Dedicated Major Card Component with Clean Resting View & Hover/Click Expansion
+function MajorCard({
+  fit,
+  isChecked,
+  toggleCompare,
+  radarMode,
+  setRadarMode,
+  hasActiveSim,
+  simulatedScores,
+  recommendation,
+  recommendationConfig,
+  handlePin,
+  handleTarget,
+}) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [isExpanded, setIsExpanded] = useState(false)
+
+  const activeDetails = radarMode === 'all' ? (fit.allDetails || fit.details) : fit.details
+  const activeFitPct = radarMode === 'all' ? (fit.allFitPct ?? fit.fitPct) : fit.fitPct
+  const activePrioritySubject = radarMode === 'all' ? (fit.allPrioritySubject || fit.prioritySubject) : fit.prioritySubject
+
+  // Compute effective hocLucFit & tongHopFit
+  const effectiveHocLucFit = hasActiveSim || radarMode === 'all'
+    ? (activeFitPct ?? recommendation?.hocLucFit ?? null)
+    : (recommendation?.hocLucFit ?? (activeFitPct !== null ? activeFitPct : null))
+
+  const effectiveTongHopFit = (effectiveHocLucFit !== null && recommendation?.tinhCachFit !== null && recommendation?.tinhCachFit !== undefined)
+    ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * effectiveHocLucFit + (recommendationConfig?.w_tinh_cach ?? 0.4) * recommendation.tinhCachFit) * 10) / 10
+    : (recommendation?.tongHopFit ?? null)
+
+  const effectiveRecommendation = recommendation
+    ? {
+        ...recommendation,
+        hocLucFit: effectiveHocLucFit,
+        tongHopFit: effectiveTongHopFit,
+      }
+    : (activeFitPct !== null
+      ? {
+          rubricId: fit.rubricId,
+          hocLucFit: activeFitPct,
+          tinhCachFit: null,
+          tongHopFit: null,
+          reasons: [],
+        }
+      : null)
+
+  // Top summary metric: Display "Phù hợp tổng thể" when available, fallback to academic fit
+  const hasTongHop = effectiveTongHopFit !== null && effectiveTongHopFit !== undefined
+  const displayFitPct = hasTongHop ? effectiveTongHopFit : activeFitPct
+  const displayFitLabel = hasTongHop ? 'Phù hợp tổng thể' : (radarMode === 'all' ? 'Phù hợp học lực (toàn diện)' : 'Phù hợp học lực')
+  const fitStyle = getFitStyle(displayFitPct)
+
+  const showDetails = isHovered || isExpanded
+
+  return (
+    <div
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className={`group relative flex flex-col justify-between rounded-xl border p-4 transition-all duration-200 ${
+        showDetails
+          ? 'shadow-xl ring-2 ring-primary/25 border-primary/40 -translate-y-1 z-10'
+          : 'hover:shadow-md border-border bg-card'
+      } ${
+        fit.isTarget
+          ? 'border-purple-300 bg-purple-50/20 shadow-xs ring-1 ring-purple-200'
+          : fit.isPinned
+          ? 'border-blue-200 bg-blue-50/10'
+          : 'bg-card'
+      }`}
+    >
+      <div>
+        {/* Top line: Major Title + University & Compare Checkbox */}
+        <div className="flex items-start justify-between gap-2">
+          <div className="min-w-0 flex-1">
+            <h2 className="truncate text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors" title={fit.majorName}>
+              {fit.majorName}
+            </h2>
+            <div className="truncate text-[11px] text-muted-foreground mt-0.5" title={fit.schoolName}>
+              {fit.schoolName}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-1.5 shrink-0 bg-muted/40 rounded px-1.5 py-0.5">
+            <span className="text-[10px] font-medium text-muted-foreground">So sánh</span>
+            <input
+              type="checkbox"
+              checked={isChecked}
+              onChange={() => toggleCompare(fit.rubricId)}
+              aria-label={`Chọn so sánh ${fit.majorName}`}
+              className="h-4 w-4 rounded border-gray-300 text-primary cursor-pointer focus:ring-primary"
+            />
+          </div>
+        </div>
+
+        {/* Metadata line: Block | Entry score */}
+        <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+          <span className="font-semibold text-foreground bg-muted/60 px-1 rounded text-[10.5px]">{fit.admissionBlock || '—'}</span>
+          <span>·</span>
+          <span>Điểm chuẩn:</span>
+          <strong className="text-foreground">{fit.entryScore !== null ? fit.entryScore : 'Chưa có'}</strong>
+          {fit.year && <span className="text-[10px]">({fit.year})</span>}
+        </div>
+
+        {/* Major group pill */}
+        {fit.majorGroup && (
+          <div className="mt-1">
+            <span className="inline-block rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
+              {fit.majorGroup}
+            </span>
+          </div>
+        )}
+
+        {/* Resting Fit Summary Bar & Percentage: Phù hợp tổng thể */}
+        <div className="mt-2.5 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-1.5">
+            <span className={`text-base font-extrabold ${fitStyle.text}`}>
+              {displayFitPct !== null ? `${displayFitPct.toFixed(1)}%` : '—'}
+            </span>
+            <span className="text-[10.5px] text-slate-600 font-semibold">{displayFitLabel}</span>
+          </div>
+          <span className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">
+            {radarMode === 'all' ? 'Toàn diện (75/25)' : 'Tổ hợp 3 môn'}
+          </span>
+        </div>
+        <div className="mt-1 rounded-full bg-slate-100 h-1.5 overflow-hidden">
+          <div
+            className={`h-full rounded-full transition-all duration-300 ${fitStyle.bar}`}
+            style={{ width: `${Math.min(displayFitPct || 0, 100)}%` }}
+          />
+        </div>
+
+        {/* EduMind Radar Chart Header with quick toggle */}
+        <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2 px-0.5">
+          <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-700">
+            <Sparkles className="h-3.5 w-3.5 text-primary" />
+            <span>{radarMode === 'all' ? 'Mạng nhện toàn diện' : 'Mạng nhện tổ hợp'}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setRadarMode((prev) => (prev === 'all' ? 'combo' : 'all'))}
+            className="text-[10px] text-primary hover:underline font-semibold"
+            title="Chuyển đổi giữa 3 môn tổ hợp và toàn diện tất cả các môn"
+          >
+            {radarMode === 'all' ? 'Xem 3 môn' : 'Xem tất cả môn'}
+          </button>
+        </div>
+
+        {/* Large Prominent Radar Chart (Clean at rest, interactive on spoke hover) */}
+        <div className="py-1">
+          <MiniRadar
+            details={activeDetails}
+            simulated={hasActiveSim ? simulatedScores : null}
+            rings={
+              effectiveRecommendation
+                ? {
+                    hocLucFit: effectiveRecommendation.hocLucFit,
+                    tinhCachFit: effectiveRecommendation.tinhCachFit,
+                    tongHopFit: effectiveRecommendation.tongHopFit,
+                  }
+                : null
+            }
+          />
+        </div>
+
+        {/* EXPANDABLE SECTION: Revealed on Hover or when Clicked/Expanded */}
+        <div
+          className={`overflow-hidden transition-all duration-300 ease-in-out ${
+            showDetails
+              ? 'max-h-[1000px] opacity-100 mt-2 space-y-2.5 border-t border-slate-100 pt-2.5 pointer-events-auto'
+              : 'max-h-0 opacity-0 pointer-events-none'
+          }`}
+        >
+          {/* Three fit ratios */}
+          <FitBars data={effectiveRecommendation} config={recommendationConfig} />
+          <TinhCachMatrix cell={effectiveRecommendation?.matrixCell} compact />
+
+          {/* Trend & Sparkline */}
+          <div className="border-t border-slate-100 pt-2">
+            <Sparkline entryScore={fit.entryScore} />
+          </div>
+
+          {/* Subject gap chips */}
+          <div className="space-y-1">
+            <div className="text-[10px] font-semibold text-slate-600">
+              Chi tiết điểm từng môn so với ngưỡng:
+            </div>
+            <div className="flex flex-wrap gap-1">
+              {activeDetails.map((d) => (
+                <span
+                  key={d.subject}
+                  className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] ${
+                    d.isCore ? 'ring-1 ring-primary/40 font-medium' : ''
+                  } ${
+                    d.gap !== null && d.gap >= 0
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                      : d.gap !== null
+                      ? 'bg-rose-50 text-rose-800 border border-rose-200'
+                      : 'bg-slate-100 text-slate-700'
+                  }`}
+                  title={d.isCore ? 'Môn tổ hợp chính (trọng số 75%)' : 'Môn nền tảng học thuật (sàn 6.5, trọng số 25%)'}
+                >
+                  <span>{shortSubject(d.subject)}{d.isCore ? '★' : ''}:</span>
+                  <strong>{d.score !== null ? d.score : '—'}/{d.threshold}</strong>
+                  {d.gap !== null && (
+                    <span className="font-semibold">
+                      ({d.gap >= 0 ? `+${d.gap}` : d.gap})
+                    </span>
+                  )}
+                </span>
+              ))}
+            </div>
+
+            {radarMode === 'all' && (
+              <div className="text-[9px] text-muted-foreground flex items-center gap-1 pt-0.5">
+                <span>★: Môn tổ hợp chính (75%)</span>
+                <span>·</span>
+                <span>Còn lại: Môn nền tảng sàn 6.5 (25%)</span>
+              </div>
+            )}
+
+            {activePrioritySubject && (
+              <p className="text-[10px] text-amber-700 mt-1">
+                💡 Cần cải thiện: <strong className="text-amber-900">{activePrioritySubject}</strong>
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Card Bottom: Actions and Expand Toggle */}
+      <div>
+        <div className="mt-3 flex items-center gap-2 border-t border-slate-100 pt-2.5">
+          <button
+            type="button"
+            onClick={() => handlePin(fit)}
+            className={`flex-1 inline-flex items-center justify-center gap-1 rounded-md px-2 py-1.5 text-xs font-medium transition-colors ${
+              fit.isPinned
+                ? 'bg-blue-600 text-white hover:bg-blue-700'
+                : 'border border-input bg-background text-foreground hover:bg-muted'
+            }`}
+          >
+            <Bookmark className="h-3.5 w-3.5" />
+            {fit.isPinned ? 'Đã ghim' : 'Ghim'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => handleTarget(fit)}
+            className={`flex-1 inline-flex items-center justify-center gap-1 rounded-md px-2 py-1.5 text-xs font-medium transition-colors ${
+              fit.isTarget
+                ? 'bg-purple-600 text-white hover:bg-purple-700'
+                : 'border border-input bg-background text-foreground hover:bg-muted'
+            }`}
+          >
+            <Star className="h-3.5 w-3.5" />
+            {fit.isTarget ? 'Mục tiêu' : 'Mục tiêu'}
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsExpanded((prev) => !prev)}
+            className={`inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors border ${
+              showDetails
+                ? 'border-primary/40 bg-primary/10 text-primary font-semibold'
+                : 'border-input bg-background text-muted-foreground hover:text-foreground hover:bg-muted'
+            }`}
+            title={showDetails ? 'Thu gọn chi tiết' : 'Xem toàn bộ chi tiết (Học lực, Tính cách, Xu hướng)'}
+          >
+            <span>{showDetails ? 'Thu gọn' : 'Chi tiết'}</span>
+            <ChevronDown className={`h-3 w-3 transition-transform duration-200 ${showDetails ? 'rotate-180' : ''}`} />
+          </button>
+        </div>
+
+        {/* Discoverability hint at rest */}
+        {!showDetails && (
+          <div className="mt-1 text-center text-[9px] text-muted-foreground/70 italic select-none">
+            Trỏ chuột vào để xem đầy đủ chi tiết
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 export default function PhanTichNangLuc() {
   const { user } = useAuth()
   const [overview, setOverview] = useState(null)
@@ -373,6 +724,9 @@ export default function PhanTichNangLuc() {
   // Comparison State (up to 4 majors)
   const [compareIds, setCompareIds] = useState([])
   const [showCompareModal, setShowCompareModal] = useState(false)
+
+  // Radar Evaluation Mode: 'all' (Toàn diện tất cả các môn - 75/25) | 'combo' (3 môn tổ hợp)
+  const [radarMode, setRadarMode] = useState('all')
 
   // Simulation State
   const [showSimulator, setShowSimulator] = useState(false)
@@ -493,9 +847,11 @@ export default function PhanTichNangLuc() {
 
   const processedFits = useMemo(() => {
     return rawFits.map((fit) => {
-      // Re-evaluate details with simulated scores if present
+      // 1. Core combo details (with simulated scores if present)
+      const coreSubjectNames = new Set()
       const details = (fit.details || []).map((d) => {
         const normSub = normalizeSubject(d.subject)
+        coreSubjectNames.add(normSub)
         const realScore = studentScoreMap.get(normSub) ?? d.score
         const simScore = simulatedScores[d.subject] !== undefined
           ? simulatedScores[d.subject]
@@ -511,37 +867,115 @@ export default function PhanTichNangLuc() {
           score: effectiveScore,
           realScore,
           gap,
+          isCore: true,
         }
       })
 
-      const present = details.filter((d) => d.score !== null && Number.isFinite(d.score))
+      const comboPresent = details.filter((d) => d.score !== null && Number.isFinite(d.score))
       let computedFitPct = fit.fitPct
       let computedCoverage = fit.coveragePct
 
       if (hasActiveSim || fit.fitPct === null) {
-        if (!present.length) {
+        if (!comboPresent.length) {
           computedFitPct = null
           computedCoverage = 0
         } else {
-          const denom = present.reduce((sum, d) => sum + d.weight, 0)
-          const numer = present.reduce((sum, d) => sum + (d.threshold > 0 ? Math.min(d.score / d.threshold, 1) : 1) * d.weight, 0)
+          const denom = comboPresent.reduce((sum, d) => sum + d.weight, 0)
+          const numer = comboPresent.reduce((sum, d) => sum + (d.threshold > 0 ? Math.min(d.score / d.threshold, 1) : 1) * d.weight, 0)
           computedFitPct = Math.round((numer / denom) * 1000) / 10
           computedCoverage = Math.round(denom * 1000) / 10
         }
       }
 
-      // Priority subject needing improvement
-      const negativeGaps = details
+      // Priority subject needing improvement in combo
+      const comboNegativeGaps = details
         .filter((d) => d.score !== null && d.gap !== null && d.gap < 0)
         .sort((a, b) => b.weight - a.weight || a.gap - b.gap)
-      const prioritySubject = negativeGaps.length > 0 ? negativeGaps[0].subject : null
+      const prioritySubject = comboNegativeGaps.length > 0 ? comboNegativeGaps[0].subject : null
+
+      // 2. Comprehensive details (All subjects - Tiered 75% core + 25% foundation subjects with baseline 6.5)
+      const nonCoreSubjectList = []
+      const addedNonCore = new Set()
+
+      for (const s of COMMON_SUBJECTS) {
+        const norm = normalizeSubject(s)
+        if (!coreSubjectNames.has(norm) && !addedNonCore.has(norm)) {
+          nonCoreSubjectList.push(s)
+          addedNonCore.add(norm)
+        }
+      }
+      for (const [normSub] of studentScoreMap) {
+        if (!coreSubjectNames.has(normSub) && !addedNonCore.has(normSub)) {
+          nonCoreSubjectList.push(normSub)
+          addedNonCore.add(normSub)
+        }
+      }
+      for (const simSub of Object.keys(simulatedScores)) {
+        const norm = normalizeSubject(simSub)
+        if (!coreSubjectNames.has(norm) && !addedNonCore.has(norm)) {
+          nonCoreSubjectList.push(simSub)
+          addedNonCore.add(norm)
+        }
+      }
+
+      const foundationCount = nonCoreSubjectList.length
+      const foundationWeightPerSubject = foundationCount > 0 ? 0.25 / foundationCount : 0
+      const FOUNDATION_THRESHOLD = 6.5
+
+      const allCoreItems = details.map((d) => ({
+        ...d,
+        weight: Math.round(d.weight * 0.75 * 10000) / 10000,
+        isCore: true,
+      }))
+
+      const foundationItems = nonCoreSubjectList.map((subject) => {
+        const normSub = normalizeSubject(subject)
+        const realScore = studentScoreMap.get(normSub) ?? null
+        const simScore = simulatedScores[subject] !== undefined
+          ? simulatedScores[subject]
+          : simulatedScores[normSub] !== undefined
+          ? simulatedScores[normSub]
+          : null
+        const effectiveScore = simScore !== null ? Number(simScore) : realScore
+        const gap = effectiveScore !== null ? Math.round((effectiveScore - FOUNDATION_THRESHOLD) * 100) / 100 : null
+        return {
+          subject,
+          score: effectiveScore,
+          realScore,
+          threshold: FOUNDATION_THRESHOLD,
+          weight: Math.round(foundationWeightPerSubject * 10000) / 10000,
+          gap,
+          isCore: false,
+        }
+      })
+
+      const allDetails = [...allCoreItems, ...foundationItems]
+      const allPresent = allDetails.filter((d) => d.score !== null && Number.isFinite(d.score))
+
+      let allFitPct = null
+      let allCoverage = 0
+      if (allPresent.length > 0) {
+        const allDenom = allPresent.reduce((sum, d) => sum + d.weight, 0)
+        const allNumer = allPresent.reduce((sum, d) => sum + (d.threshold > 0 ? Math.min(d.score / d.threshold, 1) : 1) * d.weight, 0)
+        allFitPct = allDenom > 0 ? Math.round((allNumer / allDenom) * 1000) / 10 : null
+        allCoverage = Math.round(allDenom * 1000) / 10
+      }
+
+      const allNegativeGaps = allDetails
+        .filter((d) => d.score !== null && d.gap !== null && d.gap < 0)
+        .sort((a, b) => b.weight - a.weight || a.gap - b.gap)
+      const allPrioritySubject = allNegativeGaps.length > 0 ? allNegativeGaps[0].subject : null
 
       return {
         ...fit,
         details,
+        allDetails,
         fitPct: computedFitPct,
+        allFitPct: allFitPct ?? fit.allFitPct ?? computedFitPct,
         coveragePct: computedCoverage,
+        allCoveragePct: allCoverage,
         prioritySubject,
+        allPrioritySubject,
         originalFitPct: fit.fitPct,
       }
     })
@@ -561,7 +995,8 @@ export default function PhanTichNangLuc() {
       if (blockFilter && item.admissionBlock !== blockFilter) return false
       if (groupFilter && item.majorGroup !== groupFilter) return false
       if (minFit > 0) {
-        if (item.fitPct === null || item.fitPct < minFit) return false
+        const activeFit = radarMode === 'all' ? (item.allFitPct ?? item.fitPct) : item.fitPct
+        if (activeFit === null || activeFit < minFit) return false
       }
       if (filterPinned && !item.isPinned) return false
       if (filterTarget && !item.isTarget) return false
@@ -571,8 +1006,12 @@ export default function PhanTichNangLuc() {
 
     result.sort((a, b) => {
       if (sortBy === 'fit') {
-        const aFit = recommendations.get(String(a.rubricId))?.hocLucFit ?? a.fitPct
-        const bFit = recommendations.get(String(b.rubricId))?.hocLucFit ?? b.fitPct
+        const aFit = radarMode === 'all'
+          ? (a.allFitPct ?? a.fitPct)
+          : (recommendations.get(String(a.rubricId))?.hocLucFit ?? a.fitPct)
+        const bFit = radarMode === 'all'
+          ? (b.allFitPct ?? b.fitPct)
+          : (recommendations.get(String(b.rubricId))?.hocLucFit ?? b.fitPct)
         if (aFit !== null && bFit === null) return -1
         if (aFit === null && bFit !== null) return 1
         if (aFit !== null && bFit !== null && bFit !== aFit) {
@@ -590,8 +1029,18 @@ export default function PhanTichNangLuc() {
         return String(a.majorName || '').localeCompare(String(b.majorName || ''), 'vi')
       }
       if (sortBy === 'tongHop') {
-        const av = recommendations.get(String(a.rubricId))?.tongHopFit
-        const bv = recommendations.get(String(b.rubricId))?.tongHopFit
+        const aRec = recommendations.get(String(a.rubricId))
+        const aHL = radarMode === 'all' ? (a.allFitPct ?? a.fitPct) : (aRec?.hocLucFit ?? a.fitPct)
+        const av = (aHL !== null && aRec?.tinhCachFit !== null && aRec?.tinhCachFit !== undefined)
+          ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * aHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * aRec.tinhCachFit) * 10) / 10
+          : (aRec?.tongHopFit ?? null)
+
+        const bRec = recommendations.get(String(b.rubricId))
+        const bHL = radarMode === 'all' ? (b.allFitPct ?? b.fitPct) : (bRec?.hocLucFit ?? b.fitPct)
+        const bv = (bHL !== null && bRec?.tinhCachFit !== null && bRec?.tinhCachFit !== undefined)
+          ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * bHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * bRec.tinhCachFit) * 10) / 10
+          : (bRec?.tongHopFit ?? null)
+
         if (av === null || av === undefined) {
           if (bv !== null && bv !== undefined) return 1
         } else if (bv === null || bv === undefined) {
@@ -605,7 +1054,7 @@ export default function PhanTichNangLuc() {
     })
 
     return result
-  }, [processedFits, search, universityFilter, blockFilter, groupFilter, minFit, filterPinned, filterTarget, filterCompare, compareIds, sortBy, recommendations])
+  }, [processedFits, search, universityFilter, blockFilter, groupFilter, minFit, filterPinned, filterTarget, filterCompare, compareIds, sortBy, recommendations, radarMode])
 
   // Compare selection management
   const toggleCompare = (rubricId) => {
@@ -1060,8 +1509,44 @@ export default function PhanTichNangLuc() {
             </button>
           </div>
 
-          <div className="text-xs text-muted-foreground font-medium">
-            Hiển thị <strong>{filteredSortedFits.length}</strong> / {rawFits.length} ngành
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Radar Mode Switcher */}
+            <div className="flex items-center gap-1.5">
+              <span className="text-[11px] text-muted-foreground whitespace-nowrap">Chế độ radar:</span>
+              <div className="inline-flex rounded-lg border border-input bg-muted/40 p-0.5 text-xs">
+                <button
+                  type="button"
+                  onClick={() => setRadarMode('all')}
+                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                    radarMode === 'all'
+                      ? 'bg-background text-primary shadow-xs font-semibold'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                  title="Đánh giá toàn diện tất cả các môn học (75% môn tổ hợp chính + 25% môn nền tảng học lực khá sàn 6.5)"
+                >
+                  <Sparkles className="h-3.5 w-3.5 text-primary" />
+                  <span>Toàn diện tất cả môn</span>
+                  <span className="rounded bg-primary/10 px-1 py-0.2 text-[9px] font-bold text-primary">75/25</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setRadarMode('combo')}
+                  className={`inline-flex items-center gap-1 rounded-md px-2.5 py-1 text-xs font-medium transition-all ${
+                    radarMode === 'combo'
+                      ? 'bg-background text-foreground shadow-xs font-semibold'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                  title="Chỉ xét các môn trong tổ hợp tuyển sinh theo đề án ngành"
+                >
+                  <Target className="h-3.5 w-3.5 text-orange-600" />
+                  <span>Chỉ 3 môn tổ hợp</span>
+                </button>
+              </div>
+            </div>
+
+            <div className="text-xs text-muted-foreground font-medium">
+              Hiển thị <strong>{filteredSortedFits.length}</strong> / {rawFits.length} ngành
+            </div>
           </div>
         </div>
 
@@ -1118,183 +1603,23 @@ export default function PhanTichNangLuc() {
         </div>
       ) : (
         <>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {filteredSortedFits.slice(0, displayCount).map((fit) => {
-              const fitStyle = getFitStyle(fit.fitPct)
-              const isChecked = compareIds.includes(fit.rubricId)
-              const recommendation = recommendations.get(String(fit.rubricId)) || null
-              const effectiveRecommendation = recommendation ? {
-                ...recommendation,
-                hocLucFit: hasActiveSim
-                  ? (fit.fitPct ?? recommendation.hocLucFit)
-                  : (recommendation.hocLucFit ?? (fit.fitPct !== null ? fit.fitPct : null)),
-                tongHopFit: hasActiveSim && fit.fitPct !== null && recommendation.tinhCachFit !== null
-                  ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * fit.fitPct + (recommendationConfig?.w_tinh_cach ?? 0.4) * recommendation.tinhCachFit) * 10) / 10
-                  : recommendation.tongHopFit,
-              } : (fit.fitPct !== null ? {
-                rubricId: fit.rubricId,
-                hocLucFit: fit.fitPct,
-                tinhCachFit: null,
-                tongHopFit: null,
-                reasons: [],
-              } : null)
-
-              return (
-                <div
-                  key={fit.rubricId}
-                  className={`flex flex-col justify-between rounded-xl border p-4 transition-all duration-150 hover:shadow-md ${
-                    fit.isTarget
-                      ? 'border-purple-300 bg-purple-50/20 shadow-xs ring-1 ring-purple-200'
-                      : fit.isPinned
-                      ? 'border-blue-200 bg-blue-50/10'
-                      : 'border-border bg-card'
-                  }`}
-                >
-                  <div>
-                    {/* Top line: Major Title + University & Fit % + Compare Checkbox */}
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5">
-                          <h2 className="truncate text-sm font-bold text-foreground leading-snug" title={fit.majorName}>
-                            {fit.majorName}
-                          </h2>
-                        </div>
-                        <div className="truncate text-[11px] text-muted-foreground mt-0.5" title={fit.schoolName}>
-                          {fit.schoolName}
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span className="text-[10px] font-semibold text-muted-foreground">3 tỉ lệ</span>
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => toggleCompare(fit.rubricId)}
-                          aria-label={`Chọn so sánh ${fit.majorName}`}
-                          className="h-4.5 w-4.5 rounded border-gray-300 text-primary cursor-pointer focus:ring-primary"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Metadata line: Block | Entry score */}
-                    <div className="mt-1 flex items-center gap-1 text-[11px] text-muted-foreground">
-                      <span className="font-semibold text-foreground">{fit.admissionBlock || '—'}</span>
-                      <span>|</span>
-                      <span>Điểm chuẩn:</span>
-                      <strong className="text-foreground">{fit.entryScore !== null ? fit.entryScore : 'Chưa có'}</strong>
-                      {fit.year && <span>({fit.year})</span>}
-                    </div>
-
-                    {/* Major group pill */}
-                    {fit.majorGroup && (
-                      <div className="mt-1">
-                        <span className="inline-block rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
-                          {fit.majorGroup}
-                        </span>
-                      </div>
-                    )}
-
-                    {/* Progress Bar & Tag */}
-                    <div className="mt-2.5 flex items-center gap-2">
-                      <div className="flex-1 rounded-full bg-slate-100 h-1.5 overflow-hidden">
-                        <div
-                          className={`h-full rounded-full transition-all duration-300 ${fitStyle.bar}`}
-                          style={{ width: `${Math.min(fit.fitPct || 0, 100)}%` }}
-                        />
-                      </div>
-                      <span className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">
-                        Ngưỡng rubric (tham khảo)
-                      </span>
-                    </div>
-
-                    {/* Three fit ratios */}
-                    <FitBars data={effectiveRecommendation} config={recommendationConfig} />
-                    <TinhCachMatrix cell={effectiveRecommendation?.matrixCell} compact />
-
-                    {/* EduMind Radar Chart */}
-                    <MiniRadar
-                      details={fit.details}
-                      simulated={hasActiveSim ? simulatedScores : null}
-                      rings={
-                        effectiveRecommendation
-                          ? {
-                              hocLucFit: effectiveRecommendation.hocLucFit,
-                              tinhCachFit: effectiveRecommendation.tinhCachFit,
-                              tongHopFit: effectiveRecommendation.tongHopFit,
-                            }
-                          : null
-                      }
-                    />
-
-                    {/* Trend & Sparkline */}
-                    <div className="mt-1 border-t border-slate-100 pt-2">
-                      <Sparkline entryScore={fit.entryScore} />
-                    </div>
-
-                    {/* Subject gap chips */}
-                    <div className="mt-2 space-y-1">
-                      <div className="flex flex-wrap gap-1">
-                        {fit.details.map((d) => (
-                          <span
-                            key={d.subject}
-                            className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[10px] ${
-                              d.gap !== null && d.gap >= 0
-                                ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
-                                : d.gap !== null
-                                ? 'bg-rose-50 text-rose-800 border border-rose-200'
-                                : 'bg-slate-100 text-slate-700'
-                            }`}
-                          >
-                            <span>{shortSubject(d.subject)}:</span>
-                            <strong>{d.score !== null ? d.score : '—'}/{d.threshold}</strong>
-                            {d.gap !== null && (
-                              <span className="font-semibold">
-                                ({d.gap >= 0 ? `+${d.gap}` : d.gap})
-                              </span>
-                            )}
-                          </span>
-                        ))}
-                      </div>
-
-                      {fit.prioritySubject && (
-                        <p className="text-[10px] text-amber-700 mt-1">
-                          💡 Cần cải thiện: <strong className="text-amber-900">{fit.prioritySubject}</strong>
-                        </p>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Card Bottom Buttons: Ghim & Mục tiêu */}
-                  <div className="mt-4 flex gap-2 border-t border-slate-100 pt-2.5">
-                    <button
-                      type="button"
-                      onClick={() => handlePin(fit)}
-                      className={`flex-1 inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                        fit.isPinned
-                          ? 'bg-blue-600 text-white hover:bg-blue-700'
-                          : 'border border-input bg-background text-foreground hover:bg-muted'
-                      }`}
-                    >
-                      <Bookmark className="h-3.5 w-3.5" />
-                      {fit.isPinned ? 'Đã ghim' : 'Ghim'}
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => handleTarget(fit)}
-                      className={`flex-1 inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                        fit.isTarget
-                          ? 'bg-purple-600 text-white hover:bg-purple-700'
-                          : 'border border-input bg-background text-foreground hover:bg-muted'
-                      }`}
-                    >
-                      <Star className="h-3.5 w-3.5" />
-                      {fit.isTarget ? 'Ngành mục tiêu' : 'Mục tiêu'}
-                    </button>
-                  </div>
-                </div>
-              )
-            })}
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 items-start">
+            {filteredSortedFits.slice(0, displayCount).map((fit) => (
+              <MajorCard
+                key={fit.rubricId}
+                fit={fit}
+                isChecked={compareIds.includes(fit.rubricId)}
+                toggleCompare={toggleCompare}
+                radarMode={radarMode}
+                setRadarMode={setRadarMode}
+                hasActiveSim={hasActiveSim}
+                simulatedScores={simulatedScores}
+                recommendation={recommendations.get(String(fit.rubricId)) || null}
+                recommendationConfig={recommendationConfig}
+                handlePin={handlePin}
+                handleTarget={handleTarget}
+              />
+            ))}
           </div>
 
           {/* Load more button */}
@@ -1456,7 +1781,17 @@ export default function PhanTichNangLuc() {
               comparedFits.length === 2 ? 'sm:grid-cols-2' : comparedFits.length === 3 ? 'sm:grid-cols-3' : 'sm:grid-cols-2 lg:grid-cols-4'
             }`}>
               {comparedFits.map((f, idx) => {
-                const fitStyle = getFitStyle(f.fitPct)
+                const activeDetails = radarMode === 'all' ? (f.allDetails || f.details) : f.details
+                const activeFitPct = radarMode === 'all' ? (f.allFitPct ?? f.fitPct) : f.fitPct
+                const rec = recommendations.get(String(f.rubricId))
+                const effHL = (activeFitPct ?? rec?.hocLucFit ?? null)
+                const effTongHop = (effHL !== null && rec?.tinhCachFit !== null && rec?.tinhCachFit !== undefined)
+                  ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * effHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * rec.tinhCachFit) * 10) / 10
+                  : (rec?.tongHopFit ?? null)
+                const hasTongHop = effTongHop !== null && effTongHop !== undefined
+                const displayPct = hasTongHop ? effTongHop : activeFitPct
+                const displayLabel = hasTongHop ? 'Phù hợp tổng thể' : (radarMode === 'all' ? 'Học lực toàn diện' : 'Học lực tổ hợp')
+                const fitStyle = getFitStyle(displayPct)
                 return (
                   <div key={f.rubricId} className="rounded-xl border p-4 bg-muted/30 flex flex-col justify-between">
                     <div>
@@ -1470,16 +1805,21 @@ export default function PhanTichNangLuc() {
                       </div>
 
                       <div className="mt-3 flex items-center justify-between border-t border-slate-200 pt-2">
-                        <span className={`text-2xl font-black ${fitStyle.text}`}>
-                          {f.fitPct !== null ? `${f.fitPct.toFixed(0)}%` : '—'}
-                        </span>
+                        <div>
+                          <span className={`text-2xl font-black ${fitStyle.text}`}>
+                            {displayPct !== null ? `${displayPct.toFixed(1)}%` : '—'}
+                          </span>
+                          <span className="block text-[10px] text-muted-foreground font-medium">
+                            {displayLabel}
+                          </span>
+                        </div>
                         <span className={`rounded border px-2 py-0.5 text-xs font-semibold ${fitStyle.tag}`}>
-                          {fitStyle.label}
+                          {radarMode === 'all' ? 'Toàn diện 75/25' : fitStyle.label}
                         </span>
                       </div>
 
                       <div className="mt-2">
-                        <MiniRadar details={f.details} simulated={hasActiveSim ? simulatedScores : null} />
+                        <MiniRadar details={activeDetails} simulated={hasActiveSim ? simulatedScores : null} className="h-48 w-48 mx-auto select-none" />
                       </div>
                     </div>
                   </div>
@@ -1489,8 +1829,11 @@ export default function PhanTichNangLuc() {
 
             {/* Unified Comparison Table */}
             <div className="mt-6 overflow-hidden rounded-lg border">
-              <div className="bg-muted px-4 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground">
-                Bảng so sánh chi tiết ngưỡng từng môn:
+              <div className="bg-muted px-4 py-2 text-xs font-bold uppercase tracking-wider text-muted-foreground flex items-center justify-between">
+                <span>Bảng so sánh chi tiết ngưỡng từng môn:</span>
+                <span className="text-[11px] font-normal text-muted-foreground">
+                  Chế độ: <strong>{radarMode === 'all' ? 'Toàn diện tất cả môn (75/25)' : '3 môn tổ hợp'}</strong>
+                </span>
               </div>
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
@@ -1506,8 +1849,9 @@ export default function PhanTichNangLuc() {
                     </tr>
                   </thead>
                   <tbody className="divide-y">
-                    {[...new Set(comparedFits.flatMap((f) => f.details.map((d) => d.subject)))].map((subj) => {
-                      const userScore = comparedFits[0]?.details.find((d) => d.subject === subj)?.score
+                    {[...new Set(comparedFits.flatMap((f) => (radarMode === 'all' ? (f.allDetails || f.details) : f.details).map((d) => d.subject)))].map((subj) => {
+                      const userScore = comparedFits[0]?.allDetails?.find((d) => d.subject === subj)?.score
+                        ?? comparedFits[0]?.details.find((d) => d.subject === subj)?.score
                         ?? studentScoreMap.get(normalizeSubject(subj))
                         ?? null
 
@@ -1518,7 +1862,8 @@ export default function PhanTichNangLuc() {
                             {userScore !== null ? `${userScore}đ` : 'Chưa có'}
                           </td>
                           {comparedFits.map((f) => {
-                            const d = f.details.find((x) => x.subject === subj)
+                            const details = radarMode === 'all' ? (f.allDetails || f.details) : f.details
+                            const d = details.find((x) => x.subject === subj)
                             if (!d) return <td key={f.rubricId} className="p-3 text-muted-foreground">—</td>
                             const gap = userScore !== null ? Math.round((userScore - d.threshold) * 100) / 100 : null
                             return (

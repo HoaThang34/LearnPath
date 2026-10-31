@@ -49,13 +49,14 @@ function shortSubject(s) {
 // Basic shadcn SVG Radar Chart (neutral, no flashy neon)
 function MiniRadar({ details = [] }) {
   const safeDetails = Array.isArray(details) ? details : []
-  const size = 190
+  const size = 220
   const center = size / 2
-  const radius = 54
+  const isMulti = safeDetails.length > 5
+  const radius = isMulti ? 60 : 70
 
   if (safeDetails.length < 3) {
     return (
-      <div className="flex h-40 items-center justify-center text-xs text-muted-foreground italic">
+      <div className="flex h-44 items-center justify-center text-xs text-muted-foreground italic">
         Cần ≥ 3 môn để vẽ biểu đồ
       </div>
     )
@@ -89,7 +90,7 @@ function MiniRadar({ details = [] }) {
     <div className="flex flex-col items-center justify-center py-1">
       <svg
         viewBox={`0 0 ${size} ${size}`}
-        className="h-40 w-40 select-none"
+        className="h-44 w-44 select-none"
         role="img"
         aria-label="Biểu đồ radar năng lực"
       >
@@ -119,7 +120,7 @@ function MiniRadar({ details = [] }) {
           const angle = -Math.PI / 2 + (2 * Math.PI * idx) / safeDetails.length
           const xSpoke = center + Math.cos(angle) * radius
           const ySpoke = center + Math.sin(angle) * radius
-          const labelDist = radius + 16
+          const labelDist = radius + (isMulti ? 14 : 16)
           const xLabel = center + Math.cos(angle) * labelDist
           const yLabel = center + Math.sin(angle) * labelDist
 
@@ -140,11 +141,11 @@ function MiniRadar({ details = [] }) {
                 y={yLabel}
                 textAnchor="middle"
                 dominantBaseline="middle"
-                fontSize="8.5"
-                fontWeight="500"
-                className="fill-muted-foreground"
+                fontSize={isMulti ? '7.5' : '8.5'}
+                fontWeight={item.isCore ? '700' : '500'}
+                className={item.isCore ? 'fill-foreground font-semibold' : 'fill-muted-foreground'}
               >
-                {shortSubject(item.subject)}
+                {shortSubject(item.subject)}{item.isCore ? '★' : ''}
               </text>
             </g>
           )
@@ -183,13 +184,18 @@ function MiniRadar({ details = [] }) {
         })}
       </svg>
       {/* Clean Legend */}
-      <div className="flex items-center gap-4 text-[10px] text-muted-foreground mt-1">
+      <div className="flex flex-wrap justify-center items-center gap-3 text-[10px] text-muted-foreground mt-1">
         <span className="flex items-center gap-1">
           <span className="inline-block h-2 w-2 rounded-full bg-foreground" /> Điểm của bạn
         </span>
         <span className="flex items-center gap-1">
           <span className="inline-block h-2 w-2 rounded-full border border-dashed border-muted-foreground" /> Ngưỡng yêu cầu
         </span>
+        {safeDetails.some((d) => d.isCore) && safeDetails.some((d) => !d.isCore) && (
+          <span className="flex items-center gap-1 text-[9px] text-primary">
+            ★ Môn tổ hợp (75%)
+          </span>
+        )}
       </div>
     </div>
   )
@@ -354,6 +360,7 @@ export default function TrangChu() {
   const [targetActionLoading, setTargetActionLoading] = useState(false)
   const [targetActionMessage, setTargetActionMessage] = useState('')
   const [selectedSnapshot, setSelectedSnapshot] = useState({ classLevel: '', term: '' })
+  const [radarMode, setRadarMode] = useState('all')
 
   const loadData = useCallback(async () => {
     if (!user) return
@@ -939,69 +946,89 @@ export default function TrangChu() {
               )}
 
               {/* TRƯỜNG HỢP C: ĐÃ CÓ MỤC TIÊU VÀ ĐÃ CÓ ĐIỂM */}
-              {hasTarget && hasScores && targetFit && (
-                <div className="space-y-4">
-                  {/* Progress bar and Priority subject */}
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-medium text-foreground">
-                        Mức độ tương thích năng lực:
-                      </span>
-                      <span className={`font-medium ${getFitStyle(targetFit.fitPct).text}`}>
-                        {targetFit.fitPct !== null ? `${targetFit.fitPct}%` : 'Chưa đủ môn'}
-                        <span className="ml-1 text-[11px] font-normal text-muted-foreground">
-                          ({getFitStyle(targetFit.fitPct).label})
+              {hasTarget && hasScores && targetFit && (() => {
+                const targetDetails = radarMode === 'all' ? (targetFit.allDetails || targetFit.details || []) : (targetFit.details || [])
+                const targetFitPct = radarMode === 'all' ? (targetFit.allFitPct ?? targetFit.fitPct) : targetFit.fitPct
+                const fitStyle = getFitStyle(targetFitPct)
+                return (
+                  <div className="space-y-4">
+                    {/* Header with Mode Toggle */}
+                    <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                      <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                        <Sparkles className="h-3.5 w-3.5 text-primary" />
+                        <span>{radarMode === 'all' ? 'Mạng nhện toàn diện (tất cả môn)' : 'Mạng nhện tổ hợp (3 môn)'}</span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setRadarMode((m) => (m === 'all' ? 'combo' : 'all'))}
+                        className="text-[11px] text-primary hover:underline font-medium"
+                      >
+                        {radarMode === 'all' ? 'Xem 3 môn' : 'Xem tất cả'}
+                      </button>
+                    </div>
+
+                    {/* Progress bar and Priority subject */}
+                    <div className="space-y-1.5">
+                      <div className="flex justify-between items-center text-xs">
+                        <span className="font-medium text-foreground">
+                          Mức độ tương thích năng lực {radarMode === 'all' ? '(75/25)' : ''}:
                         </span>
-                      </span>
+                        <span className={`font-medium ${fitStyle.text}`}>
+                          {targetFitPct !== null ? `${targetFitPct}%` : 'Chưa đủ môn'}
+                          <span className="ml-1 text-[11px] font-normal text-muted-foreground">
+                            ({fitStyle.label})
+                          </span>
+                        </span>
+                      </div>
+
+                      <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                        <div
+                          className={`h-full transition-all duration-300 ${fitStyle.bar}`}
+                          style={{ width: `${Math.min(targetFitPct || 0, 100)}%` }}
+                        />
+                      </div>
+
+                      {targetFit.prioritySubject && (
+                        <p className="text-[11px] text-muted-foreground flex items-center gap-1 pt-0.5">
+                          <AlertCircle className="h-3 w-3 shrink-0" />
+                          Môn ưu tiên cần cải thiện: <strong className="text-foreground">{targetFit.prioritySubject}</strong>
+                        </p>
+                      )}
                     </div>
 
-                    <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-300 ${getFitStyle(targetFit.fitPct).bar}`}
-                        style={{ width: `${Math.min(targetFit.fitPct || 0, 100)}%` }}
-                      />
+                    {/* Radar visualization & Rubric Table */}
+                    <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                      <div className="sm:col-span-5 flex justify-center bg-muted/20 rounded-md p-2 border border-border">
+                        <MiniRadar details={targetDetails} />
+                      </div>
+
+                      <div className="sm:col-span-7">
+                        <RubricTable details={targetDetails} />
+                      </div>
                     </div>
 
-                    {targetFit.prioritySubject && (
-                      <p className="text-[11px] text-muted-foreground flex items-center gap-1 pt-0.5">
-                        <AlertCircle className="h-3 w-3 shrink-0" />
-                        Môn ưu tiên cần cải thiện: <strong className="text-foreground">{targetFit.prioritySubject}</strong>
-                      </p>
-                    )}
+                    {/* Actions */}
+                    <div className="pt-2 flex items-center justify-between border-t border-border">
+                      <Link
+                        to="/thong-tin-ca-nhan"
+                        className="text-xs text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
+                      >
+                        Đổi mục tiêu khác
+                      </Link>
+                      <Link
+                        to="/phan-tich-nang-luc"
+                        className={buttonVariants({
+                          variant: 'ghost',
+                          size: 'sm',
+                          className: 'text-xs text-muted-foreground hover:text-foreground',
+                        })}
+                      >
+                        Chi tiết <ArrowRight className="ml-1 h-3 w-3" />
+                      </Link>
+                    </div>
                   </div>
-
-                  {/* Radar visualization & Rubric Table */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-                    <div className="sm:col-span-5 flex justify-center bg-muted/20 rounded-md p-2 border border-border">
-                      <MiniRadar details={targetFit.details || []} />
-                    </div>
-
-                    <div className="sm:col-span-7">
-                      <RubricTable details={targetFit.details || []} />
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="pt-2 flex items-center justify-between border-t border-border">
-                    <Link
-                      to="/thong-tin-ca-nhan"
-                      className="text-xs text-muted-foreground hover:text-foreground underline-offset-4 hover:underline"
-                    >
-                      Đổi mục tiêu khác
-                    </Link>
-                    <Link
-                      to="/phan-tich-nang-luc"
-                      className={buttonVariants({
-                        variant: 'ghost',
-                        size: 'sm',
-                        className: 'text-xs text-muted-foreground hover:text-foreground',
-                      })}
-                    >
-                      Chi tiết <ArrowRight className="ml-1 h-3 w-3" />
-                    </Link>
-                  </div>
-                </div>
-              )}
+                )
+              })()}
 
               {/* TRƯỜNG HỢP D: ĐÃ CÓ MỤC TIÊU TỰ GÕ NHƯNG CHƯA CÓ RUBRIC CHUẨN HOÁ */}
               {hasTarget && hasScores && !targetFit && unmatchedTarget && (
@@ -1128,88 +1155,110 @@ export default function TrangChu() {
                 </div>
               ) : (
                 /* TRƯỜNG HỢP: ĐÃ CÓ BEST FIT */
-                <div className="space-y-4">
-                  {/* Progress bar and Recommendation */}
-                  <div className="space-y-1.5">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="font-medium text-foreground">
-                        Độ tương thích năng lực cao nhất:
-                      </span>
-                      <span className={`font-medium ${getFitStyle(bestFit.fitPct).text}`}>
-                        {bestFit.fitPct !== null ? `${bestFit.fitPct}%` : 'Chưa đủ môn'}
-                        <span className="ml-1 text-[11px] font-normal text-muted-foreground">
-                          ({getFitStyle(bestFit.fitPct).label})
-                        </span>
-                      </span>
-                    </div>
+                (() => {
+                  const bestDetails = radarMode === 'all' ? (bestFit.allDetails || bestFit.details || []) : (bestFit.details || [])
+                  const bestFitPct = radarMode === 'all' ? (bestFit.allFitPct ?? bestFit.fitPct) : bestFit.fitPct
+                  const fitStyle = getFitStyle(bestFitPct)
+                  return (
+                    <div className="space-y-4">
+                      {/* Header with Mode Toggle */}
+                      <div className="flex items-center justify-between pb-1 border-b border-border/60">
+                        <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
+                          <Sparkles className="h-3.5 w-3.5 text-primary" />
+                          <span>{radarMode === 'all' ? 'Mạng nhện toàn diện (tất cả môn)' : 'Mạng nhện tổ hợp (3 môn)'}</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setRadarMode((m) => (m === 'all' ? 'combo' : 'all'))}
+                          className="text-[11px] text-primary hover:underline font-medium"
+                        >
+                          {radarMode === 'all' ? 'Xem 3 môn' : 'Xem tất cả'}
+                        </button>
+                      </div>
 
-                    <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
-                      <div
-                        className={`h-full transition-all duration-300 ${getFitStyle(bestFit.fitPct).bar}`}
-                        style={{ width: `${Math.min(bestFit.fitPct || 0, 100)}%` }}
-                      />
-                    </div>
+                      {/* Progress bar and Recommendation */}
+                      <div className="space-y-1.5">
+                        <div className="flex justify-between items-center text-xs">
+                          <span className="font-medium text-foreground">
+                            Độ tương thích năng lực cao nhất {radarMode === 'all' ? '(75/25)' : ''}:
+                          </span>
+                          <span className={`font-medium ${fitStyle.text}`}>
+                            {bestFitPct !== null ? `${bestFitPct}%` : 'Chưa đủ môn'}
+                            <span className="ml-1 text-[11px] font-normal text-muted-foreground">
+                              ({fitStyle.label})
+                            </span>
+                          </span>
+                        </div>
 
-                    <p className="text-[11px] text-muted-foreground pt-0.5">
-                      Độ bao phủ điểm: <strong className="text-foreground">{bestFit.coveragePct}%</strong> các môn yêu cầu.
-                      {bestFit.prioritySubject ? (
-                        <span className="ml-1">
-                          (Lưu ý môn {bestFit.prioritySubject} để tối ưu cơ hội).
-                        </span>
-                      ) : (
-                        <span className="ml-1 text-foreground font-medium">
-                          (Các môn thế mạnh của bạn hoàn toàn vượt ngưỡng).
-                        </span>
-                      )}
-                    </p>
-                  </div>
+                        <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                          <div
+                            className={`h-full transition-all duration-300 ${fitStyle.bar}`}
+                            style={{ width: `${Math.min(bestFitPct || 0, 100)}%` }}
+                          />
+                        </div>
 
-                  {/* Radar visualization & Rubric Table */}
-                  <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
-                    <div className="sm:col-span-5 flex justify-center bg-muted/20 rounded-md p-2 border border-border">
-                      <MiniRadar details={bestFit.details || []} />
-                    </div>
+                        <p className="text-[11px] text-muted-foreground pt-0.5">
+                          Độ bao phủ điểm: <strong className="text-foreground">{bestFit.coveragePct}%</strong> các môn yêu cầu.
+                          {bestFit.prioritySubject ? (
+                            <span className="ml-1">
+                              (Lưu ý môn {bestFit.prioritySubject} để tối ưu cơ hội).
+                            </span>
+                          ) : (
+                            <span className="ml-1 text-foreground font-medium">
+                              (Các môn thế mạnh của bạn hoàn toàn vượt ngưỡng).
+                            </span>
+                          )}
+                        </p>
+                      </div>
 
-                    <div className="sm:col-span-7">
-                      <RubricTable details={bestFit.details || []} />
-                    </div>
-                  </div>
+                      {/* Radar visualization & Rubric Table */}
+                      <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+                        <div className="sm:col-span-5 flex justify-center bg-muted/20 rounded-md p-2 border border-border">
+                          <MiniRadar details={bestDetails} />
+                        </div>
 
-                  {/* Actions */}
-                  <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-border">
-                    {!bestFit.isTarget ? (
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={handleSetBestFitAsTarget}
-                        disabled={targetActionLoading}
-                        className="text-xs h-8"
-                      >
-                        {targetActionLoading ? (
-                          <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
+                        <div className="sm:col-span-7">
+                          <RubricTable details={bestDetails} />
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="pt-2 flex flex-wrap items-center justify-between gap-2 border-t border-border">
+                        {!bestFit.isTarget ? (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={handleSetBestFitAsTarget}
+                            disabled={targetActionLoading}
+                            className="text-xs h-8"
+                          >
+                            {targetActionLoading ? (
+                              <Loader2 className="mr-1.5 h-3 w-3 animate-spin" />
+                            ) : (
+                              <Target className="mr-1.5 h-3 w-3" />
+                            )}
+                            Đặt làm ngành mục tiêu
+                          </Button>
                         ) : (
-                          <Target className="mr-1.5 h-3 w-3" />
+                          <span className="text-xs text-foreground font-medium inline-flex items-center">
+                            <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Đang là ngành mục tiêu
+                          </span>
                         )}
-                        Đặt làm ngành mục tiêu
-                      </Button>
-                    ) : (
-                      <span className="text-xs text-foreground font-medium inline-flex items-center">
-                        <CheckCircle2 className="h-3.5 w-3.5 mr-1" /> Đang là ngành mục tiêu
-                      </span>
-                    )}
 
-                    <Link
-                      to="/phan-tich-nang-luc"
-                      className={buttonVariants({
-                        variant: 'ghost',
-                        size: 'sm',
-                        className: 'text-xs text-muted-foreground hover:text-foreground',
-                      })}
-                    >
-                      Bản đồ ngành <ArrowRight className="ml-1 h-3 w-3" />
-                    </Link>
-                  </div>
-                </div>
+                        <Link
+                          to="/phan-tich-nang-luc"
+                          className={buttonVariants({
+                            variant: 'ghost',
+                            size: 'sm',
+                            className: 'text-xs text-muted-foreground hover:text-foreground',
+                          })}
+                        >
+                          Bản đồ ngành <ArrowRight className="ml-1 h-3 w-3" />
+                        </Link>
+                      </div>
+                    </div>
+                  )
+                })()
               )}
             </CardContent>
           </Card>

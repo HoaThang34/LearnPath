@@ -194,3 +194,40 @@ test('getMapData returns vector embeddings and major nodes for career map', asyn
   assert.equal(typeof first.weightVector, 'object');
   assert.ok(first.fitPct !== undefined);
 });
+
+test('calculateCareerFit computes comprehensive allDetails with tiered 75/25 weights and 6.5 foundation threshold', () => {
+  const scores = [
+    { subject: 'Toán', scoreType: 'average', score: 9.0 },
+    { subject: 'Vật lý', scoreType: 'average', score: 8.5 },
+    { subject: 'Hóa học', scoreType: 'average', score: 8.0 },
+    { subject: 'Ngữ văn', scoreType: 'average', score: 7.0 },
+    { subject: 'Tiếng Anh', scoreType: 'average', score: 7.5 },
+  ];
+  const rubricRows = [
+    { subject: 'Toán', weight: 0.5, threshold: 9.0 },
+    { subject: 'Vật lý', weight: 0.3, threshold: 8.5 },
+    { subject: 'Hóa học', weight: 0.2, threshold: 8.0 },
+  ];
+
+  const fit = calculateCareerFit(scores, rubricRows);
+  assert.equal(fit.fitPct, 100);
+  assert.ok(Array.isArray(fit.allDetails));
+  assert.ok(fit.allDetails.length >= 8); // 3 core + 5 standard foundation
+
+  const coreItems = fit.allDetails.filter((d) => d.isCore);
+  const foundationItems = fit.allDetails.filter((d) => !d.isCore);
+  assert.equal(coreItems.length, 3);
+  assert.ok(foundationItems.length >= 5);
+
+  const coreWeightSum = coreItems.reduce((acc, d) => acc + d.weight, 0);
+  const foundationWeightSum = foundationItems.reduce((acc, d) => acc + d.weight, 0);
+  assert.ok(Math.abs(coreWeightSum - 0.75) < 0.01);
+  assert.ok(Math.abs(foundationWeightSum - 0.25) < 0.01);
+
+  // All non-core subjects have baseline threshold 6.5
+  for (const f of foundationItems) {
+    assert.equal(f.threshold, 6.5);
+  }
+  assert.ok(fit.allFitPct !== null);
+  assert.ok(fit.allFitPct > 0);
+});

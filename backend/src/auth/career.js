@@ -207,14 +207,36 @@ async function deleteRubric(id) {
   return true;
 }
 
-function calculateCareerFit(scores, rubricRows) {
-  const scoreBySubject = new Map(scores
-    .filter((row) => (row.scoreType || row.score_type || 'average') === 'average')
+const STANDARD_COMMON_SUBJECTS = [
+  'Toán', 'Ngữ văn', 'Tiếng Anh', 'Vật lý', 'Hóa học', 'Sinh học', 'Lịch sử', 'Địa lý',
+];
+const FOUNDATION_THRESHOLD = 6.5;
+const CORE_WEIGHT_RATIO = 0.75;
+const FOUNDATION_WEIGHT_RATIO = 0.25;
+
+function calculateCareerFit(scores, rubricRows, options = {}) {
+  const foundationThreshold = options.foundationThreshold || FOUNDATION_THRESHOLD;
+  const coreRatio = options.coreRatio !== undefined ? options.coreRatio : CORE_WEIGHT_RATIO;
+  const foundationRatio = options.foundationRatio !== undefined ? options.foundationRatio : FOUNDATION_WEIGHT_RATIO;
+
+  const validScores = scores.filter((row) => (row.scoreType || row.score_type || 'average') === 'average');
+  const scoreBySubject = new Map(validScores
     .map((row) => [`${normalizeSubject(row.subject || row.subject_name)}|average`, Number(row.score)]));
+
+  const coreSubjectNames = new Set();
   const details = rubricRows.map((row) => {
     const subject = row.subject || row.subject_name;
-    const score = scoreBySubject.get(`${normalizeSubject(subject)}|average`);
-    return { subject, score: Number.isFinite(score) ? score : null, threshold: Number(row.threshold), weight: Number(row.weight), gap: Number.isFinite(score) ? Math.round((score - row.threshold) * 100) / 100 : null };
+    const norm = normalizeSubject(subject);
+    coreSubjectNames.add(norm);
+    const score = scoreBySubject.get(`${norm}|average`);
+    return {
+      subject,
+      score: Number.isFinite(score) ? score : null,
+      threshold: Number(row.threshold),
+      weight: Number(row.weight),
+      gap: Number.isFinite(score) ? Math.round((score - row.threshold) * 100) / 100 : null,
+      isCore: true,
+    };
   });
   const present = details.filter((row) => row.score !== null);
   const coverage = Math.round(present.reduce((sum, row) => sum + row.weight, 0) * 1000) / 10;
@@ -222,11 +244,85 @@ function calculateCareerFit(scores, rubricRows) {
     .filter((row) => row.score !== null && row.gap !== null && row.gap < 0)
     .sort((a, b) => b.weight - a.weight || a.gap - b.gap);
   const prioritySubject = needImprovement.length > 0 ? needImprovement[0].subject : null;
-  if (!present.length) return { fitPct: null, coveragePct: 0, status: 'insufficient_data', details, prioritySubject: null };
-  const denominator = present.reduce((sum, row) => sum + row.weight, 0);
-  const numerator = present.reduce((sum, row) => sum + (row.threshold > 0 ? Math.min(row.score / row.threshold, 1) : 1) * row.weight, 0);
-  const fitPct = Math.round((numerator / denominator) * 1000) / 10;
-  return { fitPct, coveragePct: coverage, status: coverage < 100 ? 'partial_data' : 'complete', details, prioritySubject };
+
+  let fitPct = null;
+  if (present.length > 0) {
+    const denominator = present.reduce((sum, row) => sum + row.weight, 0);
+    const numerator = present.reduce((sum, row) => sum + (row.threshold > 0 ? Math.min(row.score / row.threshold, 1) : 1) * row.weight, 0);
+    fitPct = Math.round((numerator / denominator) * 1000) / 10;
+  }
+
+  // Comprehensive details & fit (75% core combination + 25% foundation subjects with baseline 6.5)
+  const nonCoreSubjectList = [];
+  const addedNonCore = new Set();
+
+  for (const s of STANDARD_COMMON_SUBJECTS) {
+    const norm = normalizeSubject(s);
+    if (!coreSubjectNames.has(norm) && !addedNonCore.has(norm)) {
+      nonCoreSubjectList.push(s);
+      addedNonCore.add(norm);
+    }
+  }
+  for (const s of validScores) {
+    const subName = s.subject || s.subject_name;
+    const norm = normalizeSubject(subName);
+    if (!coreSubjectNames.has(norm) && !addedNonCore.has(norm)) {
+      nonCoreSubjectList.push(subName);
+      addedNonCore.add(norm);
+    }
+  }
+
+  const foundationCount = nonCoreSubjectList.length;
+  const foundationWeightPerSubject = foundationCount > 0 ? foundationRatio / foundationCount : 0;
+
+  const allCoreItems = details.map((d) => ({
+    ...d,
+    weight: Math.round(d.weight * coreRatio * 10000) / 10000,
+    isCore: true,
+  }));
+
+  const foundationItems = nonCoreSubjectList.map((subject) => {
+    const norm = normalizeSubject(subject);
+    const score = scoreBySubject.get(`${norm}|average`);
+    const numScore = Number.isFinite(score) ? score : null;
+    const gap = numScore !== null ? Math.round((numScore - foundationThreshold) * 100) / 100 : null;
+    return {
+      subject,
+      score: numScore,
+      threshold: foundationThreshold,
+      weight: Math.round(foundationWeightPerSubject * 10000) / 10000,
+      gap,
+      isCore: false,
+    };
+  });
+
+  const allDetails = [...allCoreItems, ...foundationItems];
+  const allPresent = allDetails.filter((row) => row.score !== null);
+
+  let allFitPct = null;
+  let allCoveragePct = 0;
+  if (allPresent.length > 0) {
+    const allDenominator = allPresent.reduce((sum, row) => sum + row.weight, 0);
+    const allNumerator = allPresent.reduce(
+      (sum, row) => sum + (row.threshold > 0 ? Math.min(row.score / row.threshold, 1) : 1) * row.weight,
+      0
+    );
+    allFitPct = Math.round((allNumerator / allDenominator) * 1000) / 10;
+    allCoveragePct = Math.round(allDenominator * 1000) / 10;
+  }
+
+  const status = !present.length ? 'insufficient_data' : coverage < 100 ? 'partial_data' : 'complete';
+
+  return {
+    fitPct,
+    coveragePct: coverage,
+    status,
+    details,
+    prioritySubject,
+    allDetails,
+    allFitPct,
+    allCoveragePct,
+  };
 }
 
 let EDUMIND_RUBRICS = [];
