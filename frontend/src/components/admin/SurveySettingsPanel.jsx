@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   AlertCircle,
+  BarChart3,
   Check,
   Edit2,
   FileQuestion,
+  ListChecks,
   Loader2,
   Plus,
   Power,
@@ -18,6 +20,8 @@ import { Label } from '@/components/ui/label'
 import AdminAlert from './AdminAlert'
 import AdminDialog from './AdminDialog'
 import ConfirmDialog from './ConfirmDialog'
+import InterestItemsTab from './InterestItemsTab'
+import InterestStatsTab from './InterestStatsTab'
 import {
   createAdminSurveyQuestion,
   createSampleSurveyQuestions,
@@ -28,6 +32,7 @@ import {
 import { cn } from '@/lib/utils'
 
 export default function SurveySettingsPanel() {
+  const [activeTab, setActiveTab] = useState('questions')
   const [questions, setQuestions] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -202,6 +207,47 @@ export default function SurveySettingsPanel() {
 
   return (
     <div className="space-y-6 p-4 sm:p-6 lg:p-8">
+      <div className="flex w-fit flex-wrap gap-1 rounded-lg bg-slate-100 p-1">
+        {[
+          { key: 'questions', label: 'Câu hỏi khảo sát', icon: FileQuestion },
+          { key: 'items', label: 'Bộ câu hỏi sở thích', icon: ListChecks },
+          { key: 'stats', label: 'Thống kê sở thích', icon: BarChart3 },
+        ].map((tab) => {
+          const Icon = tab.icon
+          return (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setActiveTab(tab.key)}
+              className={cn(
+                'inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors',
+                activeTab === tab.key
+                  ? 'bg-white text-slate-900 shadow-sm'
+                  : 'text-slate-600 hover:text-slate-900'
+              )}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {tab.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {activeTab !== 'questions' && (
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">
+            {activeTab === 'items' ? 'Bộ câu hỏi sở thích' : 'Thống kê sở thích'}
+          </h1>
+          <p className="mt-1 text-sm text-slate-500">
+            {activeTab === 'items'
+              ? 'Nhập, sửa và kích hoạt 108 câu của bộ câu hỏi sở thích. Dữ liệu lưu ở interest_instruments/interest_items, không nằm trong survey_questions.'
+              : 'Tổng hợp lượt làm, tỉ lệ hoàn thành và phân bố nhóm sở thích. Xem chi tiết một lượt được ghi nhật ký.'}
+          </p>
+        </div>
+      )}
+
+      {activeTab === 'questions' && (
+        <>
       {/* Title & Actions */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
@@ -570,6 +616,11 @@ export default function SurveySettingsPanel() {
         onConfirm={handleDelete}
         onClose={() => setDeleteTarget(null)}
       />
+        </>
+      )}
+
+      {activeTab === 'items' && <InterestItemsTab />}
+      {activeTab === 'stats' && <InterestStatsTab />}
     </div>
   )
 }

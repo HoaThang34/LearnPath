@@ -15,6 +15,7 @@ import {
   Sparkles,
   ChevronRight,
   Activity,
+  Compass,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Button, buttonVariants } from './ui/button'
@@ -28,12 +29,16 @@ const menuItems = [
   { path: '/khoi-thi', label: 'Khối thi', icon: BookOpen },
   { path: '/thu-hang', label: 'Thứ hạng THPTQG', icon: Trophy },
   { path: '/phan-tich-nang-luc', label: 'Phân tích năng lực', icon: Activity },
+  { path: '/kham-pha-so-thich', label: 'Sở thích nghề nghiệp', icon: Compass },
 ]
 
 export default function Layout({ children }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [logoutError, setLogoutError] = useState('')
   const [loggingOut, setLoggingOut] = useState(false)
+  const [interestBannerDismissed, setInterestBannerDismissed] = useState(
+    () => typeof sessionStorage !== 'undefined' && sessionStorage.getItem('interestBannerDismissed') === '1'
+  )
   const location = useLocation()
   const navigate = useNavigate()
   const { user, loading, logout } = useAuth()
@@ -286,6 +291,44 @@ export default function Layout({ children }) {
           </div>
         </div>
       )}
+
+      {user &&
+        user.surveyCompleted &&
+        !user.interestCompleted &&
+        !interestBannerDismissed &&
+        !location.pathname.startsWith('/kham-pha-so-thich') && (
+          <div className="border-b bg-indigo-50 px-4 py-2 text-indigo-900">
+            <div className="container mx-auto flex flex-col items-start justify-between gap-2 text-xs sm:flex-row sm:items-center sm:text-sm">
+              <div className="flex items-center gap-2">
+                <Compass className="h-4 w-4 shrink-0 text-indigo-600" />
+                <span>
+                  Bạn đã hoàn thành khảo sát khởi đầu. Hãy khám phá <strong>sở thích nghề nghiệp</strong> để
+                  kết hợp với điểm học tập khi chọn ngành.
+                </span>
+              </div>
+              <div className="flex shrink-0 items-center gap-2">
+                <Link
+                  to="/kham-pha-so-thich"
+                  className="inline-flex items-center gap-1 rounded-full bg-indigo-600 px-3 py-1 text-xs font-semibold text-white hover:bg-indigo-700"
+                >
+                  Khám phá ngay
+                  <ChevronRight className="h-3.5 w-3.5" />
+                </Link>
+                <button
+                  type="button"
+                  aria-label="Đóng nhắc nhở sở thích"
+                  onClick={() => {
+                    sessionStorage.setItem('interestBannerDismissed', '1')
+                    setInterestBannerDismissed(true)
+                  }}
+                  className="rounded-full p-1 text-indigo-700 hover:bg-indigo-100"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">

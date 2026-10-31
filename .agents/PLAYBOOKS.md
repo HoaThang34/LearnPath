@@ -206,3 +206,25 @@ Admin changes are L3 when they touch auth/session/CSRF, the auth DB schema, the 
    - Nhấn nút **Thêm thủ công** ở góc phải trên.
    - Nhập các trường dữ liệu; các trường bắt buộc có dấu `*`, các trường có thể null có checkbox "Không có giá trị".
    - Nhấn **Thêm mới thủ công**; hệ thống kiểm tra ràng buộc duy nhất và ghi DB an toàn.
+
+## 12. Change the interest module or career match
+
+### Instrument content
+
+1. Do **not** edit an `active`/`archived` instrument. Create a draft in `/admin_survey` → “Bộ câu hỏi sở thích” → “Tạo bản nháp”, or import a new JSON version.
+2. The import is all-or-nothing: 60 RIASEC items (6 groups × 10) + 48 pair items (4 pairs × 12, 6 even + 6 odd). Each pair item must carry `leftKey`/`rightKey`; odd `itemNo` puts the first letter on the left.
+3. Activate only after `source_note` contains “tự biên soạn” (D2). Activation archives the previous active version; old results keep their `instrument_id`.
+4. Update `backend/src/data/interest_instrument_v1.json` only when changing the seed for **new** databases. Existing databases keep their version.
+
+### Scoring
+
+- `backend/src/interest/scoring.js` is pure. Add a fixture test in `backend/test/unit/interestScoring.test.js` for every arithmetic change.
+- Missing answers are not zero. A partial group is `partial`/`empty`; an incomplete pair has `d = null`.
+- Run `npm test` and check T1–T14.
+
+### Career match
+
+- Weights: `/admin_career` → “Trọng số tính cách”; each of the 8 major groups must sum to 1 ±0.001.
+- Config: `/admin_career` → “Tham số tổng thể”. `hoc_luc_mode=1` is a legacy rollback only; the default is 0 (percentile).
+- `hocLucFit` uses `P(T_student) / P(entryScore)`; `pBench` is the upper tail and is never an admission probability.
+- Rubric data changes go through `scripts/audit-rubrics.js`, `scripts/normalize-rubrics.js` (dry-run), and `scripts/reseed-rubrics.js --apply` (backup first). Record the result in `RUBRIC_CHANGELOG.md`.

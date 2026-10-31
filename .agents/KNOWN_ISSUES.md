@@ -24,8 +24,8 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | KI-08 | P2 | UI | Admission proposals page could show stale data or fail silently | Fixed |
 | KI-09 | P2 | UI | `Button asChild` used without Slot support | Fixed |
 | KI-10 | P2 | Media | Autoplay fallback could reject unhandled | Mitigated |
-| KI-11 | P2 | Performance | Main JS bundle is 1,016.01 kB (gzip 306.89 kB) | Open |
-| KI-12 | P2 | Quality | Backend tests/CI added; data/API/import tests, lint, E2E still missing | Mitigated |
+| KI-11 | P2 | Performance | Main JS bundle is 1,249.10 kB (gzip 369.15 kB); interest runner/result are lazy | Open |
+| KI-12 | P2 | Quality | 170 backend tests/CI; lint and E2E still missing | Mitigated |
 | KI-13 | P2 | Error handling | Empty catches left blank UI/import failures | Fixed |
 | KI-14 | P3 | Data | `so_nganh` counted rows/case variants, not distinct majors | Fixed |
 | KI-15 | P1 | Data/product | All score rows use `nam = 2025` while the UI says 2026 | Open |
@@ -38,6 +38,7 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | KI-22 | P2 | Auth/ops | Auth is single-process; no self-service reset/MFA; duplicate username reveals existence | Open |
 | KI-23 | P2 | Admin/ops | Admin panel is single-process; writes block on reload failure; MFA absent | Open |
 | KI-24 | P1 | Auth DB state | Real `auth.db` was migrated v1→v2 outside the test suite; 0 admins | Mitigated |
+| KI-25 | P2 | Performance | First `/api/career/recommendations` request scans `diem_thi_thptqg` per rubric combo; cached 10 min | Open |
 
 ## Data snapshot
 
@@ -60,7 +61,7 @@ Temporary import with the fixed code (`LEARNPATH_DB_PATH`):
 Auth/admin verification (2026-10-23):
 
 - Temporary auth and admission DBs only for tests/smoke; the real `backend/database/learnpath.db` hash stayed unchanged.
-- Backend suite: 78/78 tests passed (auth, admin auth/CSRF/session, user CRUD, admission CRUD, CLI, schema v2/migration).
+- Backend suite: 171/171 tests passed (auth, admin auth/CSRF/session, user CRUD, admission CRUD, CLI, schema v7/migration).
 - Admin E2E smoke: 19 checks passed (login/CSRF, user create/login/forced change, data CRUD, bulk, lock/unlock, audit redaction, logout) on temp DBs.
 - Headless Chrome E2E from the auth session: 16 checks passed (redirects, register confirmation, cookie/storage, reload, logout, login, mobile menu, console).
 - Production cookie flags and clear-cookie flags matched.
@@ -215,10 +216,12 @@ Unmuted autoplay is attempted first with full volume. If rejected by browser aut
 Current build:
 
 ```text
-2,661 modules transformed
-dist/assets/AdminPage-*.js     61.79 kB | gzip  16.22 kB
-dist/assets/index-*.js      1,016.01 kB | gzip 306.89 kB
-dist/assets/index-*.css        32.73 kB | gzip   6.22 kB
+3,037 modules transformed
+dist/assets/InterestRunner-*.js    16.70 kB | gzip   5.96 kB
+dist/assets/InterestResult-*.js    36.01 kB | gzip  10.03 kB
+dist/assets/AdminPage-*.js        121.39 kB | gzip  30.79 kB
+dist/assets/index-*.js          1,249.10 kB | gzip 369.15 kB
+dist/assets/index-*.css            55.24 kB | gzip   9.50 kB
 ```
 
 Vite warns that the main JS chunk is > 500 kB. `/admin` is already lazy-loaded; consider route-level `React.lazy`/dynamic imports for Recharts and Markdown. This is not a correctness bug.
@@ -350,17 +353,31 @@ The auth feature is secure for a single-process local/demo deployment, but these
 
 **Observed 2026-10-23**:
 
-- `backend/database/auth.db`: 69,632 bytes, `user_version = 2`, 1 user, 0 sessions, 0 admins.
-- SHA-256 `210F8C45E4A32DDAAF80F2B7977F4ED970E071C08EAAD2B2CBAEB45F183A3577`.
-- Migration timestamp `2026-10-23 21:15:14` local.
-- Backup: `backend/database/auth.db.v1-backup-20261023141514808` (32,768 bytes, v1, 1 user, 0 sessions).
+- `backend/database/auth.db` (read-only inspection, 2026-10-31): `user_version = 7`, 13 users, 1 admin,
+  108 interest items, 8 weight rows, 7 config keys. It was migrated v6→v7 and reseeded with the normalized
+  rubrics on 2026-10-31.
+- Backups: `auth.db.v6-backup-20261031130214132` (pre-migration) and
+  `auth.db.pre-m0-20261031130214177` (pre-reseed). Historical v1 backup:
+  `auth.db.v1-backup-20261023141514808` (32,768 bytes, v1, 1 user, 0 sessions).
 - Older baseline: `%TEMP%\learnpath-auth-baseline-20261023-194414.db` (32,768 bytes, v1, 1 user, 1 session).
 
-**Impact**: the single real user is preserved; sessions were not preserved (0 now). Admin login is unavailable until an admin is created with the CLI. Tests and smoke runs used temp DBs and did not cause this.
+**Impact**: the real users and the admin are preserved. Tests and smoke runs used temp DBs and did not cause the
+original migration.
 
-**Cause**: not established. Do not claim a specific cause without evidence.
+**Cause**: the v1→v2 migration cause is not established. Do not claim a specific cause without evidence.
 
-**Mitigation**: v1 backup exists; docs disclose the state; the app supports v2. **Decision (2026-10-23): keep v2; do not restore v1.** The operator will create the first admin with `cd backend && npm run admin:create -- --username <name>`. No restore was performed.
+**Mitigation**: backups exist; docs disclose the state; the app is at v7. **Decision (2026-10-23): keep the
+migrated file; do not restore v1.**
+
+## KI-25 — First recommendations request scans the admission DB (Open)
+
+`backend/src/career/match.js` builds per-combo totals from `diem_thi_thptqg` on the first request for each
+admission block used by the rubrics (12 combos). The first call takes roughly 1–2 seconds and keeps the sorted
+totals in memory for 10 minutes. Later calls are served from the cache. The scan is read-only and does not
+touch `learnpath.db` on disk.
+
+**Remediation**: precompute the histograms/totals at startup or persist per-combo stats in a small table.
+Until then, avoid calling `/api/career/recommendations` in tight loops and keep the 10-minute TTL.
 
 ## Out of scope / not changed
 

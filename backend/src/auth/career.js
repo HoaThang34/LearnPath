@@ -159,7 +159,7 @@ function validateRubric(input) {
     const subject = normalizeSubject(item?.subject);
     const weight = Number(item?.weight);
     const threshold = Number(item?.threshold);
-    if (!subject || !Number.isFinite(weight) || weight <= 0 || weight > 1 || !Number.isFinite(threshold) || threshold < 0 || threshold > 10 || seen.has(subject)) return { error: 'Mỗi môn cần tên riêng, trọng số lớn hơn 0 và ngưỡng từ 0 đến 10.' };
+    if (!subject || !Number.isFinite(weight) || weight <= 0 || weight > 1 || !Number.isFinite(threshold) || threshold < 0 || threshold > 30 || seen.has(subject)) return { error: 'Mỗi môn cần tên riêng, trọng số lớn hơn 0 và ngưỡng từ 0 đến 30.' };
     seen.add(subject);
     subjects.push({ subject, weight, threshold });
   }

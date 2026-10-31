@@ -2,7 +2,7 @@
 
 > **Nguồn ý tưởng:** `MBTI/MBTI.docx` (bản in 108 câu) + 4 ảnh `1793351*.jpg` (bảng chấm điểm & diễn giải) + `MBTI/noidung.md` (12 nguồn tham chiếu).
 > **Đích đến:** `SANPHAM/LearnPath` — số hoá bộ câu hỏi thành một mô-đun có chấm điểm, diễn giải, lưu trữ có cấu trúc và liên kết với "Phân tích năng lực".
-> **Trạng thái:** ĐỀ XUẤT — chưa thay đổi một dòng code nào. **D9, D13, D14 đã chốt** (xem §4): P6 làm đủ M-A…M-F, M-0 sửa đầy đủ L2/L3/L5, 108 câu nhập trong "Cài đặt câu hỏi khảo sát". Các hạng mục còn lại gắn nhãn **L3** phải được duyệt riêng trước khi triển khai.
+> **Trạng thái:** ĐÃ TRIỂN KHAI (2026-10-31) — P1–P6 và M-0 đã hoàn tất; 171/171 backend tests, frontend build pass, `learnpath.db` không đổi. Nguồn MBTI nằm tại `plans/MBTI/`. Sai lệch so với bản đề xuất: (1) thêm bảng `user_exam_scores` cho D10; (2) threshold M-0 được chặn ở 10 và phần dư phân bổ lại để giữ thang 0–10; (3) 2 rubric `entryScore > 30` bị loại. Xem `RUBRIC_CHANGELOG.md` và `.agents/PROJECT_STATUS.md`.
 > **Ngày lập:** 2026-10-30 · **Phân loại dự kiến:** L2 → L3 (schema auth DB, hợp đồng API, nội dung hiển thị).
 
 ---

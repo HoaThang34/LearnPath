@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Check, Database, Loader2, Plus, RotateCcw, Save, Search, Sparkles, Trash2 } from 'lucide-react'
+import { Check, Database, Loader2, Plus, RotateCcw, Save, Scale, Search, SlidersHorizontal, Sparkles, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import AdminAlert from './AdminAlert'
+import InterestWeightsPanel from './InterestWeightsPanel'
+import MatchConfigPanel from './MatchConfigPanel'
 import { deleteCareerRubric, getCareerRubrics, saveCareerRubric, seedCareerRubrics, searchAdmissionMajors } from '@/lib/adminApi'
 
 const BLOCK_TEMPLATES = [
@@ -20,6 +22,7 @@ const BLOCK_TEMPLATES = [
 const emptyRubric = { schoolCode: '', schoolName: '', majorName: '', method: 'Điểm thi THPT', admissionBlock: '', year: 2025, subjects: [{ subject: 'Toán', weight: 0.4, threshold: 8 }, { subject: 'Vật lý', weight: 0.35, threshold: 7.5 }, { subject: 'Tiếng Anh', weight: 0.25, threshold: 7.5 }] }
 
 export default function CareerRubricsPanel() {
+  const [activeTab, setActiveTab] = useState('rubrics')
   const [rubrics, setRubrics] = useState([])
   const [form, setForm] = useState(emptyRubric)
   const [loading, setLoading] = useState(true)
@@ -186,6 +189,31 @@ export default function CareerRubricsPanel() {
 
   return (
     <div className="space-y-6">
+      <div className="flex w-fit flex-wrap gap-1 rounded-lg bg-slate-100 p-1">
+        {[
+          { key: 'rubrics', label: 'Rubric ngành', icon: Database },
+          { key: 'weights', label: 'Trọng số tính cách', icon: Scale },
+          { key: 'config', label: 'Tham số tổng thể', icon: SlidersHorizontal },
+        ].map((tab) => {
+          const Icon = tab.icon
+          return (
+            <button
+              key={tab.key}
+              type="button"
+              onClick={() => setActiveTab(tab.key)}
+              className={`inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition-colors ${
+                activeTab === tab.key ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <Icon className="h-3.5 w-3.5" />
+              {tab.label}
+            </button>
+          )
+        })}
+      </div>
+
+      {activeTab === 'rubrics' && (
+        <>
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Rubric phân tích năng lực</h1>
@@ -488,6 +516,10 @@ export default function CareerRubricsPanel() {
           )}
         </CardContent>
       </Card>
+        </>
+      )}
+      {activeTab === 'weights' && <InterestWeightsPanel />}
+      {activeTab === 'config' && <MatchConfigPanel />}
     </div>
   )
 }

@@ -6,18 +6,13 @@ const {
   getAcademicScores, saveAcademicScores, getCareerSelections, addCareerSelection,
   removeCareerSelection, getRubrics, calculateCareerFit, seedSampleRubrics,
 } = require('../auth/career');
+const { ADMISSION_SUBJECTS, BLOCK_CODES, getBlockSubjects } = require('../career/subjects');
+const { getExamScores, saveExamScores } = require('../career/examScores');
+const { getComboStats, buildBenchmark } = require('../career/match');
+const { buildRecommendations } = require('../career/recommendations');
 
 const router = express.Router();
 router.use(requireAuth, requirePasswordChanged);
-
-const ADMISSION_SUBJECTS = {
-  A00: ['Toán', 'Vật lý', 'Hóa học'], A01: ['Toán', 'Vật lý', 'Tiếng Anh'],
-  A02: ['Toán', 'Vật lý', 'Sinh học'], A03: ['Toán', 'Vật lý', 'Lịch sử'],
-  B00: ['Toán', 'Hóa học', 'Sinh học'], B08: ['Toán', 'Sinh học', 'Tiếng Anh'],
-  C00: ['Ngữ văn', 'Lịch sử', 'Địa lý'], C03: ['Ngữ văn', 'Toán', 'Lịch sử'],
-  C04: ['Ngữ văn', 'Toán', 'Địa lý'], D01: ['Toán', 'Ngữ văn', 'Tiếng Anh'],
-  D07: ['Toán', 'Hóa học', 'Tiếng Anh'], D14: ['Ngữ văn', 'Lịch sử', 'Tiếng Anh'],
-};
 
 function normalizeSubject(value) {
   const normalized = String(value || '').trim().toLocaleLowerCase('vi');
@@ -273,6 +268,50 @@ router.get('/overview', async (req, res) => {
 router.get('/scores', (req, res) => res.json({ data: getAcademicScores(req.user.id) }));
 router.put('/scores', async (req, res) => {
   try { return res.json({ data: { scores: await saveAcademicScores(req.user.id, req.body?.scores) } }); } catch (error) { return sendCareerError(res, error); }
+});
+
+router.get('/exam-scores', (req, res) => res.json({ data: getExamScores(req.user.id) }));
+router.get('/exam-score-options', (req, res) =>
+  res.json({
+    data: BLOCK_CODES.map((block) => ({ block, subjects: ADMISSION_SUBJECTS[block] })),
+  })
+);
+
+router.get('/benchmark', async (req, res) => {
+  try {
+    const combo = String(req.query.combo || '').trim().toUpperCase();
+    if (!getBlockSubjects(combo)) {
+      return res.status(400).json({ error: 'Tổ hợp môn không hợp lệ.' });
+    }
+    const score = Number(req.query.score);
+    if (!Number.isFinite(score) || score < 0 || score > 30) {
+      return res.status(400).json({ error: 'Điểm phải là số từ 0 đến 30.' });
+    }
+    const stats = await getComboStats(combo);
+    if (!stats || !stats.n) {
+      return res.status(404).json({ error: 'Chưa có dữ liệu điểm thi cho tổ hợp này.' });
+    }
+    return res.json({ data: buildBenchmark(combo, score, stats) });
+  } catch (error) {
+    return sendCareerError(res, error);
+  }
+});
+
+router.get('/recommendations', async (req, res) => {
+  try {
+    const result = await buildRecommendations(req.user.id, req.query);
+    return res.json(result);
+  } catch (error) {
+    return sendCareerError(res, error);
+  }
+});
+router.put('/exam-scores', async (req, res) => {
+  try {
+    const scores = await saveExamScores(req.user.id, req.body?.scores);
+    return res.json({ data: { scores } });
+  } catch (error) {
+    return sendCareerError(res, error);
+  }
 });
 
 router.get('/selections', (req, res) => res.json({ data: getCareerSelections(req.user.id) }));

@@ -9,10 +9,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/AuthContext'
 import {
-  addCareerSelection, getCareerMapData, getCareerOverview, removeCareerSelection,
+  addCareerSelection, getCareerMapData, getCareerOverview, getCareerRecommendations, removeCareerSelection,
   getUserProfile,
 } from '@/lib/api'
 import CareerMap from '@/components/career/CareerMap'
+import FitBars from '@/components/career/FitBars'
+import TinhCachMatrix from '@/components/career/TinhCachMatrix'
 
 // Helper: Normalize subject names for comparison
 function normalizeSubject(val) {
@@ -49,7 +51,7 @@ function shortSubject(s) {
 }
 
 // SVG Radar Chart (240x240)
-function MiniRadar({ details = [], simulated = null }) {
+function MiniRadar({ details = [], simulated = null, rings = null }) {
   const safeDetails = Array.isArray(details) ? details : []
   const size = 240
   const center = size / 2
@@ -62,6 +64,14 @@ function MiniRadar({ details = [], simulated = null }) {
       </div>
     )
   }
+
+  const ringRows = rings
+    ? [
+        { key: 'hocLucFit', label: 'Học lực', value: rings.hocLucFit, color: '#2563eb', dash: null },
+        { key: 'tinhCachFit', label: 'Tính cách', value: rings.tinhCachFit, color: '#7c3aed', dash: null },
+        { key: 'tongHopFit', label: 'Tổng thể', value: rings.tongHopFit, color: '#0f766e', dash: '4 3' },
+      ]
+    : []
 
   const getCoord = (index, value) => {
     const angle = -Math.PI / 2 + (2 * Math.PI * index) / safeDetails.length
@@ -91,7 +101,8 @@ function MiniRadar({ details = [], simulated = null }) {
   }).join(' ') : ''
 
   return (
-    <div className="flex justify-center py-1">
+    <div className="py-1">
+      <div className="flex justify-center">
       <svg viewBox={`0 0 ${size} ${size}`} className="h-56 w-56 select-none" role="img" aria-label="Biểu đồ radar năng lực">
         {/* Concentric webs */}
         {[0.25, 0.5, 0.75, 1.0].map((scale) => {
@@ -160,6 +171,25 @@ function MiniRadar({ details = [], simulated = null }) {
           )
         })}
 
+        {/* Three fit rings (concentric, not radar vertices) */}
+        {ringRows.map((ring) => {
+          if (ring.value === null || ring.value === undefined) return null
+          const r = radius * Math.max(0, Math.min(Number(ring.value) / 100, 1))
+          return (
+            <circle
+              key={ring.key}
+              cx={center}
+              cy={center}
+              r={r}
+              fill="none"
+              stroke={ring.color}
+              strokeWidth="1.5"
+              strokeDasharray={ring.dash || undefined}
+              opacity="0.9"
+            />
+          )
+        })}
+
         {/* Required Threshold Polygon (Orange Dashed) */}
         <polygon
           points={thresholdPoints}
@@ -202,6 +232,18 @@ function MiniRadar({ details = [], simulated = null }) {
           )
         })}
       </svg>
+      </div>
+      {ringRows.length > 0 && (
+        <div className="mt-1 flex flex-wrap justify-center gap-3 text-[10px] text-muted-foreground">
+          {ringRows.map((ring) => (
+            <span key={ring.key} className="inline-flex items-center gap-1">
+              <span className="inline-block h-2 w-2 rounded-full" style={{ backgroundColor: ring.color }} />
+              {ring.label} —{' '}
+              {ring.value === null || ring.value === undefined ? '—' : `${Number(ring.value).toFixed(0)} %`}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -300,6 +342,8 @@ export default function PhanTichNangLuc() {
   const [overview, setOverview] = useState(null)
   const [profile, setProfile] = useState(null)
   const [scores, setScores] = useState([])
+  const [recommendations, setRecommendations] = useState(new Map())
+  const [recommendationConfig, setRecommendationConfig] = useState(null)
   const [snapshot, setSnapshot] = useState({ classLevel: '', term: '' })
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
@@ -354,6 +398,28 @@ export default function PhanTichNangLuc() {
 
       if ((!snapshot.classLevel || !snapshot.term) && loadedScores[0]) {
         setSnapshot({ classLevel: loadedScores[0].classLevel, term: loadedScores[0].term })
+      }
+
+      try {
+        const first = await getCareerRecommendations({ ...snapshot, limit: 50, page: 1 })
+        const total = Number(first.data?.total || 0)
+        const pageCount = Math.max(1, Math.ceil(total / 50))
+        const rest =
+          pageCount > 1
+            ? await Promise.all(
+                Array.from({ length: pageCount - 1 }, (_, index) =>
+                  getCareerRecommendations({ ...snapshot, limit: 50, page: index + 2 })
+                )
+              )
+            : []
+        const rows = [first, ...rest].flatMap((response) => response.data?.data || [])
+        if (currentRequest !== requestId.current) return
+        setRecommendations(new Map(rows.map((row) => [String(row.rubricId), row])))
+        setRecommendationConfig(first.data?.config || null)
+      } catch (recError) {
+        if (currentRequest !== requestId.current) return
+        console.error('Career recommendations load failed', recError)
+        setRecommendations(new Map())
       }
     } catch (err) {
       if (currentRequest !== requestId.current) return
@@ -521,11 +587,23 @@ export default function PhanTichNangLuc() {
       if (sortBy === 'name') {
         return String(a.majorName || '').localeCompare(String(b.majorName || ''), 'vi')
       }
+      if (sortBy === 'tongHop') {
+        const av = recommendations.get(String(a.rubricId))?.tongHopFit
+        const bv = recommendations.get(String(b.rubricId))?.tongHopFit
+        if (av === null || av === undefined) {
+          if (bv !== null && bv !== undefined) return 1
+        } else if (bv === null || bv === undefined) {
+          return -1
+        } else if (bv !== av) {
+          return bv - av
+        }
+        return (Number(b.entryScore) || 0) - (Number(a.entryScore) || 0)
+      }
       return 0
     })
 
     return result
-  }, [processedFits, search, universityFilter, blockFilter, groupFilter, minFit, filterPinned, filterTarget, filterCompare, compareIds, sortBy])
+  }, [processedFits, search, universityFilter, blockFilter, groupFilter, minFit, filterPinned, filterTarget, filterCompare, compareIds, sortBy, recommendations])
 
   // Compare selection management
   const toggleCompare = (rubricId) => {
@@ -945,14 +1023,22 @@ export default function PhanTichNangLuc() {
             </button>
             <button
               type="button"
+              onClick={() => setSortBy('tongHop')}
+              className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
+                sortBy === 'tongHop' ? 'bg-primary text-primary-foreground shadow-xs' : 'bg-muted text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Theo tổng thể
+            </button>
+            <button
+              type="button"
               onClick={() => setSortBy('score_desc')}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
                 sortBy === 'score_desc' ? 'bg-primary text-primary-foreground shadow-xs' : 'bg-muted text-muted-foreground hover:text-foreground'
               }`}
             >
               Điểm chuẩn cao → thấp
-            </button>
-            <button
+            </button>            <button
               type="button"
               onClick={() => setSortBy('score_asc')}
               className={`rounded-full px-3 py-1 text-xs font-medium transition-all ${
@@ -1034,6 +1120,7 @@ export default function PhanTichNangLuc() {
             {filteredSortedFits.slice(0, displayCount).map((fit) => {
               const fitStyle = getFitStyle(fit.fitPct)
               const isChecked = compareIds.includes(fit.rubricId)
+              const recommendation = recommendations.get(String(fit.rubricId)) || null
 
               return (
                 <div
@@ -1061,9 +1148,7 @@ export default function PhanTichNangLuc() {
                       </div>
 
                       <div className="flex items-center gap-2 shrink-0">
-                        <span className={`text-xs font-extrabold tabular-nums ${fitStyle.text}`}>
-                          {fit.fitPct !== null ? `${fit.fitPct.toFixed(0)}%` : '—'}
-                        </span>
+                        <span className="text-[10px] font-semibold text-muted-foreground">3 tỉ lệ</span>
                         <input
                           type="checkbox"
                           checked={isChecked}
@@ -1100,15 +1185,28 @@ export default function PhanTichNangLuc() {
                           style={{ width: `${Math.min(fit.fitPct || 0, 100)}%` }}
                         />
                       </div>
-                      <span className={`rounded px-1.5 py-0.5 text-[10px] font-semibold border ${fitStyle.tag}`}>
-                        {fitStyle.label}
+                      <span className="rounded border border-slate-200 bg-slate-50 px-1.5 py-0.5 text-[10px] font-semibold text-slate-500">
+                        Ngưỡng rubric (tham khảo)
                       </span>
                     </div>
+
+                    {/* Three fit ratios */}
+                    <FitBars data={recommendation} config={recommendationConfig} />
+                    <TinhCachMatrix cell={recommendation?.matrixCell} compact />
 
                     {/* EduMind Radar Chart */}
                     <MiniRadar
                       details={fit.details}
                       simulated={hasActiveSim ? simulatedScores : null}
+                      rings={
+                        recommendation
+                          ? {
+                              hocLucFit: recommendation.hocLucFit,
+                              tinhCachFit: recommendation.tinhCachFit,
+                              tongHopFit: recommendation.tongHopFit,
+                            }
+                          : null
+                      }
                     />
 
                     {/* Trend & Sparkline */}

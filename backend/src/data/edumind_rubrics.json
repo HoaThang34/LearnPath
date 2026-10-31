@@ -12,19 +12,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 8.5
+        "threshold": 10
       },
       {
         "subject": "Vật lý",
         "weight": 0.35,
-        "threshold": 8
+        "threshold": 9.63
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 8.53
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -39,19 +40,20 @@
       {
         "subject": "Toán",
         "weight": 0.45,
-        "threshold": 9
+        "threshold": 10
       },
       {
-        "subject": "Tin học",
+        "subject": "Vật lý",
         "weight": 0.3,
-        "threshold": 8.5
+        "threshold": 9.65
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 8
+        "threshold": 9.15
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -66,19 +68,20 @@
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 8
+        "threshold": 9.33
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.4,
-        "threshold": 8.5
+        "threshold": 9.92
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 7.5
+        "threshold": 8.75
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -93,19 +96,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.59
       },
       {
         "subject": "Vật lý",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.95
       },
       {
         "subject": "Hóa học",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.96
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NTH",
@@ -120,19 +124,20 @@
       {
         "subject": "Tiếng Anh",
         "weight": 0.45,
-        "threshold": 9
+        "threshold": 10
       },
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 8.5
+        "threshold": 9.52
       },
       {
         "subject": "Vật lý",
         "weight": 0.2,
-        "threshold": 8
+        "threshold": 8.98
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "SPH",
@@ -147,19 +152,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 9
+        "threshold": 10
       },
       {
         "subject": "Vật lý",
         "weight": 0.25,
-        "threshold": 8
+        "threshold": 9.66
       },
       {
-        "subject": "Ngữ văn",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 7.5
+        "threshold": 9.29
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHI",
@@ -174,19 +180,20 @@
       {
         "subject": "Toán",
         "weight": 0.45,
-        "threshold": 8
+        "threshold": 9.77
       },
       {
         "subject": "Vật lý",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.55
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 8.54
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -204,16 +211,17 @@
         "threshold": 7.5
       },
       {
-        "subject": "Vật lý",
+        "subject": "Ngữ văn",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 7
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHI",
@@ -228,19 +236,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 8.5
+        "threshold": 9.7
       },
       {
         "subject": "Vật lý",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 8.56
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 7.5
+        "threshold": 8
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -255,19 +264,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.99
       },
       {
         "subject": "Vật lý",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 9.32
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.66
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -281,20 +291,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7.5
+        "weight": 0.45,
+        "threshold": 10
       },
       {
         "subject": "Vật lý",
-        "weight": 0.45,
-        "threshold": 8
+        "weight": 0.35,
+        "threshold": 9.85
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.2,
-        "threshold": 6
+        "threshold": 8.28
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -309,19 +320,20 @@
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 9.75
       },
       {
         "subject": "Vật lý",
         "weight": 0.45,
-        "threshold": 8
+        "threshold": 10
       },
       {
         "subject": "Hóa học",
         "weight": 0.2,
-        "threshold": 6
+        "threshold": 8.08
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -336,19 +348,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.3
       },
       {
         "subject": "Vật lý",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 7.71
       },
       {
         "subject": "Hóa học",
         "weight": 0.45,
-        "threshold": 8
+        "threshold": 9.49
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -363,19 +376,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7
-      },
-      {
-        "subject": "Vật lý",
-        "weight": 0.4,
         "threshold": 7.5
       },
       {
-        "subject": "Hóa học",
+        "subject": "Ngữ văn",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.2,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -389,20 +403,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7.5
+        "weight": 0.5,
+        "threshold": 10
       },
       {
         "subject": "Vật lý",
-        "weight": 0.5,
-        "threshold": 8
+        "weight": 0.35,
+        "threshold": 9.87
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.15,
-        "threshold": 5.5
+        "threshold": 7.68
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -417,19 +432,20 @@
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 8
+        "threshold": 9.39
       },
       {
         "subject": "Vật lý",
         "weight": 0.55,
-        "threshold": 8.5
+        "threshold": 9.98
       },
       {
         "subject": "Hóa học",
         "weight": 0.1,
-        "threshold": 6
+        "threshold": 7.04
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "FPT",
@@ -444,19 +460,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7
-      },
-      {
-        "subject": "Tiếng Anh",
-        "weight": 0.4,
         "threshold": 8
       },
       {
         "subject": "Vật lý",
+        "weight": 0.4,
+        "threshold": 7
+      },
+      {
+        "subject": "Hóa học",
         "weight": 0.2,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -470,20 +487,21 @@
     "subjects": [
       {
         "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.45,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.2,
         "threshold": 5.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -501,16 +519,17 @@
         "threshold": 8
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7.5
       },
       {
-        "subject": "Vật lý",
+        "subject": "Tiếng Anh",
         "weight": 0.2,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -528,16 +547,17 @@
         "threshold": 7.5
       },
       {
-        "subject": "Vật lý",
+        "subject": "Ngữ văn",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 7
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -552,19 +572,20 @@
       {
         "subject": "Toán",
         "weight": 0.55,
-        "threshold": 8.5
-      },
-      {
-        "subject": "Tiếng Anh",
-        "weight": 0.25,
-        "threshold": 7
+        "threshold": 10
       },
       {
         "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 8.32
+      },
+      {
+        "subject": "Hóa học",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 7.74
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -579,19 +600,20 @@
       {
         "subject": "Toán",
         "weight": 0.7,
-        "threshold": 9
+        "threshold": 10
       },
       {
         "subject": "Vật lý",
         "weight": 0.2,
-        "threshold": 7
+        "threshold": 8.67
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.1,
-        "threshold": 6
+        "threshold": 7.68
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -609,7 +631,7 @@
         "threshold": 7.5
       },
       {
-        "subject": "Vật lý",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7
       },
@@ -618,7 +640,8 @@
         "weight": 0.25,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -632,20 +655,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 8
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.5,
         "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 8
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.15,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -659,20 +683,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.25,
-        "threshold": 7
-      },
-      {
-        "subject": "Hóa học",
         "weight": 0.4,
         "threshold": 8
       },
       {
-        "subject": "Sinh học",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -686,20 +711,21 @@
     "subjects": [
       {
         "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 8.27
+      },
+      {
+        "subject": "Vật lý",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 7.72
       },
       {
         "subject": "Hóa học",
-        "weight": 0.4,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Sinh học",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 7.73
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -714,19 +740,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7
+        "threshold": 8.82
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.82
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7.5
+        "threshold": 9.46
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -741,19 +768,20 @@
       {
         "subject": "Toán",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 9.47
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.21
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.84
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -768,19 +796,20 @@
       {
         "subject": "Toán",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 9.76
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 9.11
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.47
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -795,19 +824,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 7.5
+        "threshold": 9.91
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.59
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -822,19 +852,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 8.5
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.81
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7.5
+        "threshold": 9.81
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NTH",
@@ -849,19 +880,20 @@
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 7.64
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.45,
-        "threshold": 8
+        "threshold": 8.73
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.2,
-        "threshold": 7
+        "threshold": 7.63
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NTH",
@@ -876,19 +908,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.87
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.5,
-        "threshold": 8.5
+        "threshold": 10
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.2,
-        "threshold": 7
+        "threshold": 8.88
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -903,19 +936,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
         "threshold": 7
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.4,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Địa lý",
         "weight": 0.2,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "UEF",
@@ -930,19 +964,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7
+        "threshold": 7.91
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 7.91
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7.5
+        "threshold": 8.48
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "UEF",
@@ -957,19 +992,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 7.5
+        "threshold": 8.57
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 7.43
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "UEF",
@@ -984,19 +1020,20 @@
       {
         "subject": "Ngữ văn",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 8.26
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 8.85
       },
       {
         "subject": "Toán",
         "weight": 0.25,
-        "threshold": 6
+        "threshold": 7.09
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1023,7 +1060,8 @@
         "weight": 0.15,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1037,20 +1075,21 @@
     "subjects": [
       {
         "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.5,
-        "threshold": 8.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.15,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1077,7 +1116,8 @@
         "weight": 0.2,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "YHB",
@@ -1092,19 +1132,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 8
+        "threshold": 9.12
       },
       {
         "subject": "Hóa học",
         "weight": 0.35,
-        "threshold": 8.5
+        "threshold": 9.69
       },
       {
         "subject": "Sinh học",
         "weight": 0.35,
-        "threshold": 8.5
+        "threshold": 9.69
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1118,20 +1159,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.25,
-        "threshold": 8
+        "weight": 0.4,
+        "threshold": 9
       },
       {
-        "subject": "Hóa học",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 8.5
       },
       {
-        "subject": "Sinh học",
-        "weight": 0.4,
-        "threshold": 9
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 8
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "DKH",
@@ -1145,20 +1187,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.25,
-        "threshold": 7.5
+        "weight": 0.45,
+        "threshold": 8.32
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 7.83
       },
       {
         "subject": "Hóa học",
-        "weight": 0.45,
-        "threshold": 8.5
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.3,
-        "threshold": 8
+        "weight": 0.25,
+        "threshold": 7.35
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "YHB",
@@ -1172,20 +1215,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.3,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Hóa học",
-        "weight": 0.3,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Sinh học",
         "weight": 0.4,
-        "threshold": 8
+        "threshold": 7.23
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 6.78
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.3,
+        "threshold": 6.79
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "YHB",
@@ -1198,21 +1242,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.4,
-        "threshold": 8
-      },
-      {
         "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.91
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7.42
+      },
+      {
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 6.92
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -1226,20 +1271,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.3,
-        "threshold": 7.5
+        "weight": 0.35,
+        "threshold": 8.91
       },
       {
         "subject": "Vật lý",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 8.91
       },
       {
-        "subject": "Sinh học",
-        "weight": 0.35,
-        "threshold": 7.5
+        "subject": "Hóa học",
+        "weight": 0.3,
+        "threshold": 8.92
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -1253,20 +1299,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.2,
-        "threshold": 7
+        "weight": 0.45,
+        "threshold": 8.13
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.35,
+        "threshold": 7.17
       },
       {
         "subject": "Hóa học",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.45,
-        "threshold": 8.5
+        "weight": 0.2,
+        "threshold": 6.7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1279,21 +1326,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Sinh học",
+        "subject": "Toán",
         "weight": 0.45,
         "threshold": 8
       },
       {
-        "subject": "Toán",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.2,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "SPH",
@@ -1308,19 +1356,20 @@
       {
         "subject": "Toán",
         "weight": 0.65,
-        "threshold": 8.5
+        "threshold": 10
       },
       {
-        "subject": "Ngữ văn",
+        "subject": "Vật lý",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 9.61
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.15,
-        "threshold": 6
+        "threshold": 9.34
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1333,21 +1382,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.65,
         "threshold": 8.5
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.2,
         "threshold": 7
       },
       {
-        "subject": "Toán",
+        "subject": "Tiếng Anh",
         "weight": 0.15,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "SPH",
@@ -1362,19 +1412,20 @@
       {
         "subject": "Tiếng Anh",
         "weight": 0.65,
-        "threshold": 8.5
+        "threshold": 8.8
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 7.24
       },
       {
         "subject": "Toán",
         "weight": 0.1,
-        "threshold": 6
+        "threshold": 6.21
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1388,20 +1439,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.55,
         "threshold": 8.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.5
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.1,
         "threshold": 5.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "7440112",
@@ -1415,20 +1467,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.25,
-        "threshold": 7
-      },
-      {
-        "subject": "Hóa học",
         "weight": 0.6,
-        "threshold": 8.5
+        "threshold": 9.09
       },
       {
-        "subject": "Sinh học",
+        "subject": "Ngữ văn",
+        "weight": 0.25,
+        "threshold": 7.49
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.15,
-        "threshold": 6
+        "threshold": 6.42
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "SPH",
@@ -1443,19 +1496,20 @@
       {
         "subject": "Hóa học",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 9.77
       },
       {
         "subject": "Sinh học",
         "weight": 0.55,
-        "threshold": 8.5
+        "threshold": 10
       },
       {
         "subject": "Toán",
         "weight": 0.1,
-        "threshold": 6
+        "threshold": 8.51
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "SPH",
@@ -1470,19 +1524,20 @@
       {
         "subject": "Ngữ văn",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 8.97
       },
       {
         "subject": "Sinh học",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 7.78
       },
       {
         "subject": "Toán",
         "weight": 0.25,
-        "threshold": 6
+        "threshold": 7.18
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "SPH",
@@ -1497,19 +1552,20 @@
       {
         "subject": "Ngữ văn",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 10
       },
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 9.66
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.2,
-        "threshold": 6
+        "threshold": 8.49
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "SPS",
@@ -1524,19 +1580,20 @@
       {
         "subject": "Toán",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 9.44
       },
       {
         "subject": "Vật lý",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 8.18
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.18
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "LPH",
@@ -1549,21 +1606,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
-        "weight": 0.45,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Lịch sử",
-        "weight": 0.3,
-        "threshold": 7
-      },
-      {
         "subject": "Toán",
+        "weight": 0.45,
+        "threshold": 8.71
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 8.13
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 7.54
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "LPH",
@@ -1576,21 +1634,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.14
       },
       {
-        "subject": "Toán",
+        "subject": "Vật lý",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 8.53
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 8.54
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1603,21 +1662,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 7
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7
       },
       {
-        "subject": "Địa lý",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1630,21 +1690,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 7
       },
       {
-        "subject": "Toán",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1657,7 +1718,7 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Tiếng Anh",
+        "subject": "Toán",
         "weight": 0.6,
         "threshold": 8.5
       },
@@ -1667,11 +1728,12 @@
         "threshold": 7.5
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Tiếng Anh",
         "weight": 0.1,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHX",
@@ -1684,21 +1746,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.5,
-        "threshold": 8
+        "threshold": 7.82
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 7.33
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 7.5
+        "threshold": 6.85
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1711,7 +1774,7 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Tiếng Anh",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 8
       },
@@ -1721,11 +1784,12 @@
         "threshold": 7.5
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
         "threshold": 7.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHX",
@@ -1738,21 +1802,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 8.72
       },
       {
-        "subject": "Sinh học",
+        "subject": "Ngữ văn",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.14
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.14
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHX",
@@ -1765,21 +1830,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 7.82
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 7.3
       },
       {
-        "subject": "Địa lý",
+        "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 7.31
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHX",
@@ -1792,21 +1858,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
-        "threshold": 8
+        "threshold": 7.73
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 7.24
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 6.28
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHX",
@@ -1819,21 +1886,22 @@
     "year": 2025,
     "subjects": [
       {
+        "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 9.07
+      },
+      {
         "subject": "Ngữ văn",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 8
       },
       {
-        "subject": "Lịch sử",
-        "weight": 0.5,
-        "threshold": 8.5
-      },
-      {
-        "subject": "Địa lý",
+        "subject": "Tiếng Anh",
         "weight": 0.15,
-        "threshold": 6.5
+        "threshold": 6.93
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -1847,20 +1915,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.3,
-        "threshold": 7
-      },
-      {
-        "subject": "Địa lý",
         "weight": 0.45,
-        "threshold": 8
+        "threshold": 8.8
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7.7
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 7.7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -1887,7 +1956,8 @@
         "weight": 0.25,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "7220204",
@@ -1914,7 +1984,8 @@
         "weight": 0.3,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": false
   },
   {
     "schoolCode": "NHF",
@@ -1929,19 +2000,20 @@
       {
         "subject": "Ngữ văn",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 10
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 9.78
       },
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 9.29
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NHF",
@@ -1954,21 +2026,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 10
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 9.91
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.3,
-        "threshold": 7
-      },
-      {
-        "subject": "Lịch sử",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 9.55
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHX",
@@ -1981,21 +2054,22 @@
     "year": 2025,
     "subjects": [
       {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.85
+      },
+      {
         "subject": "Ngữ văn",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 7.33
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.4,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Địa lý",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 7.32
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2008,21 +2082,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
-        "weight": 0.35,
-        "threshold": 7
-      },
-      {
-        "subject": "Sinh học",
+        "subject": "Toán",
         "weight": 0.45,
         "threshold": 7.5
       },
       {
-        "subject": "Toán",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.2,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "HVN",
@@ -2035,21 +2110,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
-        "weight": 0.3,
-        "threshold": 6.5
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.5,
-        "threshold": 7.5
-      },
-      {
         "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 6.38
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 5.53
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.2,
-        "threshold": 6
+        "threshold": 5.09
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "HVN",
@@ -2062,21 +2138,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
-        "weight": 0.35,
-        "threshold": 7
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.5,
-        "threshold": 8
-      },
-      {
         "subject": "Toán",
+        "weight": 0.5,
+        "threshold": 7.73
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 6.77
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.15,
-        "threshold": 6
+        "threshold": 5.8
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2089,21 +2166,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Sinh học",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 7.5
       },
       {
-        "subject": "Địa lý",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7
       },
       {
-        "subject": "Hóa học",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2116,21 +2194,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
-        "weight": 0.35,
-        "threshold": 7
-      },
-      {
-        "subject": "Sinh học",
+        "subject": "Toán",
         "weight": 0.45,
         "threshold": 7.5
       },
       {
-        "subject": "Toán",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.2,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KTA",
@@ -2145,19 +2224,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 9.42
       },
       {
         "subject": "Vật lý",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 9.42
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.4,
-        "threshold": 7
+        "threshold": 9.43
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2172,19 +2252,20 @@
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 7
-      },
-      {
-        "subject": "Địa lý",
-        "weight": 0.35,
         "threshold": 7.5
       },
       {
         "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.3,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "MTU",
@@ -2198,20 +2279,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.25,
-        "threshold": 6.5
+        "weight": 0.4,
+        "threshold": 8.18
       },
       {
         "subject": "Ngữ văn",
-        "weight": 0.4,
-        "threshold": 7
+        "weight": 0.35,
+        "threshold": 7.59
       },
       {
-        "subject": "Vật lý",
-        "weight": 0.35,
-        "threshold": 6.5
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 7.59
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2224,12 +2306,12 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.5,
         "threshold": 7
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.3,
         "threshold": 6.5
       },
@@ -2238,7 +2320,8 @@
         "weight": 0.2,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NHB",
@@ -2253,19 +2336,20 @@
       {
         "subject": "Ngữ văn",
         "weight": 0.5,
-        "threshold": 7.5
+        "threshold": 8.05
       },
       {
         "subject": "Lịch sử",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 7.51
       },
       {
         "subject": "Toán",
         "weight": 0.2,
-        "threshold": 6
+        "threshold": 6.44
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2278,12 +2362,12 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.6,
         "threshold": 8
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.25,
         "threshold": 7
       },
@@ -2292,7 +2376,8 @@
         "weight": 0.15,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "MTU",
@@ -2307,19 +2392,20 @@
       {
         "subject": "Ngữ văn",
         "weight": 0.4,
-        "threshold": 7
+        "threshold": 8.49
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 8.49
       },
       {
         "subject": "Toán",
         "weight": 0.25,
-        "threshold": 6
+        "threshold": 7.28
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2337,16 +2423,17 @@
         "threshold": 7
       },
       {
-        "subject": "Sinh học",
+        "subject": "Ngữ văn",
         "weight": 0.3,
         "threshold": 6.5
       },
       {
-        "subject": "Địa lý",
+        "subject": "Tiếng Anh",
         "weight": 0.3,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "TLA",
@@ -2360,20 +2447,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 6.77
       },
       {
-        "subject": "Địa lý",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 6.77
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 5.88
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -2387,20 +2475,21 @@
     "subjects": [
       {
         "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 8.1
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.56
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
-      },
-      {
-        "subject": "Vật lý",
-        "weight": 0.35,
-        "threshold": 7
-      },
-      {
-        "subject": "Hóa học",
-        "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 7.57
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "MDA",
@@ -2414,20 +2503,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.4,
-        "threshold": 8
+        "threshold": 6.97
       },
       {
-        "subject": "Hóa học",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 6.53
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 6.1
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "7850103",
@@ -2441,20 +2531,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7
-      },
-      {
-        "subject": "Địa lý",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 8.39
       },
       {
-        "subject": "Vật lý",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.83
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 7.28
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -2469,19 +2560,20 @@
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 8.5
+        "threshold": 8.95
       },
       {
         "subject": "Vật lý",
         "weight": 0.55,
-        "threshold": 9
+        "threshold": 9.47
       },
       {
         "subject": "Hóa học",
         "weight": 0.1,
-        "threshold": 6
+        "threshold": 6.32
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -2496,19 +2588,20 @@
       {
         "subject": "Toán",
         "weight": 0.25,
-        "threshold": 7.5
+        "threshold": 7.89
       },
       {
         "subject": "Hóa học",
         "weight": 0.6,
-        "threshold": 9
+        "threshold": 9.47
       },
       {
         "subject": "Vật lý",
         "weight": 0.15,
-        "threshold": 7
+        "threshold": 7.37
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2521,21 +2614,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 7.5
       },
       {
-        "subject": "Sinh học",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7.5
       },
       {
-        "subject": "Toán",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2548,7 +2642,7 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Tiếng Anh",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 7.5
       },
@@ -2558,11 +2652,12 @@
         "threshold": 7
       },
       {
-        "subject": "Địa lý",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NTH",
@@ -2577,19 +2672,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 8
+        "threshold": 9.35
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7.5
+        "threshold": 8.76
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 7.59
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2616,7 +2712,8 @@
         "weight": 0.3,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "YDS",
@@ -2629,21 +2726,22 @@
     "year": 2025,
     "subjects": [
       {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.47
+      },
+      {
         "subject": "Hóa học",
         "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.4,
-        "threshold": 8
-      },
-      {
-        "subject": "Toán",
-        "weight": 0.25,
         "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 6.53
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "YDS",
@@ -2658,19 +2756,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 8
+        "threshold": 8.77
       },
       {
         "subject": "Hóa học",
         "weight": 0.35,
-        "threshold": 8.5
+        "threshold": 9.32
       },
       {
         "subject": "Sinh học",
         "weight": 0.35,
-        "threshold": 9
+        "threshold": 9.86
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "GHA",
@@ -2684,20 +2783,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 6.26
       },
       {
-        "subject": "Hóa học",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 6.26
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 5.42
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2711,20 +2811,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.45,
         "threshold": 7.5
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.2,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2738,12 +2839,12 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.4,
+        "weight": 0.45,
         "threshold": 8
       },
       {
-        "subject": "Vật lý",
-        "weight": 0.45,
+        "subject": "Ngữ văn",
+        "weight": 0.4,
         "threshold": 8
       },
       {
@@ -2751,7 +2852,8 @@
         "weight": 0.15,
         "threshold": 6
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2765,20 +2867,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.5,
         "threshold": 8
       },
       {
-        "subject": "Hóa học",
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.5
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.15,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -2793,19 +2896,20 @@
       {
         "subject": "Toán",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 9.55
       },
       {
         "subject": "Vật lý",
         "weight": 0.5,
-        "threshold": 8
+        "threshold": 10
       },
       {
         "subject": "Hóa học",
         "weight": 0.15,
-        "threshold": 6
+        "threshold": 7.74
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHI",
@@ -2820,19 +2924,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.07
       },
       {
         "subject": "Vật lý",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 8.47
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 8.46
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -2847,19 +2952,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.82
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.35,
-        "threshold": 7
+        "threshold": 9.17
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.51
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -2891,7 +2997,8 @@
         "weight": 0.2,
         "threshold": 7.5
       }
-    ]
+    ],
+    "isValid": false
   },
   {
     "schoolCode": "KHA",
@@ -2906,19 +3013,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 8.1
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.35
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7.5
+        "threshold": 9.34
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -2933,19 +3041,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 7.5
+        "threshold": 9.46
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.83
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 8.21
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -2960,19 +3069,20 @@
       {
         "subject": "Toán",
         "weight": 0.45,
-        "threshold": 7
-      },
-      {
-        "subject": "Địa lý",
-        "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 8.89
       },
       {
         "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 8.26
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8.26
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -2987,19 +3097,20 @@
       {
         "subject": "Toán",
         "weight": 0.25,
-        "threshold": 7.5
+        "threshold": 7.73
       },
       {
         "subject": "Vật lý",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 7.73
       },
       {
         "subject": "Hóa học",
         "weight": 0.4,
-        "threshold": 8
+        "threshold": 8.24
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3013,20 +3124,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.25,
-        "threshold": 8
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.4,
         "threshold": 8.5
       },
       {
-        "subject": "Hóa học",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 8.5
+      },
+      {
+        "subject": "Tiếng Anh",
+        "weight": 0.25,
+        "threshold": 8
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "BKA",
@@ -3041,19 +3153,20 @@
       {
         "subject": "Toán",
         "weight": 0.3,
-        "threshold": 8.5
+        "threshold": 8.52
       },
       {
         "subject": "Vật lý",
         "weight": 0.55,
-        "threshold": 9
+        "threshold": 9.03
       },
       {
         "subject": "Hóa học",
         "weight": 0.15,
-        "threshold": 7.5
+        "threshold": 7.52
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3080,7 +3193,8 @@
         "weight": 0.35,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "HCP",
@@ -3093,21 +3207,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
-        "weight": 0.4,
-        "threshold": 7
-      },
-      {
-        "subject": "Lịch sử",
-        "weight": 0.35,
-        "threshold": 7
-      },
-      {
         "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 7.84
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 7.84
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 7.27
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "DLX",
@@ -3122,19 +3237,20 @@
       {
         "subject": "Ngữ văn",
         "weight": 0.45,
-        "threshold": 7
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.25,
-        "threshold": 6
+        "threshold": 8.47
       },
       {
         "subject": "Lịch sử",
         "weight": 0.3,
-        "threshold": 6.5
+        "threshold": 7.87
+      },
+      {
+        "subject": "Địa lý",
+        "weight": 0.25,
+        "threshold": 7.26
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "HTC",
@@ -3149,19 +3265,20 @@
       {
         "subject": "Toán",
         "weight": 0.55,
-        "threshold": 8
+        "threshold": 9.5
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 8.31
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 7.71
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KHA",
@@ -3176,19 +3293,20 @@
       {
         "subject": "Toán",
         "weight": 0.6,
-        "threshold": 8
+        "threshold": 9.97
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 8.72
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.15,
-        "threshold": 6.5
+        "threshold": 8.1
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3215,7 +3333,8 @@
         "weight": 0.3,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3229,12 +3348,12 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.4,
+        "weight": 0.45,
         "threshold": 8.5
       },
       {
-        "subject": "Vật lý",
-        "weight": 0.45,
+        "subject": "Ngữ văn",
+        "weight": 0.4,
         "threshold": 8.5
       },
       {
@@ -3242,7 +3361,8 @@
         "weight": 0.15,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3256,12 +3376,12 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
+        "weight": 0.45,
         "threshold": 8
       },
       {
-        "subject": "Vật lý",
-        "weight": 0.45,
+        "subject": "Ngữ văn",
+        "weight": 0.35,
         "threshold": 8
       },
       {
@@ -3269,7 +3389,8 @@
         "weight": 0.2,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3282,21 +3403,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 7.5
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7.5
       },
       {
-        "subject": "Địa lý",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3309,21 +3431,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.4,
         "threshold": 7.5
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.3,
         "threshold": 7
       },
       {
-        "subject": "Toán",
+        "subject": "Tiếng Anh",
         "weight": 0.3,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NHF",
@@ -3336,21 +3459,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 8.48
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7.91
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.3,
-        "threshold": 7
-      },
-      {
-        "subject": "Lịch sử",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 7.34
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "NHF",
@@ -3363,21 +3487,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.45,
-        "threshold": 7.5
+        "threshold": 9.17
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 8.56
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.3,
-        "threshold": 7
-      },
-      {
-        "subject": "Lịch sử",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 7.94
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHX",
@@ -3390,21 +3515,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Ngữ văn",
+        "subject": "Toán",
         "weight": 0.65,
-        "threshold": 8.5
+        "threshold": 9.45
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Ngữ văn",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 7.78
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.1,
-        "threshold": 6
+        "threshold": 6.68
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3419,19 +3545,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
         "threshold": 7.5
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.35,
-        "threshold": 8
-      },
-      {
-        "subject": "Địa lý",
         "weight": 0.25,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3444,7 +3571,7 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Tiếng Anh",
+        "subject": "Toán",
         "weight": 0.6,
         "threshold": 9
       },
@@ -3454,11 +3581,12 @@
         "threshold": 8
       },
       {
-        "subject": "Lịch sử",
+        "subject": "Tiếng Anh",
         "weight": 0.05,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3476,7 +3604,7 @@
         "threshold": 7.5
       },
       {
-        "subject": "Vật lý",
+        "subject": "Ngữ văn",
         "weight": 0.3,
         "threshold": 6.5
       },
@@ -3485,7 +3613,8 @@
         "weight": 0.25,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3512,7 +3641,8 @@
         "weight": 0.3,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3526,20 +3656,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.3,
-        "threshold": 7
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.5,
         "threshold": 7.5
       },
       {
-        "subject": "Hóa học",
+        "subject": "Ngữ văn",
+        "weight": 0.3,
+        "threshold": 7
+      },
+      {
+        "subject": "Tiếng Anh",
         "weight": 0.2,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3566,7 +3697,8 @@
         "weight": 0.25,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3580,20 +3712,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 8.5
-      },
-      {
-        "subject": "Vật lý",
         "weight": 0.55,
         "threshold": 9
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 8.5
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.1,
         "threshold": 7
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "GHA",
@@ -3608,19 +3741,20 @@
       {
         "subject": "Toán",
         "weight": 0.4,
-        "threshold": 7.5
+        "threshold": 9.22
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.35,
+        "threshold": 9.22
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.35,
-        "threshold": 7.5
-      },
-      {
-        "subject": "Địa lý",
         "weight": 0.25,
-        "threshold": 6.5
+        "threshold": 8
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "QHT",
@@ -3633,21 +3767,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Hóa học",
+        "subject": "Toán",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 7.58
       },
       {
-        "subject": "Sinh học",
+        "subject": "Ngữ văn",
         "weight": 0.35,
-        "threshold": 7.5
+        "threshold": 7.58
       },
       {
-        "subject": "Địa lý",
+        "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 7.07
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3674,7 +3809,8 @@
         "weight": 0.25,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3687,21 +3823,22 @@
     "year": 2025,
     "subjects": [
       {
+        "subject": "Toán",
+        "weight": 0.35,
+        "threshold": 6.5
+      },
+      {
         "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 6.5
       },
       {
-        "subject": "Sinh học",
+        "subject": "Tiếng Anh",
         "weight": 0.3,
         "threshold": 6.5
-      },
-      {
-        "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KTA",
@@ -3715,20 +3852,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.25,
-        "threshold": 6.5
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.35,
-        "threshold": 7
+        "weight": 0.4,
+        "threshold": 8.85
       },
       {
         "subject": "Ngữ văn",
-        "weight": 0.4,
-        "threshold": 7
+        "weight": 0.35,
+        "threshold": 8.85
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.25,
+        "threshold": 8.22
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "YHB",
@@ -3741,21 +3879,22 @@
     "year": 2025,
     "subjects": [
       {
+        "subject": "Toán",
+        "weight": 0.4,
+        "threshold": 8.75
+      },
+      {
+        "subject": "Vật lý",
+        "weight": 0.3,
+        "threshold": 8.23
+      },
+      {
         "subject": "Hóa học",
         "weight": 0.3,
-        "threshold": 8
-      },
-      {
-        "subject": "Sinh học",
-        "weight": 0.4,
-        "threshold": 8.5
-      },
-      {
-        "subject": "Ngữ văn",
-        "weight": 0.3,
-        "threshold": 7.5
+        "threshold": 7.72
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "YDS",
@@ -3768,21 +3907,22 @@
     "year": 2025,
     "subjects": [
       {
-        "subject": "Sinh học",
+        "subject": "Toán",
         "weight": 0.45,
-        "threshold": 8
+        "threshold": 7.68
       },
       {
         "subject": "Hóa học",
         "weight": 0.3,
-        "threshold": 7.5
+        "threshold": 7.2
       },
       {
-        "subject": "Toán",
+        "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 6.72
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3796,20 +3936,21 @@
     "subjects": [
       {
         "subject": "Toán",
-        "weight": 0.35,
-        "threshold": 8
+        "weight": 0.4,
+        "threshold": 8.5
       },
       {
-        "subject": "Vật lý",
-        "weight": 0.4,
+        "subject": "Ngữ văn",
+        "weight": 0.35,
         "threshold": 8
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.25,
-        "threshold": 8.5
+        "threshold": 8
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "HTC",
@@ -3824,19 +3965,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 8
+        "threshold": 9.79
       },
       {
         "subject": "Tiếng Anh",
         "weight": 0.3,
-        "threshold": 7
+        "threshold": 8.57
       },
       {
         "subject": "Ngữ văn",
         "weight": 0.2,
-        "threshold": 6.5
+        "threshold": 7.95
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3854,7 +3996,7 @@
         "threshold": 7.5
       },
       {
-        "subject": "Sinh học",
+        "subject": "Ngữ văn",
         "weight": 0.35,
         "threshold": 7.5
       },
@@ -3863,7 +4005,8 @@
         "weight": 0.3,
         "threshold": 7.5
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "KMA",
@@ -3878,19 +4021,20 @@
       {
         "subject": "Toán",
         "weight": 0.5,
-        "threshold": 8.5
+        "threshold": 9.02
       },
       {
         "subject": "Vật lý",
         "weight": 0.25,
-        "threshold": 7
+        "threshold": 7.96
       },
       {
-        "subject": "Tiếng Anh",
+        "subject": "Hóa học",
         "weight": 0.25,
-        "threshold": 7.5
+        "threshold": 7.44
       }
-    ]
+    ],
+    "isValid": true
   },
   {
     "schoolCode": "",
@@ -3905,18 +4049,19 @@
       {
         "subject": "Toán",
         "weight": 0.4,
+        "threshold": 8
+      },
+      {
+        "subject": "Ngữ văn",
+        "weight": 0.4,
         "threshold": 7.5
       },
       {
         "subject": "Tiếng Anh",
-        "weight": 0.4,
-        "threshold": 8
-      },
-      {
-        "subject": "Địa lý",
         "weight": 0.2,
         "threshold": 6.5
       }
-    ]
+    ],
+    "isValid": true
   }
 ]

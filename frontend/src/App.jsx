@@ -15,8 +15,20 @@ import ThongTinCaNhan from './pages/ThongTinCaNhan'
 import KhaoSat from './pages/KhaoSat'
 import IntroVideo from './components/IntroVideo'
 import PhanTichNangLuc from './pages/PhanTichNangLuc'
+import InterestLanding from './pages/InterestLanding'
 
 const AdminPage = lazy(() => import('./pages/AdminPage'))
+const InterestRunner = lazy(() => import('./pages/InterestRunner'))
+const InterestResult = lazy(() => import('./pages/InterestResult'))
+
+function PageFallback() {
+  return (
+    <div className="flex items-center justify-center gap-2 py-24 text-muted-foreground">
+      <Loader2 className="h-5 w-5 animate-spin" />
+      <span>Đang tải...</span>
+    </div>
+  )
+}
 
 function AdminFallback() {
   return (
@@ -125,6 +137,30 @@ function App() {
               <Route
                 path="/phan-tich-nang-luc"
                 element={<ProtectedRoute><PhanTichNangLuc /></ProtectedRoute>}
+              />
+              <Route
+                path="/kham-pha-so-thich"
+                element={<ProtectedRoute><InterestLanding /></ProtectedRoute>}
+              />
+              <Route
+                path="/kham-pha-so-thich/lam-bai"
+                element={
+                  <ProtectedRoute>
+                    <Suspense fallback={<PageFallback />}>
+                      <InterestRunner />
+                    </Suspense>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/kham-pha-so-thich/ket-qua"
+                element={
+                  <ProtectedRoute>
+                    <Suspense fallback={<PageFallback />}>
+                      <InterestResult />
+                    </Suspense>
+                  </ProtectedRoute>
+                }
               />
             </Routes>
           </ErrorBoundary>

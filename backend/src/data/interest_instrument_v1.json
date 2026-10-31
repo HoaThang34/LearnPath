@@ -1,0 +1,805 @@
+{
+  "code": "holland-pairs-v1",
+  "title": "Khám phá sở thích nghề nghiệp",
+  "version": 1,
+  "status": "active",
+  "description": "Bộ 60 câu sở thích nghề nghiệp theo khung Holland/RIASEC (thang 1–5) và 48 câu lưỡng cực theo 4 cặp xu hướng (thang −2…+2).",
+  "sourceNote": "Câu hỏi tự biên soạn cho hoạt động giáo dục hướng nghiệp; chấm điểm theo hợp đồng nội bộ của LearnPath. Không phải MBTI Step I/II hay O*NET Interest Profiler chính thức.",
+  "disclaimer": "Bộ câu hỏi do nhóm tự biên soạn. Không có nguồn nào xác nhận độ tin cậy, giá trị hoặc hiệu quả của bộ câu hỏi này. Kết quả chỉ dùng để phản tư, không dùng để chẩn đoán hay quyết định nghề nghiệp.",
+  "part1": [
+    {
+      "itemNo": 1,
+      "group": "R",
+      "text": "Sửa một đồ dùng bị hỏng.",
+      "orderIndex": 1
+    },
+    {
+      "itemNo": 2,
+      "group": "R",
+      "text": "Lắp một mô hình từ các bộ phận rời.",
+      "orderIndex": 2
+    },
+    {
+      "itemNo": 3,
+      "group": "R",
+      "text": "Dùng dụng cụ để làm một đồ vật hữu ích.",
+      "orderIndex": 3
+    },
+    {
+      "itemNo": 4,
+      "group": "R",
+      "text": "Trồng và chăm sóc cây.",
+      "orderIndex": 4
+    },
+    {
+      "itemNo": 5,
+      "group": "R",
+      "text": "Lắp đặt một thiết bị theo bản hướng dẫn.",
+      "orderIndex": 5
+    },
+    {
+      "itemNo": 6,
+      "group": "R",
+      "text": "Bảo dưỡng xe đạp hoặc dụng cụ cơ khí.",
+      "orderIndex": 6
+    },
+    {
+      "itemNo": 7,
+      "group": "R",
+      "text": "Đo và cắt vật liệu để làm sản phẩm.",
+      "orderIndex": 7
+    },
+    {
+      "itemNo": 8,
+      "group": "R",
+      "text": "Thực hiện công việc khảo sát ngoài trời.",
+      "orderIndex": 8
+    },
+    {
+      "itemNo": 9,
+      "group": "R",
+      "text": "Vận hành một máy móc sau khi được hướng dẫn an toàn.",
+      "orderIndex": 9
+    },
+    {
+      "itemNo": 10,
+      "group": "R",
+      "text": "Chăm sóc vật nuôi trong một cơ sở chăn nuôi.",
+      "orderIndex": 10
+    },
+    {
+      "itemNo": 11,
+      "group": "I",
+      "text": "Tìm nguyên nhân của một hiện tượng tự nhiên.",
+      "orderIndex": 11
+    },
+    {
+      "itemNo": 12,
+      "group": "I",
+      "text": "Giải một bài toán logic.",
+      "orderIndex": 12
+    },
+    {
+      "itemNo": 13,
+      "group": "I",
+      "text": "Phân tích số liệu để tìm quy luật.",
+      "orderIndex": 13
+    },
+    {
+      "itemNo": 14,
+      "group": "I",
+      "text": "Làm thí nghiệm để kiểm tra giả thuyết.",
+      "orderIndex": 14
+    },
+    {
+      "itemNo": 15,
+      "group": "I",
+      "text": "Đọc tài liệu giải thích một vấn đề khoa học.",
+      "orderIndex": 15
+    },
+    {
+      "itemNo": 16,
+      "group": "I",
+      "text": "Tìm nguyên nhân của lỗi trong một hệ thống.",
+      "orderIndex": 16
+    },
+    {
+      "itemNo": 17,
+      "group": "I",
+      "text": "So sánh bằng chứng của những cách giải thích khác nhau.",
+      "orderIndex": 17
+    },
+    {
+      "itemNo": 18,
+      "group": "I",
+      "text": "Xây dựng mô hình để dự đoán một hiện tượng.",
+      "orderIndex": 18
+    },
+    {
+      "itemNo": 19,
+      "group": "I",
+      "text": "Thiết kế cách thu thập dữ liệu cho một câu hỏi nghiên cứu.",
+      "orderIndex": 19
+    },
+    {
+      "itemNo": 20,
+      "group": "I",
+      "text": "Điều tra vì sao kết quả thực tế khác dự đoán.",
+      "orderIndex": 20
+    },
+    {
+      "itemNo": 21,
+      "group": "A",
+      "text": "Viết một truyện ngắn hoặc bài thơ.",
+      "orderIndex": 21
+    },
+    {
+      "itemNo": 22,
+      "group": "A",
+      "text": "Vẽ tranh hoặc thiết kế hình ảnh.",
+      "orderIndex": 22
+    },
+    {
+      "itemNo": 23,
+      "group": "A",
+      "text": "Chơi một nhạc cụ.",
+      "orderIndex": 23
+    },
+    {
+      "itemNo": 24,
+      "group": "A",
+      "text": "Dựng video theo ý tưởng riêng.",
+      "orderIndex": 24
+    },
+    {
+      "itemNo": 25,
+      "group": "A",
+      "text": "Tạo hình bằng đất nặn hoặc vật liệu thủ công.",
+      "orderIndex": 25
+    },
+    {
+      "itemNo": 26,
+      "group": "A",
+      "text": "Diễn xuất một nhân vật trong tiểu phẩm.",
+      "orderIndex": 26
+    },
+    {
+      "itemNo": 27,
+      "group": "A",
+      "text": "Chụp ảnh để kể một câu chuyện.",
+      "orderIndex": 27
+    },
+    {
+      "itemNo": 28,
+      "group": "A",
+      "text": "Thiết kế trang phục hoặc phụ kiện.",
+      "orderIndex": 28
+    },
+    {
+      "itemNo": 29,
+      "group": "A",
+      "text": "Sáng tác một giai điệu.",
+      "orderIndex": 29
+    },
+    {
+      "itemNo": 30,
+      "group": "A",
+      "text": "Biên đạo một đoạn múa hoặc tiết mục biểu diễn.",
+      "orderIndex": 30
+    },
+    {
+      "itemNo": 31,
+      "group": "S",
+      "text": "Giải thích bài học cho người khác.",
+      "orderIndex": 31
+    },
+    {
+      "itemNo": 32,
+      "group": "S",
+      "text": "Lắng nghe người đang gặp khó khăn.",
+      "orderIndex": 32
+    },
+    {
+      "itemNo": 33,
+      "group": "S",
+      "text": "Hướng dẫn người mới làm quen với công việc.",
+      "orderIndex": 33
+    },
+    {
+      "itemNo": 34,
+      "group": "S",
+      "text": "Chăm sóc người cần hỗ trợ sinh hoạt.",
+      "orderIndex": 34
+    },
+    {
+      "itemNo": 35,
+      "group": "S",
+      "text": "Tham gia hoạt động hỗ trợ người có hoàn cảnh khó khăn.",
+      "orderIndex": 35
+    },
+    {
+      "itemNo": 36,
+      "group": "S",
+      "text": "Dạy một kỹ năng cho một nhóm nhỏ.",
+      "orderIndex": 36
+    },
+    {
+      "itemNo": 37,
+      "group": "S",
+      "text": "Giúp một người tìm nguồn hỗ trợ phù hợp.",
+      "orderIndex": 37
+    },
+    {
+      "itemNo": 38,
+      "group": "S",
+      "text": "Hỗ trợ người khác thực hành một bài tập phục hồi theo hướng dẫn chuyên môn.",
+      "orderIndex": 38
+    },
+    {
+      "itemNo": 39,
+      "group": "S",
+      "text": "Cùng một người xác định điều họ cần được giúp đỡ.",
+      "orderIndex": 39
+    },
+    {
+      "itemNo": 40,
+      "group": "S",
+      "text": "Hỗ trợ người mới hòa nhập vào hoạt động cộng đồng.",
+      "orderIndex": 40
+    },
+    {
+      "itemNo": 41,
+      "group": "E",
+      "text": "Thuyết phục người khác ủng hộ một ý tưởng.",
+      "orderIndex": 41
+    },
+    {
+      "itemNo": 42,
+      "group": "E",
+      "text": "Giới thiệu sản phẩm cho khách hàng.",
+      "orderIndex": 42
+    },
+    {
+      "itemNo": 43,
+      "group": "E",
+      "text": "Dẫn dắt nhóm thực hiện mục tiêu chung.",
+      "orderIndex": 43
+    },
+    {
+      "itemNo": 44,
+      "group": "E",
+      "text": "Thương lượng để đạt thỏa thuận.",
+      "orderIndex": 44
+    },
+    {
+      "itemNo": 45,
+      "group": "E",
+      "text": "Huy động mọi người thực hiện một kế hoạch mình đề xuất.",
+      "orderIndex": 45
+    },
+    {
+      "itemNo": 46,
+      "group": "E",
+      "text": "Tìm khách hàng cho một dịch vụ mới.",
+      "orderIndex": 46
+    },
+    {
+      "itemNo": 47,
+      "group": "E",
+      "text": "Trình bày đề xuất để kêu gọi nguồn lực.",
+      "orderIndex": 47
+    },
+    {
+      "itemNo": 48,
+      "group": "E",
+      "text": "Đại diện nhóm trao đổi với đối tác.",
+      "orderIndex": 48
+    },
+    {
+      "itemNo": 49,
+      "group": "E",
+      "text": "Đề xuất cách mở rộng một hoạt động kinh doanh.",
+      "orderIndex": 49
+    },
+    {
+      "itemNo": 50,
+      "group": "E",
+      "text": "Vận động người khác tham gia một chương trình.",
+      "orderIndex": 50
+    },
+    {
+      "itemNo": 51,
+      "group": "C",
+      "text": "Sắp xếp hồ sơ để dễ tìm kiếm.",
+      "orderIndex": 51
+    },
+    {
+      "itemNo": 52,
+      "group": "C",
+      "text": "Nhập và kiểm tra dữ liệu.",
+      "orderIndex": 52
+    },
+    {
+      "itemNo": 53,
+      "group": "C",
+      "text": "Theo dõi các khoản thu chi.",
+      "orderIndex": 53
+    },
+    {
+      "itemNo": 54,
+      "group": "C",
+      "text": "Sắp xếp lịch và theo dõi các đầu việc.",
+      "orderIndex": 54
+    },
+    {
+      "itemNo": 55,
+      "group": "C",
+      "text": "Kiểm tra giấy tờ theo danh sách yêu cầu.",
+      "orderIndex": 55
+    },
+    {
+      "itemNo": 56,
+      "group": "C",
+      "text": "Đối chiếu số lượng hàng thực tế với sổ ghi chép.",
+      "orderIndex": 56
+    },
+    {
+      "itemNo": 57,
+      "group": "C",
+      "text": "Lập bảng tính theo dõi các giao dịch.",
+      "orderIndex": 57
+    },
+    {
+      "itemNo": 58,
+      "group": "C",
+      "text": "Phân loại tài liệu theo quy tắc có sẵn.",
+      "orderIndex": 58
+    },
+    {
+      "itemNo": 59,
+      "group": "C",
+      "text": "Chuẩn bị biểu mẫu theo một quy trình rõ ràng.",
+      "orderIndex": 59
+    },
+    {
+      "itemNo": 60,
+      "group": "C",
+      "text": "Cập nhật danh sách đăng ký và thông tin liên hệ.",
+      "orderIndex": 60
+    }
+  ],
+  "part2": [
+    {
+      "itemNo": 1,
+      "pair": "EI",
+      "left": "Trao đổi với người khác để hình thành ý tưởng.",
+      "right": "Tự suy nghĩ trước khi trao đổi.",
+      "leftKey": "E",
+      "rightKey": "I",
+      "orderIndex": 61
+    },
+    {
+      "itemNo": 2,
+      "pair": "EI",
+      "left": "Dành thời gian yên tĩnh sau ngày bận rộn.",
+      "right": "Gặp gỡ người khác sau ngày bận rộn.",
+      "leftKey": "I",
+      "rightKey": "E",
+      "orderIndex": 62
+    },
+    {
+      "itemNo": 3,
+      "pair": "EI",
+      "left": "Chủ động bắt đầu cuộc trò chuyện mới.",
+      "right": "Đợi một điểm chung rồi tham gia trò chuyện.",
+      "leftKey": "E",
+      "rightKey": "I",
+      "orderIndex": 63
+    },
+    {
+      "itemNo": 4,
+      "pair": "EI",
+      "left": "Nghĩ kỹ rồi mới phát biểu.",
+      "right": "Nói ra để làm rõ suy nghĩ.",
+      "leftKey": "I",
+      "rightKey": "E",
+      "orderIndex": 64
+    },
+    {
+      "itemNo": 5,
+      "pair": "EI",
+      "left": "Học qua thảo luận trực tiếp.",
+      "right": "Học qua thời gian tự suy ngẫm.",
+      "leftKey": "E",
+      "rightKey": "I",
+      "orderIndex": 65
+    },
+    {
+      "itemNo": 6,
+      "pair": "EI",
+      "left": "Làm việc riêng một lúc rồi mới họp.",
+      "right": "Trao đổi thường xuyên khi làm việc.",
+      "leftKey": "I",
+      "rightKey": "E",
+      "orderIndex": 66
+    },
+    {
+      "itemNo": 7,
+      "pair": "EI",
+      "left": "Gặp nhiều người trong một buổi kết nối.",
+      "right": "Trò chuyện sâu với một vài người.",
+      "leftKey": "E",
+      "rightKey": "I",
+      "orderIndex": 67
+    },
+    {
+      "itemNo": 8,
+      "pair": "EI",
+      "left": "Sắp xếp ý trong đầu trước khi hỏi.",
+      "right": "Hỏi và trao đổi để sắp xếp ý.",
+      "leftKey": "I",
+      "rightKey": "E",
+      "orderIndex": 68
+    },
+    {
+      "itemNo": 9,
+      "pair": "EI",
+      "left": "Biểu lộ rõ sự hào hứng khi gặp điều thú vị.",
+      "right": "Thể hiện sự hào hứng một cách kín đáo hơn.",
+      "leftKey": "E",
+      "rightKey": "I",
+      "orderIndex": 69
+    },
+    {
+      "itemNo": 10,
+      "pair": "EI",
+      "left": "Có một khoảng riêng giữa các buổi gặp.",
+      "right": "Chuyển tiếp giữa các hoạt động có nhiều người.",
+      "leftKey": "I",
+      "rightKey": "E",
+      "orderIndex": 70
+    },
+    {
+      "itemNo": 11,
+      "pair": "EI",
+      "left": "Dành thời gian rảnh cho hoạt động cùng người khác.",
+      "right": "Dành thời gian rảnh cho sở thích riêng.",
+      "leftKey": "E",
+      "rightKey": "I",
+      "orderIndex": 71
+    },
+    {
+      "itemNo": 12,
+      "pair": "EI",
+      "left": "Suy ngẫm một mình để hiểu trải nghiệm.",
+      "right": "Kể lại với người khác để hiểu trải nghiệm.",
+      "leftKey": "I",
+      "rightKey": "E",
+      "orderIndex": 72
+    },
+    {
+      "itemNo": 13,
+      "pair": "SN",
+      "left": "Bắt đầu từ ví dụ cụ thể.",
+      "right": "Bắt đầu từ bức tranh tổng thể.",
+      "leftKey": "S",
+      "rightKey": "N",
+      "orderIndex": 73
+    },
+    {
+      "itemNo": 14,
+      "pair": "SN",
+      "left": "Tìm những khả năng có thể xảy ra.",
+      "right": "Quan sát điều đang diễn ra thực tế.",
+      "leftKey": "N",
+      "rightKey": "S",
+      "orderIndex": 74
+    },
+    {
+      "itemNo": 15,
+      "pair": "SN",
+      "left": "Xem chi tiết trước khi rút ra kết luận.",
+      "right": "Tìm mô hình chung rồi quay lại chi tiết.",
+      "leftKey": "S",
+      "rightKey": "N",
+      "orderIndex": 75
+    },
+    {
+      "itemNo": 16,
+      "pair": "SN",
+      "left": "Tìm ý nghĩa hàm ý của thông tin.",
+      "right": "Xác định thông tin nói chính xác điều gì.",
+      "leftKey": "N",
+      "rightKey": "S",
+      "orderIndex": 76
+    },
+    {
+      "itemNo": 17,
+      "pair": "SN",
+      "left": "Học quy trình qua một tình huống thực tế.",
+      "right": "Học nguyên lý chung trước khi áp dụng.",
+      "leftKey": "S",
+      "rightKey": "N",
+      "orderIndex": 77
+    },
+    {
+      "itemNo": 18,
+      "pair": "SN",
+      "left": "Nghĩ cách làm chưa từng thử.",
+      "right": "Xem cách làm đã có kinh nghiệm sử dụng.",
+      "leftKey": "N",
+      "rightKey": "S",
+      "orderIndex": 78
+    },
+    {
+      "itemNo": 19,
+      "pair": "SN",
+      "left": "Mô tả sự việc bằng những điều quan sát được.",
+      "right": "Mô tả sự việc bằng các liên tưởng.",
+      "leftKey": "S",
+      "rightKey": "N",
+      "orderIndex": 79
+    },
+    {
+      "itemNo": 20,
+      "pair": "SN",
+      "left": "Tập trung vào hướng phát triển tương lai.",
+      "right": "Tập trung vào điều kiện hiện tại.",
+      "leftKey": "N",
+      "rightKey": "S",
+      "orderIndex": 80
+    },
+    {
+      "itemNo": 21,
+      "pair": "SN",
+      "left": "Tìm công dụng thực tế của một ý tưởng.",
+      "right": "Tìm các khả năng mở rộng của ý tưởng.",
+      "leftKey": "S",
+      "rightKey": "N",
+      "orderIndex": 81
+    },
+    {
+      "itemNo": 22,
+      "pair": "SN",
+      "left": "Quan tâm điều có thể suy ra từ dữ liệu.",
+      "right": "Quan tâm các chi tiết dữ liệu đang thể hiện.",
+      "leftKey": "N",
+      "rightKey": "S",
+      "orderIndex": 82
+    },
+    {
+      "itemNo": 23,
+      "pair": "SN",
+      "left": "Thích chỉ dẫn có ví dụ cụ thể.",
+      "right": "Thích chỉ dẫn nêu định hướng tổng thể.",
+      "leftKey": "S",
+      "rightKey": "N",
+      "orderIndex": 83
+    },
+    {
+      "itemNo": 24,
+      "pair": "SN",
+      "left": "Khám phá những cách nhìn mới về vấn đề.",
+      "right": "Làm rõ những dữ kiện đã có về vấn đề.",
+      "leftKey": "N",
+      "rightKey": "S",
+      "orderIndex": 84
+    },
+    {
+      "itemNo": 25,
+      "pair": "TF",
+      "left": "Bắt đầu bằng tiêu chí áp dụng chung.",
+      "right": "Bắt đầu bằng giá trị và hoàn cảnh con người.",
+      "leftKey": "T",
+      "rightKey": "F",
+      "orderIndex": 85
+    },
+    {
+      "itemNo": 26,
+      "pair": "TF",
+      "left": "Xem tác động tới người liên quan trước.",
+      "right": "Xem tính nhất quán của lập luận trước.",
+      "leftKey": "F",
+      "rightKey": "T",
+      "orderIndex": 86
+    },
+    {
+      "itemNo": 27,
+      "pair": "TF",
+      "left": "Thảo luận điểm chưa hợp lý của phương án trước.",
+      "right": "Thảo luận điều người liên quan coi trọng trước.",
+      "leftKey": "T",
+      "rightKey": "F",
+      "orderIndex": 87
+    },
+    {
+      "itemNo": 28,
+      "pair": "TF",
+      "left": "Cân nhắc hoàn cảnh riêng khi áp dụng quy tắc.",
+      "right": "Ưu tiên cách áp dụng quy tắc nhất quán.",
+      "leftKey": "F",
+      "rightKey": "T",
+      "orderIndex": 88
+    },
+    {
+      "itemNo": 29,
+      "pair": "TF",
+      "left": "Đánh giá đề xuất qua quan hệ nguyên nhân kết quả.",
+      "right": "Đánh giá đề xuất qua mức phù hợp với giá trị.",
+      "leftKey": "T",
+      "rightKey": "F",
+      "orderIndex": 89
+    },
+    {
+      "itemNo": 30,
+      "pair": "TF",
+      "left": "Cân nhắc điều người nhận coi trọng khi góp ý.",
+      "right": "Cân nhắc tiêu chí đánh giá công việc khi góp ý.",
+      "leftKey": "F",
+      "rightKey": "T",
+      "orderIndex": 90
+    },
+    {
+      "itemNo": 31,
+      "pair": "TF",
+      "left": "Tìm tiêu chí chung để xử lý bất đồng.",
+      "right": "Tìm hiểu nhu cầu mỗi bên để xử lý bất đồng.",
+      "leftKey": "T",
+      "rightKey": "F",
+      "orderIndex": 91
+    },
+    {
+      "itemNo": 32,
+      "pair": "TF",
+      "left": "Hỏi quyết định có ý nghĩa gì với người liên quan.",
+      "right": "Hỏi quyết định có đứng vững về lập luận không.",
+      "leftKey": "F",
+      "rightKey": "T",
+      "orderIndex": 92
+    },
+    {
+      "itemNo": 33,
+      "pair": "TF",
+      "left": "Kiểm tra xem kết luận có nhất quán không.",
+      "right": "Kiểm tra xem kết luận có tôn trọng giá trị không.",
+      "leftKey": "T",
+      "rightKey": "F",
+      "orderIndex": 93
+    },
+    {
+      "itemNo": 34,
+      "pair": "TF",
+      "left": "Ưu tiên hiểu hoàn cảnh của người bị ảnh hưởng.",
+      "right": "Ưu tiên so sánh các nguyên tắc áp dụng.",
+      "leftKey": "F",
+      "rightKey": "T",
+      "orderIndex": 94
+    },
+    {
+      "itemNo": 35,
+      "pair": "TF",
+      "left": "Ưu tiên các tiêu chí khi so sánh phương án.",
+      "right": "Ưu tiên trải nghiệm của người liên quan khi so sánh phương án.",
+      "leftKey": "T",
+      "rightKey": "F",
+      "orderIndex": 95
+    },
+    {
+      "itemNo": 36,
+      "pair": "TF",
+      "left": "Làm rõ giá trị các bên muốn bảo vệ.",
+      "right": "Làm rõ tiêu chí các bên có thể cùng áp dụng.",
+      "leftKey": "F",
+      "rightKey": "T",
+      "orderIndex": 96
+    },
+    {
+      "itemNo": 37,
+      "pair": "JP",
+      "left": "Chốt lịch sớm khi đã đủ thông tin.",
+      "right": "Giữ lịch mở để đón phương án mới.",
+      "leftKey": "J",
+      "rightKey": "P",
+      "orderIndex": 97
+    },
+    {
+      "itemNo": 38,
+      "pair": "JP",
+      "left": "Điều chỉnh thứ tự việc theo diễn biến.",
+      "right": "Định sẵn thứ tự việc cần thực hiện.",
+      "leftKey": "P",
+      "rightKey": "J",
+      "orderIndex": 98
+    },
+    {
+      "itemNo": 39,
+      "pair": "JP",
+      "left": "Chia công việc thành các mốc rõ ràng.",
+      "right": "Giữ cách triển khai linh hoạt trong hạn chót.",
+      "leftKey": "J",
+      "rightKey": "P",
+      "orderIndex": 99
+    },
+    {
+      "itemNo": 40,
+      "pair": "JP",
+      "left": "Thử vài hướng trước khi chọn cách làm.",
+      "right": "Chọn cách làm rồi triển khai từng bước.",
+      "leftKey": "P",
+      "rightKey": "J",
+      "orderIndex": 100
+    },
+    {
+      "itemNo": 41,
+      "pair": "JP",
+      "left": "Thấy dễ làm việc khi kế hoạch đã được chốt.",
+      "right": "Thấy dễ làm việc khi còn nhiều lựa chọn.",
+      "leftKey": "J",
+      "rightKey": "P",
+      "orderIndex": 101
+    },
+    {
+      "itemNo": 42,
+      "pair": "JP",
+      "left": "Giữ quyết định mở trong lúc tiếp tục tìm hiểu.",
+      "right": "Chốt quyết định để chuyển sang thực hiện.",
+      "leftKey": "P",
+      "rightKey": "J",
+      "orderIndex": 102
+    },
+    {
+      "itemNo": 43,
+      "pair": "JP",
+      "left": "Chuẩn bị trước những việc có thể dự đoán.",
+      "right": "Chừa khoảng để xử lý theo tình huống.",
+      "leftKey": "J",
+      "rightKey": "P",
+      "orderIndex": 103
+    },
+    {
+      "itemNo": 44,
+      "pair": "JP",
+      "left": "Điều chỉnh kế hoạch khi muốn thử lựa chọn mới.",
+      "right": "Duy trì kế hoạch để theo đuổi lựa chọn đã chốt.",
+      "leftKey": "P",
+      "rightKey": "J",
+      "orderIndex": 104
+    },
+    {
+      "itemNo": 45,
+      "pair": "JP",
+      "left": "Thích biết trước mục tiêu và trình tự.",
+      "right": "Thích có mục tiêu và tự tìm trình tự khi làm.",
+      "leftKey": "J",
+      "rightKey": "P",
+      "orderIndex": 105
+    },
+    {
+      "itemNo": 46,
+      "pair": "JP",
+      "left": "Khám phá nhiều lựa chọn trước khi quyết định.",
+      "right": "Thu hẹp lựa chọn để ra quyết định sớm.",
+      "leftKey": "P",
+      "rightKey": "J",
+      "orderIndex": 106
+    },
+    {
+      "itemNo": 47,
+      "pair": "JP",
+      "left": "Theo dõi công việc bằng lịch đã định.",
+      "right": "Theo dõi công việc bằng ưu tiên cập nhật.",
+      "leftKey": "J",
+      "rightKey": "P",
+      "orderIndex": 107
+    },
+    {
+      "itemNo": 48,
+      "pair": "JP",
+      "left": "Khởi đầu bằng thử nghiệm rồi sắp xếp dần.",
+      "right": "Khởi đầu bằng cấu trúc rồi điều chỉnh dần.",
+      "leftKey": "P",
+      "rightKey": "J",
+      "orderIndex": 108
+    }
+  ]
+}

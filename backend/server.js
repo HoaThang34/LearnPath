@@ -9,6 +9,7 @@ const deAnRoutes = require('./src/routes/deAn');
 const khoiThiRoutes = require('./src/routes/khoiThi');
 const diemThiRoutes = require('./src/routes/diemThi');
 const careerRoutes = require('./src/routes/career');
+const interestRoutes = require('./src/routes/interest');
 const { getDb } = require('./src/database/db');
 const { getAuthDb, queryOne } = require('./src/auth/authDb');
 const { requireAuth, requirePasswordChanged } = require('./src/auth/session');
@@ -64,6 +65,7 @@ app.use('/api/de-an', requireAuth, requirePasswordChanged, deAnRoutes);
 app.use('/api/khoi-thi', requireAuth, requirePasswordChanged, khoiThiRoutes);
 app.use('/api/diem-thi', requireAuth, requirePasswordChanged, diemThiRoutes);
 app.use('/api/career', careerRoutes);
+app.use('/api/interest', interestRoutes);
 
 app.use('/api', (req, res) => {
   res.status(404).json({ error: 'Không tìm thấy API.' });

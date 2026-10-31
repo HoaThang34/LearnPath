@@ -309,7 +309,7 @@ async function submitSurvey(userId, payload) {
   });
 
   const updatedUserRow = queryOne(
-    'SELECT id, username, status, must_change_password, survey_completed, created_at FROM users WHERE id = ?',
+    'SELECT id, username, status, must_change_password, survey_completed, interest_completed, created_at FROM users WHERE id = ?',
     [userId]
   );
 
@@ -320,6 +320,7 @@ async function submitSurvey(userId, payload) {
       status: updatedUserRow.status || 'active',
       mustChangePassword: Boolean(Number(updatedUserRow.must_change_password || 0)),
       surveyCompleted: true,
+      interestCompleted: Boolean(Number(updatedUserRow.interest_completed || 0)),
       createdAt: new Date(Number(updatedUserRow.created_at)).toISOString(),
     },
     profile: updatedProfile,

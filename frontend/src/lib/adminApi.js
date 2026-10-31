@@ -101,6 +101,24 @@ export const getCareerRubrics = () => adminApi.get('/career/rubrics');
 export const saveCareerRubric = (payload) => adminApi.put('/career/rubrics', payload);
 export const deleteCareerRubric = (id) => adminApi.delete(`/career/rubrics/${id}`);
 export const seedCareerRubrics = () => adminApi.post('/career/rubrics/seed');
+export const getCareerMatchConfig = () => adminApi.get('/career/match-config');
+export const updateCareerMatchConfig = (config) => adminApi.put('/career/match-config', { config });
 export const searchAdmissionMajors = (search) => adminApi.get('/career/admission-majors', { params: { search } });
+
+// Interest instruments
+export const listInterestInstruments = () => adminApi.get('/interest/instruments');
+export const createInterestInstrument = (payload) => adminApi.post('/interest/instruments', payload);
+export const importInterestInstrument = (payload) => adminApi.post('/interest/instruments/import', payload);
+export const updateInterestInstrument = (id, payload) => adminApi.put(`/interest/instruments/${id}`, payload);
+export const getInterestInstrumentItems = (id) => adminApi.get(`/interest/instruments/${id}/items`);
+export const saveInterestInstrumentItems = (id, items) =>
+  adminApi.put(`/interest/instruments/${id}/items`, { items });
+export const activateInterestInstrument = (id) => adminApi.post(`/interest/instruments/${id}/activate`);
+export const getInterestWeights = () => adminApi.get('/interest/weights');
+export const updateInterestWeights = (weights) => adminApi.put('/interest/weights', { weights });
+export const getInterestStats = () => adminApi.get('/interest/results');
+export const getInterestResultDetail = (attemptId) => adminApi.get(`/interest/results/${attemptId}`);
+export const exportInterestResults = () =>
+  adminApi.get('/interest/results/export', { responseType: 'blob' });
 
 export default adminApi;

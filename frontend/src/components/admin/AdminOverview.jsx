@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
+  Compass,
   Database,
   HardDrive,
   Loader2,
@@ -108,12 +109,18 @@ export default function AdminOverview({ onNavigateToData }) {
             </AdminAlert>
           )}
 
-          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
             <StatCard
               icon={Users}
               label="Tài khoản người dùng"
               value={data.users.total.toLocaleString('vi-VN')}
               hint={`${data.users.active.toLocaleString('vi-VN')} hoạt động · ${data.users.locked.toLocaleString('vi-VN')} khóa · ${data.users.deleted.toLocaleString('vi-VN')} đã xóa`}
+            />
+            <StatCard
+              icon={Compass}
+              label="Lượt làm sở thích"
+              value={(data.interest?.attempts ?? 0).toLocaleString('vi-VN')}
+              hint={`${(data.interest?.submitted ?? 0).toLocaleString('vi-VN')} đã nộp`}
             />
             <StatCard
               icon={ShieldCheck}

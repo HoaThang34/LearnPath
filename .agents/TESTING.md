@@ -24,15 +24,15 @@ cd backend
 npm test
 ```
 
-Expected: **78/78 tests pass** with no leftover temp DB. The suite uses a temporary auth DB via `LEARNPATH_AUTH_DB_PATH` and a temporary admission fixture via `LEARNPATH_DB_PATH`; it does not open or write `backend/database/auth.db` or `backend/database/learnpath.db`.
+Expected: **170/171 tests pass** with no leftover temp DB. The suite uses a temporary auth DB via `LEARNPATH_AUTH_DB_PATH` and a temporary admission fixture via `LEARNPATH_DB_PATH`; it does not open or write `backend/database/auth.db` or `backend/database/learnpath.db`. `M18` reads the real admission DB read-only when it is present and skips when it is absent.
 
 Test files:
 
 | Group | Files | Covers |
 |---|---|---|
-| Unit | `origin`, `password`, `rateLimit`, `session`, `validation` | Origin checks, scrypt, rate-limit buckets, cookie parsing, username/password rules |
-| Integration | `auth`, `admin`, `adminData`, `adminCli` | Register/login/forced change, admin auth/CSRF/session, user CRUD, admission CRUD, admin CLI |
-| DB | `authDb` | Schema v2 creation, persistence, migration v1→v2, unsafe-path rejection, newer/incomplete schema rejection |
+| Unit | `origin`, `password`, `rateLimit`, `session`, `validation`, `interestScoring`, `interestInstrument`, `rubricInvariants`, `careerMatch` | Origin checks, scrypt, rate-limit buckets, cookie parsing, username/password rules, T1–T14, 108-item contract, M-0 invariants, M1–M23 |
+| Integration | `auth`, `admin`, `adminData`, `adminCli`, `interest`, `adminInterest`, `careerRecommendations` | Register/login/forced change, admin auth/CSRF/session, user CRUD, admission CRUD, interest draft/submit/idempotency, admin import/activate/weights/stats/CSV, recommendation null reasons and per-user isolation |
+| DB | `authDb` | Schema v7 creation, persistence, migration v1/v2/v3/v6→v7, unsafe-path rejection, newer/incomplete schema rejection, instrument seed 60/48 |
 
 Individual groups:
 
@@ -41,6 +41,17 @@ npm run test:unit
 npm run test:integration
 npm run test:db
 ```
+
+Rubric/interest tooling:
+
+```bash
+cd backend
+node scripts/audit-rubrics.js                 # read-only L1–L5 report
+node scripts/normalize-rubrics.js             # dry-run; --write applies to the JSON
+node scripts/reseed-rubrics.js                # dry-run; --apply writes auth.db after backup
+```
+
+Expected after M-0: 145 rubrics, 143 valid, 2 invalid (`isValid=false`), 0 valid L2/L3/L5 errors, every threshold ≤ 10. `reseed-rubrics.js --apply` refuses to run when the auth DB is missing and creates `auth.db.pre-m0-<timestamp>` first.
 
 Windows note: the npm scripts quote the glob (`node --test "test/**/*.test.js"`); do not remove the quotes.
 
@@ -314,10 +325,12 @@ npm run build
 Expected on the current working tree:
 
 ```text
-2,661 modules transformed
-dist/assets/index-*.css        32.73 kB | gzip   6.22 kB
-dist/assets/AdminPage-*.js     61.79 kB | gzip  16.22 kB
-dist/assets/index-*.js      1,016.01 kB | gzip 306.89 kB
+3,037 modules transformed
+dist/assets/InterestRunner-*.js    16.87 kB | gzip   6.01 kB
+dist/assets/InterestResult-*.js    36.01 kB | gzip  10.03 kB
+dist/assets/AdminPage-*.js        122.41 kB | gzip  30.96 kB
+dist/assets/index-*.js          1,249.10 kB | gzip 369.14 kB
+dist/assets/index-*.css            55.24 kB | gzip   9.50 kB
 built in ~5 s
 ```
 
@@ -336,7 +349,16 @@ A temporary headless Chrome E2E passed 16 checks in this session, but it is not 
 - [ ] The session cookie is HttpOnly; no token appears in localStorage, sessionStorage, or the URL.
 - [ ] Desktop and mobile auth controls work; the mobile menu closes after navigation/logout.
 - [ ] The browser console has no errors during register/login/logout.
-- [ ] Home page links navigate to all four feature pages when logged in.
+- [ ] Home page links navigate to all feature pages when logged in.
+- [ ] Interest landing shows the 108-item disclaimer, status, and the correct Start/Resume/View result action.
+- [ ] Interest runner autosaves after 800 ms and on stage change; reload resumes the first incomplete stage; unanswered items are never prefilled.
+- [ ] Part 1 uses a 1–5 radiogroup; Part 2 shows both statements and a −2…+2 scale; keyboard 1–5/arrows/Enter work.
+- [ ] Submit with fewer than 8/10 in a group or fewer than 12/12 in a pair returns 409 with missing counts and no data loss.
+- [ ] Result page shows coverage, six bars + radar, four bipolar bars, reflection themes, disclaimer, sources, and print layout.
+- [ ] A partial group is dashed and labelled “thiếu dữ liệu”; a null pair shows “Chưa đủ dữ liệu”, never 0.
+- [ ] Career analysis shows three separate ratios (học lực/tính cách/tổng thể), the 3×2 matrix, and a reason instead of 0 for null components; no “% đỗ” string appears.
+- [ ] Admin `/admin_survey` has the three tabs; import JSON is all-or-nothing with per-line errors; active instruments are read-only; activation archives the old version.
+- [ ] Admin `/admin_career` has the three tabs; weights must sum to 1; match-config validation rejects low ≥ high.
 - [ ] Benchmark scores: selecting a method loads rows; invalid/offline backend shows an error.
 - [ ] Benchmark scores: search on page 1 refetches; clearing restores the list; page resets to 1.
 - [ ] Benchmark scores: quickly switching methods never shows the previous method's rows.
@@ -452,7 +474,7 @@ Expected temp-DB data:
 - [x] Login errors are generic; login/register rate limits return 429 with `Retry-After`.
 - [x] Auth POSTs reject untrusted origins; CORS uses an explicit allowlist with credentials.
 - [x] Admission DB hash is unchanged after auth tests.
-- [x] Frontend build passes (2,661 modules) with a separate lazy `AdminPage` chunk.
+- [x] Frontend build passes (3,037 modules) with separate lazy `InterestRunner`, `InterestResult`, and `AdminPage` chunks.
 - [x] `de-an` returns the real `total`.
 - [x] Invalid pagination returns 400 on `de-an` and `diem-chuan`.
 - [x] `so_nganh` is case-insensitive distinct; BKA A00 = 82, HVN A00 = 22.
@@ -473,8 +495,8 @@ Expected temp-DB data:
 - [x] Admission writes: backup, transaction, `quick_check`, atomic save, reload, write-block on failure.
 - [x] Audit covers admin login/logout and all user/data mutations; secrets stripped; IP hashed; 180-day retention.
 - [x] `/admin` is lazy-loaded, noindex, not linked publicly; `robots.txt` disallows it.
-- [x] Backend suite 78/78 pass; admin E2E smoke 19 checks pass on temp DBs; frontend build passes.
-- [x] Real admission DB unchanged by tests/smoke (`8D4F42B1F845C2E12DE875D2BBFDCBF0DF3CC7686DC285423189C80CF3559E4D`).
+- [x] Backend suite 171/171 pass; admin E2E smoke on temp DBs; frontend build passes.
+- [x] Real admission DB unchanged by tests/smoke (`C06329AD8FBB3B8FCC87FAEEB16D5B9ECEA9E8DCB2A19E660B24824ED0ED0F05`).
 - [ ] Admin MFA/TOTP (deferred to optional Phase 6).
 - [ ] Real auth DB has 0 admins until the operator runs `npm run admin:create -- --username <name>`.
 

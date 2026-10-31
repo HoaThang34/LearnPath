@@ -13,7 +13,7 @@
   + Chỉnh sửa điểm chuẩn (`diem_chuan`: mã trường, tên trường, ngành, tổ hợp môn, điểm chuẩn, ghi chú, năm, phương thức xét tuyển).
   + Thêm dữ liệu mới (thêm thủ công) cho toàn bộ 5 bảng dữ liệu tuyển sinh (`khoi_thi`, `truong`, `diem_chuan`, `diem_thi_thptqg`, `de_an_tuyen_sinh`).
   Home and auth pages are public; accounts, sessions, admins, and audit live in a separate auth DB. Normal users cannot access admin APIs.
-- **Out of scope for now**: application submission, personalised recommendations, multi-year comparison, self-service password reset, email verification, MFA/TOTP, admin MFA.
+- **Out of scope for now**: application submission, admission-probability prediction, multi-year comparison, self-service password reset, email verification, MFA/TOTP, admin MFA.
 
 ## 2. Features
 
@@ -30,7 +30,8 @@
 | THPTQG ranking | `/thu-hang` | Enter scores → rank and distribution chart (login required) | `/api/diem-thi/ranking`, `/api/diem-thi/stats` |
 | Personal Profile | `/thong-tin-ca-nhan` | Xem/điền thông tin: họ tên, lớp, trường, điểm các môn, chứng chỉ (IELTS, TSA, HSA...), mục tiêu, tổ hợp thi 3 môn, freestyle | `/api/auth/profile` |
 | Onboarding Survey | `/khao-sat` | Khảo sát thông tin tuyển sinh khởi đầu: câu hỏi cố định lưu vào profile, câu hỏi custom của admin lưu vào `khac` (định dạng `Câu hỏi - Câu trả lời`) | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
-| Career analysis | `/phan-tich-nang-luc` | Nhập điểm theo môn/kỳ/năm, chọn snapshot, xem fit theo rubric có độ phủ, khám phá và lưu lựa chọn điểm chuẩn 2025 | `/api/career/*` |
+| Career analysis | `/phan-tich-nang-luc` | Nhập điểm theo môn/kỳ/năm, chọn snapshot, xem fit theo rubric có độ phủ, khám phá và lưu lựa chọn điểm chuẩn 2025; ba tỉ lệ phù hợp (học lực/tính cách/tổng thể) và ma trận 3×2 | `/api/career/*` |
+| Interest discovery | `/kham-pha-so-thich`, `/lam-bai`, `/ket-qua` | 108 câu (60 RIASEC + 48 cặp), lưu nháp 10 chặng, chấm điểm, diễn giải thận trọng | `/api/interest/*` |
 
 Notes:
 
@@ -50,10 +51,10 @@ Notes:
 | Charts / Markdown | Recharts; react-markdown + remark-gfm + rehype-raw |
 | Backend | Express 4 + `sql.js` 1.10 (SQLite compiled to WebAssembly) |
 | Admission DB | `backend/database/learnpath.db` (~109 MiB), not committed; public APIs read it, admins write through a guarded engine |
-| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v6), writable |
+| Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v7), writable |
 | Import | `backend/src/database/init.js` |
 | Auth | Custom username/password; Node `crypto` scrypt; server-side sessions; separate admin auth/CSRF/audit; `sql.js` auth DB; user profile |
-| Tests / lint / CI | Committed backend `node:test` suite (84 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |
+| Tests / lint / CI | Committed backend `node:test` suite (171 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |
 
 Runtime facts:
 
@@ -62,7 +63,10 @@ Runtime facts:
 - Vite proxies `/api` to `http://localhost:3001` in development.
 - Production needs a reverse proxy for `/api`, HTTPS, an SPA fallback to `index.html`, the correct `APP_ORIGIN`, and production secrets for admin CSRF/IP hashing.
 - The backend refuses to start if the admission DB is missing. It does not create an old schema (fixed in KI-01).
-- The auth DB schema is versioned with `PRAGMA user_version = 2`; v1 is migrated with a backup. An incompatible or incomplete auth DB stops startup.
+- The auth DB schema is versioned with `PRAGMA user_version = 7`; older versions are migrated with a backup. An incompatible or incomplete auth DB stops startup.
+- Interest module: 108 items (60 RIASEC + 48 pairs) seeded from `backend/src/data/interest_instrument_v1.json`; scoring is pure and versioned. Pair items store `leftKey`/`rightKey` per row; odd items put the first letter on the left, even on the right. Missing answers are not zero.
+- Career match: `hocLucFit` uses the percentile of the student's self-reported exam total against the national distribution; `tinhCachFit` is histogram intersection over complete RIASEC groups; `tongHopFit` is the weighted pair and is null if either component is null. `pBench` is the share of candidates at or above a total and is never an admission probability.
+- M-0 normalized `edumind_rubrics.json`: 143 valid rubrics, 2 excluded (`entryScore > 30`), thresholds ≤ 10 and summing to `entryScore`; see `RUBRIC_CHANGELOG.md`.
 - Default user cookie: `lp_session`, HttpOnly, SameSite=Lax, Path=/, 7 days, `Secure` when `NODE_ENV=production`.
 - Default admin cookie: `lp_admin_session` (`__Host-lp_admin_session` in production), HttpOnly, SameSite=Strict, Path=/, 8 h absolute/30 min idle, `Secure` in production.
 - If behind a trusted reverse proxy, set `TRUST_PROXY=1`; otherwise leave it unset to avoid spoofed client IPs.
@@ -146,13 +150,13 @@ Details and status: `KNOWN_ISSUES.md`.
 - Forced password change, locked/deleted user handling, and session revocation are implemented.
 - A hidden admin panel is implemented: separate admin auth/CSRF/session policy, overview, user management (create/bulk/edit/lock/unlock/restore/reset/soft delete), admission CRUD on all five tables, and an audit log.
 - Admin data writes use a serialized engine with backup, transaction, `quick_check`, atomic save, reload, and write-block on failure. Backups are capped at 5.
-- Auth verification passed: 78/78 backend tests; admin E2E smoke 19 checks on temp DBs; production cookie flags.
-- Frontend build passes: 2,661 modules; separate `AdminPage` chunk 61.79 kB; main JS 1,016.01 kB (gzip 306.89 kB); CSS 32.73 kB. The >500 kB main-chunk warning remains.
+- Auth verification passed: 171/171 backend tests; admin E2E smoke on temp DBs; production cookie flags.
+- Frontend build passes: main JS ~1,249 kB (gzip ~369 kB); `InterestRunner` and `InterestResult` are lazy chunks; `AdminPage` ~121 kB. The >500 kB main-chunk warning remains (KI-11).
 - Main pages have error states instead of empty catches.
 - Pagination is validated and returns 400 for invalid values.
 - `de-an` returns the real total count.
 - `so_nganh` uses case-insensitive distinct majors.
 - Data mapping, coverage, ranking semantics, and the real DB rebuild still need user approval.
-- The real `backend/database/auth.db` was migrated from v1 to v2 outside the test suite (cause not established); a v1 backup exists. Tests use temp auth DBs. The real auth DB currently has 0 admins, so admin login requires running the CLI first.
-- The admission DB hash was unchanged after tests/smoke (`8D4F42B1F845C2E12DE875D2BBFDCBF0DF3CC7686DC285423189C80CF3559E4D`).
+- The real `backend/database/auth.db` is now v7 with 13 users, 1 admin, 108 interest items, 8 weight rows, and 7 config keys. It was migrated from v6 and reseeded with the normalized rubrics on 2026-10-31; backups are `auth.db.v6-backup-20261031130214132` and `auth.db.pre-m0-20261031130214177`. The historical v1→v2 migration cause is not established; a v1 backup exists. Tests use temp auth DBs.
+- The admission DB hash was unchanged after tests/smoke (`C06329AD8FBB3B8FCC87FAEEB16D5B9ECEA9E8DCB2A19E660B24824ED0ED0F05`).
 - No commit, push, or PR has been made.

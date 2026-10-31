@@ -10,3 +10,10 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  header, footer { display: none !important; }
+  main { padding: 0 !important; }
+  .print-avoid-break { break-inside: avoid; }
+}
+

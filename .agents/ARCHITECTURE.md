@@ -66,7 +66,7 @@ Environment variables:
 - `reloadDb()` — reload the in-memory DB after the admin write engine replaces the file.
 - `queryAll(sql, params)` / `queryOne(sql, params)` / `run(sql, params)` helpers.
 
-`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 6`; v5→v6 replaces legacy unstructured profile scores with shared structured academic scores.
+`backend/src/auth/authDb.js` exports the same query helpers plus `AUTH_DB_PATH`, `SCHEMA_VERSION`, `getAuthDb()`, `saveAuthDb()`, `runAuthMutation()`, and `reloadAuthDb()`. Auth writes are exported to a temp file, fsynced, and renamed over `auth.db`; a previous-file fallback protects against a failed rename. The file is given mode `0600` where supported. The schema is versioned with `PRAGMA user_version = 7`; v5→v6 replaces legacy unstructured profile scores with shared structured academic scores. v6→v7 adds the interest module (`interest_instruments`, `interest_items`, `interest_attempts`, `interest_responses`, `interest_results`, `interest_group_weights`, `interest_group_pairs`), `users.interest_completed`, `career_match_config`, and `user_exam_scores`; it also seeds instrument v1 (60 + 48 items), 8 major-group weight rows, and 7 match-config keys inside the migration transaction.
 
 `backend/src/admin/admissionWrite.js` serializes admission writes. It creates `backend/database/backups/` (max 5 files), copies the DB before the first write and before destructive operations, runs the mutation inside a transaction, checks `PRAGMA quick_check`, writes atomically, and reloads. A failed reload sets a write-block flag so the server does not continue on a stale or broken DB. Thao tác ghi hỗ trợ chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn và thêm dữ liệu mới thủ công.
 
@@ -85,7 +85,10 @@ Environment variables:
 | `/thu-hang` | `pages/ThuHang.jsx` | Protected | `/api/diem-thi/ranking`, `/api/diem-thi/stats` |
 | `/thong-tin-ca-nhan` | `pages/ThongTinCaNhan.jsx` | Protected | `/api/auth/profile` |
 | `/khao-sat` | `pages/KhaoSat.jsx` | Protected | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
-| `/phan-tich-nang-luc` | `pages/PhanTichNangLuc.jsx` | Protected | `/api/career/overview`, `/api/career/scores`, `/api/career/majors`, `/api/career/selections`, `/api/career/map-data` |
+| `/phan-tich-nang-luc` | `pages/PhanTichNangLuc.jsx` | Protected | `/api/career/overview`, `/api/career/scores`, `/api/career/majors`, `/api/career/selections`, `/api/career/map-data`, `/api/career/recommendations`, `/api/career/benchmark` |
+| `/kham-pha-so-thich` | `pages/InterestLanding.jsx` | Protected | `/api/interest/instrument`, `/api/interest/attempt`, `/api/interest/results/latest` |
+| `/kham-pha-so-thich/lam-bai` | `pages/InterestRunner.jsx` (lazy) | Protected | `/api/interest/attempt`, `/api/interest/attempt/:id/responses`, `/submit` |
+| `/kham-pha-so-thich/ket-qua` | `pages/InterestResult.jsx` (lazy) | Protected | `/api/interest/results/latest`, `/api/interest/results/:attemptId` |
 
 Implementation notes:
 
@@ -93,7 +96,7 @@ Implementation notes:
 - `AuthContext` calls `/api/auth/me` on startup, exposes `login`, `register`, `logout`, and `changePassword`, and clears auth state on a `401`.
 - `ProtectedRoute` redirects guests to `/dang-nhap?redirect=<encoded target>`; the auth page returns there after login/register. Users with `mustChangePassword` are redirected to `/doi-mat-khau` before any protected page or data API.
 - The session token is **not** stored in localStorage, sessionStorage, or JS-readable state; the browser holds only the HttpOnly cookie.
-- `/admin/*` and `/admin_*` (`/admin_home`, `/admin_user`, `/admin_survey`, `/admin_data`, `/admin_audit`) are lazy-loaded outside `Layout`, have no public links, set `document.title` and a `noindex,nofollow` meta tag, and use `frontend/src/lib/adminApi.js` with its own cookie/CSRF handling. A user `401` must not redirect an admin to `/dang-nhap`.
+- `/admin/*` and `/admin_*` (`/admin_home`, `/admin_user`, `/admin_survey`, `/admin_data`, `/admin_career`, `/admin_audit`) are lazy-loaded outside `Layout`, have no public links, set `document.title` and a `noindex,nofollow` meta tag, and use `frontend/src/lib/adminApi.js` with its own cookie/CSRF handling. A user `401` must not redirect an admin to `/dang-nhap`.
 - The admin CSRF token lives in memory only; a reload fetches it again from `/api/admin/auth/me`. The `admin:unauthorized` event clears the admin UI without touching user auth.
 - `frontend/public/robots.txt` disallows `/admin`, `/admin_`, and `/api/`.
 - Pages have loading, empty, and error states. Do not reintroduce empty `catch` blocks.
@@ -351,6 +354,64 @@ Returns student vector embeddings, rubric major weight vectors, fit percentages,
 
 Returns `{ data: { studentVector, majors, selectedClassLevel, selectedTerm } }` where each major includes `id`, `schoolCode`, `schoolName`, `majorName`, `majorGroup`, `admissionBlock`, `entryScore`, `fitPct`, `coveragePct`, `weightVector`, `details`, `isTarget`, `isPinned`.
 
+### `GET /api/career/benchmark`
+
+| Param | Type | Notes |
+|---|---|---|
+| `combo` | string | Admission block, e.g. `A00`; must exist in `backend/src/career/subjects.js` |
+| `score` | number | Total on the 0–30 scale |
+
+Returns `pBench`, `percentile`, `zScore`, `mean`, `sd`, `median`, `n`, `numerator`, `denominator`. `pBench` is the upper tail (`>= score`) and `percentile` the lower tail (`< score`). Both come from the admission DB and are cached for 10 minutes. Never describe either as an admission probability.
+
+### `GET /api/career/recommendations`
+
+Returns every rubric with `hocLucFit`, `tinhCachFit`, `tongHopFit`, `matrixCell`, `pBench`, `diemVuotChuan`, `reasons`, and the active weights/config. A null component makes `tongHopFit` null with a reason. Query: `sort=tongHop_desc|tinhCach_desc|hocLuc_desc`, `page`, `limit` (max 50), optional `classLevel`/`term` for the legacy comparison. The current user's exam scores (`user_exam_scores`) supply `T_student`; no conversion from GPA is allowed.
+
+### `GET|PUT /api/career/exam-scores` and `GET /api/career/exam-score-options`
+
+Self-reported exam total per admission block (`0–30`, source `tự khai`). `exam-score-options` returns the supported blocks and their subject sets from `backend/src/career/subjects.js`.
+
+### Interest API (`/api/interest/*`)
+
+All endpoints require `requireAuth` + `requirePasswordChanged`.
+
+| Method | Path | Notes |
+|---|---|---|
+| GET | `/instrument` | Active instrument + items; never returns `leftKey`/`rightKey` |
+| GET | `/attempt` | Current draft + saved responses + status |
+| POST | `/attempt` | Create a draft; idempotent while a draft exists |
+| PATCH | `/attempt/:id` | Save `giaiDoanHocTap` / `cauHoiNgheNghiep` |
+| PATCH | `/attempt/:id/responses` | `{ responses: [{ itemId, value }] }`, max 30 rows; scale validated per part |
+| POST | `/attempt/:id/submit` | Scores, stores `interest_results`, sets `interest_completed`; `409` with `details` if the D3 policy is not met |
+| GET | `/results/latest` | Latest submitted result + interpretation |
+| GET | `/results/:attemptId` | Owner only; `404` for another user's attempt |
+| DELETE | `/attempt/:id` | Delete own draft or result |
+| POST | `/reset` | Delete all attempts/results and clear `interest_completed` |
+
+Scoring lives in `backend/src/interest/scoring.js` (pure): `scoreAttempt({ instrument, items, responses })`. The pair contract is per item: odd `itemNo` puts the first letter on the left, even on the right; `D = Σ(even) − Σ(odd)`, range −24…+24. Missing answers are **not** zero: an incomplete group is `partial`/`empty`, and an incomplete pair has `d = null`.
+
+### Admin interest API (`/api/admin/interest/*`)
+
+All endpoints require the admin cookie + `X-Admin-CSRF`.
+
+| Method | Path | Notes |
+|---|---|---|
+| GET/POST | `/instruments` | List / create draft (optionally copy items) |
+| POST | `/instruments/import` | All-or-nothing 108-item JSON import; `400` with per-line `details` |
+| PUT | `/instruments/:id` | Draft only; `409` otherwise |
+| GET/PUT | `/instruments/:id/items` | Replace items; validates 60/48, 6 even + 6 odd, and per-item keys |
+| POST | `/instruments/:id/activate` | Requires 60/48 items and `source_note` containing “tự biên soạn”; archives the previous active version |
+| GET/PUT | `/weights` | 8 major groups × 6 RIASEC; each row must sum to 1 |
+| GET | `/results` | Aggregate stats + recent attempts |
+| GET | `/results/:attemptId` | Detail; writes `admin.interest.result.view` |
+| GET | `/results/export` | CSV with scores only, no names |
+
+Audit actions: `admin.interest.instrument.create|update|activate|import`, `admin.interest.weights.update`, `admin.interest.result.view`.
+
+### Admin career match config (`/api/admin/career/match-config`)
+
+`GET` returns the 7 keys; `PUT` validates weights, matrix thresholds, coverage floor, and `hoc_luc_mode` (0 = percentile, 1 = legacy rollback), then writes `admin.career.match_config.update`.
+
 ## 5. DB schema
 
 The schema is created by `backend/src/database/init.js`. `db.js` intentionally has no `CREATE TABLE` statements.
@@ -416,6 +477,9 @@ Migrations:
 - v1 → v2: adds `users.status`, `updated_at`, `last_login_at`, `must_change_password`, `deleted_at`, creates `admins`, `admin_sessions`, and `admin_audit`.
 - v2 → v3: adds `user_profiles` (họ tên, lớp, trường, điểm các môn, chứng chỉ, trường/ngành mục tiêu, tổ hợp mong muốn, khác).
 - v3 → v4: adds `users.survey_completed` (đánh dấu tài khoản đã hoàn thành khảo sát) và bảng `survey_questions` (câu hỏi khảo sát tùy chỉnh do admin cấu hình).
+- v4 → v5: adds structured academic scores, career selections, and admin-managed career rubrics (`career_rubrics`, `career_rubric_subjects`).
+- v5 → v6: replaces the legacy unstructured profile score columns with shared structured academic scores.
+- v6 → v7: adds the interest module (7 `interest_*` tables), `users.interest_completed`, `career_match_config`, and `user_exam_scores`; seeds instrument v1, 8 major-group weights, and 7 match-config keys in the same migration transaction. `verifySchema()` also checks that the active instrument has 60 RIASEC + 48 pair items.
 
 Mỗi lần di chuyển phiên bản đều tự động sao lưu bản backup có gắn dấu thời gian `auth.db.v${version}-backup-<timestamp>` trước khi chạy transaction nâng cấp.
 
@@ -526,6 +590,22 @@ Indexes: `admin_audit(created_at)`, `admin_audit(admin_id)`. Retention is 180 da
 | `updated_at` | INTEGER NOT NULL | Epoch milliseconds |
 
 Indexes: `survey_questions(order_index, is_active)`.
+
+#### Interest tables (v7)
+
+| Table | Purpose |
+|---|---|
+| `interest_instruments` | Versioned instrument (`code`, `version`, `status` draft/active/archived, `source_note`, `disclaimer`, 60/48 counts) |
+| `interest_items` | One row per item; `part` = `riasec`/`pairs`, `group_code`, `item_no`, `order_index`, text columns, and per-item `left_key`/`right_key` |
+| `interest_attempts` | One draft/submitted attempt per user + instrument; stores the optional intro fields, notes JSON, and generated `summary_text` |
+| `interest_responses` | One row per answered item; absent row = unanswered (never 0) |
+| `interest_results` | Scored snapshot: `r..c`, answered counts, `d_ei..d_jp`, code, top groups, ties, completeness, algorithm version |
+| `interest_group_weights` | 8 major groups × 6 RIASEC weights; each row sums to 1 ±0.001 |
+| `interest_group_pairs` | Optional 4-pair weights; no rows by default (D12) |
+| `career_match_config` | 7 keys: `w_hoc_luc`, `w_tinh_cach`, matrix thresholds, `do_phu_min`, `hoc_luc_mode` |
+| `user_exam_scores` | Self-reported total per admission block (`0–30`, source `tự khai`); `T_student` for `hocLucFit`/`pBench` |
+
+The instrument seed is `backend/src/data/interest_instrument_v1.json` (60 + 48 items). The pair key contract is per item: odd `itemNo` → first letter on the left, even → first letter on the right. `D = Σ(even) − Σ(odd)`.
 
 - `saveAuthDb()` exports to a temp file, fsyncs it, and renames it over `auth.db`; on Windows it first moves the previous file aside so the replacement stays close to atomic. The file is given mode `0600` where supported.
 - Auth mutations are serialized through `runAuthMutation()`. `reloadAuthDb()` reopens the file after an external replacement (used by tests/CLI); the server does not hot-reload auth writes from another process.

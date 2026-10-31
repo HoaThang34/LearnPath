@@ -28,6 +28,10 @@ router.get(
 
     const userStats = await countUsersByStatus();
     const adminCount = queryAuthOne('SELECT COUNT(*) AS total FROM admins');
+    const interestAttempts = queryAuthOne('SELECT COUNT(*) AS total FROM interest_attempts');
+    const interestSubmitted = queryAuthOne(
+      "SELECT COUNT(*) AS total FROM interest_attempts WHERE status = 'submitted'"
+    );
     const writeState = getWriteState();
     const admissionSize = fs.existsSync(DB_PATH) ? fs.statSync(DB_PATH).size : 0;
     const authSize = fs.existsSync(AUTH_DB_PATH) ? fs.statSync(AUTH_DB_PATH).size : 0;
@@ -43,6 +47,10 @@ router.get(
         tables: tableCounts,
         users: userStats,
         admins: Number(adminCount ? adminCount.total : 0),
+        interest: {
+          attempts: Number(interestAttempts ? interestAttempts.total : 0),
+          submitted: Number(interestSubmitted ? interestSubmitted.total : 0),
+        },
         database: {
           path: DB_PATH,
           size: admissionSize,

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import {
   AlertCircle,
   Award,
@@ -27,7 +28,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAuth } from '@/context/AuthContext'
-import { getUserProfile, updateUserProfile } from '@/lib/api'
+import { getUserProfile, updateUserProfile, getInterestLatestResult, getExamScores, getExamScoreOptions, saveExamScores } from '@/lib/api'
 import { cn } from '@/lib/utils'
 import AcademicScoresEditor, { inferAcademicClassLevel, inferAcademicTerm } from '@/components/AcademicScoresEditor'
 import TargetMajorSelector from '@/components/TargetMajorSelector'
@@ -98,6 +99,12 @@ export default function ThongTinCaNhan() {
   const [passwordSuccess, setPasswordSuccess] = useState('')
   const [academicClassLevel, setAcademicClassLevel] = useState('10')
   const [academicTerm, setAcademicTerm] = useState('Kỳ 1')
+  const [interestResult, setInterestResult] = useState(null)
+  const [examScores, setExamScores] = useState([])
+  const [examOptions, setExamOptions] = useState([])
+  const [examSaving, setExamSaving] = useState(false)
+  const [examError, setExamError] = useState('')
+  const [examSuccess, setExamSuccess] = useState('')
 
   const [form, setForm] = useState({
     ho_va_ten: '',
@@ -117,10 +124,15 @@ export default function ThongTinCaNhan() {
     setLoading(true)
     setError('')
 
-    getUserProfile()
-      .then((response) => {
+    Promise.all([
+      getUserProfile(),
+      getInterestLatestResult().catch(() => ({ data: { data: null } })),
+      getExamScores().catch(() => ({ data: { data: [] } })),
+      getExamScoreOptions().catch(() => ({ data: { data: [] } })),
+    ])
+      .then(([profileResponse, interestResponse, examResponse, optionsResponse]) => {
         if (!active) return
-        const p = response.data.data.profile
+        const p = profileResponse.data.data.profile
         const scores = Array.isArray(p.diem_lop) ? p.diem_lop : []
         setAcademicClassLevel(inferAcademicClassLevel(p.lop, scores))
         setAcademicTerm(inferAcademicTerm(scores))
@@ -136,6 +148,11 @@ export default function ThongTinCaNhan() {
           khac: p.khac || '',
           updated_at: p.updated_at,
         })
+        setInterestResult(interestResponse.data?.data || null)
+        setExamScores(
+          (examResponse.data?.data || []).map((row) => ({ block: row.block, score: String(row.score) }))
+        )
+        setExamOptions(optionsResponse.data?.data || [])
       })
       .catch((err) => {
         if (!active) return
@@ -285,6 +302,32 @@ export default function ThongTinCaNhan() {
     } finally {
       setSaving(false)
     }
+  }
+
+  const handleSaveExamScores = async () => {
+    setExamError('')
+    setExamSuccess('')
+    setExamSaving(true)
+    try {
+      const payload = examScores
+        .filter((row) => row.block && row.score !== '')
+        .map((row) => ({ block: row.block, score: Number(row.score), source: 'tự khai' }))
+      const response = await saveExamScores(payload)
+      setExamScores(
+        (response.data?.data?.scores || []).map((row) => ({ block: row.block, score: String(row.score) }))
+      )
+      setExamSuccess('Đã lưu điểm thi/dự kiến theo tổ hợp.')
+    } catch (err) {
+      setExamError(err.response?.data?.error || 'Không thể lưu điểm thi theo tổ hợp.')
+    } finally {
+      setExamSaving(false)
+    }
+  }
+
+  const handleAddExamScore = () => {
+    const used = new Set(examScores.map((row) => row.block))
+    const next = examOptions.find((option) => !used.has(option.block))
+    setExamScores((prev) => [...prev, { block: next?.block || '', score: '' }])
   }
 
   if (loading) {
@@ -455,6 +498,62 @@ export default function ThongTinCaNhan() {
           </CardContent>
         </Card>
 
+        {/* Sở thích nghề nghiệp */}
+        <Card>
+          <CardHeader className="pb-4">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <Compass className="h-5 w-5 text-primary" />
+              Sở thích nghề nghiệp
+            </CardTitle>
+            <CardDescription>
+              Kết quả khám phá Holland/RIASEC và 4 cặp xu hướng được dùng làm chỉ báo khám phá trong Phân tích năng lực.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3 text-sm">
+            {interestResult ? (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border bg-slate-50/60 p-3">
+                <div>
+                  <p className="font-semibold">
+                    Mã tham khảo: {interestResult.part1.code || '—'} · Phần 2: {interestResult.part2.referenceCode}
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Nộp lúc{' '}
+                    {interestResult.submittedAt
+                      ? new Date(interestResult.submittedAt).toLocaleString('vi-VN')
+                      : '—'}
+                    {interestResult.completeness === 'partial'
+                      ? ` · còn ${interestResult.unansweredCount} câu chưa trả lời`
+                      : ' · đủ 108 câu'}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <Link to="/kham-pha-so-thich/ket-qua">
+                    <Button type="button" variant="outline" size="sm">
+                      Xem kết quả
+                    </Button>
+                  </Link>
+                  <Link to="/kham-pha-so-thich">
+                    <Button type="button" variant="ghost" size="sm">
+                      Làm lại
+                    </Button>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-dashed p-3">
+                <p className="text-muted-foreground">
+                  Bạn chưa làm bài khám phá sở thích. Bài gồm 108 câu, khoảng 12–15 phút.
+                </p>
+                <Link to="/kham-pha-so-thich">
+                  <Button type="button" size="sm">
+                    Bắt đầu
+                  </Button>
+                </Link>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
         {/* Phần 2: Điểm các môn trên lớp */}
         <Card>
           <CardHeader className="pb-4">
@@ -479,6 +578,97 @@ export default function ThongTinCaNhan() {
               term={academicTerm}
               onTermChange={setAcademicTerm}
             />
+          </CardContent>
+        </Card>
+
+        {/* Điểm thi/dự kiến theo tổ hợp */}
+        <Card>
+          <CardHeader className="pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <GraduationCap className="h-5 w-5 text-primary" />
+                  Điểm thi/dự kiến theo tổ hợp
+                </CardTitle>
+                <CardDescription>
+                  Nhập tổng điểm 3 môn theo từng tổ hợp (thang 0–30) nếu bạn đã thi hoặc có điểm dự kiến. Đây là dữ liệu
+                  tự khai, không phải điểm thi chính thức và không được quy đổi từ điểm học bạ.
+                </CardDescription>
+              </div>
+              <Button type="button" variant="outline" size="sm" onClick={handleAddExamScore} className="h-8 text-xs">
+                <Plus className="mr-1 h-3.5 w-3.5" />
+                Thêm tổ hợp
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {examError && <div className="rounded-md border border-destructive/20 bg-destructive/10 p-2 text-xs text-destructive">{examError}</div>}
+            {examSuccess && <div className="rounded-md border border-emerald-200 bg-emerald-50 p-2 text-xs text-emerald-800">{examSuccess}</div>}
+            {examScores.length === 0 ? (
+              <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                Chưa có điểm thi/dự kiến. Không nhập cũng được; khi đó Phân tích năng lực sẽ hiện “Chưa đủ dữ liệu” thay
+                vì tự suy đoán.
+              </p>
+            ) : (
+              <div className="space-y-2">
+                {examScores.map((row, index) => {
+                  const option = examOptions.find((item) => item.block === row.block)
+                  return (
+                    <div key={index} className="flex flex-wrap items-center gap-2 rounded-md border bg-slate-50/60 p-2.5">
+                      <select
+                        value={row.block}
+                        onChange={(event) =>
+                          setExamScores((prev) =>
+                            prev.map((item, itemIndex) =>
+                              itemIndex === index ? { ...item, block: event.target.value } : item
+                            )
+                          )
+                        }
+                        className="h-9 min-w-[180px] rounded-md border border-input bg-background px-2 text-xs"
+                      >
+                        <option value="">-- Chọn tổ hợp --</option>
+                        {examOptions.map((item) => (
+                          <option key={item.block} value={item.block}>
+                            {item.block} ({item.subjects.join(', ')})
+                          </option>
+                        ))}
+                      </select>
+                      <span className="hidden text-[11px] text-muted-foreground sm:inline">
+                        {option ? option.subjects.join(' + ') : ''}
+                      </span>
+                      <Input
+                        type="number"
+                        min="0"
+                        max="30"
+                        step="0.01"
+                        value={row.score}
+                        onChange={(event) =>
+                          setExamScores((prev) =>
+                            prev.map((item, itemIndex) =>
+                              itemIndex === index ? { ...item, score: event.target.value } : item
+                            )
+                          )
+                        }
+                        placeholder="Tổng 0–30"
+                        className="h-9 w-32 bg-white text-sm"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setExamScores((prev) => prev.filter((_, itemIndex) => itemIndex !== index))}
+                        className="rounded-md p-2 text-muted-foreground hover:bg-red-50 hover:text-destructive"
+                        title="Xoá tổ hợp này"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  )
+                })}
+              </div>
+            )}
+            <Button type="button" variant="outline" size="sm" onClick={handleSaveExamScores} disabled={examSaving}>
+              {examSaving ? <Loader2 className="mr-1.5 h-3.5 w-3.5 animate-spin" /> : <Save className="mr-1.5 h-3.5 w-3.5" />}
+              Lưu điểm thi theo tổ hợp
+            </Button>
           </CardContent>
         </Card>
 

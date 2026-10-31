@@ -62,11 +62,32 @@ export const getRanking = (params) => api.get('/diem-thi/ranking', { params });
 export const getCareerOverview = (params) => api.get('/career/overview', params ? { params } : undefined);
 export const getCareerScores = () => api.get('/career/scores');
 export const saveCareerScores = (scores) => api.put('/career/scores', { scores });
+export const getExamScores = () => api.get('/career/exam-scores');
+export const getExamScoreOptions = () => api.get('/career/exam-score-options');
+export const saveExamScores = (scores) => api.put('/career/exam-scores', { scores });
 export const getCareerSelections = () => api.get('/career/selections');
 export const getCareerTargetOptions = () => api.get('/career/target-options');
 export const addCareerSelection = (selection) => api.post('/career/selections', selection);
 export const removeCareerSelection = (id) => api.delete(`/career/selections/${id}`);
 export const getCareerMajors = (params) => api.get('/career/majors', { params });
 export const getCareerMapData = (params) => api.get('/career/map-data', params ? { params } : undefined);
+export const getCareerBenchmark = (params) => api.get('/career/benchmark', { params });
+export const getCareerRecommendations = (params) =>
+  api.get('/career/recommendations', params ? { params } : undefined);
+
+// Interest discovery
+export const getInterestInstrument = () => api.get('/interest/instrument');
+export const getInterestAttempt = () => api.get('/interest/attempt');
+export const createInterestAttempt = (payload) => api.post('/interest/attempt', payload || {});
+export const updateInterestAttempt = (attemptId, payload) =>
+  api.patch(`/interest/attempt/${attemptId}`, payload || {});
+export const saveInterestResponses = (attemptId, responses) =>
+  api.patch(`/interest/attempt/${attemptId}/responses`, { responses });
+export const submitInterestAttempt = (attemptId, payload) =>
+  api.post(`/interest/attempt/${attemptId}/submit`, payload || {});
+export const getInterestLatestResult = () => api.get('/interest/results/latest');
+export const getInterestResult = (attemptId) => api.get(`/interest/results/${attemptId}`);
+export const deleteInterestAttempt = (attemptId) => api.delete(`/interest/attempt/${attemptId}`);
+export const resetInterest = () => api.post('/interest/reset');
 
 export default api;

@@ -62,6 +62,7 @@ function toPublicUser(row, createdAt) {
     status: row.status || 'active',
     mustChangePassword: Boolean(Number(row.must_change_password || 0)),
     surveyCompleted: Boolean(Number(row.survey_completed || 0)),
+    interestCompleted: Boolean(Number(row.interest_completed || 0)),
     createdAt: createdAt || new Date(Number(row.created_at)).toISOString(),
   };
 }
@@ -120,6 +121,7 @@ router.post('/register', async (req, res, next) => {
           status: 'active',
           mustChangePassword: false,
           surveyCompleted: false,
+          interestCompleted: false,
           createdAt: new Date(now).toISOString(),
         },
       },
@@ -152,7 +154,8 @@ router.post('/login', async (req, res, next) => {
     await getAuthDb();
 
     const row = queryOne(
-      `SELECT id, username, password_hash, created_at, status, must_change_password, survey_completed
+      `SELECT id, username, password_hash, created_at, status, must_change_password, 
+survey_completed, interest_completed
          FROM users
         WHERE username_lower = ?`,
       [validation.usernameLower]
@@ -263,7 +266,7 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
   try {
     await getAuthDb();
     const row = queryOne(
-      'SELECT id, username, password_hash, created_at, survey_completed FROM users WHERE id = ?',
+      'SELECT id, username, password_hash, created_at, survey_completed, interest_completed FROM users WHERE id = ?',
       [req.user.id]
     );
 
@@ -304,6 +307,7 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
           status: 'active',
           mustChangePassword: false,
           surveyCompleted: Boolean(Number(row.survey_completed || 0)),
+          interestCompleted: Boolean(Number(row.interest_completed || 0)),
           createdAt: new Date(Number(row.created_at)).toISOString(),
         },
       },

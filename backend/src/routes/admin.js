@@ -7,6 +7,7 @@ const adminDataRoutes = require('./adminData');
 const adminAuditRoutes = require('./adminAudit');
 const adminSurveyRoutes = require('./adminSurvey');
 const adminCareerRoutes = require('./adminCareer');
+const adminInterestRoutes = require('./adminInterest');
 
 const router = express.Router();
 
@@ -54,6 +55,7 @@ router.use('/data', adminDataRoutes);
 router.use('/audit', adminAuditRoutes);
 router.use('/survey', adminSurveyRoutes);
 router.use('/career', adminCareerRoutes);
+router.use('/interest', adminInterestRoutes);
 
 router.use((req, res) => {
   res.status(404).json({ error: 'Không tìm thấy API quản trị.' });
@@ -74,6 +76,7 @@ router.use((err, req, res, next) => {
     return res.status(err.status).json({
       error: err.message,
       ...(err.code ? { code: err.code } : {}),
+      ...(err.details ? { details: err.details } : {}),
     });
   }
 

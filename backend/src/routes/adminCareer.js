@@ -3,6 +3,7 @@ const { requireAdmin, requireAdminCsrf } = require('../auth/adminSession');
 const { writeAudit } = require('../auth/adminAudit');
 const { getClientIp } = require('../auth/rateLimit');
 const { getRubrics, saveRubric, deleteRubric, seedSampleRubrics } = require('../auth/career');
+const { getMatchConfigRows, updateMatchConfig } = require('../career/match');
 const { queryAll } = require('../database/db');
 const { asyncRoute, parseId } = require('../admin/routeUtils');
 const { HttpError } = require('../admin/errors');
@@ -15,6 +16,32 @@ async function audit(req, action, id, details) {
 }
 
 router.get('/rubrics', asyncRoute(async (req, res) => res.json({ data: getRubrics() })));
+
+router.get('/match-config', asyncRoute(async (req, res) =>
+  res.json({ data: getMatchConfigRows() })
+));
+
+router.put('/match-config', asyncRoute(async (req, res) => {
+  const input = req.body?.config && typeof req.body.config === 'object' ? req.body.config : req.body;
+  let result;
+  try {
+    result = await updateMatchConfig(input || {});
+  } catch (error) {
+    if (error.statusCode) throw new HttpError(error.statusCode, error.message);
+    throw error;
+  }
+  await writeAudit({
+    adminId: req.admin.id,
+    adminUsername: req.admin.username,
+    action: 'admin.career.match_config.update',
+    entity: 'career_match_config',
+    entityId: null,
+    details: { changes: result.changes },
+    ip: getClientIp(req),
+  });
+  return res.json({ data: result });
+}));
+
 router.post('/rubrics/seed', asyncRoute(async (req, res) => {
   const rubrics = await seedSampleRubrics(true);
   await audit(req, 'admin.career_rubric.seed', null, { seededCount: rubrics.length });

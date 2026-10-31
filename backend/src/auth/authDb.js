@@ -10,7 +10,60 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 6;
+const SCHEMA_VERSION = 7;
+
+const INTEREST_WEIGHTS = [
+  {
+    majorGroup: 'Kỹ thuật - Công nghệ',
+    weights: [0.35, 0.35, 0.05, 0.03, 0.07, 0.15],
+    note: 'Nhóm kỹ thuật nghiêng R+I theo mô hình lục giác Holland; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+  {
+    majorGroup: 'Kinh tế - Quản trị',
+    weights: [0.05, 0.15, 0.03, 0.12, 0.35, 0.30],
+    note: 'Nhóm kinh tế nghiêng E+C; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+  {
+    majorGroup: 'Xã hội - Nhân văn',
+    weights: [0.03, 0.14, 0.28, 0.32, 0.18, 0.05],
+    note: 'Nhóm xã hội nghiêng S+A; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+  {
+    majorGroup: 'Y Dược',
+    weights: [0.18, 0.32, 0.03, 0.30, 0.05, 0.12],
+    note: 'Nhóm y dược nghiêng I+S; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+  {
+    majorGroup: 'Sư phạm',
+    weights: [0.04, 0.18, 0.18, 0.38, 0.10, 0.12],
+    note: 'Nhóm sư phạm nghiêng S+A; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+  {
+    majorGroup: 'Nghệ thuật',
+    weights: [0.05, 0.10, 0.50, 0.18, 0.14, 0.03],
+    note: 'Nhóm nghệ thuật có A cao nhất; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+  {
+    majorGroup: 'Luật - Hành chính',
+    weights: [0.04, 0.17, 0.06, 0.18, 0.30, 0.25],
+    note: 'Nhóm luật - hành chính nghiêng E+C; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+  {
+    majorGroup: 'Nông Lâm',
+    weights: [0.38, 0.30, 0.04, 0.08, 0.06, 0.14],
+    note: 'Nhóm nông lâm nghiêng R+I; trọng số do nhóm đề xuất, chưa kiểm định.',
+  },
+];
+
+const CAREER_MATCH_CONFIG = [
+  ['w_hoc_luc', 0.6, 'Trọng số của hocLucFit trong tongHopFit (lựa chọn của nhóm).'],
+  ['w_tinh_cach', 0.4, 'Trọng số của tinhCachFit trong tongHopFit (lựa chọn của nhóm).'],
+  ['matrix_hoc_luc_high', 70, 'Ngưỡng học lực tốt của ma trận 3x2.'],
+  ['matrix_hoc_luc_low', 50, 'Ngưỡng học lực thấp của ma trận 3x2.'],
+  ['matrix_tinh_cach', 65, 'Ngưỡng tính cách hợp của ma trận 3x2.'],
+  ['do_phu_min', 80, 'Độ phủ tối thiểu (%) để tinhCachFit dùng trong tổng thể.'],
+  ['hoc_luc_mode', 0, '0 = công thức phân vị; 1 = legacyFitPct (chỉ dùng để rollback).'],
+];
 
 let db = null;
 let initPromise = null;
@@ -117,6 +170,240 @@ function createAdminSchema(database) {
   );
 }
 
+function execScalar(database, sql, params = []) {
+  const result = database.exec(sql, params);
+  if (!result.length || !result[0].values.length) return null;
+  return result[0].values[0][0];
+}
+
+function createInterestSchema(database) {
+  database.run(`
+    CREATE TABLE IF NOT EXISTS interest_instruments (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      code          TEXT NOT NULL,
+      title         TEXT NOT NULL,
+      description   TEXT,
+      version       INTEGER NOT NULL,
+      status        TEXT NOT NULL DEFAULT 'draft'
+                    CHECK (status IN ('draft','active','archived')),
+      source_note   TEXT,
+      disclaimer    TEXT,
+      part1_item_count INTEGER NOT NULL DEFAULT 60,
+      part2_item_count INTEGER NOT NULL DEFAULT 48,
+      created_at    INTEGER NOT NULL,
+      updated_at    INTEGER NOT NULL,
+      UNIQUE (code, version)
+    );
+    CREATE TABLE IF NOT EXISTS interest_items (
+      id            INTEGER PRIMARY KEY AUTOINCREMENT,
+      instrument_id INTEGER NOT NULL,
+      part          TEXT NOT NULL CHECK (part IN ('riasec','pairs')),
+      group_code    TEXT NOT NULL,
+      item_no       INTEGER NOT NULL,
+      order_index   INTEGER NOT NULL,
+      prompt_text   TEXT,
+      left_text     TEXT,
+      right_text    TEXT,
+      left_key      TEXT,
+      right_key     TEXT,
+      is_active     INTEGER NOT NULL DEFAULT 1,
+      created_at    INTEGER NOT NULL,
+      updated_at    INTEGER NOT NULL,
+      FOREIGN KEY (instrument_id) REFERENCES interest_instruments(id) ON DELETE CASCADE,
+      UNIQUE (instrument_id, part, item_no)
+    );
+    CREATE INDEX IF NOT EXISTS idx_interest_items_order
+      ON interest_items(instrument_id, part, order_index);
+    CREATE TABLE IF NOT EXISTS interest_attempts (
+      id                   INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id              INTEGER NOT NULL,
+      instrument_id        INTEGER NOT NULL,
+      status               TEXT NOT NULL DEFAULT 'draft'
+                           CHECK (status IN ('draft','submitted','abandoned')),
+      giai_doan_hoc_tap    TEXT,
+      cau_hoi_nghe_nghiep  TEXT,
+      notes                TEXT,
+      summary_text         TEXT,
+      started_at           INTEGER NOT NULL,
+      last_saved_at        INTEGER,
+      submitted_at         INTEGER,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (instrument_id) REFERENCES interest_instruments(id)
+    );
+    CREATE INDEX IF NOT EXISTS idx_interest_attempts_user
+      ON interest_attempts(user_id, status);
+    CREATE TABLE IF NOT EXISTS interest_responses (
+      id          INTEGER PRIMARY KEY AUTOINCREMENT,
+      attempt_id  INTEGER NOT NULL,
+      item_id     INTEGER NOT NULL,
+      value       INTEGER NOT NULL,
+      answered_at INTEGER NOT NULL,
+      FOREIGN KEY (attempt_id) REFERENCES interest_attempts(id) ON DELETE CASCADE,
+      FOREIGN KEY (item_id) REFERENCES interest_items(id),
+      UNIQUE (attempt_id, item_id)
+    );
+    CREATE TABLE IF NOT EXISTS interest_results (
+      attempt_id        INTEGER PRIMARY KEY,
+      user_id           INTEGER NOT NULL,
+      instrument_id     INTEGER NOT NULL,
+      algorithm_version TEXT NOT NULL,
+      r REAL, i REAL, a REAL, s REAL, e REAL, c REAL,
+      r_answered INTEGER, i_answered INTEGER, a_answered INTEGER,
+      s_answered INTEGER, e_answered INTEGER, c_answered INTEGER,
+      d_ei REAL, d_sn REAL, d_tf REAL, d_jp REAL,
+      code TEXT,
+      top_groups TEXT,
+      ties TEXT,
+      completeness TEXT NOT NULL,
+      unanswered_count INTEGER NOT NULL DEFAULT 0,
+      computed_at INTEGER NOT NULL,
+      FOREIGN KEY (attempt_id) REFERENCES interest_attempts(id) ON DELETE CASCADE,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_interest_results_user
+      ON interest_results(user_id);
+    CREATE TABLE IF NOT EXISTS interest_group_weights (
+      id           INTEGER PRIMARY KEY AUTOINCREMENT,
+      major_group  TEXT NOT NULL UNIQUE,
+      w_r REAL NOT NULL, w_i REAL NOT NULL, w_a REAL NOT NULL,
+      w_s REAL NOT NULL, w_e REAL NOT NULL, w_c REAL NOT NULL,
+      note         TEXT,
+      is_active    INTEGER NOT NULL DEFAULT 1,
+      updated_at   INTEGER NOT NULL,
+      CHECK (w_r >= 0 AND w_i >= 0 AND w_a >= 0 AND w_s >= 0 AND w_e >= 0 AND w_c >= 0),
+      CHECK (ABS(w_r + w_i + w_a + w_s + w_e + w_c - 1) <= 0.001)
+    );
+    CREATE TABLE IF NOT EXISTS interest_group_pairs (
+      major_group  TEXT PRIMARY KEY,
+      w_e REAL NOT NULL, w_s REAL NOT NULL, w_t REAL NOT NULL, w_j REAL NOT NULL,
+      note         TEXT,
+      updated_at   INTEGER NOT NULL,
+      CHECK (ABS(w_e + w_s + w_t + w_j - 1) <= 0.001)
+    );
+    CREATE TABLE IF NOT EXISTS career_match_config (
+      key        TEXT PRIMARY KEY,
+      value      REAL NOT NULL,
+      note       TEXT,
+      updated_at INTEGER NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS user_exam_scores (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id    INTEGER NOT NULL,
+      block      TEXT NOT NULL,
+      score      REAL NOT NULL CHECK (score >= 0 AND score <= 30),
+      source     TEXT NOT NULL DEFAULT 'tự khai',
+      updated_at INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      UNIQUE (user_id, block)
+    );
+    CREATE INDEX IF NOT EXISTS idx_user_exam_scores_user
+      ON user_exam_scores(user_id);
+  `);
+
+  ensureColumn(database, 'users', 'interest_completed', 'INTEGER NOT NULL DEFAULT 0');
+}
+
+function seedInterestInstrument(database) {
+  const instrument = require('../data/interest_instrument_v1.json');
+  const existingId = execScalar(
+    database,
+    'SELECT id FROM interest_instruments WHERE code = ? AND version = ?',
+    [instrument.code, instrument.version]
+  );
+  if (existingId) return Number(existingId);
+
+  const now = Date.now();
+  database.run(
+    `INSERT INTO interest_instruments
+       (code, title, description, version, status, source_note, disclaimer,
+        part1_item_count, part2_item_count, created_at, updated_at)
+     VALUES (?, ?, ?, ?, ?, ?, ?, 60, 48, ?, ?)`,
+    [
+      instrument.code,
+      instrument.title,
+      instrument.description || null,
+      instrument.version,
+      instrument.status || 'active',
+      instrument.sourceNote || null,
+      instrument.disclaimer || null,
+      now,
+      now,
+    ]
+  );
+  const instrumentId = Number(
+    execScalar(database, 'SELECT last_insert_rowid() AS id')
+  );
+
+  for (const item of instrument.part1) {
+    database.run(
+      `INSERT INTO interest_items
+         (instrument_id, part, group_code, item_no, order_index, prompt_text,
+          is_active, created_at, updated_at)
+       VALUES (?, 'riasec', ?, ?, ?, ?, 1, ?, ?)`,
+      [instrumentId, item.group, item.itemNo, item.orderIndex, item.text, now, now]
+    );
+  }
+  for (const item of instrument.part2) {
+    database.run(
+      `INSERT INTO interest_items
+         (instrument_id, part, group_code, item_no, order_index, left_text, right_text,
+          left_key, right_key, is_active, created_at, updated_at)
+       VALUES (?, 'pairs', ?, ?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+      [
+        instrumentId,
+        item.pair,
+        item.itemNo,
+        item.orderIndex,
+        item.left,
+        item.right,
+        item.leftKey,
+        item.rightKey,
+        now,
+        now,
+      ]
+    );
+  }
+  return instrumentId;
+}
+
+function seedInterestWeights(database) {
+  const now = Date.now();
+  for (const row of INTEREST_WEIGHTS) {
+    database.run(
+      `INSERT OR IGNORE INTO interest_group_weights
+         (major_group, w_r, w_i, w_a, w_s, w_e, w_c, note, is_active, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 1, ?)`,
+      [
+        row.majorGroup,
+        row.weights[0],
+        row.weights[1],
+        row.weights[2],
+        row.weights[3],
+        row.weights[4],
+        row.weights[5],
+        row.note,
+        now,
+      ]
+    );
+  }
+}
+
+function seedCareerMatchConfig(database) {
+  const now = Date.now();
+  for (const [key, value, note] of CAREER_MATCH_CONFIG) {
+    database.run(
+      'INSERT OR IGNORE INTO career_match_config (key, value, note, updated_at) VALUES (?, ?, ?, ?)',
+      [key, value, note, now]
+    );
+  }
+}
+
+function seedInterestDefaults(database) {
+  seedInterestInstrument(database);
+  seedInterestWeights(database);
+  seedCareerMatchConfig(database);
+}
+
 function createSchema(database) {
   database.run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -131,6 +418,7 @@ function createSchema(database) {
       last_login_at        INTEGER,
       must_change_password INTEGER NOT NULL DEFAULT 0,
       survey_completed     INTEGER NOT NULL DEFAULT 0,
+      interest_completed   INTEGER NOT NULL DEFAULT 0,
       deleted_at           INTEGER
     );
   `);
@@ -243,6 +531,8 @@ function createSchema(database) {
   ensureColumn(database, 'career_rubrics', 'entry_score', 'REAL');
 
   createAdminSchema(database);
+  createInterestSchema(database);
+  seedInterestDefaults(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
 }
 
@@ -260,6 +550,15 @@ function verifySchema(database) {
     'career_selections',
     'career_rubrics',
     'career_rubric_subjects',
+    'interest_instruments',
+    'interest_items',
+    'interest_attempts',
+    'interest_responses',
+    'interest_results',
+    'interest_group_weights',
+    'interest_group_pairs',
+    'career_match_config',
+    'user_exam_scores',
   ];
   const missingTables = requiredTables.filter((table) => !tables.includes(table));
 
@@ -274,6 +573,7 @@ function verifySchema(database) {
     'last_login_at',
     'must_change_password',
     'survey_completed',
+    'interest_completed',
     'deleted_at',
   ];
   const userColumns = tables.includes('users') ? getColumnNames(database, 'users') : [];
@@ -336,6 +636,36 @@ function verifySchema(database) {
         'or remove it to recreate it only when account loss is acceptable.'
     );
   }
+
+  const activeInstrumentId = execScalar(
+    database,
+    "SELECT id FROM interest_instruments WHERE status = 'active' ORDER BY version DESC LIMIT 1"
+  );
+  if (!activeInstrumentId) {
+    throw new Error(
+      'Auth database has no active interest instrument. Restore it from backup or seed interest_instrument_v1.'
+    );
+  }
+  const riasecCount = Number(
+    execScalar(
+      database,
+      "SELECT COUNT(*) FROM interest_items WHERE instrument_id = ? AND part = 'riasec' AND is_active = 1",
+      [activeInstrumentId]
+    ) || 0
+  );
+  const pairsCount = Number(
+    execScalar(
+      database,
+      "SELECT COUNT(*) FROM interest_items WHERE instrument_id = ? AND part = 'pairs' AND is_active = 1",
+      [activeInstrumentId]
+    ) || 0
+  );
+  if (riasecCount !== 60 || pairsCount !== 48) {
+    throw new Error(
+      `Active interest instrument ${activeInstrumentId} is incomplete ` +
+        `(${riasecCount} riasec items, ${pairsCount} pairs items; expected 60/48).`
+    );
+  }
 }
 
 function backupBeforeMigration(version) {
@@ -349,7 +679,7 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version >= 1 && version <= 5) {
+  if (version >= 1 && version <= 6) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
@@ -447,16 +777,20 @@ function migrateSchema(database, version) {
       // Nâng cấp lên v4:
       ensureColumn(database, 'users', 'survey_completed', 'INTEGER NOT NULL DEFAULT 0');
 
-      // Đánh dấu các user đã có hồ sơ cá nhân là đã hoàn thành khảo sát
-      database.run(`
-        UPDATE users
-           SET survey_completed = 1
-         WHERE id IN (
-           SELECT user_id FROM user_profiles
-            WHERE (ho_va_ten IS NOT NULL AND TRIM(ho_va_ten) != '')
-               OR (truong_muc_tieu IS NOT NULL AND TRIM(truong_muc_tieu) != '')
-         );
-      `);
+      // Đánh dấu các user đã có hồ sơ cá nhân là đã hoàn thành khảo sát.
+      // Chỉ chạy khi nâng cấp từ v3 trở xuống; v4+ đã có cờ này và v6→v7
+      // không được thay đổi trạng thái khảo sát của người dùng hiện có.
+      if (version <= 3) {
+        database.run(`
+          UPDATE users
+             SET survey_completed = 1
+           WHERE id IN (
+             SELECT user_id FROM user_profiles
+              WHERE (ho_va_ten IS NOT NULL AND TRIM(ho_va_ten) != '')
+                 OR (truong_muc_tieu IS NOT NULL AND TRIM(truong_muc_tieu) != '')
+           );
+        `);
+      }
 
       database.run(`
         CREATE TABLE IF NOT EXISTS survey_questions (
@@ -476,6 +810,11 @@ function migrateSchema(database, version) {
       database.run(
         'CREATE INDEX IF NOT EXISTS idx_survey_questions_order ON survey_questions(order_index, is_active);'
       );
+
+      if (version <= 6) {
+        createInterestSchema(database);
+        seedInterestDefaults(database);
+      }
 
       database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
       database.run('COMMIT');

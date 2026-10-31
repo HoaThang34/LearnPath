@@ -521,7 +521,7 @@ test('auth API integration', async (t) => {
         scores: [
           { subject: 'Toán', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 9.0 },
           { subject: 'Vật lý', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 8.5 },
-          { subject: 'Tiếng Anh', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 8.0 },
+          { subject: 'Hóa học', term: 'Kỳ 1', classLevel: '12', scoreType: 'average', score: 8.0 },
         ],
       },
     });
