@@ -43,6 +43,7 @@ Before reporting completion, read `.agents/TESTING.md`.
   2. **Chỉnh sửa điểm chuẩn** (`diem_chuan`: mã trường, tên trường, ngành, tổ hợp môn, điểm chuẩn, ghi chú, năm, phương thức với gợi ý chuẩn hóa).
   3. **Thêm dữ liệu mới (thêm thủ công)** vào bất kỳ bảng nào trong 5 bảng tuyển sinh (`khoi_thi`, `truong`, `diem_chuan`, `diem_thi_thptqg`, `de_an_tuyen_sinh`).
   Mọi thao tác ghi dữ liệu tuyển sinh đều đi qua engine tuần tự hóa `admissionWrite.js` (giao dịch, `quick_check`, backup tự động, ghi atomic và reload RAM).
+- Admin career config: tab **“Trọng số 12 khối”** trong `/admin_career` sửa trực tiếp trọng số L/H/M của 12 khối (mỗi khối phải dương và tổng = 1 ± 0.002) và mức ưu tiên môn r ∈ {1,2,3,4} của từng dòng. API: `PUT /api/admin/career/group-config/groups`, `PUT /api/admin/career/group-config/priorities`, `GET .../priorities`. Ghi qua `backend/src/career/configStore.js`: validate → backup JSON → ghi atomic → xóa cache; mọi thay đổi có audit. JSON vẫn là nguồn dữ liệu, không đổi schema auth DB. `derive-career-weights.js --write` từ chối ghi đè tệp đã có `updatedAt` trừ khi thêm `--force`.
 - Current admission DB counts: **245 blocks**, 260 schools, 2,617 score rows, 307 proposals, 1,131,975 candidates.
 - The importer now parses **281 blocks** from the source files. The live DB still has 245 until a rebuild is approved.
 - API uses the relative `/api` path; Vite proxies it to the backend. Production needs a reverse proxy, HTTPS, `APP_ORIGIN`, and SPA fallback.
@@ -58,7 +59,7 @@ Before reporting completion, read `.agents/TESTING.md`.
 # Backend
 cd backend
 npm install
-npm test                    # 171 tests: unit + integration on temp DBs
+npm test                    # 206 tests: unit + integration on temp DBs
 npm run dev                 # http://localhost:3001
 
 # Rubric / interest tooling (read-only unless --apply/--write)
@@ -69,6 +70,7 @@ node scripts/normalize-rubrics.js         # dry-run by default
 # Frontend
 cd frontend
 npm install
+npm test                    # 7 tests: bipolar sign rule (B1–B7)
 npm run build               # must pass
 npm run dev                 # http://localhost:5173
 ```
@@ -88,6 +90,8 @@ Invoke-RestMethod "$base/api/auth/logout" -Method Post -WebSession $session
 ```
 
 For isolated auth tests, set `LEARNPATH_AUTH_DB_PATH` to a temporary file before starting the backend. Do not point it at `learnpath.db`; the server rejects that path.
+
+For isolated career-config write tests, point `LEARNPATH_GROUP_WEIGHTS_PATH`, `LEARNPATH_SUBJECT_PRIORITIES_PATH`, and `LEARNPATH_CONFIG_BACKUP_DIR` at temporary paths before starting the backend. Never run write tests against `backend/src/data/career_*.json`.
 
 ```bash
 # One-time admin bootstrap (writes auth.db). For tests, point LEARNPATH_AUTH_DB_PATH at a temp file first.

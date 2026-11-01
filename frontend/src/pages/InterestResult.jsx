@@ -4,6 +4,8 @@ import { AlertCircle, ArrowRight, Loader2, Printer, RotateCcw } from 'lucide-rea
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import InterestChart from '@/components/interest/InterestChart'
+import BipolarAxisChart from '@/components/interest/BipolarAxisChart'
+import { describePair } from '@/lib/bipolar'
 import { getInterestLatestResult, getInterestResult } from '@/lib/api'
 
 function formatDate(value) {
@@ -141,21 +143,18 @@ export default function InterestResult() {
           </p>
         </CardHeader>
         <CardContent>
-          <div className="space-y-2 text-sm">
-            {result.part2.pairs.map((pair) => (
-              <div key={pair.code} className="flex flex-wrap items-center justify-between gap-2 rounded-md border px-3 py-2">
-                <span className="font-medium">
-                  {pair.first} — {pair.second}
-                </span>
-                <span className="text-xs text-muted-foreground">
-                  {pair.d === null
-                    ? 'Chưa đủ dữ liệu'
-                    : pair.d === 0
-                    ? 'D = 0 · cân bằng, giữ kết luận mở'
-                    : `D = ${pair.d > 0 ? '+' : ''}${pair.d} · nghiêng ${pair.lean}`}
-                </span>
-              </div>
-            ))}
+          <div className="space-y-4">
+            <BipolarAxisChart pairs={result.part2.pairs} />
+            <div className="space-y-2 text-sm">
+              {result.part2.pairs.map((pair) => (
+                <div key={pair.code} className="flex flex-wrap items-center justify-between gap-2 rounded-md border px-3 py-2">
+                  <span className="font-medium">
+                    {pair.first} — {pair.second}
+                  </span>
+                  <span className="text-xs text-muted-foreground">{describePair(pair).text}</span>
+                </div>
+              ))}
+            </div>
           </div>
         </CardContent>
       </Card>

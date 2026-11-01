@@ -24,14 +24,14 @@ cd backend
 npm test
 ```
 
-Expected: **170/171 tests pass** with no leftover temp DB. The suite uses a temporary auth DB via `LEARNPATH_AUTH_DB_PATH` and a temporary admission fixture via `LEARNPATH_DB_PATH`; it does not open or write `backend/database/auth.db` or `backend/database/learnpath.db`. `M18` reads the real admission DB read-only when it is present and skips when it is absent.
+Expected: **206/206 tests pass** with no leftover temp DB. The suite uses a temporary auth DB via `LEARNPATH_AUTH_DB_PATH` and a temporary admission fixture via `LEARNPATH_DB_PATH`; it does not open or write `backend/database/auth.db` or `backend/database/learnpath.db`. `M18` reads the real admission DB read-only when it is present and skips when it is absent. `careerGroupFit.test.js` (W1–W14 unit + G1 integration) covers the 12 group weights, the CNTT worked example, the explicit MBTI-profile gap, and the subject-priority L index. `careerConfigWrite.test.js` (U1–U10) and `careerGroupConfig.test.js` cover the admin write path against temporary JSON copies (`LEARNPATH_GROUP_WEIGHTS_PATH`, `LEARNPATH_SUBJECT_PRIORITIES_PATH`, `LEARNPATH_CONFIG_BACKUP_DIR`); they never touch the real data files or `learnpath.db`.
 
 Test files:
 
 | Group | Files | Covers |
 |---|---|---|
-| Unit | `origin`, `password`, `rateLimit`, `session`, `validation`, `interestScoring`, `interestInstrument`, `rubricInvariants`, `careerMatch` | Origin checks, scrypt, rate-limit buckets, cookie parsing, username/password rules, T1–T14, 108-item contract, M-0 invariants, M1–M23 |
-| Integration | `auth`, `admin`, `adminData`, `adminCli`, `interest`, `adminInterest`, `careerRecommendations` | Register/login/forced change, admin auth/CSRF/session, user CRUD, admission CRUD, interest draft/submit/idempotency, admin import/activate/weights/stats/CSV, recommendation null reasons and per-user isolation |
+| Unit | `origin`, `password`, `rateLimit`, `session`, `validation`, `interestScoring`, `interestInstrument`, `rubricInvariants`, `careerMatch`, `careerGroupFit`, `careerConfigWrite` | Origin checks, scrypt, rate-limit buckets, cookie parsing, username/password rules, T1–T14, 108-item contract, M-0 invariants, M1–M23, W1–W14, U1–U10 config validation/atomic writes/backups |
+| Integration | `auth`, `admin`, `adminData`, `adminCli`, `interest`, `adminInterest`, `careerRecommendations`, `careerGroupFit`, `careerGroupConfig` | Register/login/forced change, admin auth/CSRF/session, user CRUD, admission CRUD, interest draft/submit/idempotency, admin import/activate/weights/stats/CSV, recommendation null reasons and per-user isolation, G1, admin group/priority writes + audit |
 | DB | `authDb` | Schema v7 creation, persistence, migration v1/v2/v3/v6→v7, unsafe-path rejection, newer/incomplete schema rejection, instrument seed 60/48 |
 
 Individual groups:
@@ -316,6 +316,22 @@ Current end-to-end result for this procedure: **19 checks passed** on 2026-10-23
 - The user page is `/phan-tich-nang-luc`; the admin rubric page is `/admin_career`. Do not use the real auth DB for test accounts or rubric fixtures.
 - `Thông tin cá nhân` and `/khao-sat` use the same fixed-subject `AcademicScoresEditor`: one class and one common term/type selector, then one score field per subject.
 
+### Bipolar (Phần 2) chart — sign regression
+
+`frontend/src/lib/bipolar.js` holds the only definition of the sign rule (`axisPercent`, `formatD`, `describePair`). `BipolarAxisChart.jsx` and `BipolarBars` must both use it; do not recompute `(D+24)/48` inside a component — that was the original bug (positive `D`, i.e. the first letter E/S/T/J, was drawn on the right).
+
+```bash
+cd frontend
+npm test        # 7 tests: B1–B7
+```
+
+Expected:
+- `+24 → 0 %` (far left), `−24 → 100 %` (far right), `0 → 50 %`.
+- Screenshot values: `E–I D=−9` → 68.75 % (right, nghiêng I); `S–N` and `T–F` `D=0` → 50 % (centre); `J–P D=+2` → 45.83 % (left, nghiêng J).
+- Incomplete pair (`D = null`) renders no marker and the text “Chưa đủ dữ liệu”.
+
+The backend sign is unchanged: `D = Σ(even items) − Σ(odd items)`, `D > 0` → first letter. Changing the frontend geometry must never be “fixed” by flipping the backend formula.
+
 ```bash
 cd frontend
 npm install
@@ -354,11 +370,11 @@ A temporary headless Chrome E2E passed 16 checks in this session, but it is not 
 - [ ] Interest runner autosaves after 800 ms and on stage change; reload resumes the first incomplete stage; unanswered items are never prefilled.
 - [ ] Part 1 uses a 1–5 radiogroup; Part 2 shows both statements and a −2…+2 scale; keyboard 1–5/arrows/Enter work.
 - [ ] Submit with fewer than 8/10 in a group or fewer than 12/12 in a pair returns 409 with missing counts and no data loss.
-- [ ] Result page shows coverage, six bars + radar, four bipolar bars, reflection themes, disclaimer, sources, and print layout.
+- [ ] Result page shows coverage, six bars + radar, the combined bipolar chart (four rows) plus the four pair readings, reflection themes, disclaimer, sources, and print layout.
 - [ ] A partial group is dashed and labelled “thiếu dữ liệu”; a null pair shows “Chưa đủ dữ liệu”, never 0.
 - [ ] Career analysis shows three separate ratios (học lực/tính cách/tổng thể), the 3×2 matrix, and a reason instead of 0 for null components; no “% đỗ” string appears.
 - [ ] Admin `/admin_survey` has the three tabs; import JSON is all-or-nothing with per-line errors; active instruments are read-only; activation archives the old version.
-- [ ] Admin `/admin_career` has the three tabs; weights must sum to 1; match-config validation rejects low ≥ high.
+- [ ] Admin `/admin_career` has the four tabs; weights must sum to 1; match-config validation rejects low ≥ high. In “Trọng số 12 khối”, saving a valid weight triple updates the table and the user `/phan-tich-nang-luc` F values after reload; an invalid total is blocked; “Chuẩn hoá dòng lệch” rescales an off-total row; “Hoàn tác” restores the baseline. In “Ưu tiên môn”, search filters 143 rows, editing r and saving updates the row, and a reload keeps the new value. A save creates a JSON backup in `backend/database/backups/` and an audit row.
 - [ ] Benchmark scores: selecting a method loads rows; invalid/offline backend shows an error.
 - [ ] Benchmark scores: search on page 1 refetches; clearing restores the list; page resets to 1.
 - [ ] Benchmark scores: quickly switching methods never shows the previous method's rows.

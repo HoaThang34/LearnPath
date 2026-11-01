@@ -228,3 +228,14 @@ Admin changes are L3 when they touch auth/session/CSRF, the auth DB schema, the 
 - Config: `/admin_career` → “Tham số tổng thể”. `hoc_luc_mode=1` is a legacy rollback only; the default is 0 (percentile).
 - `hocLucFit` uses `P(T_student) / P(entryScore)`; `pBench` is the upper tail and is never an admission probability.
 - Rubric data changes go through `scripts/audit-rubrics.js`, `scripts/normalize-rubrics.js` (dry-run), and `scripts/reseed-rubrics.js --apply` (backup first). Record the result in `RUBRIC_CHANGELOG.md`.
+
+### Three-component group fit (`F_m = w_L·L + w_H·H + w_M·M`)
+
+1. Edit day-to-day values in `/admin_career` → tab **“Trọng số 12 khối”**:
+   - Group weights are entered as percentages. Every row needs three positive values whose total is 100 % ± 0.2 (the API checks 1 ± 0.002). “Chuẩn hoá dòng lệch” rescales a row; “Hoàn tác” restores the loaded values.
+   - Subject priorities edit only `r` for the subjects already in a row (4 = cốt lõi, 3 = quan trọng, 2 = liên quan, 1 = hỗ trợ). Adding/removing subjects would change the L denominator and is intentionally not supported.
+2. Each save goes through `backend/src/career/configStore.js`: validate → copy the current JSON to `backend/database/backups/` (5 newest per file) → atomic replace → clear the in-process cache. It writes an audit row (`admin.career.group_weights.update` or `admin.career.subject_priorities.update`). A no-op save returns `changed: false` and writes no backup/audit.
+3. The JSON files stay the source of truth: `backend/src/data/career_group_weights.json` and `backend/src/data/career_subject_priorities.json`. Do not hand-edit them while the backend is running.
+4. Regenerating from `edumind_rubrics.json`: `node backend/scripts/derive-career-weights.js` is a dry run; `--write` applies. After an admin edit the file has `updatedAt`, so `--write` refuses until `--force` is passed. Prefer the admin UI, and re-check the 12 published triples after a regeneration.
+5. The MBTI comparison profile (`career_mbti_profile.json`) is **not** editable in the UI. It stays `status = chua_xac_dinh` with `c = null`/`t = null`, so `M_m` and `F_m` are null with an explicit reason instead of an invented number. Only fill it after a reviewed c/t table exists.
+6. Verify: `cd backend && npm test` (206 tests; config-write tests use temp JSON copies via `LEARNPATH_GROUP_WEIGHTS_PATH`, `LEARNPATH_SUBJECT_PRIORITIES_PATH`, `LEARNPATH_CONFIG_BACKUP_DIR`), then reload `/phan-tich-nang-luc` and confirm the new F values. Never point write tests at the real data files or `learnpath.db`.

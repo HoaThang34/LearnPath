@@ -1,0 +1,798 @@
+{
+  "version": 1,
+  "note": "Ánh xạ tên ngành trong edumind_rubrics.json sang 12 khối trọng số. Do nhóm lập theo tên ngành; ngành cùng nền tảng dùng chung khối.",
+  "majors": [
+    {
+      "majorName": "An toàn Thông tin",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Âm nhạc học",
+      "majorGroup": "Nghệ thuật",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Báo chí",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Bảo hiểm",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Bất động sản",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Chăn nuôi",
+      "majorGroup": "Nông Lâm",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Công nghệ May và Thời trang",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Công nghệ Nano",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Công nghệ Ô tô",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Công nghệ Sinh học",
+      "majorGroup": "Y Dược",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Công nghệ Thông tin",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Công nghệ Thực phẩm",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Công tác Xã hội",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "CT TT Kinh tế đối ngoại",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Dịch thuật",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "ngon_ngu",
+      "match": "exact"
+    },
+    {
+      "majorName": "Du lịch",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Dược học",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Địa chất học",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Địa lý",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Điện ảnh",
+      "majorGroup": "Nghệ thuật",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Điện tử Viễn thông",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Điều dưỡng",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Điều khiển học",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Game Design",
+      "majorGroup": "Nghệ thuật",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Giáo dục Mầm non",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "exact"
+    },
+    {
+      "majorName": "Giáo dục Tiểu học",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "exact"
+    },
+    {
+      "majorName": "Hành chính học",
+      "majorGroup": "Luật - Hành chính",
+      "groupCode": "luat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Hệ thống Thông tin",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Hóa học",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Hội họa",
+      "majorGroup": "Nghệ thuật",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kế toán",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kế toán - Kiểm toán",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Khoa học Dữ liệu",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Khoa học Máy tính",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Khoa học Môi trường",
+      "majorGroup": "Nông Lâm",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Khoa học Vũ trụ và Viễn thám",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Khởi nghiệp và Đổi mới Sáng tạo",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Khởi nghiệp Xã hội",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kiểm soát Không lưu",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kiến trúc",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kiến trúc Cảnh quan",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh doanh Quốc tế",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh doanh Thương mại",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh tế",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh tế Chính trị",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh tế Đầu tư",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh tế Nông nghiệp",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh tế quốc tế",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kinh tế Quốc tế",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Cơ điện tử",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Dầu khí",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Điện",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Điện tử - Viễn thông",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Giao thông",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Hàng hải",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Hàng không",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Hạt nhân",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Hóa học",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Môi trường",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Ô tô",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Phần mềm",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Sinh học",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Tài nguyên nước",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Vật liệu",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Xây dựng",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Kỹ thuật Y sinh",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Lâm học",
+      "majorGroup": "Nông Lâm",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Lịch sử",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Logistic và Quản lý Chuỗi cung ứng",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Logistics và Quản lý Chuỗi cung ứng",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Luật",
+      "majorGroup": "Luật - Hành chính",
+      "groupCode": "luat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Luật Kinh tế",
+      "majorGroup": "Luật - Hành chính",
+      "groupCode": "luat",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Mạng Máy tính và Truyền thông Dữ liệu",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Marketing",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Năng lượng Tái tạo",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Nghiên cứu Phát triển",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Ngôn ngữ Anh",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "ngon_ngu",
+      "match": "exact"
+    },
+    {
+      "majorName": "Ngôn ngữ Hàn Quốc",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "ngon_ngu",
+      "match": "exact"
+    },
+    {
+      "majorName": "Ngôn ngữ Nga",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "ngon_ngu",
+      "match": "exact"
+    },
+    {
+      "majorName": "Ngôn ngữ Nhật",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "ngon_ngu",
+      "match": "exact"
+    },
+    {
+      "majorName": "Ngôn ngữ Pháp",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "ngon_ngu",
+      "match": "exact"
+    },
+    {
+      "majorName": "Nông học",
+      "majorGroup": "Nông Lâm",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Nuôi trồng Thủy sản",
+      "majorGroup": "Nông Lâm",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Phục hồi Chức năng",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quan hệ Lao động",
+      "majorGroup": "Luật - Hành chính",
+      "groupCode": "luat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quan hệ Quốc tế",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản lý Bệnh viện",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản lý Đất đai",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản lý Giáo dục",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản lý Nguồn nhân lực",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản lý Nhà nước",
+      "majorGroup": "Luật - Hành chính",
+      "groupCode": "luat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản lý Thể thao",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản trị Du lịch và Lữ hành",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản trị Khách sạn",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản trị kinh doanh",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản trị Kinh doanh",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quản trị Nhà nước và Chính sách",
+      "majorGroup": "Luật - Hành chính",
+      "groupCode": "luat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Quy hoạch Vùng và Đô thị",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Răng Hàm Mặt",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Sinh học",
+      "majorGroup": "Y Dược",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Sư phạm Hóa học",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Sư phạm Sinh học",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Sư phạm Tiếng Anh",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Sư phạm Tin học",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Sư phạm Toán",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Sư phạm Toán học",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Sư phạm Văn",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Sư phạm Vật lý",
+      "majorGroup": "Sư phạm",
+      "groupCode": "su_pham",
+      "match": "prefix"
+    },
+    {
+      "majorName": "Tài chính",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Tài chính - Ngân hàng",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Tài chính Doanh nghiệp",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_te",
+      "match": "exact"
+    },
+    {
+      "majorName": "Tâm lý học",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Thiết kế Đồ họa",
+      "majorGroup": "Nghệ thuật",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Thiết kế Nội thất",
+      "majorGroup": "Nghệ thuật",
+      "groupCode": "nghe_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Thiết kế Vi mạch",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Thống kê",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Thú y",
+      "majorGroup": "Nông Lâm",
+      "groupCode": "nong_lam",
+      "match": "exact"
+    },
+    {
+      "majorName": "Thương mại Quốc tế",
+      "majorGroup": "Kinh tế - Quản trị",
+      "groupCode": "kinh_doanh",
+      "match": "exact"
+    },
+    {
+      "majorName": "Tin học Ứng dụng",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Toán học",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Trí tuệ Nhân tạo",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "cntt",
+      "match": "exact"
+    },
+    {
+      "majorName": "Triết học",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Truyền thông Đa phương tiện",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Văn học",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Vật lý",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "toan_khoa_hoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Vật lý Kỹ thuật",
+      "majorGroup": "Kỹ thuật - Công nghệ",
+      "groupCode": "ky_thuat",
+      "match": "exact"
+    },
+    {
+      "majorName": "Xã hội học",
+      "majorGroup": "Xã hội - Nhân văn",
+      "groupCode": "xa_hoi",
+      "match": "exact"
+    },
+    {
+      "majorName": "Y học Cổ truyền",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Y khoa",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    },
+    {
+      "majorName": "Y tế Công cộng",
+      "majorGroup": "Y Dược",
+      "groupCode": "y_duoc",
+      "match": "exact"
+    }
+  ]
+}

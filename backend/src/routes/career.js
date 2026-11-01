@@ -10,6 +10,9 @@ const { ADMISSION_SUBJECTS, BLOCK_CODES, getBlockSubjects } = require('../career
 const { getExamScores, saveExamScores } = require('../career/examScores');
 const { getComboStats, buildBenchmark } = require('../career/match');
 const { buildRecommendations } = require('../career/recommendations');
+const { getGroupConfig } = require('../career/groupMatch');
+const { getMbtiProfile } = require('../career/mbti');
+const { getPriorityConfig } = require('../career/hocLuc');
 
 const router = express.Router();
 router.use(requireAuth, requirePasswordChanged);
@@ -292,6 +295,24 @@ router.get('/benchmark', async (req, res) => {
       return res.status(404).json({ error: 'Chưa có dữ liệu điểm thi cho tổ hợp này.' });
     }
     return res.json({ data: buildBenchmark(combo, score, stats) });
+  } catch (error) {
+    return sendCareerError(res, error);
+  }
+});
+
+router.get('/group-config', (req, res) => {
+  try {
+    return res.json({
+      data: {
+        groups: getGroupConfig(),
+        mbti: getMbtiProfile(),
+        priorities: getPriorityConfig(),
+        formula: 'F_m = w_L·L_m + w_H·H_m + w_M·M_m (L, H, M trên thang 0–100)',
+        warning:
+          'Trọng số và mức ưu tiên do nhóm đề xuất, chưa kiểm định trên dữ liệu Việt Nam. ' +
+          'F_m là mức đáp ứng yêu cầu của ngành, không phải xác suất trúng tuyển.',
+      },
+    });
   } catch (error) {
     return sendCareerError(res, error);
   }

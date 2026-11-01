@@ -12,6 +12,7 @@
   + Chỉnh sửa đề án tuyển sinh (`de_an_tuyen_sinh`: mã trường, tên trường, nội dung Markdown với tab xem trước, nguồn).
   + Chỉnh sửa điểm chuẩn (`diem_chuan`: mã trường, tên trường, ngành, tổ hợp môn, điểm chuẩn, ghi chú, năm, phương thức xét tuyển).
   + Thêm dữ liệu mới (thêm thủ công) cho toàn bộ 5 bảng dữ liệu tuyển sinh (`khoi_thi`, `truong`, `diem_chuan`, `diem_thi_thptqg`, `de_an_tuyen_sinh`).
+  + Chỉnh sửa trọng số ba thành phần của 12 khối ngành (L/H/M) và mức ưu tiên môn r ∈ {1,2,3,4} trong tab “Trọng số 12 khối” của `/admin_career`; ghi JSON có backup + audit, không đổi schema auth DB.
   Home and auth pages are public; accounts, sessions, admins, and audit live in a separate auth DB. Normal users cannot access admin APIs.
 - **Out of scope for now**: application submission, admission-probability prediction, multi-year comparison, self-service password reset, email verification, MFA/TOTP, admin MFA.
 
@@ -54,7 +55,7 @@ Notes:
 | Auth DB | `backend/database/auth.db` (small, auto-created if missing, not committed; present with real data, schema v7), writable |
 | Import | `backend/src/database/init.js` |
 | Auth | Custom username/password; Node `crypto` scrypt; server-side sessions; separate admin auth/CSRF/audit; `sql.js` auth DB; user profile |
-| Tests / lint / CI | Committed backend `node:test` suite (171 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |
+| Tests / lint / CI | Committed backend `node:test` suite (206 tests) + GitHub Actions (tests/build/audit); lint and E2E not committed |
 
 Runtime facts:
 
@@ -66,7 +67,17 @@ Runtime facts:
 - The auth DB schema is versioned with `PRAGMA user_version = 7`; older versions are migrated with a backup. An incompatible or incomplete auth DB stops startup.
 - Interest module: 108 items (60 RIASEC + 48 pairs) seeded from `backend/src/data/interest_instrument_v1.json`; scoring is pure and versioned. Pair items store `leftKey`/`rightKey` per row; odd items put the first letter on the left, even on the right. Missing answers are not zero.
 - Career match: `hocLucFit` uses the percentile of the student's self-reported exam total against the national distribution; `tinhCachFit` is histogram intersection over complete RIASEC groups; `tongHopFit` is the weighted pair and is null if either component is null. `pBench` is the share of candidates at or above a total and is never an admission probability.
+- Three-component major-group fit (added 2026-11-01): `F_m = w_L,g·L_m + w_H,g·H_m + w_M,g·M_m`, all three on a 0–100 scale.
+  - `L_m` = `10 × Σ a_mj·x_j` with `a_mj = r_mj / Σ r_mj` and `r ∈ {4 cốt lõi, 3 quan trọng, 2 liên quan, 1 hỗ trợ}` per subject (`backend/src/career/hocLuc.js`; data in `career_subject_priorities.json`, 143 rows matching 143 valid rubric rows 1:1).
+  - `H_m` reuses `tinhCachFit`.
+  - `M_m = 50·(1 + Σ c·t·x / Σ c)` with `x = D/24` (`backend/src/career/mbti.js`). The per-major `c`/`t` profile is **not invented**: `career_mbti_profile.json` has `status = chua_xac_dinh`, so `M_m = null` with reason `thieu_ho_so_mbti` until a reviewed profile exists.
+  - Weights come from pairwise matrices normalised by the row geometric mean (Crawford–Williams/RAND) and live in `career_group_weights.json` (12 groups; CNTT = 0.54994561 / 0.24021087 / 0.20984352, so +20 M points adds 4.1969). All config files are produced by `backend/scripts/derive-career-weights.js` (dry-run by default, `--write` to apply); after an admin edit, `--write` refuses to overwrite `career_group_weights.json` or `career_subject_priorities.json` unless `--force` is passed.
+  - A missing component keeps `groupFit` null and exposes `groupFitPartial` (re-normalised over the present weights), `groupFitCoverage`, `groupFitMissing` and `groupReasons`. The legacy `reasons` array is unchanged.
+  - `GET /api/career/group-config` (user) and `GET /api/admin/career/group-config` (admin) return the 12 groups, the MBTI profile state and the priority config; the admin panel shows them in the “Trọng số 12 khối” tab. Admin writes: `PUT /api/admin/career/group-config/groups` (partial list of `{ code, wHocLuc, wHolland, wMbti }`; each triple positive, sum 1 ± 0.002) and `PUT /api/admin/career/group-config/priorities` (`{ key, priorities: { subject: r } }`; same subject set, integer r 1–4); `GET /api/admin/career/group-config/priorities` lists all 143 rows with an opaque `key`. Writes go through `backend/src/career/configStore.js`: validate → JSON backup in `backend/database/backups/` (5 newest per file) → atomic replace → `clearCache()` → audit (`admin.career.group_weights.update`, `admin.career.subject_priorities.update`). The JSON files remain the source of truth; the auth DB schema is unchanged. A no-op save returns `changed: false` and writes no audit row.
+- Display fix: the bipolar MBTI bar used `(D+24)/48`, which put a positive `D` (first letter) on the right. It is now `100·(24−D)/48` with the first letter on the left; the backend `D = Σ(even) − Σ(odd)` sign is unchanged.
+- Bipolar charts (2026-11-01): `frontend/src/lib/bipolar.js` is the single source for the sign rule (`axisPercent`, `formatD`, `describePair`). `BipolarAxisChart.jsx` renders one combined diverging chart for all four pairs on the result page (left = first letter/+24, right = second letter/−24, centre = 0, D column with the lean); `BipolarBars` in `InterestChart.jsx` reuses the same helpers. Regression test `frontend/test/bipolar.test.js` (B1–B7) pins `+24 → 0 %`, `−24 → 100 %`, and the screenshot values (`E–I D=−9` right, `S–N`/`T–F` centre, `J–P D=+2` left). Run with `cd frontend && npm test`.
 - M-0 normalized `edumind_rubrics.json`: 143 valid rubrics, 2 excluded (`entryScore > 30`), thresholds ≤ 10 and summing to `entryScore`; see `RUBRIC_CHANGELOG.md`.
+- Rubric-derived set counts (verified 2026-11-01): 143 valid rows, 132 distinct major names, 141 distinct school–major pairs, 19 distinct normalised subject-weight multisets, 62 distinct (subject, weight) sets. The “79 bộ trọng số” figure in the brief is **not reproducible** from the current rubric file (see KI-26).
 - Default user cookie: `lp_session`, HttpOnly, SameSite=Lax, Path=/, 7 days, `Secure` when `NODE_ENV=production`.
 - Default admin cookie: `lp_admin_session` (`__Host-lp_admin_session` in production), HttpOnly, SameSite=Strict, Path=/, 8 h absolute/30 min idle, `Secure` in production.
 - If behind a trusted reverse proxy, set `TRUST_PROXY=1`; otherwise leave it unset to avoid spoofed client IPs.
@@ -150,7 +161,7 @@ Details and status: `KNOWN_ISSUES.md`.
 - Forced password change, locked/deleted user handling, and session revocation are implemented.
 - A hidden admin panel is implemented: separate admin auth/CSRF/session policy, overview, user management (create/bulk/edit/lock/unlock/restore/reset/soft delete), admission CRUD on all five tables, and an audit log.
 - Admin data writes use a serialized engine with backup, transaction, `quick_check`, atomic save, reload, and write-block on failure. Backups are capped at 5.
-- Auth verification passed: 171/171 backend tests; admin E2E smoke on temp DBs; production cookie flags.
+- Auth verification passed: 206/206 backend tests; admin E2E smoke on temp DBs; production cookie flags.
 - Frontend build passes: main JS ~1,249 kB (gzip ~369 kB); `InterestRunner` and `InterestResult` are lazy chunks; `AdminPage` ~121 kB. The >500 kB main-chunk warning remains (KI-11).
 - Main pages have error states instead of empty catches.
 - Pagination is validated and returns 400 for invalid values.

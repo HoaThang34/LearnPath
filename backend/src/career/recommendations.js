@@ -4,6 +4,9 @@ const { getAcademicScores, getCareerSelections, getRubrics, calculateCareerFit, 
 const { getExamScoreMap } = require('./examScores');
 const { getBlockSubjects } = require('./subjects');
 const { getLatestResult } = require('../interest/store');
+const { findPriorityRow, hocLucSubjectFit } = require('./hocLuc');
+const { mbtiFit } = require('./mbti');
+const { groupFit } = require('./groupMatch');
 const {
   getWeightsMap,
   getMatchConfig,
@@ -95,6 +98,10 @@ async function buildRecommendations(userId, query = {}) {
     }
   }
 
+  // Three-component model (L = học lực, H = Holland, M = MBTI). M is computed
+  // once because the interest result does not depend on the major.
+  const mbti = mbtiFit({ result: interest });
+
   const rows = [];
   for (const [id, rubricRows] of grouped) {
     const rubric = rubricRows[0];
@@ -141,6 +148,30 @@ async function buildRecommendations(userId, query = {}) {
     const matrix = matrixCell(hoc.value, tinh, config);
 
     const reasons = [...hoc.reasons, ...tinh.reasons, ...tong.reasons];
+
+    // --- Three-component major-group fit (F_m) -----------------------------
+    // L uses the per-major subject priorities; H reuses tinhCachFit; M is the
+    // MBTI comparison term. Missing components stay null and are surfaced.
+    const { row: priorityRow, matchedBy: priorityMatch } = findPriorityRow({
+      schoolCode: rubric.schoolCode,
+      majorName: rubric.majorName,
+      admissionBlock: rubric.admissionBlock,
+      method: rubric.method,
+      year: rubric.year,
+      entryScore,
+    });
+    const hocSubject = hocLucSubjectFit({ row: priorityRow, scores: academicScoreBySubject });
+    const group = groupFit({
+      majorName: rubric.majorName,
+      hocLuc: hocSubject.value,
+      holland: tinh.value,
+      mbti: mbti.value,
+    });
+    // Keep the new model's reasons separate from the legacy `reasons` array so
+    // the existing API contract (and its "reasons.length === 0" invariant on a
+    // fully-scored rubric) does not change.
+    const groupReasons = unique([...hocSubject.reasons, ...group.reasons]);
+
     let pBenchValue = null;
     if (rubric.method === 'Điểm thi THPT') {
       if (tStudent !== null && stats) pBenchValue = pBench(tStudent, stats);
@@ -177,6 +208,22 @@ async function buildRecommendations(userId, query = {}) {
       pStudent: hoc.pStudent ?? null,
       pEntry: hoc.pEntry ?? null,
       legacyFitPct,
+      // Three-component model
+      hocLucIndex: hocSubject.value,
+      hocLucIndexCoverage: hocSubject.coveragePct,
+      hocLucIndexWeights: hocSubject.weights,
+      hocLucIndexSource: priorityRow ? priorityMatch : null,
+      hollandIndex: tinh.value,
+      mbtiIndex: mbti.value,
+      mbtiStatus: mbti.status,
+      groupCode: group.groupCode,
+      groupLabel: group.groupLabel,
+      groupFit: group.value,
+      groupFitPartial: group.partialValue,
+      groupFitCoverage: group.coverageWeight,
+      groupFitContributions: group.contributions,
+      groupFitMissing: group.missing,
+      groupReasons,
       reasons: unique(reasons),
       isTarget: targetKeys.has(selection),
       isPinned: pinnedKeys.has(selection),
@@ -204,6 +251,7 @@ async function buildRecommendations(userId, query = {}) {
     warning:
       'Điểm chuẩn hiển thị là dữ liệu năm 2025; ba tỉ lệ phù hợp là mức đáp ứng yêu cầu của ngành, ' +
       'không phải xác suất trúng tuyển.',
+    mbti,
     config: {
       w_hoc_luc: config.w_hoc_luc,
       w_tinh_cach: config.w_tinh_cach,

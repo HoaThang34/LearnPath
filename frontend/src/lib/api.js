@@ -74,6 +74,7 @@ export const getCareerMapData = (params) => api.get('/career/map-data', params ?
 export const getCareerBenchmark = (params) => api.get('/career/benchmark', { params });
 export const getCareerRecommendations = (params) =>
   api.get('/career/recommendations', params ? { params } : undefined);
+export const getCareerGroupConfig = () => api.get('/career/group-config');
 
 // Interest discovery
 export const getInterestInstrument = () => api.get('/interest/instrument');

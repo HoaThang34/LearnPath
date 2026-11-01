@@ -44,4 +44,5 @@ backend/database/*.db
 # Auth DB migration backups contain real password hashes; never commit them
 backend/database/*.db.v*-backup-*
 backend/database/*.pre-m0-*
+backend/database/backups/
 backend/src/data/*.before-m0-*

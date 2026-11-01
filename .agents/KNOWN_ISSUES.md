@@ -39,6 +39,7 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | KI-23 | P2 | Admin/ops | Admin panel is single-process; writes block on reload failure; MFA absent | Open |
 | KI-24 | P1 | Auth DB state | Real `auth.db` was migrated v1→v2 outside the test suite; 0 admins | Mitigated |
 | KI-25 | P2 | Performance | First `/api/career/recommendations` request scans `diem_thi_thptqg` per rubric combo; cached 10 min | Open |
+| KI-26 | P3 | Docs/data | The brief's “79 bộ trọng số môn” is not reproducible; measured 62 (subject, weight) sets | Open |
 
 ## Data snapshot
 
@@ -61,7 +62,7 @@ Temporary import with the fixed code (`LEARNPATH_DB_PATH`):
 Auth/admin verification (2026-10-23):
 
 - Temporary auth and admission DBs only for tests/smoke; the real `backend/database/learnpath.db` hash stayed unchanged.
-- Backend suite: 171/171 tests passed (auth, admin auth/CSRF/session, user CRUD, admission CRUD, CLI, schema v7/migration).
+- Backend suite: 206/206 tests passed (auth, admin auth/CSRF/session, user CRUD, admission CRUD, CLI, schema v7/migration, three-component group fit, career config writes).
 - Admin E2E smoke: 19 checks passed (login/CSRF, user create/login/forced change, data CRUD, bulk, lock/unlock, audit redaction, logout) on temp DBs.
 - Headless Chrome E2E from the auth session: 16 checks passed (redirects, register confirmation, cookie/storage, reload, logout, login, mobile menu, console).
 - Production cookie flags and clear-cookie flags matched.
@@ -378,6 +379,32 @@ touch `learnpath.db` on disk.
 
 **Remediation**: precompute the histograms/totals at startup or persist per-combo stats in a small table.
 Until then, avoid calling `/api/career/recommendations` in tight loops and keep the 10-minute TTL.
+
+## KI-26 — The “79 bộ trọng số môn” figure is not reproducible (Open)
+
+The change brief states that the rubric file yields 145 school–major rows, 132 major names and **79 distinct
+subject-weight sets**. The first two match `backend/src/data/edumind_rubrics.json`; the third does not.
+
+Measured on 2026-11-01 over the 143 valid rows (`isValid !== false`):
+
+| Definition | Count |
+|---|---|
+| Distinct (subject, weight) sets | 62 |
+| Distinct weight multisets (weight only, sorted) | 19 |
+| Distinct (subject, priority `r`) sets | 40 |
+| Distinct major names | 132 |
+| Distinct school–major pairs | 141 |
+| Valid rubric rows | 143 (145 total, 2 excluded) |
+
+A brute-force scan over integer/half-step quantization (0,025 · 0,05 · 0,1 · 0,2), ordered vs sorted, with and
+without subject names, thresholds, admission block, major group and major name never produced 79. The real
+import also reports **62** distinct weight sets, not 79.
+
+**Impact**: none on the implemented model. `L_m` uses per-subject priorities (4/3/2/1) and matches all 143 rows
+1:1; the group weights are independent of this count. Only the written claim in the brief is unsupported.
+
+**Remediation**: ask the brief's author which definition produces 79 (e.g. a different rubric snapshot, a
+filter on `isValid`, or a grouping by major family). Until then, documents cite the measured counts above.
 
 ## Out of scope / not changed
 

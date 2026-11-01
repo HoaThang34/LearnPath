@@ -7,6 +7,7 @@ import {
   ResponsiveContainer,
 } from 'recharts'
 import { cn } from '@/lib/utils'
+import { axisPercent, describePair } from '@/lib/bipolar'
 
 function groupTone(group, topGroups) {
   if (group.status !== 'complete') return 'border-dashed border-slate-300 bg-slate-50 text-slate-500'
@@ -47,20 +48,17 @@ export function BipolarBars({ pairs = [] }) {
   return (
     <div className="space-y-3">
       {pairs.map((pair) => {
-        const percent = pair.d === null ? null : ((Number(pair.d) + 24) / 48) * 100
+        // Sign rule lives in @/lib/bipolar: D > 0 leans to the first letter,
+        // which is drawn on the LEFT (+24 → 0 %, −24 → 100 %).
+        const percent = axisPercent(pair.d)
+        const reading = describePair(pair)
         return (
           <div key={pair.code} className="rounded-lg border p-3">
             <div className="flex items-center justify-between gap-2 text-xs">
               <span className="font-semibold">
                 {pair.first} — {pair.second}
               </span>
-              <span className="text-muted-foreground">
-                {pair.d === null
-                  ? 'Chưa đủ dữ liệu'
-                  : pair.d === 0
-                  ? 'D = 0 · cân bằng'
-                  : `D = ${pair.d > 0 ? '+' : ''}${pair.d} · nghiêng ${pair.lean}`}
-              </span>
+              <span className="text-muted-foreground">{reading.text}</span>
             </div>
             <div className="relative mt-2 h-2 rounded-full bg-slate-100">
               <div className="absolute left-1/2 top-0 h-full w-px bg-slate-400" aria-hidden="true" />
@@ -72,8 +70,8 @@ export function BipolarBars({ pairs = [] }) {
               )}
             </div>
             <div className="mt-1 flex justify-between text-[10px] text-muted-foreground">
-              <span>{pair.first} · −24</span>
-              <span>{pair.second} · +24</span>
+              <span>{pair.first} · +24</span>
+              <span>{pair.second} · −24</span>
             </div>
           </div>
         )
@@ -116,7 +114,6 @@ export default function InterestChart({ groups = [], pairs = [], topGroups = [] 
         </p>
       )}
       <GroupBars groups={groups} topGroups={topGroups} />
-      <BipolarBars pairs={pairs} />
     </div>
   )
 }

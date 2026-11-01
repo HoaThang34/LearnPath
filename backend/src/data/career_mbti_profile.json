@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "status": "chua_xac_dinh",
+  "note": "Hồ sơ đối chiếu bốn trục MBTI theo ngành CHƯA được xác định. Không tự gán \"CNTT phải hướng nội\" hay \"ngôn ngữ phải hướng ngoại\". Khi các giá trị c (mức liên quan) và t (+1/−1, hướng đối chiếu) được thẩm định, điền vào đây; module career/mbti.js sẽ tự động tính M_m và đưa vào công thức F_m. Cho tới lúc đó M_m = null (lý do thieu_ho_so_mbti) và F_m = null khi cần M.",
+  "formula": "x_k = D_k / 24 ; M_m = 50 × (1 + Σ_k c_mk·t_mk·x_k / Σ_k c_mk)",
+  "axes": [
+    {
+      "code": "EI",
+      "first": "E",
+      "second": "I",
+      "title": "Hướng ngoại – Hướng nội",
+      "c": null,
+      "t": null
+    },
+    {
+      "code": "SN",
+      "first": "S",
+      "second": "N",
+      "title": "Giác quan – Trực giác",
+      "c": null,
+      "t": null
+    },
+    {
+      "code": "TF",
+      "first": "T",
+      "second": "F",
+      "title": "Lý trí – Cảm xúc",
+      "c": null,
+      "t": null
+    },
+    {
+      "code": "JP",
+      "first": "J",
+      "second": "P",
+      "title": "Nguyên tắc – Linh hoạt",
+      "c": null,
+      "t": null
+    }
+  ]
+}

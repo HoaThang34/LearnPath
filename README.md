@@ -8,7 +8,7 @@ Website giúp học sinh THPT tra cứu đề án tuyển sinh, điểm chuẩn,
 
 - **Tài khoản** — đăng ký bằng tên đăng nhập + mật khẩu nhập hai lần, đăng nhập/đăng xuất, đổi mật khẩu; các trang tính năng, hồ sơ và API dữ liệu yêu cầu đăng nhập.
 - **Thông tin cá nhân** — quản lý hồ sơ học sinh: Họ và tên, lớp, trường, điểm các môn trên lớp (tự do thêm môn và điểm), chứng chỉ đạt được (TSA, HSA, V-ACT, IELTS...), mục tiêu trường/ngành, tổ hợp thi 3 môn THPTQG mong muốn, ghi chú freestyle (sở thích, tính cách).
-- **Quản trị** — khu vực ẩn `/admin` với đăng nhập quản trị riêng; chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn, thêm dữ liệu mới thủ công vào cả 5 bảng tuyển sinh, quản lý tài khoản (khóa, xóa mềm, khôi phục, đặt lại mật khẩu, tạo hàng loạt) và nhật ký thao tác.
+- **Quản trị** — khu vực ẩn `/admin` với đăng nhập quản trị riêng; chỉnh sửa đề án tuyển sinh, chỉnh sửa điểm chuẩn, thêm dữ liệu mới thủ công vào cả 5 bảng tuyển sinh, chỉnh trọng số 12 khối ngành và mức ưu tiên môn trong `/admin_career`, quản lý tài khoản (khóa, xóa mềm, khôi phục, đặt lại mật khẩu, tạo hàng loạt) và nhật ký thao tác.
 - **Đề án tuyển sinh** — 307 đề án Markdown, tìm theo trường, xem nội dung + mục lục.
 - **Điểm chuẩn** — 2.617 dòng theo 5 phương thức: THPT, ĐGNL HSA, ĐGTD TSA, ĐGNL V-ACT, SAT.
 - **Khối thi** — 245 khối trong DB hiện tại; mã import mới đọc được 281 khối từ nguồn, chờ rebuild; xem trường và ngành theo khối, so sánh tối đa 5 ngành.
@@ -209,6 +209,10 @@ Tất cả nằm dưới `/api/admin`, yêu cầu cookie admin riêng. Request t
 | GET/PATCH/DELETE | `/api/admin/data/:table/:id` | Chi tiết, sửa, xóa; hỗ trợ `force` sau cảnh báo phụ thuộc |
 | GET | `/api/admin/audit` | Nhật ký quản trị (lọc action/admin/thời gian) |
 | GET/PUT/DELETE | `/api/admin/career/rubrics` | Quản trị rubric tuyển sinh; tổng trọng số phải bằng 1 |
+| GET | `/api/admin/career/group-config` | Trọng số L/H/M của 12 khối, trạng thái hồ sơ MBTI, bản tóm tắt ưu tiên môn |
+| GET | `/api/admin/career/group-config/priorities` | Danh sách 143 dòng ưu tiên môn kèm khóa dòng |
+| PUT | `/api/admin/career/group-config/groups` | Sửa trọng số L/H/M; mỗi khối dương và tổng = 1 ± 0,002 |
+| PUT | `/api/admin/career/group-config/priorities` | Sửa mức r ∈ {1,2,3,4} của một dòng ưu tiên môn |
 
 Chi tiết query, response và lỗi: [`.agents/ARCHITECTURE.md`](.agents/ARCHITECTURE.md).
 
@@ -227,7 +231,7 @@ Chi tiết query, response và lỗi: [`.agents/ARCHITECTURE.md`](.agents/ARCHIT
 - Ghi dữ liệu tuyển sinh qua admin được tuần tự hóa: backup trước lần ghi đầu tiên (và trước thao tác xóa), transaction, `PRAGMA quick_check`, ghi file atomic, reload; lỗi sẽ chặn ghi để bảo vệ DB. Backup nằm trong `backend/database/backups/`, giữ tối đa 5 bản.
 - Đăng ký trùng tên trả `409` (có thể dùng để dò tên tồn tại); lỗi đăng nhập luôn chung chung.
 - Chưa có: quên mật khẩu tự phục vụ, xác minh email, MFA/TOTP, CAPTCHA, CSP.
-- Kiểm thử backend: `cd backend && npm test` (78 test, dùng auth DB và DB tuyển sinh tạm; không cần DB thật). CI ở `.github/workflows/ci.yml` chạy test, build frontend và audit không chặn.
+- Kiểm thử backend: `cd backend && npm test` (206 test, dùng auth DB và DB tuyển sinh tạm; không cần DB thật). CI ở `.github/workflows/ci.yml` chạy test, build frontend và audit không chặn.
 - Sao lưu `backend/database/auth.db` nếu cần giữ tài khoản/admin. Production bắt buộc HTTPS, đặt `APP_ORIGIN` đúng origin thật, đổi `ADMIN_CSRF_SECRET`/`ADMIN_IP_HASH_SECRET`, và không dùng `TRUST_PROXY=1` nếu proxy không tin cậy.
 
 ## Dữ liệu

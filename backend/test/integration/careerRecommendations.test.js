@@ -189,6 +189,16 @@ test('career recommendations use only the current user and expose null reasons',
   assert.equal(aEng.matrixCell, 1);
   assert.equal(aEng.reasons.length, 0);
 
+  // Three-component model: synthetic rubrics are not in the priority/mapping
+  // files, so every new field degrades explicitly instead of inventing a score.
+  assert.equal(aEng.groupFit, null);
+  assert.ok(aEng.groupReasons.includes('khong_xac_dinh_duoc_khoi'));
+  assert.ok(aEng.groupReasons.includes('khong_co_bo_trong_so'));
+  assert.equal(aEng.mbtiIndex, null);
+  assert.equal(aEng.mbtiStatus, 'chua_xac_dinh');
+  assert.equal(a.mbti.value, null);
+  assert.equal(a.mbti.determined, false);
+
   const sat = a.data.find((row) => row.majorName === 'Ngành SAT');
   assert.ok(sat);
   assert.notEqual(sat.hocLucFit, null);

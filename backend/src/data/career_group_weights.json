@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "method": "So sánh cặp giữa ba thành phần (học lực L, Holland H, MBTI M) theo thang Saaty 1–9 và nửa bước 1,5; trọng số là trung bình nhân từng hàng sau chuẩn hoá. Nguồn phương pháp: Crawford–Williams, RAND. Các mức ưu tiên là giả định của nhóm, phương pháp không tự chứng minh chúng đúng.",
+  "note": "Cả ba thành phần dùng thang 0–100. Trọng số dương ở mọi khối; MBTI có tác động thực nhưng chưa tính được điểm M khi thiếu hồ sơ đối chiếu c/t theo ngành.",
+  "groups": [
+    {
+      "code": "cntt",
+      "label": "CNTT – dữ liệu – AI",
+      "riasecGroup": "Kỹ thuật - Công nghệ",
+      "judgments": {
+        "hocLucVsHolland": 2,
+        "hocLucVsMbti": 3,
+        "hollandVsMbti": 1
+      },
+      "wHocLuc": 0.54994561,
+      "wHolland": 0.24021087,
+      "wMbti": 0.20984352,
+      "note": "Học lực so với Holland 2:1; học lực so với MBTI 3:1; Holland so với MBTI 1:1. Ví dụ của nhóm, chưa kiểm định."
+    },
+    {
+      "code": "ky_thuat",
+      "label": "Kỹ thuật – công nghiệp",
+      "riasecGroup": "Kỹ thuật - Công nghệ",
+      "judgments": {
+        "hocLucVsHolland": 3,
+        "hocLucVsMbti": 5,
+        "hollandVsMbti": 2
+      },
+      "wHocLuc": 0.64832901,
+      "wHolland": 0.22965079,
+      "wMbti": 0.12202019,
+      "note": "Học lực 3:1 Holland, 5:1 MBTI, Holland 2:1 MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "toan_khoa_hoc",
+      "label": "Toán – thống kê – khoa học cơ bản/sự sống",
+      "riasecGroup": "Kỹ thuật - Công nghệ",
+      "judgments": {
+        "hocLucVsHolland": 1,
+        "hocLucVsMbti": 8,
+        "hollandVsMbti": 1
+      },
+      "wHocLuc": 0.57142857,
+      "wHolland": 0.28571429,
+      "wMbti": 0.14285714,
+      "note": "Học lực ngang Holland, gấp 8 lần MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "y_duoc",
+      "label": "Y – dược – sức khỏe",
+      "riasecGroup": "Y Dược",
+      "judgments": {
+        "hocLucVsHolland": 3,
+        "hocLucVsMbti": 4,
+        "hollandVsMbti": 1
+      },
+      "wHocLuc": 0.63370792,
+      "wHolland": 0.19192062,
+      "wMbti": 0.17437146,
+      "note": "Học lực 3:1 Holland, 4:1 MBTI, Holland ngang MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "kinh_te",
+      "label": "Kinh tế – tài chính – kế toán",
+      "riasecGroup": "Kinh tế - Quản trị",
+      "judgments": {
+        "hocLucVsHolland": 3,
+        "hocLucVsMbti": 3,
+        "hollandVsMbti": 1
+      },
+      "wHocLuc": 0.6,
+      "wHolland": 0.2,
+      "wMbti": 0.2,
+      "note": "Học lực gấp 3 lần cả Holland và MBTI; Holland ngang MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "kinh_doanh",
+      "label": "Kinh doanh – quản trị – dịch vụ",
+      "riasecGroup": "Kinh tế - Quản trị",
+      "judgments": {
+        "hocLucVsHolland": 1,
+        "hocLucVsMbti": 2,
+        "hollandVsMbti": 2
+      },
+      "wHocLuc": 0.4,
+      "wHolland": 0.4,
+      "wMbti": 0.2,
+      "note": "Học lực ngang Holland, gấp 2 lần MBTI; Holland gấp 2 lần MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "luat",
+      "label": "Luật – hành chính – chính sách công",
+      "riasecGroup": "Luật - Hành chính",
+      "judgments": {
+        "hocLucVsHolland": 2,
+        "hocLucVsMbti": 2,
+        "hollandVsMbti": 1
+      },
+      "wHocLuc": 0.5,
+      "wHolland": 0.25,
+      "wMbti": 0.25,
+      "note": "Học lực gấp 2 lần Holland và MBTI; Holland ngang MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "ngon_ngu",
+      "label": "Ngôn ngữ – biên phiên dịch",
+      "riasecGroup": "Xã hội - Nhân văn",
+      "judgments": {
+        "hocLucVsHolland": 1,
+        "hocLucVsMbti": 6,
+        "hollandVsMbti": 1
+      },
+      "wHocLuc": 0.53961455,
+      "wHolland": 0.29696133,
+      "wMbti": 0.16342412,
+      "note": "Học lực ngang Holland, gấp 6 lần MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "xa_hoi",
+      "label": "Xã hội – nhân văn – tâm lý – truyền thông",
+      "riasecGroup": "Xã hội - Nhân văn",
+      "judgments": {
+        "hocLucVsHolland": 1,
+        "hocLucVsMbti": 1.5,
+        "hollandVsMbti": 1.5
+      },
+      "wHocLuc": 0.375,
+      "wHolland": 0.375,
+      "wMbti": 0.25,
+      "note": "Ba thành phần gần nhau: học lực = Holland > MBTI (1,5:1). Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "su_pham",
+      "label": "Sư phạm – giáo dục",
+      "riasecGroup": "Sư phạm",
+      "judgments": {
+        "hocLucVsHolland": 1,
+        "hocLucVsMbti": 3,
+        "hollandVsMbti": 1
+      },
+      "wHocLuc": 0.45995809,
+      "wHolland": 0.31891713,
+      "wMbti": 0.22112479,
+      "note": "Học lực ngang Holland, gấp 3 lần MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "nghe_thuat",
+      "label": "Nghệ thuật – thiết kế – kiến trúc",
+      "riasecGroup": "Nghệ thuật",
+      "judgments": {
+        "hocLucVsHolland": 0.5,
+        "hocLucVsMbti": 1.5,
+        "hollandVsMbti": 3
+      },
+      "wHocLuc": 0.27272727,
+      "wHolland": 0.54545455,
+      "wMbti": 0.18181818,
+      "note": "Holland dẫn đầu (gấp 2 học lực, gấp 3 MBTI); học lực gấp 1,5 MBTI. Nhóm đề xuất, chưa kiểm định."
+    },
+    {
+      "code": "nong_lam",
+      "label": "Nông – lâm – thủy sản – môi trường",
+      "riasecGroup": "Nông Lâm",
+      "judgments": {
+        "hocLucVsHolland": 2,
+        "hocLucVsMbti": 3,
+        "hollandVsMbti": 1.5
+      },
+      "wHocLuc": 0.54545455,
+      "wHolland": 0.27272727,
+      "wMbti": 0.18181818,
+      "note": "Học lực 2:1 Holland, 3:1 MBTI; Holland 1,5:1 MBTI. Nhóm đề xuất, chưa kiểm định."
+    }
+  ]
+}

@@ -14,6 +14,7 @@ import {
 } from '@/lib/api'
 import CareerMap from '@/components/career/CareerMap'
 import FitBars from '@/components/career/FitBars'
+import GroupFitPanel from '@/components/career/GroupFitPanel'
 import TinhCachMatrix from '@/components/career/TinhCachMatrix'
 
 // Helper: Normalize subject names for comparison
@@ -579,6 +580,7 @@ function MajorCard({
           {/* Three fit ratios */}
           <FitBars data={effectiveRecommendation} config={recommendationConfig} />
           <TinhCachMatrix cell={effectiveRecommendation?.matrixCell} compact />
+          <GroupFitPanel data={recommendation} />
 
           {/* Trend & Sparkline */}
           <div className="border-t border-slate-100 pt-2">

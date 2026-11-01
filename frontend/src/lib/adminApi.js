@@ -102,6 +102,12 @@ export const saveCareerRubric = (payload) => adminApi.put('/career/rubrics', pay
 export const deleteCareerRubric = (id) => adminApi.delete(`/career/rubrics/${id}`);
 export const seedCareerRubrics = () => adminApi.post('/career/rubrics/seed');
 export const getCareerMatchConfig = () => adminApi.get('/career/match-config');
+export const getCareerGroupConfig = () => adminApi.get('/career/group-config');
+export const getCareerPriorityRows = () => adminApi.get('/career/group-config/priorities');
+export const updateCareerGroupWeights = (groups) =>
+  adminApi.put('/career/group-config/groups', { groups });
+export const updateCareerSubjectPriority = (key, priorities) =>
+  adminApi.put('/career/group-config/priorities', { key, priorities });
 export const updateCareerMatchConfig = (config) => adminApi.put('/career/match-config', { config });
 export const searchAdmissionMajors = (search) => adminApi.get('/career/admission-majors', { params: { search } });
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { Check, Database, Loader2, Plus, RotateCcw, Save, Scale, Search, SlidersHorizontal, Sparkles, Trash2 } from 'lucide-react'
+import { Check, Database, Layers, Loader2, Plus, RotateCcw, Save, Scale, Search, SlidersHorizontal, Sparkles, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label'
 import AdminAlert from './AdminAlert'
 import InterestWeightsPanel from './InterestWeightsPanel'
 import MatchConfigPanel from './MatchConfigPanel'
+import GroupWeightPanel from './GroupWeightPanel'
 import { deleteCareerRubric, getCareerRubrics, saveCareerRubric, seedCareerRubrics, searchAdmissionMajors } from '@/lib/adminApi'
 
 const BLOCK_TEMPLATES = [
@@ -193,6 +194,7 @@ export default function CareerRubricsPanel() {
         {[
           { key: 'rubrics', label: 'Rubric ngành', icon: Database },
           { key: 'weights', label: 'Trọng số tính cách', icon: Scale },
+          { key: 'groups', label: 'Trọng số 12 khối', icon: Layers },
           { key: 'config', label: 'Tham số tổng thể', icon: SlidersHorizontal },
         ].map((tab) => {
           const Icon = tab.icon
@@ -519,6 +521,7 @@ export default function CareerRubricsPanel() {
         </>
       )}
       {activeTab === 'weights' && <InterestWeightsPanel />}
+      {activeTab === 'groups' && <GroupWeightPanel />}
       {activeTab === 'config' && <MatchConfigPanel />}
     </div>
   )

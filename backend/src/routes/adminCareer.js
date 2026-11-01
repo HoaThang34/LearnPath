@@ -4,6 +4,10 @@ const { writeAudit } = require('../auth/adminAudit');
 const { getClientIp } = require('../auth/rateLimit');
 const { getRubrics, saveRubric, deleteRubric, seedSampleRubrics } = require('../auth/career');
 const { getMatchConfigRows, updateMatchConfig } = require('../career/match');
+const { getGroupConfig } = require('../career/groupMatch');
+const { getMbtiProfile } = require('../career/mbti');
+const { getPriorityConfig } = require('../career/hocLuc');
+const { listPriorityRows, updateGroupWeights, updatePriorityRow } = require('../career/configStore');
 const { queryAll } = require('../database/db');
 const { asyncRoute, parseId } = require('../admin/routeUtils');
 const { HttpError } = require('../admin/errors');
@@ -16,6 +20,60 @@ async function audit(req, action, id, details) {
 }
 
 router.get('/rubrics', asyncRoute(async (req, res) => res.json({ data: getRubrics() })));
+
+router.get('/group-config', asyncRoute(async (req, res) =>
+  res.json({
+    data: {
+      groups: getGroupConfig(),
+      mbti: getMbtiProfile(),
+      priorities: getPriorityConfig(),
+      formula: 'F_m = w_L·L_m + w_H·H_m + w_M·M_m (L, H, M trên thang 0–100)',
+      warning:
+        'Trọng số và mức ưu tiên do nhóm đề xuất, chưa kiểm định trên dữ liệu Việt Nam. ' +
+        'F_m là mức đáp ứng yêu cầu của ngành, không phải xác suất trúng tuyển.',
+    },
+  })
+));
+
+router.get('/group-config/priorities', asyncRoute(async (req, res) =>
+  res.json({ data: listPriorityRows() })
+));
+
+router.put('/group-config/groups', asyncRoute(async (req, res) => {
+  const result = updateGroupWeights(req.body, { updatedBy: req.admin.username });
+  if (result.changed) {
+    await writeAudit({
+      adminId: req.admin.id,
+      adminUsername: req.admin.username,
+      action: 'admin.career.group_weights.update',
+      entity: 'career_group_weights',
+      entityId: null,
+      details: { updatedAt: result.updatedAt, changes: result.changes },
+      ip: getClientIp(req),
+    });
+  }
+  return res.json({ data: result });
+}));
+
+router.put('/group-config/priorities', asyncRoute(async (req, res) => {
+  const result = updatePriorityRow(req.body, { updatedBy: req.admin.username });
+  if (result.changed) {
+    await writeAudit({
+      adminId: req.admin.id,
+      adminUsername: req.admin.username,
+      action: 'admin.career.subject_priorities.update',
+      entity: 'career_subject_priorities',
+      entityId: req.body?.key || null,
+      details: {
+        key: req.body?.key || null,
+        updatedAt: result.updatedAt,
+        changes: result.changes,
+      },
+      ip: getClientIp(req),
+    });
+  }
+  return res.json({ data: result });
+}));
 
 router.get('/match-config', asyncRoute(async (req, res) =>
   res.json({ data: getMatchConfigRows() })
