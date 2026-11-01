@@ -112,8 +112,9 @@ test('G1: a mapped major gets L from subject priorities, H from RIASEC, and M fr
   const userId = insertUser('groupfit_a');
   await saveAcademicScores(userId, [
     { subject: 'Toán', term: 'Cả năm', classLevel: '12', score: 8.5, scoreType: 'average' },
+    { subject: 'Tin học', term: 'Cả năm', classLevel: '12', score: 8.5, scoreType: 'average' },
     { subject: 'Ngữ văn', term: 'Cả năm', classLevel: '12', score: 7.5, scoreType: 'average' },
-    { subject: 'Tiếng Anh', term: 'Cả năm', classLevel: '12', score: 9, scoreType: 'average' },
+    { subject: 'Tiếng Anh', term: 'Cả năm', classLevel: '12', score: 8.5, scoreType: 'average' },
   ]);
   await saveExamScores(userId, [{ block: 'D01', score: 25 }]);
   insertInterestResult(userId);
@@ -122,15 +123,15 @@ test('G1: a mapped major gets L from subject priorities, H from RIASEC, and M fr
   const row = result.data.find((entry) => entry.majorName === 'Kỹ thuật Phần mềm');
   assert.ok(row);
 
-  // L = 10 × (0.4·8.5 + 0.3·7.5 + 0.3·9) = 83.5
-  assert.equal(row.hocLucIndex, 83.5);
+  // L = 10 × (4/9·8.5 + 3/9·8.5 + 2/9·8.5) = 85
+  assert.equal(row.hocLucIndex, 85);
   assert.equal(row.hocLucIndexCoverage, 100);
   // The real priority row for this major has no school code, so the lookup
   // matches by major name rather than by the full school key.
   assert.ok(['exact', 'major'].includes(row.hocLucIndexSource), row.hocLucIndexSource);
   assert.deepEqual(
     row.hocLucIndexWeights.map((weight) => `${weight.subject}:${weight.r}:${weight.a}`),
-    ['Toán:4:0.4', 'Ngữ văn:3:0.3', 'Tiếng Anh:3:0.3']
+    ['Toán:4:0.4', 'Tin học:4:0.4', 'Tiếng Anh:2:0.2']
   );
 
   // H reuses tinhCachFit.
@@ -199,8 +200,9 @@ test('G2: when MBTI profile is chua_xac_dinh, M is null and F keeps partial valu
   await saveExamScores(userId, [{ block: 'D01', score: 25 }]);
   await saveAcademicScores(userId, [
     { subject: 'Toán', term: 'Cả năm', classLevel: '12', score: 8.5, scoreType: 'average' },
+    { subject: 'Tin học', term: 'Cả năm', classLevel: '12', score: 8.5, scoreType: 'average' },
     { subject: 'Ngữ văn', term: 'Cả năm', classLevel: '12', score: 7.5, scoreType: 'average' },
-    { subject: 'Tiếng Anh', term: 'Cả năm', classLevel: '12', score: 9, scoreType: 'average' },
+    { subject: 'Tiếng Anh', term: 'Cả năm', classLevel: '12', score: 8.5, scoreType: 'average' },
   ]);
   insertInterestResult(userId);
 

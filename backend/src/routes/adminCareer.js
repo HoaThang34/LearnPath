@@ -25,7 +25,7 @@ async function audit(req, action, id, details) {
   await writeAudit({ adminId: req.admin.id, adminUsername: req.admin.username, action, entity: 'career_rubric', entityId: id, details, ip: getClientIp(req) });
 }
 
-router.get('/rubrics', asyncRoute(async (req, res) => res.json({ data: getRubrics() })));
+router.get('/rubrics', asyncRoute(async (req, res) => res.json({ data: getRubrics({ includeInvalid: true }) })));
 
 router.get('/group-config', asyncRoute(async (req, res) =>
   res.json({

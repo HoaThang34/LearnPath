@@ -120,19 +120,20 @@ async function main() {
         ]
       );
       let rubricId;
+      const isValid = rubric.isValid !== false ? 1 : 0;
       if (found) {
         rubricId = Number(found.id);
         runSql(
-          'UPDATE career_rubrics SET major_group = ?, entry_score = ?, updated_at = ? WHERE id = ?',
-          [rubric.majorGroup || null, rubric.entryScore ?? null, now, rubricId]
+          'UPDATE career_rubrics SET major_group = ?, entry_score = ?, is_valid = ?, updated_at = ? WHERE id = ?',
+          [rubric.majorGroup || null, rubric.entryScore ?? null, isValid, now, rubricId]
         );
         runSql('DELETE FROM career_rubric_subjects WHERE rubric_id = ?', [rubricId]);
       } else {
         runSql(
           `INSERT INTO career_rubrics
              (school_code, school_name, major_name, method, admission_block, major_group,
-              entry_score, year, created_at, updated_at)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              entry_score, is_valid, year, created_at, updated_at)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             rubric.schoolCode || null,
             rubric.schoolName,
@@ -141,6 +142,7 @@ async function main() {
             rubric.admissionBlock || null,
             rubric.majorGroup || null,
             rubric.entryScore ?? null,
+            isValid,
             rubric.year,
             now,
             now,

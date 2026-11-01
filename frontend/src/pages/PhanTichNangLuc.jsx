@@ -435,21 +435,92 @@ function MajorCard({
     ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * effectiveHocLucFit + (recommendationConfig?.w_tinh_cach ?? 0.4) * recommendation.tinhCachFit) * 10) / 10
     : (recommendation?.tongHopFit ?? null)
 
-  const effectiveRecommendation = recommendation
-    ? {
+  const effectiveRecommendation = useMemo(() => {
+    if (!recommendation) {
+      return activeFitPct !== null
+        ? {
+            rubricId: fit.rubricId,
+            hocLucFit: activeFitPct,
+            tinhCachFit: null,
+            tongHopFit: null,
+            reasons: [],
+          }
+        : null
+    }
+
+    if (!hasActiveSim) {
+      return {
         ...recommendation,
         hocLucFit: effectiveHocLucFit,
         tongHopFit: effectiveTongHopFit,
       }
-    : (activeFitPct !== null
-      ? {
-          rubricId: fit.rubricId,
-          hocLucFit: activeFitPct,
-          tinhCachFit: null,
-          tongHopFit: null,
-          reasons: [],
+    }
+
+    let effectiveHocLucIndex = recommendation.hocLucIndex
+    let simulatedWeights = recommendation.hocLucIndexWeights
+
+    if (Array.isArray(recommendation.hocLucIndexWeights) && recommendation.hocLucIndexWeights.length > 0) {
+      simulatedWeights = recommendation.hocLucIndexWeights.map((w) => {
+        const simVal = simulatedScores?.[w.subject]
+        const score = simVal !== undefined ? Number(simVal) : (w.score ?? null)
+        return { ...w, score }
+      })
+
+      const allPresent = simulatedWeights.every((w) => w.score !== null && Number.isFinite(w.score))
+      if (allPresent) {
+        const weightedSum = simulatedWeights.reduce((acc, w) => acc + (w.a * w.score), 0)
+        effectiveHocLucIndex = Math.round(10 * weightedSum * 10) / 10
+      } else {
+        effectiveHocLucIndex = null
+      }
+    }
+
+    const origContributions = recommendation.groupFitContributions || []
+    let totalWeightedSum = 0
+    let presentWeight = 0
+    const missing = []
+
+    const effectiveContributions = origContributions.map((c) => {
+      let val = c.value
+      if (c.component === 'L') {
+        val = effectiveHocLucIndex
+      }
+      if (val === null || val === undefined || !Number.isFinite(Number(val))) {
+        missing.push(c.component)
+        return {
+          ...c,
+          value: null,
+          contribution: null,
         }
-      : null)
+      }
+      const numVal = Number(val)
+      const contrib = Math.round(c.weight * numVal * 10000) / 10000
+      totalWeightedSum += c.weight * numVal
+      presentWeight += c.weight
+      return {
+        ...c,
+        value: Math.round(numVal * 100) / 100,
+        contribution: contrib,
+      }
+    })
+
+    const isComplete = missing.length === 0 && presentWeight > 0
+    const effectiveGroupFit = isComplete ? Math.round(totalWeightedSum * 10) / 10 : null
+    const effectiveGroupFitPartial = presentWeight > 0 ? Math.round((totalWeightedSum / presentWeight) * 10) / 10 : null
+
+    return {
+      ...recommendation,
+      hocLucFit: effectiveHocLucFit,
+      tongHopFit: effectiveTongHopFit,
+      hocLucIndex: effectiveHocLucIndex,
+      hocLucIndexWeights: simulatedWeights,
+      groupFit: effectiveGroupFit,
+      groupFitPartial: effectiveGroupFitPartial,
+      groupFitCoverage: Math.round(presentWeight * 10000) / 10000,
+      groupFitContributions: effectiveContributions,
+      groupFitMissing: missing,
+    }
+  }, [recommendation, activeFitPct, hasActiveSim, simulatedScores, effectiveHocLucFit, effectiveTongHopFit, fit.rubricId])
 
   // Top summary metric: Display "Phù hợp tổng thể" when available, fallback to academic fit
   const hasTongHop = effectiveTongHopFit !== null && effectiveTongHopFit !== undefined
@@ -580,7 +651,7 @@ function MajorCard({
           {/* Three fit ratios */}
           <FitBars data={effectiveRecommendation} config={recommendationConfig} />
           <TinhCachMatrix cell={effectiveRecommendation?.matrixCell} compact />
-          <GroupFitPanel data={recommendation} />
+          <GroupFitPanel data={effectiveRecommendation} />
 
           {/* Trend & Sparkline */}
           <div className="border-t border-slate-100 pt-2">
@@ -1033,15 +1104,25 @@ export default function PhanTichNangLuc() {
       if (sortBy === 'tongHop') {
         const aRec = recommendations.get(String(a.rubricId))
         const aHL = radarMode === 'all' ? (a.allFitPct ?? a.fitPct) : (aRec?.hocLucFit ?? a.fitPct)
-        const av = (aHL !== null && aRec?.tinhCachFit !== null && aRec?.tinhCachFit !== undefined)
+        const avLegacy = (aHL !== null && aRec?.tinhCachFit !== null && aRec?.tinhCachFit !== undefined)
           ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * aHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * aRec.tinhCachFit) * 10) / 10
           : (aRec?.tongHopFit ?? null)
+        const av = (aRec?.groupFit !== null && aRec?.groupFit !== undefined)
+          ? aRec.groupFit
+          : ((aRec?.groupFitPartial !== null && aRec?.groupFitPartial !== undefined)
+            ? aRec.groupFitPartial
+            : avLegacy)
 
         const bRec = recommendations.get(String(b.rubricId))
         const bHL = radarMode === 'all' ? (b.allFitPct ?? b.fitPct) : (bRec?.hocLucFit ?? b.fitPct)
-        const bv = (bHL !== null && bRec?.tinhCachFit !== null && bRec?.tinhCachFit !== undefined)
+        const bvLegacy = (bHL !== null && bRec?.tinhCachFit !== null && bRec?.tinhCachFit !== undefined)
           ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * bHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * bRec.tinhCachFit) * 10) / 10
           : (bRec?.tongHopFit ?? null)
+        const bv = (bRec?.groupFit !== null && bRec?.groupFit !== undefined)
+          ? bRec.groupFit
+          : ((bRec?.groupFitPartial !== null && bRec?.groupFitPartial !== undefined)
+            ? bRec.groupFitPartial
+            : bvLegacy)
 
         if (av === null || av === undefined) {
           if (bv !== null && bv !== undefined) return 1

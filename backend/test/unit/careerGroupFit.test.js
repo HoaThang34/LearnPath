@@ -187,11 +187,11 @@ test('W12: L_m normalises subject priorities and scores on the 0–100 scale', (
   assert.ok(row);
   const scores = new Map([
     ['Toán', 8],
-    ['Ngữ văn', 7],
-    ['Tiếng Anh', 9],
+    ['Tin học', 8],
+    ['Tiếng Anh', 8],
   ]);
   const fit = hocLucSubjectFit({ row, scores });
-  // r = 4,3,3 → a = 0.4,0.3,0.3 → 10 × (0.4·8 + 0.3·7 + 0.3·9) = 80
+  // r = 4,3,2 → a = 4/9, 3/9, 2/9 → 10 × (4/9·8 + 3/9·8 + 2/9·8) = 80
   assert.equal(fit.value, 80);
   assert.equal(fit.coveragePct, 100);
 });
@@ -202,7 +202,7 @@ test('W13: a missing subject keeps L_m null and reports coverage', () => {
   assert.equal(fit.value, null);
   assert.ok(fit.coveragePct > 0 && fit.coveragePct < 100);
   assert.deepEqual(fit.reasons, ['thieu_diem_mon']);
-  assert.deepEqual(fit.missing, ['Ngữ văn', 'Tiếng Anh']);
+  assert.deepEqual(fit.missing, ['Tin học', 'Tiếng Anh']);
 });
 
 test('W14: every priority row uses integer priorities within 1–4', () => {

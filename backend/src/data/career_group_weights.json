@@ -36,14 +36,14 @@
       "label": "Toán – thống kê – khoa học cơ bản/sự sống",
       "riasecGroup": "Kỹ thuật - Công nghệ",
       "judgments": {
-        "hocLucVsHolland": 1,
-        "hocLucVsMbti": 8,
-        "hollandVsMbti": 1
+        "hocLucVsHolland": 2,
+        "hocLucVsMbti": 4,
+        "hollandVsMbti": 2
       },
       "wHocLuc": 0.57142857,
       "wHolland": 0.28571429,
       "wMbti": 0.14285714,
-      "note": "Học lực ngang Holland, gấp 8 lần MBTI. Nhóm đề xuất, chưa kiểm định."
+      "note": "Học lực 2:1 Holland, 4:1 MBTI; Holland 2:1 MBTI. Ma trận nhất quán (CR = 0,0000 <= 0,10)."
     },
     {
       "code": "y_duoc",
@@ -106,14 +106,14 @@
       "label": "Ngôn ngữ – biên phiên dịch",
       "riasecGroup": "Xã hội - Nhân văn",
       "judgments": {
-        "hocLucVsHolland": 1,
-        "hocLucVsMbti": 6,
-        "hollandVsMbti": 1
+        "hocLucVsHolland": 2,
+        "hocLucVsMbti": 3,
+        "hollandVsMbti": 2
       },
       "wHocLuc": 0.53961455,
       "wHolland": 0.29696133,
       "wMbti": 0.16342412,
-      "note": "Học lực ngang Holland, gấp 6 lần MBTI. Nhóm đề xuất, chưa kiểm định."
+      "note": "Học lực 2:1 Holland, 3:1 MBTI; Holland 2:1 MBTI. Ma trận nhất quán (CR = 0,0079 <= 0,10)."
     },
     {
       "code": "xa_hoi",
@@ -134,14 +134,14 @@
       "label": "Sư phạm – giáo dục",
       "riasecGroup": "Sư phạm",
       "judgments": {
-        "hocLucVsHolland": 1,
-        "hocLucVsMbti": 3,
-        "hollandVsMbti": 1
+        "hocLucVsHolland": 1.5,
+        "hocLucVsMbti": 2,
+        "hollandVsMbti": 1.5
       },
       "wHocLuc": 0.45995809,
       "wHolland": 0.31891713,
       "wMbti": 0.22112479,
-      "note": "Học lực ngang Holland, gấp 3 lần MBTI. Nhóm đề xuất, chưa kiểm định."
+      "note": "Học lực 1,5:1 Holland, 2:1 MBTI; Holland 1,5:1 MBTI. Ma trận nhất quán (CR = 0,0013 <= 0,10)."
     },
     {
       "code": "nghe_thuat",

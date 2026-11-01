@@ -53,8 +53,8 @@ const GROUPS = [
     code: 'toan_khoa_hoc',
     label: 'Toán – thống kê – khoa học cơ bản/sự sống',
     riasecGroup: 'Kỹ thuật - Công nghệ',
-    judgments: [1, 8, 1],
-    note: 'Học lực ngang Holland, gấp 8 lần MBTI. Nhóm đề xuất, chưa kiểm định.',
+    judgments: [2, 4, 2],
+    note: 'Học lực 2:1 Holland, 4:1 MBTI; Holland 2:1 MBTI. Ma trận nhất quán (CR = 0,0000 <= 0,10).',
   },
   {
     code: 'y_duoc',
@@ -88,8 +88,8 @@ const GROUPS = [
     code: 'ngon_ngu',
     label: 'Ngôn ngữ – biên phiên dịch',
     riasecGroup: 'Xã hội - Nhân văn',
-    judgments: [1, 6, 1],
-    note: 'Học lực ngang Holland, gấp 6 lần MBTI. Nhóm đề xuất, chưa kiểm định.',
+    judgments: [2, 3, 2],
+    note: 'Học lực 2:1 Holland, 3:1 MBTI; Holland 2:1 MBTI. Ma trận nhất quán (CR = 0,0079 <= 0,10).',
   },
   {
     code: 'xa_hoi',
@@ -102,8 +102,8 @@ const GROUPS = [
     code: 'su_pham',
     label: 'Sư phạm – giáo dục',
     riasecGroup: 'Sư phạm',
-    judgments: [1, 3, 1],
-    note: 'Học lực ngang Holland, gấp 3 lần MBTI. Nhóm đề xuất, chưa kiểm định.',
+    judgments: [1.5, 2, 1.5],
+    note: 'Học lực 1,5:1 Holland, 2:1 MBTI; Holland 1,5:1 MBTI. Ma trận nhất quán (CR = 0,0013 <= 0,10).',
   },
   {
     code: 'nghe_thuat',
@@ -133,6 +133,21 @@ function geometricWeights(judgments) {
   const vectors = rows.map((row) => Math.cbrt(row[0] * row[1] * row[2]));
   const total = vectors.reduce((sum, value) => sum + value, 0);
   return vectors.map((value) => value / total);
+}
+
+function consistencyRatio(judgments) {
+  const [a12, a13, a23] = judgments;
+  const A = [
+    [1, a12, a13],
+    [1 / a12, 1, a23],
+    [1 / a13, 1 / a23, 1],
+  ];
+  const w = geometricWeights(judgments);
+  const Aw = A.map((row) => row[0] * w[0] + row[1] * w[1] + row[2] * w[2]);
+  const lambdaMax = Aw.reduce((acc, val, i) => acc + val / w[i], 0) / 3;
+  const CI = (lambdaMax - 3) / 2;
+  const RI = 0.58; // Saaty RI for n = 3
+  return CI / RI;
 }
 
 // ---------------------------------------------------------------------------
@@ -238,6 +253,90 @@ function priorityFor(weight) {
   return 1;
 }
 
+const CNTT_COMPETENCY_MAJORS = new Set([
+  // CNTT, Dữ liệu, AI, Máy tính
+  'Công nghệ Thông tin',
+  'Khoa học Máy tính',
+  'Kỹ thuật Phần mềm',
+  'Trí tuệ Nhân tạo',
+  'Khoa học Dữ liệu',
+  'An toàn Thông tin',
+  'Hệ thống Thông tin',
+  'Mạng Máy tính và Truyền thông Dữ liệu',
+  'Tin học Ứng dụng',
+  'Thiết kế Vi mạch',
+  'Khoa học Dữ liệu và Trí tuệ nhân tạo (CT tiên tiến)',
+  'Sư phạm Tin học',
+
+  // Kỹ thuật Công nghệ cao, Điện tử, Tự động hóa, Cơ điện tử, Viễn thông, Điều khiển
+  'Kỹ thuật Điều khiển - Tự động hoá (CT tiên tiến)',
+  'Kỹ thuật Điện tử - Viễn thông',
+  'Điện tử Viễn thông',
+  'Kỹ thuật Cơ điện tử',
+  'Điều khiển học',
+  'Kỹ thuật Ô tô',
+  'Công nghệ Ô tô',
+  'Kỹ thuật Điện',
+  'Kỹ thuật Hàng không',
+  'Vật lý Kỹ thuật',
+  'Công nghệ Nano',
+  'Năng lượng Tái tạo',
+  'Kỹ thuật Hạt nhân',
+  'Khoa học Vũ trụ và Viễn thám',
+  'Kiểm soát Không lưu',
+
+  // Các ngành Kỹ thuật - Công nghệ thuộc khối D01 (thay thế Ngữ văn bằng Tin học)
+  'Kỹ thuật Sinh học',
+  'Công nghệ Thực phẩm',
+  'Kỹ thuật Xây dựng',
+  'Kỹ thuật Giao thông',
+  'Kỹ thuật Hàng hải',
+  'Kỹ thuật Dầu khí',
+  'Kỹ thuật Tài nguyên nước',
+  'Quản lý Đất đai',
+  'Địa chất học',
+  'Quy hoạch Vùng và Đô thị',
+  'Công nghệ May và Thời trang',
+]);
+
+function adaptSubjectsForCompetency(row) {
+  if (!CNTT_COMPETENCY_MAJORS.has(row.majorName)) {
+    return row.subjects.map((subject) => ({
+      subject: subject.subject,
+      weight: Number(subject.weight),
+      r: priorityFor(Number(subject.weight)),
+    }));
+  }
+
+  // Tích hợp Tin học vào bộ môn năng lực ngành CNTT & Kỹ thuật - Công nghệ:
+  // Thay thế môn không phải chuyên môn kỹ thuật/cốt lõi (Ngữ văn ở D01, Hóa học ở A00) bằng Tin học.
+  const subjects = row.subjects.map((s) => ({ ...s }));
+  const hasTinHoc = subjects.some((s) => s.subject === 'Tin học');
+  if (!hasTinHoc) {
+    const replaceIndex = subjects.findIndex((s) => s.subject === 'Ngữ văn' || s.subject === 'Hóa học');
+    if (replaceIndex !== -1) {
+      subjects[replaceIndex] = {
+        subject: 'Tin học',
+        weight: subjects[replaceIndex].weight,
+      };
+    }
+  }
+
+  // Mức ưu tiên: Đưa Tin học lên thành bộ môn chính (r=4, Cốt lõi) ngang với Toán (r=4, Cốt lõi), môn thứ 3 liên quan (r=2)
+  return subjects.map((s) => {
+    let r = priorityFor(Number(s.weight));
+    if (s.subject === 'Toán') r = 4;
+    else if (s.subject === 'Tin học') r = 4;
+    else if (s.subject === 'Vật lý' || s.subject === 'Tiếng Anh') r = 2;
+    else r = 2;
+    return {
+      subject: s.subject,
+      weight: Number(s.weight),
+      r,
+    };
+  });
+}
+
 function main() {
   const all = JSON.parse(fs.readFileSync(RUBRIC_FILE, 'utf8'));
   const valid = all.filter((row) => row.isValid !== false);
@@ -245,7 +344,8 @@ function main() {
 
   const weights = GROUPS.map((group) => {
     const [hocLuc, holland, mbti] = geometricWeights(group.judgments);
-    return { ...group, hocLuc, holland, mbti };
+    const cr = consistencyRatio(group.judgments);
+    return { ...group, hocLuc, holland, mbti, cr };
   });
 
   const majors = new Map();
@@ -278,11 +378,7 @@ function main() {
       method: row.method,
       year: row.year,
       entryScore: Number(row.entryScore),
-      subjects: row.subjects.map((subject) => ({
-        subject: subject.subject,
-        weight: Number(subject.weight),
-        r: priorityFor(Number(subject.weight)),
-      })),
+      subjects: adaptSubjectsForCompetency(row),
     }))
     .sort(
       (a, b) =>
@@ -291,11 +387,12 @@ function main() {
     );
 
   // Report
-  console.log('Groups (L / H / M %):');
+  console.log('Groups (L / H / M % and CR):');
   for (const row of weights) {
     console.log(
       `  ${row.code.padEnd(14)} ${(row.hocLuc * 100).toFixed(2).padStart(6)} ` +
-        `${(row.holland * 100).toFixed(2).padStart(6)} ${(row.mbti * 100).toFixed(2).padStart(6)}  ${row.label}`
+        `${(row.holland * 100).toFixed(2).padStart(6)} ${(row.mbti * 100).toFixed(2).padStart(6)} ` +
+        ` CR=${row.cr.toFixed(4).padStart(6)}  ${row.label}`
     );
   }
   const cntt = weights.find((row) => row.code === 'cntt');
@@ -423,8 +520,11 @@ function main() {
   fs.writeFileSync(groupPath, `${JSON.stringify(groupFile, null, 2)}\n`);
   fs.writeFileSync(path.join(DATA_DIR, 'career_major_groups.json'), `${JSON.stringify(mappingFile, null, 2)}\n`);
   fs.writeFileSync(priorityPath, `${JSON.stringify(priorityFile, null, 2)}\n`);
-  fs.writeFileSync(path.join(DATA_DIR, 'career_mbti_profile.json'), `${JSON.stringify(mbtiProfileFile, null, 2)}\n`);
-  console.log('\nWrote 4 configuration files.');
+  const mbtiPath = path.join(DATA_DIR, 'career_mbti_profile.json');
+  if (!fs.existsSync(mbtiPath) || JSON.parse(fs.readFileSync(mbtiPath, 'utf8')).status !== 'xac_dinh') {
+    fs.writeFileSync(mbtiPath, `${JSON.stringify(mbtiProfileFile, null, 2)}\n`);
+  }
+  console.log('\nWrote configuration files.');
 }
 
 main();

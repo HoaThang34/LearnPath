@@ -32,11 +32,21 @@ function rubricBlock(rubric) {
   return match ? match[0] : null;
 }
 
+function getOverallFit(row) {
+  if (row.groupFit !== null && row.groupFit !== undefined) return row.groupFit;
+  if (row.groupFitPartial !== null && row.groupFitPartial !== undefined) return row.groupFitPartial;
+  return row.tongHopFit ?? null;
+}
+
 function sortRows(rows, sort) {
-  const key = sort === 'tinhCach_desc' ? 'tinhCachFit' : sort === 'hocLuc_desc' ? 'hocLucFit' : 'tongHopFit';
+  const getKey = (row) => {
+    if (sort === 'tinhCach_desc') return row.tinhCachFit;
+    if (sort === 'hocLuc_desc') return row.hocLucFit;
+    return getOverallFit(row);
+  };
   return [...rows].sort((a, b) => {
-    const av = a[key];
-    const bv = b[key];
+    const av = getKey(a);
+    const bv = getKey(b);
     if (av === null && bv !== null) return 1;
     if (av !== null && bv === null) return -1;
     if (av !== null && bv !== null && bv !== av) return bv - av;
@@ -165,6 +175,7 @@ async function buildRecommendations(userId, query = {}) {
       majorName: rubric.majorName,
       hocLuc: hocSubject.value,
       holland: tinh.value,
+      hollandStatus: tinh.status,
       mbti: mbti.value,
     });
     // Keep the new model's reasons separate from the legacy `reasons` array so
@@ -230,7 +241,7 @@ async function buildRecommendations(userId, query = {}) {
     });
   }
 
-  const sort = ['tongHop_desc', 'tinhCach_desc', 'hocLuc_desc'].includes(query.sort)
+  const sort = ['tongHop_desc', 'tinhCach_desc', 'hocLuc_desc', 'groupFit_desc'].includes(query.sort)
     ? query.sort
     : 'tongHop_desc';
   const sorted = sortRows(rows, sort);

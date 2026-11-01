@@ -444,18 +444,24 @@ export default function TrangChu() {
   }, [overview, profile])
   const hasTarget = Boolean(targetFit || (unmatchedTarget && unmatchedTarget.majorName))
 
-  // Best Fit Major detection
+  // Best Fit Major detection (aligns with active radar mode)
   const bestFit = useMemo(() => {
-    const valid = fits.filter((f) => f.fitPct !== null && f.fitPct !== undefined)
+    const getActiveFitPct = (f) => (radarMode === 'all' ? (f.allFitPct ?? f.fitPct) : f.fitPct)
+    const valid = fits.filter((f) => {
+      const pct = getActiveFitPct(f)
+      return pct !== null && pct !== undefined
+    })
     if (!valid.length) return null
-    // Sort by fitPct descending, then coveragePct descending, then entryScore descending
+    // Sort by active fitPct descending, then coveragePct descending, then entryScore descending
     valid.sort((a, b) => {
-      if (b.fitPct !== a.fitPct) return b.fitPct - a.fitPct
+      const aPct = getActiveFitPct(a)
+      const bPct = getActiveFitPct(b)
+      if (bPct !== aPct) return bPct - aPct
       if (b.coveragePct !== a.coveragePct) return b.coveragePct - a.coveragePct
       return (Number(b.entryScore) || 0) - (Number(a.entryScore) || 0)
     })
     return valid[0]
-  }, [fits])
+  }, [fits, radarMode])
 
   // Handler: Set best fit major as target major directly
   const handleSetBestFitAsTarget = async () => {
@@ -825,15 +831,17 @@ export default function TrangChu() {
                   Bảng 1: Ngành học mục tiêu
                 </div>
 
-                {targetFit && (
-                  <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border ${
-                      getFitStyle(targetFit.fitPct).badge
-                    }`}
-                  >
-                    {targetFit.fitPct !== null ? `${targetFit.fitPct}% phù hợp` : 'Chưa đủ điểm'}
-                  </span>
-                )}
+                {targetFit && (() => {
+                  const targetFitPct = radarMode === 'all' ? (targetFit.allFitPct ?? targetFit.fitPct) : targetFit.fitPct
+                  const badgeStyle = getFitStyle(targetFitPct).badge
+                  return (
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border ${badgeStyle}`}
+                    >
+                      {targetFitPct !== null && targetFitPct !== undefined ? `${targetFitPct}% phù hợp` : 'Chưa đủ điểm'}
+                    </span>
+                  )
+                })()}
               </div>
 
               {/* Header content based on target status */}
@@ -1067,15 +1075,17 @@ export default function TrangChu() {
                   Bảng 2: Ngành học phù hợp nhất
                 </div>
 
-                {bestFit && (
-                  <span
-                    className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border ${
-                      getFitStyle(bestFit.fitPct).badge
-                    }`}
-                  >
-                    {bestFit.fitPct !== null ? `${bestFit.fitPct}% phù hợp` : 'Chưa đủ điểm'}
-                  </span>
-                )}
+                {bestFit && (() => {
+                  const bestFitPct = radarMode === 'all' ? (bestFit.allFitPct ?? bestFit.fitPct) : bestFit.fitPct
+                  const badgeStyle = getFitStyle(bestFitPct).badge
+                  return (
+                    <span
+                      className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium border ${badgeStyle}`}
+                    >
+                      {bestFitPct !== null && bestFitPct !== undefined ? `${bestFitPct}% phù hợp` : 'Chưa đủ điểm'}
+                    </span>
+                  )
+                })()}
               </div>
 
               {/* Best Fit Header Content */}

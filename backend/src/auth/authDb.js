@@ -529,6 +529,7 @@ function createSchema(database) {
 
   ensureColumn(database, 'career_rubrics', 'major_group', 'TEXT');
   ensureColumn(database, 'career_rubrics', 'entry_score', 'REAL');
+  ensureColumn(database, 'career_rubrics', 'is_valid', 'INTEGER DEFAULT 1');
 
   createAdminSchema(database);
   createInterestSchema(database);
@@ -879,6 +880,10 @@ async function initialize() {
       }
       if (!rubricsCols.includes('entry_score')) {
         ensureColumn(database, 'career_rubrics', 'entry_score', 'REAL');
+        changed = true;
+      }
+      if (!rubricsCols.includes('is_valid')) {
+        ensureColumn(database, 'career_rubrics', 'is_valid', 'INTEGER DEFAULT 1');
         changed = true;
       }
       if (changed) {

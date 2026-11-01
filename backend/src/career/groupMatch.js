@@ -141,7 +141,7 @@ function normalizeComponent(value) {
  * @param {number|null} input.mbti
  * @param {string} [input.groupCode] override resolution (admin preview/tests)
  */
-function groupFit({ majorName, hocLuc, holland, mbti, groupCode } = {}) {
+function groupFit({ majorName, hocLuc, holland, hollandStatus, mbti, groupCode } = {}) {
   const config = loadConfig();
   const group = groupCode ? config.groups.get(groupCode) || null : resolveGroup(majorName);
   if (!group) {
@@ -158,9 +158,12 @@ function groupFit({ majorName, hocLuc, holland, mbti, groupCode } = {}) {
     };
   }
 
+  const hollandVal = normalizeComponent(holland);
+  const isHollandComplete = hollandVal !== null && (!hollandStatus || hollandStatus === 'day_du');
+
   const values = {
     L: normalizeComponent(hocLuc),
-    H: normalizeComponent(holland),
+    H: isHollandComplete ? hollandVal : null,
     M: normalizeComponent(mbti),
   };
   const weights = { L: group.wHocLuc, H: group.wHolland, M: group.wMbti };

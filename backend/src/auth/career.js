@@ -168,18 +168,22 @@ function validateRubric(input) {
   return { value: { schoolName, majorName, method, schoolCode, block, majorGroup, entryScore, year, subjects } };
 }
 
-function getRubrics() {
-  return queryAll(`SELECT r.id, r.school_code AS schoolCode, r.school_name AS schoolName, r.major_name AS majorName,
+function getRubrics({ includeInvalid = false } = {}) {
+  const where = includeInvalid ? '' : 'WHERE COALESCE(r.is_valid, 1) = 1';
+  const rows = queryAll(`SELECT r.id, r.school_code AS schoolCode, r.school_name AS schoolName, r.major_name AS majorName,
       r.method, r.admission_block AS admissionBlock, r.major_group AS majorGroup, r.entry_score AS entryScore,
-      r.year, r.updated_at AS updatedAt,
+      r.year, COALESCE(r.is_valid, 1) AS isValid, r.updated_at AS updatedAt,
       s.subject_name AS subject, s.weight, s.threshold
     FROM career_rubrics r JOIN career_rubric_subjects s ON s.rubric_id = r.id
+    ${where}
     ORDER BY r.school_name, r.major_name, r.method, r.admission_block, s.subject_name`);
+  return rows.map((r) => ({ ...r, isValid: Boolean(r.isValid) }));
 }
 
 async function saveRubric(input) {
   const { error, value } = validateRubric(input);
   if (error) { const e = new Error(error); e.statusCode = 400; throw e; }
+  const isValid = (input?.isValid === false || input?.is_valid === 0) ? 0 : 1;
   const existing = queryOne(`SELECT id FROM career_rubrics WHERE school_name = ? AND major_name = ? AND method = ?
     AND COALESCE(school_code, '') = COALESCE(?, '') AND COALESCE(admission_block, '') = COALESCE(?, '') AND year = ?`,
   [value.schoolName, value.majorName, value.method, value.schoolCode, value.block, value.year]);
@@ -188,11 +192,11 @@ async function saveRubric(input) {
   await runAuthMutation(() => {
     if (existing) {
       rubricId = Number(existing.id);
-      runSql('UPDATE career_rubrics SET major_group = ?, entry_score = ?, updated_at = ? WHERE id = ?', [value.majorGroup, value.entryScore, now, rubricId]);
+      runSql('UPDATE career_rubrics SET major_group = ?, entry_score = ?, is_valid = ?, updated_at = ? WHERE id = ?', [value.majorGroup, value.entryScore, isValid, now, rubricId]);
       runSql('DELETE FROM career_rubric_subjects WHERE rubric_id = ?', [rubricId]);
     } else {
-      runSql(`INSERT INTO career_rubrics (school_code, school_name, major_name, method, admission_block, major_group, entry_score, year, created_at, updated_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [value.schoolCode, value.schoolName, value.majorName, value.method, value.block, value.majorGroup, value.entryScore, value.year, now, now]);
+      runSql(`INSERT INTO career_rubrics (school_code, school_name, major_name, method, admission_block, major_group, entry_score, is_valid, year, created_at, updated_at)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`, [value.schoolCode, value.schoolName, value.majorName, value.method, value.block, value.majorGroup, value.entryScore, isValid, value.year, now, now]);
       rubricId = lastInsertId();
     }
     for (const subject of value.subjects) runSql('INSERT INTO career_rubric_subjects (rubric_id, subject_name, weight, threshold) VALUES (?, ?, ?, ?)', [rubricId, subject.subject, subject.weight, subject.threshold]);
