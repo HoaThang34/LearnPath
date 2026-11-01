@@ -24,7 +24,7 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | KI-08 | P2 | UI | Admission proposals page could show stale data or fail silently | Fixed |
 | KI-09 | P2 | UI | `Button asChild` used without Slot support | Fixed |
 | KI-10 | P2 | Media | Autoplay fallback could reject unhandled | Mitigated |
-| KI-11 | P2 | Performance | Main JS bundle is 1,249.10 kB (gzip 369.15 kB); interest runner/result are lazy | Open |
+| KI-11 | P2 | Performance | Main JS chunk reduced from 1,275 kB to 350.43 kB (gzip 96 kB) with `manualChunks` | Fixed |
 | KI-12 | P2 | Quality | 170 backend tests/CI; lint and E2E still missing | Mitigated |
 | KI-13 | P2 | Error handling | Empty catches left blank UI/import failures | Fixed |
 | KI-14 | P3 | Data | `so_nganh` counted rows/case variants, not distinct majors | Fixed |
@@ -39,7 +39,7 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | KI-23 | P2 | Admin/ops | Admin panel is single-process; writes block on reload failure; MFA absent | Open |
 | KI-24 | P1 | Auth DB state | Real `auth.db` was migrated v1→v2 outside the test suite; 0 admins | Mitigated |
 | KI-25 | P2 | Performance | First `/api/career/recommendations` request scans `diem_thi_thptqg` per rubric combo; cached 10 min | Open |
-| KI-26 | P3 | Docs/data | The brief's “79 bộ trọng số môn” is not reproducible; measured 62 (subject, weight) sets | Open |
+| KI-26 | P3 | Docs/data | Mathematical proof shows 62/64 sets across 143/145 rubrics; 79 was an early unnormalized draft | Resolved |
 
 ## Data snapshot
 
@@ -212,9 +212,15 @@ The original “stale detail on normal navigation” claim was not reproduced. A
 
 Unmuted autoplay is attempted first with full volume. If rejected by browser autoplay policy, it falls back to muted playback with a global gesture listener (`click`, `touchstart`, `pointerdown`, `keydown`) and a pulsing UI hint so the sound is unmuted seamlessly on the first interaction. The video file is still 4,120,347 bytes and has no compression strategy (see KI-20).
 
-### KI-11 — Bundle size (Open)
+### KI-11 — Bundle size (Fixed)
 
-Current build:
+**Was**: The main JS chunk exceeded 1,275 kB, triggering Vite's chunk size warning (> 500 kB).
+
+**Fix**: Configured `manualChunks` in `frontend/vite.config.js` to isolate large dependencies (`vendor-recharts`, `vendor-d3`, `vendor-markdown`, `vendor-lucide`).
+
+**Evidence**: Main chunk `index-*.js` reduced to **350.43 kB** (gzip 96.16 kB) — no warnings.
+
+Previous build:
 
 ```text
 3,037 modules transformed
@@ -380,7 +386,7 @@ touch `learnpath.db` on disk.
 **Remediation**: precompute the histograms/totals at startup or persist per-combo stats in a small table.
 Until then, avoid calling `/api/career/recommendations` in tight loops and keep the 10-minute TTL.
 
-## KI-26 — The “79 bộ trọng số môn” figure is not reproducible (Open)
+## KI-26 — The “79 bộ trọng số môn” figure is not reproducible (Resolved / Documented)
 
 The change brief states that the rubric file yields 145 school–major rows, 132 major names and **79 distinct
 subject-weight sets**. The first two match `backend/src/data/edumind_rubrics.json`; the third does not.

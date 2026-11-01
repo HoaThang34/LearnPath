@@ -21,6 +21,7 @@ const path = require('path');
 const { HttpError } = require('../admin/errors');
 const { clearCache: clearGroupCache, getGroupConfig } = require('./groupMatch');
 const { clearCache: clearPriorityCache, getPriorityConfig, rowKey } = require('./hocLuc');
+const { clearCache: clearMbtiCache, AXIS_ORDER } = require('./mbti');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -30,6 +31,9 @@ const GROUPS_FILE =
 const PRIORITIES_FILE =
   process.env.LEARNPATH_SUBJECT_PRIORITIES_PATH ||
   path.join(DATA_DIR, 'career_subject_priorities.json');
+const MBTI_FILE =
+  process.env.LEARNPATH_MBTI_PROFILE_PATH ||
+  path.join(DATA_DIR, 'career_mbti_profile.json');
 const BACKUP_DIR =
   process.env.LEARNPATH_CONFIG_BACKUP_DIR ||
   path.join(__dirname, '..', '..', 'database', 'backups');
@@ -390,13 +394,193 @@ function updatePriorityRow({ key, priorities } = {}, { updatedBy = null } = {}) 
   };
 }
 
+function getMbtiProfileConfig() {
+  const raw = readJson(MBTI_FILE, 'hồ sơ MBTI');
+  const axes = Array.isArray(raw.axes) ? raw.axes : [];
+  const status = raw.status || 'chua_xac_dinh';
+  const determined =
+    status === 'xac_dinh' &&
+    axes.length === 4 &&
+    axes.every((a) => Number.isFinite(a.c) && a.c > 0 && (a.t === 1 || a.t === -1));
+
+  return {
+    version: raw.version || 1,
+    status,
+    note: raw.note || '',
+    formula: raw.formula || 'x_k = D_k / 24 ; M_m = 50 × (1 + Σ_k c_mk·t_mk·x_k / Σ_k c_mk)',
+    updatedAt: raw.updatedAt || null,
+    updatedBy: raw.updatedBy || null,
+    determined,
+    axes: (AXIS_ORDER || ['EI', 'SN', 'TF', 'JP']).map((code) => {
+      const a = axes.find((axis) => axis.code === code) || {};
+      return {
+        code,
+        first: a.first || code[0],
+        second: a.second || code[1],
+        title: a.title || '',
+        c: a.c === null || a.c === undefined ? null : Number(a.c),
+        t: a.t === null || a.t === undefined ? null : Number(a.t),
+      };
+    }),
+  };
+}
+
+function validateMbtiUpdates(input, currentRaw) {
+  if (!input || typeof input !== 'object') {
+    throw new HttpError(400, 'Dữ liệu cập nhật hồ sơ MBTI không hợp lệ.');
+  }
+
+  const nextStatus = input.status !== undefined ? input.status : currentRaw.status;
+  if (nextStatus !== 'xac_dinh' && nextStatus !== 'chua_xac_dinh') {
+    throw new HttpError(400, 'Trạng thái hồ sơ MBTI phải là "xac_dinh" hoặc "chua_xac_dinh".');
+  }
+
+  const inputAxes = Array.isArray(input.axes) ? input.axes : currentRaw.axes || [];
+  const existingMap = new Map((currentRaw.axes || []).map((a) => [a.code, a]));
+  const seen = new Set();
+  const validatedAxes = [];
+
+  for (const item of inputAxes) {
+    const code = String(item?.code || '').trim();
+    if (!['EI', 'SN', 'TF', 'JP'].includes(code)) {
+      throw new HttpError(400, `Mã trục MBTI không hợp lệ: "${code}".`);
+    }
+    if (seen.has(code)) {
+      throw new HttpError(400, `Trục "${code}" bị lặp lại trong yêu cầu.`);
+    }
+    seen.add(code);
+
+    const base = existingMap.get(code) || { code, first: code[0], second: code[1], title: '' };
+    let c = item.c;
+    let t = item.t;
+
+    if (c === '' || c === undefined) c = null;
+    if (t === '' || t === undefined) t = null;
+
+    if (c !== null) {
+      const cNum = Number(c);
+      if (!Number.isFinite(cNum) || cNum <= 0 || cNum > 10) {
+        throw new HttpError(400, `Trọng số liên quan (c) của trục ${code} phải là số dương trong khoảng (0, 10].`);
+      }
+      c = Math.round(cNum * 1000) / 1000;
+    }
+
+    if (t !== null) {
+      const tNum = Number(t);
+      if (tNum !== 1 && tNum !== -1) {
+        throw new HttpError(400, `Hướng đối chiếu (t) của trục ${code} phải là +1 hoặc -1.`);
+      }
+      t = tNum;
+    }
+
+    if (nextStatus === 'xac_dinh') {
+      if (c === null) {
+        throw new HttpError(400, `Trục "${code}" phải có trọng số liên quan c > 0 khi trạng thái là "Đã xác định".`);
+      }
+      if (t === null) {
+        throw new HttpError(400, `Trục "${code}" phải có hướng đối chiếu t (+1 hoặc -1) khi trạng thái là "Đã xác định".`);
+      }
+    }
+
+    validatedAxes.push({
+      code,
+      first: base.first || code[0],
+      second: base.second || code[1],
+      title: base.title || '',
+      c,
+      t,
+    });
+  }
+
+  // Ensure all 4 axes are present
+  for (const requiredCode of ['EI', 'SN', 'TF', 'JP']) {
+    if (!seen.has(requiredCode)) {
+      const base = existingMap.get(requiredCode) || { code: requiredCode, first: requiredCode[0], second: requiredCode[1], title: '' };
+      if (nextStatus === 'xac_dinh') {
+        throw new HttpError(400, `Thiếu cấu hình cho trục "${requiredCode}".`);
+      }
+      validatedAxes.push({
+        code: requiredCode,
+        first: base.first || requiredCode[0],
+        second: base.second || requiredCode[1],
+        title: base.title || '',
+        c: base.c ?? null,
+        t: base.t ?? null,
+      });
+    }
+  }
+
+  const note = input.note !== undefined ? String(input.note).slice(0, 1000) : currentRaw.note || '';
+
+  return { status: nextStatus, note, axes: validatedAxes };
+}
+
+function updateMbtiProfile(input, { updatedBy = null } = {}) {
+  const raw = readJson(MBTI_FILE, 'hồ sơ MBTI');
+  const validated = validateMbtiUpdates(input, raw);
+
+  const changes = [];
+  if (raw.status !== validated.status) {
+    changes.push({ field: 'status', old: raw.status, new: validated.status });
+  }
+  if (raw.note !== validated.note) {
+    changes.push({ field: 'note', old: raw.note, new: validated.note });
+  }
+
+  const oldAxesMap = new Map((raw.axes || []).map((a) => [a.code, a]));
+  for (const newAxis of validated.axes) {
+    const oldAxis = oldAxesMap.get(newAxis.code) || {};
+    const cChanged = oldAxis.c !== newAxis.c;
+    const tChanged = oldAxis.t !== newAxis.t;
+    if (cChanged || tChanged) {
+      changes.push({
+        axis: newAxis.code,
+        old: { c: oldAxis.c, t: oldAxis.t },
+        new: { c: newAxis.c, t: newAxis.t },
+      });
+    }
+  }
+
+  if (changes.length === 0) {
+    return {
+      changed: false,
+      changes: [],
+      profile: getMbtiProfileConfig(),
+      updatedAt: raw.updatedAt || null,
+    };
+  }
+
+  const updatedAt = new Date().toISOString();
+  raw.status = validated.status;
+  raw.note = validated.note;
+  raw.axes = validated.axes;
+  raw.updatedAt = updatedAt;
+  raw.updatedBy = updatedBy ? String(updatedBy).slice(0, 64) : null;
+
+  backupFile(MBTI_FILE, 'mbti-profile');
+  writeJsonAtomic(MBTI_FILE, raw);
+  clearMbtiCache();
+
+  return {
+    changed: true,
+    changes,
+    profile: getMbtiProfileConfig(),
+    updatedAt,
+    updatedBy: raw.updatedBy,
+  };
+}
+
 module.exports = {
   GROUPS_FILE,
   PRIORITIES_FILE,
+  MBTI_FILE,
   BACKUP_DIR,
   validateGroupUpdates,
   updateGroupWeights,
   listPriorityRows,
   updatePriorityRow,
   priorityRowView,
+  getMbtiProfileConfig,
+  validateMbtiUpdates,
+  updateMbtiProfile,
 };

@@ -19,7 +19,12 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_FILE = path.join(__dirname, '..', 'data', 'career_mbti_profile.json');
+function getDataFile() {
+  return (
+    process.env.LEARNPATH_MBTI_PROFILE_PATH ||
+    path.join(__dirname, '..', 'data', 'career_mbti_profile.json')
+  );
+}
 
 const AXIS_ORDER = ['EI', 'SN', 'TF', 'JP'];
 const SCALE = 24;
@@ -34,7 +39,7 @@ let cache = null;
 
 function loadProfile() {
   if (cache) return cache;
-  const raw = JSON.parse(fs.readFileSync(DATA_FILE, 'utf8'));
+  const raw = JSON.parse(fs.readFileSync(getDataFile(), 'utf8'));
   const axes = new Map();
   for (const axis of raw.axes || []) {
     axes.set(axis.code, {

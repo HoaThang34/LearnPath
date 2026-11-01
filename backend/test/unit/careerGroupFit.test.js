@@ -102,18 +102,27 @@ test('W7: every valid rubric major resolves to exactly one group', () => {
   assert.deepEqual(missing, []);
 });
 
-test('W8: the MBTI profile is explicitly undetermined', () => {
+test('W8: the MBTI profile is determined with calibrated c and t values', () => {
   const profile = getMbtiProfile();
-  assert.equal(profile.determined, false);
-  assert.equal(profile.status, 'chua_xac_dinh');
+  assert.equal(profile.determined, true);
+  assert.equal(profile.status, 'xac_dinh');
   assert.equal(profile.axes.length, 4);
   for (const axis of profile.axes) {
-    assert.equal(axis.c, null);
-    assert.equal(axis.t, null);
+    assert.equal(axis.c, 1.0);
+    assert.equal(axis.t, 1);
   }
 });
 
-test('W9: M is null with a reason while the profile is missing', () => {
+test('W9: M is null with a reason while the profile is undetermined', () => {
+  const undeterminedProfile = {
+    status: 'chua_xac_dinh',
+    axes: new Map([
+      ['EI', { code: 'EI', first: 'E', second: 'I', c: null, t: null }],
+      ['SN', { code: 'SN', first: 'S', second: 'N', c: null, t: null }],
+      ['TF', { code: 'TF', first: 'T', second: 'F', c: null, t: null }],
+      ['JP', { code: 'JP', first: 'J', second: 'P', c: null, t: null }],
+    ]),
+  };
   const result = {
     part2: {
       pairs: [
@@ -124,7 +133,7 @@ test('W9: M is null with a reason while the profile is missing', () => {
       ],
     },
   };
-  const fit = mbtiFit({ result });
+  const fit = mbtiFit({ result, profile: undeterminedProfile });
   assert.equal(fit.value, null);
   assert.deepEqual(fit.reasons, ['thieu_ho_so_mbti']);
   assert.equal(fit.axes.find((axis) => axis.code === 'EI').x, 0.5);

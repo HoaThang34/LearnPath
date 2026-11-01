@@ -430,10 +430,12 @@ All routes require the admin cookie + `X-Admin-CSRF`.
 
 - `GET /` returns the same payload as the user endpoint: 12 groups with `judgments`/`wHocLuc`/`wHolland`/`wMbti`/`majorCount`, the MBTI profile state, and the priority summary.
 - `GET /priorities` returns every priority row (143) with an opaque `key` (`schoolCode|majorName|admissionBlock|method|year|entryScore`), subjects (`subject`, rubric `weight`, `r`), `priorityTotal`, and file metadata.
+- `GET /mbti` returns the full MBTI profile configuration (`status`, `description`, `axes`, `updatedAt`).
 - `PUT /groups` — body `{ groups: [{ code, wHocLuc, wHolland, wMbti }] }` (partial list allowed). Each triple must be positive, ≤ 1, and sum to 1 ± 0.002; unknown/duplicate codes are rejected. No-op saves return `changed: false`.
 - `PUT /priorities` — body `{ key, priorities: { "<subject>": r } }`. The subject set must match the row exactly, `r` must be an integer 1–4; adding/removing subjects is rejected (that would change the L denominator).
-- Writes are handled by `backend/src/career/configStore.js`: read the current JSON → validate → copy to `backend/database/backups/<file>-<stamp>-<reason>.json` (5 newest per file) → atomic replace → clear the in-process cache. A failed validation or backup writes nothing. Audit actions: `admin.career.group_weights.update` and `admin.career.subject_priorities.update`.
-- The tab **“Trọng số 12 khối”** in `/admin_career` (`GroupWeightPanel.jsx`) edits the three weights as percentages, flags totals outside 100 ± 0.2, offers “Chuẩn hoá dòng lệch”, and edits one priority row at a time with search. The MBTI banner stays informational because the c/t profile is not editable here.
+- `PUT /mbti` — body `{ status, axes: [{ code, c, t }] }`. Validates status `xac_dinh` / `chua_xac_dinh`, 4 axes (EI, SN, TF, JP), $c \ge 0$, $t \in \{-1, 1\}$.
+- Writes are handled by `backend/src/career/configStore.js`: read the current JSON → validate → copy to `backend/database/backups/<file>-<stamp>-<reason>.json` (5 newest per file) → atomic replace → clear the in-process cache. A failed validation or backup writes nothing. Audit actions: `admin.career.group_weights.update`, `admin.career.subject_priorities.update`, and `admin.career.mbti_profile.update`.
+- The tab **“Trọng số 12 khối”** in `/admin_career` (`GroupWeightPanel.jsx`) edits the three weights as percentages, flags totals outside 100 ± 0.2, offers “Chuẩn hoá dòng lệch”, edits one priority row at a time with search, and provides an interactive Card for managing the MBTI 4-axis comparison profile ($c_k, t_k$).
 
 ## 5. DB schema
 

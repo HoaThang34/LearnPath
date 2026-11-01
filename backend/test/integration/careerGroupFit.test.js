@@ -77,7 +77,7 @@ function insertInterestResult(userId) {
   );
 }
 
-test('G1: a mapped major gets L from subject priorities, H from RIASEC, and M = null with a reason', async (t) => {
+test('G1: a mapped major gets L from subject priorities, H from RIASEC, and M from MBTI', async (t) => {
   await createAdmissionFixture();
   await getAuthDb();
 
@@ -137,35 +137,83 @@ test('G1: a mapped major gets L from subject priorities, H from RIASEC, and M = 
   assert.equal(row.hollandIndex, row.tinhCachFit);
   assert.ok(row.hollandIndex > 0);
 
-  // The MBTI profile is deliberately absent, so M is null with a reason.
-  assert.equal(row.mbtiIndex, null);
-  assert.equal(row.mbtiStatus, 'chua_xac_dinh');
-  assert.equal(result.mbti.determined, false);
-  // All four pairs have a D, so the only missing piece is the c/t profile.
-  assert.deepEqual(result.mbti.reasons, ['thieu_ho_so_mbti']);
+  // The MBTI profile is determined, so M is calculated on the 0–100 scale.
+  assert.equal(row.mbtiIndex, 62.5);
+  assert.equal(row.mbtiStatus, 'day_du');
+  assert.equal(result.mbti.determined, true);
+  assert.deepEqual(result.mbti.reasons, []);
   assert.equal(result.mbti.axes.length, 4);
   assert.ok(result.mbti.axes.every((axis) => axis.d !== null));
 
-  // F is null, with a labelled partial value and the exact CNTT weights.
+  // F_m uses all three components: w_L·L + w_H·H + w_M·M
   assert.equal(row.groupCode, 'cntt');
   assert.equal(row.groupLabel, 'CNTT – dữ liệu – AI');
-  assert.equal(row.groupFit, null);
-  assert.deepEqual(row.groupFitMissing, ['M']);
-  assert.deepEqual(row.groupReasons, ['thieu_mbti']);
-  const expectedPartial = Math.round(
-    ((0.54994561 * row.hocLucIndex + 0.24021087 * row.hollandIndex) / (0.54994561 + 0.24021087)) * 10
+  const expectedF = Math.round(
+    (0.54994561 * row.hocLucIndex + 0.24021087 * row.hollandIndex + 0.20984352 * 62.5) * 10
   ) / 10;
-  assert.equal(row.groupFitPartial, expectedPartial);
-  assert.equal(row.groupFitCoverage, 0.7902);
+  assert.equal(row.groupFit, expectedF);
+  assert.deepEqual(row.groupFitMissing, []);
+  assert.deepEqual(row.groupReasons, []);
+  assert.equal(row.groupFitCoverage, 1);
   assert.deepEqual(
     row.groupFitContributions.map((entry) => entry.component),
     ['L', 'H', 'M']
   );
-  assert.equal(row.groupFitContributions[2].value, null);
-  assert.equal(row.groupFitContributions[2].contribution, null);
+  assert.equal(row.groupFitContributions[2].value, 62.5);
+  assert.equal(row.groupFitContributions[2].contribution, 13.1152);
 
   // The legacy contract is untouched: a fully-scored rubric has no reasons.
   assert.deepEqual(row.reasons, []);
   assert.notEqual(row.hocLucFit, null);
   assert.notEqual(row.tongHopFit, null);
+});
+
+test('G2: when MBTI profile is chua_xac_dinh, M is null and F keeps partial value', async (t) => {
+  const tempMbtiPath = path.join(os.tmpdir(), `mbti-undetermined-${process.pid}-${Date.now()}.json`);
+  fs.writeFileSync(
+    tempMbtiPath,
+    JSON.stringify({
+      version: 1,
+      status: 'chua_xac_dinh',
+      axes: [
+        { code: 'EI', c: null, t: null },
+        { code: 'SN', c: null, t: null },
+        { code: 'TF', c: null, t: null },
+        { code: 'JP', c: null, t: null },
+      ],
+    })
+  );
+
+  const prevEnv = process.env.LEARNPATH_MBTI_PROFILE_PATH;
+  process.env.LEARNPATH_MBTI_PROFILE_PATH = tempMbtiPath;
+  const { clearCache } = require('../../src/career/mbti');
+  clearCache();
+
+  t.after(() => {
+    process.env.LEARNPATH_MBTI_PROFILE_PATH = prevEnv;
+    fs.rmSync(tempMbtiPath, { force: true });
+    clearCache();
+  });
+
+  const userId = insertUser('group_user_undetermined');
+  await saveExamScores(userId, [{ block: 'D01', score: 25 }]);
+  await saveAcademicScores(userId, [
+    { subject: 'Toán', term: 'Cả năm', classLevel: '12', score: 8.5, scoreType: 'average' },
+    { subject: 'Ngữ văn', term: 'Cả năm', classLevel: '12', score: 7.5, scoreType: 'average' },
+    { subject: 'Tiếng Anh', term: 'Cả năm', classLevel: '12', score: 9, scoreType: 'average' },
+  ]);
+  insertInterestResult(userId);
+
+  const result = await buildRecommendations(userId, {});
+  const row = result.data.find((entry) => entry.majorName === 'Kỹ thuật Phần mềm');
+  assert.ok(row);
+
+  assert.equal(row.mbtiIndex, null);
+  assert.equal(row.mbtiStatus, 'chua_xac_dinh');
+  assert.equal(result.mbti.determined, false);
+  assert.deepEqual(result.mbti.reasons, ['thieu_ho_so_mbti']);
+  assert.equal(row.groupFit, null);
+  assert.deepEqual(row.groupFitMissing, ['M']);
+  assert.deepEqual(row.groupReasons, ['thieu_mbti']);
+  assert.notEqual(row.groupFitPartial, null);
 });

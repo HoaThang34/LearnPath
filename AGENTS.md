@@ -43,7 +43,7 @@ Before reporting completion, read `.agents/TESTING.md`.
   2. **Chỉnh sửa điểm chuẩn** (`diem_chuan`: mã trường, tên trường, ngành, tổ hợp môn, điểm chuẩn, ghi chú, năm, phương thức với gợi ý chuẩn hóa).
   3. **Thêm dữ liệu mới (thêm thủ công)** vào bất kỳ bảng nào trong 5 bảng tuyển sinh (`khoi_thi`, `truong`, `diem_chuan`, `diem_thi_thptqg`, `de_an_tuyen_sinh`).
   Mọi thao tác ghi dữ liệu tuyển sinh đều đi qua engine tuần tự hóa `admissionWrite.js` (giao dịch, `quick_check`, backup tự động, ghi atomic và reload RAM).
-- Admin career config: tab **“Trọng số 12 khối”** trong `/admin_career` sửa trực tiếp trọng số L/H/M của 12 khối (mỗi khối phải dương và tổng = 1 ± 0.002) và mức ưu tiên môn r ∈ {1,2,3,4} của từng dòng. API: `PUT /api/admin/career/group-config/groups`, `PUT /api/admin/career/group-config/priorities`, `GET .../priorities`. Ghi qua `backend/src/career/configStore.js`: validate → backup JSON → ghi atomic → xóa cache; mọi thay đổi có audit. JSON vẫn là nguồn dữ liệu, không đổi schema auth DB. `derive-career-weights.js --write` từ chối ghi đè tệp đã có `updatedAt` trừ khi thêm `--force`.
+- Admin career config: tab **“Trọng số 12 khối”** trong `/admin_career` sửa trực tiếp trọng số L/H/M của 12 khối (mỗi khối phải dương và tổng = 1 ± 0.002), mức ưu tiên môn r ∈ {1,2,3,4} của từng dòng, và cấu hình hồ sơ đối chiếu 4 trục MBTI (chỉ số $M_m$ và $F_m$). API: `GET/PUT /api/admin/career/group-config/groups`, `GET/PUT .../priorities`, `GET/PUT .../mbti`. Ghi qua `backend/src/career/configStore.js`: validate → backup JSON → ghi atomic → xóa cache; mọi thay đổi có audit log. JSON vẫn là nguồn dữ liệu, không đổi schema auth DB. `derive-career-weights.js --write` từ chối ghi đè tệp đã có `updatedAt` trừ khi thêm `--force`.
 - Current admission DB counts: **245 blocks**, 260 schools, 2,617 score rows, 307 proposals, 1,131,975 candidates.
 - The importer now parses **281 blocks** from the source files. The live DB still has 245 until a rebuild is approved.
 - API uses the relative `/api` path; Vite proxies it to the backend. Production needs a reverse proxy, HTTPS, `APP_ORIGIN`, and SPA fallback.
@@ -59,7 +59,7 @@ Before reporting completion, read `.agents/TESTING.md`.
 # Backend
 cd backend
 npm install
-npm test                    # 206 tests: unit + integration on temp DBs
+npm test                    # 212 tests: unit + integration on temp DBs
 npm run dev                 # http://localhost:3001
 
 # Rubric / interest tooling (read-only unless --apply/--write)

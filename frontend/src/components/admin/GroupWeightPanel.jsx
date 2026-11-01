@@ -15,8 +15,10 @@ import { Input } from '@/components/ui/input'
 import {
   getCareerGroupConfig,
   getCareerPriorityRows,
+  getCareerMbtiProfile,
   updateCareerGroupWeights,
   updateCareerSubjectPriority,
+  updateCareerMbtiProfile,
 } from '@/lib/adminApi'
 import { cn } from '@/lib/utils'
 
@@ -70,6 +72,15 @@ export default function GroupWeightPanel() {
   const [editValues, setEditValues] = useState({})
   const [savingKey, setSavingKey] = useState(null)
 
+  const [mbtiData, setMbtiData] = useState(null)
+  const [mbtiStatusDraft, setMbtiStatusDraft] = useState('xac_dinh')
+  const [mbtiNoteDraft, setMbtiNoteDraft] = useState('')
+  const [mbtiAxesDraft, setMbtiAxesDraft] = useState([])
+  const [mbtiLoading, setMbtiLoading] = useState(true)
+  const [mbtiSaving, setMbtiSaving] = useState(false)
+  const [mbtiError, setMbtiError] = useState('')
+  const [mbtiSuccess, setMbtiSuccess] = useState('')
+
   const loadConfig = useCallback(async () => {
     setLoading(true)
     setError('')
@@ -82,6 +93,34 @@ export default function GroupWeightPanel() {
       setError(err.response?.data?.error || 'Không thể tải bộ trọng số 12 khối ngành.')
     } finally {
       setLoading(false)
+    }
+  }, [])
+
+  const loadMbti = useCallback(async () => {
+    setMbtiLoading(true)
+    setMbtiError('')
+    try {
+      const response = await getCareerMbtiProfile()
+      const data = response.data?.data || null
+      if (data) {
+        setMbtiData(data)
+        setMbtiStatusDraft(data.status || 'xac_dinh')
+        setMbtiNoteDraft(data.note || '')
+        setMbtiAxesDraft(
+          (data.axes || []).map((axis) => ({
+            code: axis.code,
+            first: axis.first,
+            second: axis.second,
+            title: axis.title,
+            c: axis.c ?? 1.0,
+            t: axis.t ?? 1,
+          }))
+        )
+      }
+    } catch (err) {
+      setMbtiError(err.response?.data?.error || 'Không thể tải hồ sơ MBTI.')
+    } finally {
+      setMbtiLoading(false)
     }
   }, [])
 
@@ -100,8 +139,9 @@ export default function GroupWeightPanel() {
 
   useEffect(() => {
     loadConfig()
+    loadMbti()
     loadPriorities()
-  }, [loadConfig, loadPriorities])
+  }, [loadConfig, loadMbti, loadPriorities])
 
   useEffect(() => {
     setVisibleCount(PAGE_SIZE)
@@ -280,6 +320,79 @@ export default function GroupWeightPanel() {
     )
   }, [priorityData, query])
 
+  const updateMbtiAxis = (code, field, val) => {
+    setMbtiSuccess('')
+    setMbtiError('')
+    setMbtiAxesDraft((curr) =>
+      curr.map((axis) =>
+        axis.code === code
+          ? { ...axis, [field]: val === '' ? '' : Number(val) }
+          : axis
+      )
+    )
+  }
+
+  const applyStandardMbti = () => {
+    setMbtiStatusDraft('xac_dinh')
+    setMbtiAxesDraft((curr) =>
+      curr.map((axis) => ({ ...axis, c: 1.0, t: 1 }))
+    )
+    setMbtiSuccess('Đã áp dụng mẫu chuẩn: c = 1.0, t = +1 cho cả 4 trục.')
+  }
+
+  const resetMbti = () => {
+    if (!mbtiData) return
+    setMbtiStatusDraft(mbtiData.status || 'xac_dinh')
+    setMbtiNoteDraft(mbtiData.note || '')
+    setMbtiAxesDraft(
+      (mbtiData.axes || []).map((axis) => ({
+        code: axis.code,
+        first: axis.first,
+        second: axis.second,
+        title: axis.title,
+        c: axis.c ?? 1.0,
+        t: axis.t ?? 1,
+      }))
+    )
+    setMbtiSuccess('')
+    setMbtiError('')
+  }
+
+  const saveMbti = async () => {
+    setMbtiSaving(true)
+    setMbtiError('')
+    setMbtiSuccess('')
+    try {
+      const payload = {
+        status: mbtiStatusDraft,
+        note: mbtiNoteDraft,
+        axes: mbtiAxesDraft.map((a) => ({
+          code: a.code,
+          c: a.c === '' || a.c === null ? null : Number(a.c),
+          t: a.t === '' || a.t === null ? null : Number(a.t),
+        })),
+      }
+      const response = await updateCareerMbtiProfile(payload)
+      const data = response.data?.data
+      if (data?.profile) {
+        setMbtiData(data.profile)
+        setMbtiStatusDraft(data.profile.status)
+        setMbtiNoteDraft(data.profile.note || '')
+        setMbtiAxesDraft(data.profile.axes || [])
+        setConfig((curr) => curr ? { ...curr, mbti: data.profile } : curr)
+      }
+      setMbtiSuccess(
+        data?.changed
+          ? 'Đã lưu cấu hình hồ sơ 4 trục MBTI thành công.'
+          : 'Không có thay đổi nào cần lưu.'
+      )
+    } catch (err) {
+      setMbtiError(err.response?.data?.error || 'Không thể lưu hồ sơ MBTI.')
+    } finally {
+      setMbtiSaving(false)
+    }
+  }
+
   const visibleRows = filteredRows.slice(0, visibleCount)
 
   if (loading && !config) {
@@ -315,22 +428,142 @@ export default function GroupWeightPanel() {
         </p>
       </div>
 
-      {mbti.determined === false && (
-        <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-xs text-amber-900">
-          <AlertTriangle className="mt-0.5 h-4 w-4 shrink-0" />
+      {/* Interactive MBTI Profile Editor */}
+      <div className="rounded-lg border bg-white shadow-sm">
+        <div className="flex flex-col gap-2 border-b bg-slate-50/50 p-3 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="font-semibold">Hồ sơ đối chiếu MBTI chưa xác định</p>
-            <p className="mt-1">
-              Bốn trục đang có <code>c = null</code>, <code>t = null</code>. Vì vậy điểm M và F hiện là
-              &quot;chưa tính được&quot; thay vì một con số tự gán. Hồ sơ này không sửa trong tab này; khi có
-              bảng c/t đã thẩm định, điền <code>career_mbti_profile.json</code> rồi khởi động lại backend.
-            </p>
-            <p className="mt-1">
-              Trạng thái: <strong>{mbti.status}</strong>
+            <div className="flex items-center gap-2">
+              <h3 className="text-sm font-semibold text-slate-900">Hồ sơ đối chiếu 4 trục MBTI (Chỉ số M_m)</h3>
+              {mbtiData?.determined ? (
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2 py-0.5 text-[11px] font-medium text-emerald-800">
+                  <Check className="h-3 w-3" /> Đã xác định (M_m & F_m tính đầy đủ)
+                </span>
+              ) : (
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2 py-0.5 text-[11px] font-medium text-amber-800">
+                  <AlertTriangle className="h-3 w-3" /> Chưa xác định (M_m & F_m để null)
+                </span>
+              )}
+            </div>
+            <p className="mt-0.5 text-xs text-muted-foreground">
+              Công thức: <code className="font-mono text-[11px]">x_k = D_k / 24 ; M_m = 50 × (1 + Σ c_k·t_k·x_k / Σ c_k)</code>.
+              Chỉnh sửa mức độ liên quan (c &gt; 0) và hướng ưu tiên (t = +1 / -1) cho từng trục.
             </p>
           </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <select
+              value={mbtiStatusDraft}
+              onChange={(e) => setMbtiStatusDraft(e.target.value)}
+              className="h-8 rounded-md border border-slate-200 bg-white px-2 py-1 text-xs font-medium text-slate-800 shadow-sm focus:outline-none focus:ring-1 focus:ring-primary"
+            >
+              <option value="xac_dinh">Trạng thái: Đã xác định (Tính điểm)</option>
+              <option value="chua_xac_dinh">Trạng thái: Chưa xác định (Để null)</option>
+            </select>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={applyStandardMbti}
+              disabled={mbtiSaving}
+              title="Điền c = 1.0 và t = +1 cho cả 4 trục"
+            >
+              Mẫu chuẩn
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={resetMbti}
+              disabled={mbtiSaving}
+            >
+              <RotateCcw className="mr-1 h-3.5 w-3.5" /> Hoàn tác
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              onClick={saveMbti}
+              disabled={mbtiSaving}
+            >
+              {mbtiSaving ? (
+                <Loader2 className="mr-1 h-3.5 w-3.5 animate-spin" />
+              ) : (
+                <Save className="mr-1 h-3.5 w-3.5" />
+              )}
+              Lưu hồ sơ MBTI
+            </Button>
+          </div>
         </div>
-      )}
+
+        <div className="space-y-2 p-3">
+          {mbtiError && <AdminAlert variant="error">{mbtiError}</AdminAlert>}
+          {mbtiSuccess && <AdminAlert variant="success">{mbtiSuccess}</AdminAlert>}
+        </div>
+
+        <div className="overflow-x-auto px-3 pb-3">
+          <table className="w-full text-xs">
+            <thead className="bg-slate-100 text-slate-700">
+              <tr>
+                <th className="px-3 py-2 text-left font-semibold">Trục</th>
+                <th className="px-3 py-2 text-left font-semibold">Chiều đo phản tư</th>
+                <th className="px-3 py-2 text-right font-semibold">Trọng số liên quan (c)</th>
+                <th className="px-3 py-2 text-left font-semibold">Hướng đối chiếu (t)</th>
+                <th className="px-3 py-2 text-left font-semibold">Quy ước tính điểm M</th>
+              </tr>
+            </thead>
+            <tbody>
+              {mbtiAxesDraft.map((axis) => (
+                <tr key={axis.code} className="border-t">
+                  <td className="px-3 py-2 font-mono font-bold text-slate-900">{axis.code}</td>
+                  <td className="px-3 py-2 text-slate-700">
+                    {axis.title || axis.code} ({axis.first} – {axis.second})
+                  </td>
+                  <td className="px-3 py-2 text-right">
+                    <Input
+                      type="number"
+                      step="0.1"
+                      min="0.1"
+                      max="10"
+                      value={axis.c ?? ''}
+                      onChange={(e) => updateMbtiAxis(axis.code, 'c', e.target.value)}
+                      className="ml-auto h-7 w-24 text-right font-mono text-xs"
+                      disabled={mbtiSaving}
+                    />
+                  </td>
+                  <td className="px-3 py-2">
+                    <select
+                      value={axis.t ?? 1}
+                      onChange={(e) => updateMbtiAxis(axis.code, 't', e.target.value)}
+                      className="h-7 rounded border border-slate-200 bg-white px-2 py-0.5 text-xs text-slate-800"
+                      disabled={mbtiSaving}
+                    >
+                      <option value="1">+1: Nghiêng về chữ đầu ({axis.first})</option>
+                      <option value="-1">-1: Nghiêng về chữ sau ({axis.second})</option>
+                    </select>
+                  </td>
+                  <td className="px-3 py-2 text-slate-500 text-[11px]">
+                    {axis.t === 1 ? (
+                      <span>Nghiêng về <strong>{axis.first}</strong> (+D) tăng M; nghiêng về <strong>{axis.second}</strong> (-D) giảm M</span>
+                    ) : (
+                      <span>Nghiêng về <strong>{axis.second}</strong> (-D) tăng M; nghiêng về <strong>{axis.first}</strong> (+D) giảm M</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          <div className="mt-3 flex items-center gap-2 text-xs">
+            <span className="font-medium text-slate-700 shrink-0">Ghi chú thẩm định:</span>
+            <Input
+              type="text"
+              value={mbtiNoteDraft}
+              onChange={(e) => setMbtiNoteDraft(e.target.value)}
+              placeholder="Nhập ghi chú hoặc nguồn thẩm định cho hồ sơ MBTI..."
+              className="h-7 text-xs"
+              disabled={mbtiSaving}
+            />
+          </div>
+        </div>
+      </div>
 
       <div className="rounded-lg border">
         <div className="flex flex-col gap-2 border-b bg-white p-3 sm:flex-row sm:items-center sm:justify-between">

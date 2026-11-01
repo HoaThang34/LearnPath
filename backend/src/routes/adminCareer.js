@@ -7,7 +7,13 @@ const { getMatchConfigRows, updateMatchConfig } = require('../career/match');
 const { getGroupConfig } = require('../career/groupMatch');
 const { getMbtiProfile } = require('../career/mbti');
 const { getPriorityConfig } = require('../career/hocLuc');
-const { listPriorityRows, updateGroupWeights, updatePriorityRow } = require('../career/configStore');
+const {
+  listPriorityRows,
+  updateGroupWeights,
+  updatePriorityRow,
+  getMbtiProfileConfig,
+  updateMbtiProfile,
+} = require('../career/configStore');
 const { queryAll } = require('../database/db');
 const { asyncRoute, parseId } = require('../admin/routeUtils');
 const { HttpError } = require('../admin/errors');
@@ -38,6 +44,30 @@ router.get('/group-config', asyncRoute(async (req, res) =>
 router.get('/group-config/priorities', asyncRoute(async (req, res) =>
   res.json({ data: listPriorityRows() })
 ));
+
+router.get('/group-config/mbti', asyncRoute(async (req, res) =>
+  res.json({ data: getMbtiProfileConfig() })
+));
+
+router.put('/group-config/mbti', asyncRoute(async (req, res) => {
+  const result = updateMbtiProfile(req.body, { updatedBy: req.admin.username });
+  if (result.changed) {
+    await writeAudit({
+      adminId: req.admin.id,
+      adminUsername: req.admin.username,
+      action: 'admin.career.mbti_profile.update',
+      entity: 'career_mbti_profile',
+      entityId: null,
+      details: {
+        status: result.profile.status,
+        updatedAt: result.updatedAt,
+        changes: result.changes,
+      },
+      ip: getClientIp(req),
+    });
+  }
+  return res.json({ data: result });
+}));
 
 router.put('/group-config/groups', asyncRoute(async (req, res) => {
   const result = updateGroupWeights(req.body, { updatedBy: req.admin.username });

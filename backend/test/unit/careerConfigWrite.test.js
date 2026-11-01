@@ -8,12 +8,15 @@ const REPO = path.join(__dirname, '..', '..');
 const TEMP_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'learnpath-career-config-unit-'));
 const GROUPS_COPY = path.join(TEMP_DIR, 'career_group_weights.json');
 const PRIORITIES_COPY = path.join(TEMP_DIR, 'career_subject_priorities.json');
+const MBTI_COPY = path.join(TEMP_DIR, 'career_mbti_profile.json');
 
 fs.copyFileSync(path.join(REPO, 'src', 'data', 'career_group_weights.json'), GROUPS_COPY);
 fs.copyFileSync(path.join(REPO, 'src', 'data', 'career_subject_priorities.json'), PRIORITIES_COPY);
+fs.copyFileSync(path.join(REPO, 'src', 'data', 'career_mbti_profile.json'), MBTI_COPY);
 
 process.env.LEARNPATH_GROUP_WEIGHTS_PATH = GROUPS_COPY;
 process.env.LEARNPATH_SUBJECT_PRIORITIES_PATH = PRIORITIES_COPY;
+process.env.LEARNPATH_MBTI_PROFILE_PATH = MBTI_COPY;
 process.env.LEARNPATH_CONFIG_BACKUP_DIR = path.join(TEMP_DIR, 'backups');
 
 const test = require('node:test');
@@ -24,6 +27,8 @@ const {
   updateGroupWeights,
   listPriorityRows,
   updatePriorityRow,
+  getMbtiProfileConfig,
+  updateMbtiProfile,
 } = require('../../src/career/configStore');
 const { getGroupConfig, groupFit, clearCache: clearGroupCache } = require('../../src/career/groupMatch');
 const {
@@ -238,4 +243,86 @@ test('U10: a no-op priority save reports changed=false and writes no backup', ()
   assert.equal(result.changed, false);
   assert.deepEqual(result.changes, []);
   assert.equal(backupNames('career_subject_priorities').length, backupsBefore);
+});
+
+test('U11: rejects invalid MBTI updates without touching the file', () => {
+  assert.throws(
+    () => updateMbtiProfile({ status: 'invalid_status' }),
+    (error) => error.status === 400 && /Trạng thái hồ sơ MBTI/.test(error.message)
+  );
+
+  assert.throws(
+    () => updateMbtiProfile({ status: 'xac_dinh', axes: [{ code: 'EI', c: -1, t: 1 }] }),
+    (error) => error.status === 400 && /phải là số dương/.test(error.message)
+  );
+
+  assert.throws(
+    () => updateMbtiProfile({ status: 'xac_dinh', axes: [{ code: 'EI', c: 1, t: 2 }] }),
+    (error) => error.status === 400 && /phải là \+1 hoặc -1/.test(error.message)
+  );
+});
+
+test('U12: saves MBTI profile updates atomically and creates a backup', () => {
+  const backupsBefore = backupNames('career_mbti_profile').length;
+  const result = updateMbtiProfile(
+    {
+      status: 'xac_dinh',
+      note: 'Hồ sơ đã kiểm định',
+      axes: [
+        { code: 'EI', c: 1.0, t: 1 },
+        { code: 'SN', c: 1.5, t: -1 },
+        { code: 'TF', c: 2.0, t: 1 },
+        { code: 'JP', c: 1.0, t: -1 },
+      ],
+    },
+    { updatedBy: 'admin_test' }
+  );
+
+  assert.equal(result.changed, true);
+  assert.equal(result.profile.status, 'xac_dinh');
+  assert.equal(result.profile.determined, true);
+  assert.equal(result.updatedBy, 'admin_test');
+  assert.ok(result.updatedAt);
+  assert.equal(backupNames('career_mbti_profile').length, backupsBefore + 1);
+
+  const loaded = getMbtiProfileConfig();
+  assert.equal(loaded.status, 'xac_dinh');
+  assert.equal(loaded.determined, true);
+  const tf = loaded.axes.find((a) => a.code === 'TF');
+  assert.equal(tf.c, 2.0);
+  assert.equal(tf.t, 1);
+});
+
+test('U13: a no-op MBTI profile save reports changed=false and writes no backup', () => {
+  const loaded = getMbtiProfileConfig();
+  const backupsBefore = backupNames('career_mbti_profile').length;
+  const result = updateMbtiProfile({
+    status: loaded.status,
+    note: loaded.note,
+    axes: loaded.axes,
+  });
+
+  assert.equal(result.changed, false);
+  assert.deepEqual(result.changes, []);
+  assert.equal(backupNames('career_mbti_profile').length, backupsBefore);
+});
+
+test('U14: switching status to chua_xac_dinh marks determined=false', () => {
+  const result = updateMbtiProfile(
+    {
+      status: 'chua_xac_dinh',
+      note: 'Đang chờ thẩm định',
+      axes: [
+        { code: 'EI', c: null, t: null },
+        { code: 'SN', c: null, t: null },
+        { code: 'TF', c: null, t: null },
+        { code: 'JP', c: null, t: null },
+      ],
+    },
+    { updatedBy: 'admin_test' }
+  );
+
+  assert.equal(result.changed, true);
+  assert.equal(result.profile.status, 'chua_xac_dinh');
+  assert.equal(result.profile.determined, false);
 });

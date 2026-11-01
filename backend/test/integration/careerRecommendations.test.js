@@ -194,10 +194,10 @@ test('career recommendations use only the current user and expose null reasons',
   assert.equal(aEng.groupFit, null);
   assert.ok(aEng.groupReasons.includes('khong_xac_dinh_duoc_khoi'));
   assert.ok(aEng.groupReasons.includes('khong_co_bo_trong_so'));
-  assert.equal(aEng.mbtiIndex, null);
-  assert.equal(aEng.mbtiStatus, 'chua_xac_dinh');
-  assert.equal(a.mbti.value, null);
-  assert.equal(a.mbti.determined, false);
+  assert.equal(aEng.mbtiIndex, 62.5);
+  assert.equal(aEng.mbtiStatus, 'day_du');
+  assert.equal(a.mbti.value, 62.5);
+  assert.equal(a.mbti.determined, true);
 
   const sat = a.data.find((row) => row.majorName === 'Ngành SAT');
   assert.ok(sat);

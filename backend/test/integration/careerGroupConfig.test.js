@@ -9,16 +9,19 @@ const REPO = path.join(__dirname, '..', '..');
 const TEMP_DIR = fs.mkdtempSync(path.join(os.tmpdir(), 'learnpath-career-config-api-'));
 const GROUPS_COPY = path.join(TEMP_DIR, 'career_group_weights.json');
 const PRIORITIES_COPY = path.join(TEMP_DIR, 'career_subject_priorities.json');
+const MBTI_COPY = path.join(TEMP_DIR, 'career_mbti_profile.json');
 const BACKUP_DIR = path.join(TEMP_DIR, 'backups');
 
 fs.copyFileSync(path.join(REPO, 'src', 'data', 'career_group_weights.json'), GROUPS_COPY);
 fs.copyFileSync(path.join(REPO, 'src', 'data', 'career_subject_priorities.json'), PRIORITIES_COPY);
+fs.copyFileSync(path.join(REPO, 'src', 'data', 'career_mbti_profile.json'), MBTI_COPY);
 
 process.env.NODE_ENV = 'test';
 process.env.APP_ORIGIN = 'http://localhost:5173';
 process.env.LEARNPATH_AUTH_DB_PATH = path.join(TEMP_DIR, 'auth.db');
 process.env.LEARNPATH_GROUP_WEIGHTS_PATH = GROUPS_COPY;
 process.env.LEARNPATH_SUBJECT_PRIORITIES_PATH = PRIORITIES_COPY;
+process.env.LEARNPATH_MBTI_PROFILE_PATH = MBTI_COPY;
 process.env.LEARNPATH_CONFIG_BACKUP_DIR = BACKUP_DIR;
 
 const test = require('node:test');
@@ -312,6 +315,73 @@ test('admin career group-config write API', async (t) => {
       Number(
         queryOne(
           "SELECT COUNT(*) AS total FROM admin_audit WHERE action = 'admin.career.subject_priorities.update'"
+        ).total
+      ),
+      1
+    );
+  });
+
+  await t.test('reads and updates the MBTI profile through the admin API', async () => {
+    const initial = await request('/api/admin/career/group-config/mbti', { cookie: state.cookie });
+    assert.equal(initial.response.status, 200);
+    assert.equal(initial.data.data.axes.length, 4);
+
+    // Reject invalid values
+    const bad = await request('/api/admin/career/group-config/mbti', {
+      method: 'PUT',
+      cookie: state.cookie,
+      csrf: state.csrf,
+      body: { status: 'xac_dinh', axes: [{ code: 'EI', c: -5, t: 1 }] },
+    });
+    assert.equal(bad.response.status, 400);
+
+    // Valid update
+    const { response, data } = await request('/api/admin/career/group-config/mbti', {
+      method: 'PUT',
+      cookie: state.cookie,
+      csrf: state.csrf,
+      body: {
+        status: 'xac_dinh',
+        note: 'Đã thẩm định kiểm thử',
+        axes: [
+          { code: 'EI', c: 1, t: 1 },
+          { code: 'SN', c: 1, t: -1 },
+          { code: 'TF', c: 1.5, t: 1 },
+          { code: 'JP', c: 1, t: 1 },
+        ],
+      },
+    });
+    assert.equal(response.status, 200, JSON.stringify(data));
+    assert.equal(data.data.changed, true);
+    assert.equal(data.data.profile.status, 'xac_dinh');
+    assert.equal(data.data.profile.determined, true);
+
+    assert.equal(
+      Number(
+        queryOne(
+          "SELECT COUNT(*) AS total FROM admin_audit WHERE action = 'admin.career.mbti_profile.update'"
+        ).total
+      ),
+      1
+    );
+
+    // No-op update
+    const noop = await request('/api/admin/career/group-config/mbti', {
+      method: 'PUT',
+      cookie: state.cookie,
+      csrf: state.csrf,
+      body: {
+        status: data.data.profile.status,
+        note: data.data.profile.note,
+        axes: data.data.profile.axes,
+      },
+    });
+    assert.equal(noop.response.status, 200);
+    assert.equal(noop.data.data.changed, false);
+    assert.equal(
+      Number(
+        queryOne(
+          "SELECT COUNT(*) AS total FROM admin_audit WHERE action = 'admin.career.mbti_profile.update'"
         ).total
       ),
       1
