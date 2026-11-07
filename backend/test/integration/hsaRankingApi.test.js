@@ -126,4 +126,5 @@ test('HSA ranking API requires auth and responds correctly', async () => {
   const imageRes = await fetch(`${baseUrl}/api/diem-thi/hsa/image/25`, { headers: authHeaders });
   assert.equal(imageRes.status, 200);
   assert.ok(imageRes.headers.get('content-type').startsWith('image/'));
+  await imageRes.arrayBuffer();
 });

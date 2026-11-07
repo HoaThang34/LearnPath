@@ -343,7 +343,7 @@ const coreFeatures = [
   },
   {
     title: 'Tra cứu thứ hạng',
-    description: 'Ước lượng thứ hạng phổ điểm dựa trên kết quả thi tốt nghiệp THPT toàn quốc và điểm ĐGNL (HSA) để định vị năng lực cạnh tranh.',
+    description: 'Ước lượng thứ hạng phổ điểm dựa trên kết quả thi tốt nghiệp THPT, ĐGNL (HSA) và ĐGTD (TSA) để định vị năng lực cạnh tranh.',
     icon: Trophy,
     link: '/thu-hang',
   },
@@ -1360,7 +1360,7 @@ export default function TrangChu() {
             </CardHeader>
             <CardContent className="p-4 pt-1 space-y-2">
               <p className="text-[11px] text-muted-foreground line-clamp-2">
-                Tra cứu vị trí và xếp hạng dự kiến dựa trên điểm thi tốt nghiệp THPT và điểm ĐGNL HSA.
+                Tra cứu vị trí và xếp hạng dự kiến dựa trên điểm thi tốt nghiệp THPT, ĐGNL HSA và ĐGTD TSA.
               </p>
               <Link
                 to="/thu-hang"

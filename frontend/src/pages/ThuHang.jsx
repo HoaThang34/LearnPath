@@ -6,6 +6,7 @@ import {
   AlertTriangle,
   GraduationCap,
   Award,
+  Sparkles,
   ExternalLink,
   Search,
   CheckCircle2,
@@ -20,7 +21,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { getRanking, getHsaExams, getHsaRanking } from '@/lib/api'
+import {
+  getRanking,
+  getHsaExams,
+  getHsaRanking,
+  getTsaExams,
+  getTsaRanking
+} from '@/lib/api'
 import {
   BarChart,
   Bar,
@@ -92,8 +99,92 @@ const DEFAULT_HSA_EXAMS = [
   },
 ]
 
+const DEFAULT_TSA_EXAMS = [
+  {
+    id: 24,
+    name: 'Tổng 3 đợt thi TSA 2026',
+    year: 2026,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/tsa-2026_1.png',
+    localImage: '/images/tsa/tsa-24.png',
+    proxyImage: '/api/diem-thi/tsa/image/24',
+    isDefault: true,
+  },
+  {
+    id: 23,
+    name: 'TSA 2026 đợt 3',
+    year: 2026,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/tsa-dot-3.jpg',
+    localImage: '/images/tsa/tsa-23.jpg',
+    proxyImage: '/api/diem-thi/tsa/image/23',
+    isDefault: false,
+  },
+  {
+    id: 20,
+    name: 'TSA 2026 đợt 2',
+    year: 2026,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/pho-diem-thi-tsa-2026-dot-2.png',
+    localImage: '/images/tsa/tsa-20.png',
+    proxyImage: '/api/diem-thi/tsa/image/20',
+    isDefault: false,
+  },
+  {
+    id: 19,
+    name: 'TSA 2026 đợt 1',
+    year: 2026,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/pho-diem-thi-tsa-2026-dot-1.png',
+    localImage: '/images/tsa/tsa-19.png',
+    proxyImage: '/api/diem-thi/tsa/image/19',
+    isDefault: false,
+  },
+  {
+    id: 10,
+    name: 'Tổng 3 đợt thi TSA 2025',
+    year: 2025,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/pho-diem-tsa-3-dot1.png',
+    localImage: '/images/tsa/tsa-10.png',
+    proxyImage: '/api/diem-thi/tsa/image/10',
+    isDefault: false,
+  },
+  {
+    id: 9,
+    name: 'TSA 2025 đợt 3',
+    year: 2025,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/pho-diem-tsa-dot-3.png',
+    localImage: '/images/tsa/tsa-9.png',
+    proxyImage: '/api/diem-thi/tsa/image/9',
+    isDefault: false,
+  },
+  {
+    id: 6,
+    name: 'TSA 2025 đợt 2',
+    year: 2025,
+    image: 'https://images.tuyensinh247.com/picture/2025/0318/pho-diem-tsa-dot-2.png',
+    localImage: '/images/tsa/tsa-6.png',
+    proxyImage: '/api/diem-thi/tsa/image/6',
+    isDefault: false,
+  },
+  {
+    id: 5,
+    name: 'TSA 2025 đợt 1',
+    year: 2025,
+    image: 'https://images.tuyensinh247.com/picture/2025/0124/pho-diem-tsa-dot-1.png',
+    localImage: '/images/tsa/tsa-5.png',
+    proxyImage: '/api/diem-thi/tsa/image/5',
+    isDefault: false,
+  },
+  {
+    id: 4,
+    name: 'TSA 2024 đợt 2',
+    year: 2024,
+    image: 'https://images.tuyensinh247.com/picture/2025/0108/tsa-dot-2.jpg',
+    localImage: '/images/tsa/tsa-4.jpg',
+    proxyImage: '/api/diem-thi/tsa/image/4',
+    isDefault: false,
+  },
+]
+
 export default function ThuHang() {
-  const [activeTab, setActiveTab] = useState('thptqg') // 'thptqg' | 'hsa'
+  const [activeTab, setActiveTab] = useState('thptqg') // 'thptqg' | 'hsa' | 'tsa'
 
   // --- State for THPTQG Ranking ---
   const [scores, setScores] = useState({})
@@ -108,17 +199,26 @@ export default function ThuHang() {
   const [hsaResult, setHsaResult] = useState(null)
   const [loadingHsa, setLoadingHsa] = useState(false)
   const [errorHsa, setErrorHsa] = useState('')
-
-  // Image display state
   const [hsaImgSrc, setHsaImgSrc] = useState('')
   const [hsaImgLoading, setHsaImgLoading] = useState(true)
   const [hsaImgError, setHsaImgError] = useState(false)
-
-  // Chart view mode for HSA
   const [hsaDisplayMode, setHsaDisplayMode] = useState('both') // 'both' | 'chart' | 'image'
 
+  // --- State for ĐGTD TSA Ranking ---
+  const [tsaExams, setTsaExams] = useState(DEFAULT_TSA_EXAMS)
+  const [selectedTsaExamId, setSelectedTsaExamId] = useState(24)
+  const [tsaScore, setTsaScore] = useState('')
+  const [tsaResult, setTsaResult] = useState(null)
+  const [loadingTsa, setLoadingTsa] = useState(false)
+  const [errorTsa, setErrorTsa] = useState('')
+  const [tsaImgSrc, setTsaImgSrc] = useState('')
+  const [tsaImgLoading, setTsaImgLoading] = useState(true)
+  const [tsaImgError, setTsaImgError] = useState(false)
+  const [tsaDisplayMode, setTsaDisplayMode] = useState('both') // 'both' | 'chart' | 'image'
+
+  // Load dynamic exams on mount
   useEffect(() => {
-    // Load fresh HSA exams from backend
+    // HSA exams
     getHsaExams()
       .then(res => {
         if (res?.data?.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
@@ -128,14 +228,26 @@ export default function ThuHang() {
         }
       })
       .catch(err => {
-        console.warn('Không thể tải danh sách đợt thi HSA động, sử dụng cấu hình mặc định:', err.message)
+        console.warn('Không thể tải danh sách đợt thi HSA động:', err.message)
+      })
+
+    // TSA exams
+    getTsaExams()
+      .then(res => {
+        if (res?.data?.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
+          setTsaExams(res.data.data)
+          const def = res.data.data.find(e => e.isDefault)
+          if (def) setSelectedTsaExamId(def.id)
+        }
+      })
+      .catch(err => {
+        console.warn('Không thể tải danh sách đợt thi TSA động:', err.message)
       })
   }, [])
 
-  // Sync image source whenever hsaResult changes
+  // Sync HSA image source
   useEffect(() => {
     if (hsaResult) {
-      // Prioritize local static asset first (zero cross-origin/adblock issues)
       const primarySrc = hsaResult.localImage || `/images/hsa/hsa-${hsaResult.examId}.${hsaResult.examId === 21 || hsaResult.examId === 11 || hsaResult.examId === 7 ? 'png' : 'jpg'}`
       setHsaImgSrc(primarySrc)
       setHsaImgLoading(true)
@@ -143,8 +255,7 @@ export default function ThuHang() {
     }
   }, [hsaResult])
 
-  const handleImageError = () => {
-    // If local image fails, try proxy, then remote
+  const handleHsaImageError = () => {
     if (hsaResult) {
       if (hsaImgSrc !== hsaResult.proxyImage && hsaResult.proxyImage) {
         setHsaImgSrc(hsaResult.proxyImage)
@@ -157,6 +268,33 @@ export default function ThuHang() {
     } else {
       setHsaImgError(true)
       setHsaImgLoading(false)
+    }
+  }
+
+  // Sync TSA image source
+  useEffect(() => {
+    if (tsaResult) {
+      const isJpg = tsaResult.examId === 23 || tsaResult.examId === 4
+      const primarySrc = tsaResult.localImage || `/images/tsa/tsa-${tsaResult.examId}.${isJpg ? 'jpg' : 'png'}`
+      setTsaImgSrc(primarySrc)
+      setTsaImgLoading(true)
+      setTsaImgError(false)
+    }
+  }, [tsaResult])
+
+  const handleTsaImageError = () => {
+    if (tsaResult) {
+      if (tsaImgSrc !== tsaResult.proxyImage && tsaResult.proxyImage) {
+        setTsaImgSrc(tsaResult.proxyImage)
+      } else if (tsaImgSrc !== tsaResult.image && tsaResult.image) {
+        setTsaImgSrc(tsaResult.image)
+      } else {
+        setTsaImgError(true)
+        setTsaImgLoading(false)
+      }
+    } else {
+      setTsaImgError(true)
+      setTsaImgLoading(false)
     }
   }
 
@@ -228,6 +366,40 @@ export default function ThuHang() {
     }
   }
 
+  // Handle TSA query
+  const handleTsaCalculate = async (e) => {
+    if (e) e.preventDefault()
+    if (tsaScore === '' || tsaScore === undefined) {
+      setErrorTsa('Vui lòng nhập điểm thi TSA.')
+      return
+    }
+
+    const numScore = parseFloat(String(tsaScore).replace(',', '.'))
+    if (isNaN(numScore) || numScore < 0 || numScore > 100) {
+      setErrorTsa('Điểm thi TSA phải là số từ 0 đến 100.')
+      return
+    }
+
+    setLoadingTsa(true)
+    setErrorTsa('')
+    try {
+      const response = await getTsaRanking({
+        your_score: numScore,
+        exam_id: selectedTsaExamId,
+      })
+      setTsaResult(response.data.data)
+    } catch (err) {
+      console.error('Error querying TSA ranking:', err)
+      setErrorTsa(
+        err.response?.data?.error ||
+        'Không thể tra cứu xếp hạng điểm TSA từ cổng Tuyensinh247 lúc này. Vui lòng thử lại sau.'
+      )
+      setTsaResult(null)
+    } finally {
+      setLoadingTsa(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
       {/* Page Header */}
@@ -239,19 +411,19 @@ export default function ThuHang() {
           <div>
             <h1 className="text-2xl font-bold tracking-tight">Tra cứu thứ hạng</h1>
             <p className="text-sm text-muted-foreground">
-              Tra cứu vị trí xếp hạng điểm thi tốt nghiệp THPT và kỳ thi Đánh giá năng lực ĐHQGHN (HSA)
+              Tra cứu vị trí xếp hạng điểm thi THPTQG, Đánh giá năng lực ĐHQGHN (HSA) và Đánh giá tư duy ĐHBKHN (TSA)
             </p>
           </div>
         </div>
       </div>
 
-      {/* Segmented View Switcher */}
-      <div className="flex border-b border-border pb-1">
+      {/* Segmented View Switcher: 3 Tabs */}
+      <div className="flex border-b border-border pb-1 overflow-x-auto">
         <div className="inline-flex rounded-lg bg-muted p-1 text-muted-foreground">
           <button
             type="button"
             onClick={() => setActiveTab('thptqg')}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-xs sm:text-sm font-semibold transition-all ${
+            className={`inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               activeTab === 'thptqg'
                 ? 'bg-background text-foreground shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -263,7 +435,7 @@ export default function ThuHang() {
           <button
             type="button"
             onClick={() => setActiveTab('hsa')}
-            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-xs sm:text-sm font-semibold transition-all ${
+            className={`inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
               activeTab === 'hsa'
                 ? 'bg-background text-foreground shadow-xs'
                 : 'text-muted-foreground hover:text-foreground'
@@ -271,6 +443,18 @@ export default function ThuHang() {
           >
             <Award className="h-4 w-4" />
             Thứ hạng ĐGNL - HSA
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('tsa')}
+            className={`inline-flex items-center gap-2 rounded-md px-3.5 py-2 text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+              activeTab === 'tsa'
+                ? 'bg-background text-foreground shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Sparkles className="h-4 w-4" />
+            Thứ hạng ĐGTD - TSA
           </button>
         </div>
       </div>
@@ -825,7 +1009,6 @@ export default function ThuHang() {
                                 onClick={() => {
                                   setHsaImgError(false)
                                   setHsaImgLoading(true)
-                                  // toggle fallback
                                   if (hsaImgSrc.startsWith('/images/hsa/')) {
                                     setHsaImgSrc(hsaResult.proxyImage || hsaResult.image)
                                   } else {
@@ -891,7 +1074,7 @@ export default function ThuHang() {
                                 referrerPolicy="no-referrer"
                                 crossOrigin="anonymous"
                                 onLoad={() => setHsaImgLoading(false)}
-                                onError={handleImageError}
+                                onError={handleHsaImageError}
                                 className="max-h-[440px] w-auto max-w-full object-contain rounded transition-all hover:scale-[1.01]"
                               />
                             )}
@@ -908,6 +1091,515 @@ export default function ThuHang() {
                         <p className="font-medium text-foreground">Chưa có kết quả tra cứu</p>
                         <p className="text-xs">
                           Chọn đợt thi HSA, nhập điểm thi của bạn ở khung bên trái và bấm &quot;Tra cứu thứ hạng HSA&quot;.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* SECTION 3: THỨ HẠNG ĐGTD - TSA */}
+      {activeTab === 'tsa' && (
+        <div className="space-y-6">
+          <div className="flex items-start gap-2 rounded-lg border border-purple-200 bg-purple-50/80 p-3 text-sm text-purple-900">
+            <Info className="h-4 w-4 mt-0.5 shrink-0 text-purple-600" />
+            <div className="space-y-1">
+              <span className="font-semibold">Tra cứu thứ hạng thi Đánh giá tư duy ĐHBK Hà Nội (TSA)</span>
+              <p className="text-xs text-purple-700">
+                Thang điểm TSA tối đa 100 điểm. Dữ liệu xếp hạng và phổ điểm được đối chiếu từ cổng phân tích phổ điểm Tuyensinh247.com theo từng đợt thi.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Input Card */}
+            <div className="lg:col-span-5 space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-purple-600" />
+                    Nhập thông tin thi TSA
+                  </CardTitle>
+                  <CardDescription>
+                    Chọn đợt thi và nhập điểm số bài thi TSA của bạn (0 - 100)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleTsaCalculate} className="space-y-5">
+                    {/* Select Exam Batch */}
+                    <div className="space-y-2">
+                      <Label htmlFor="tsa-exam" className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        <Calendar className="h-3.5 w-3.5" />
+                        Đợt thi TSA
+                      </Label>
+                      <select
+                        id="tsa-exam"
+                        value={selectedTsaExamId}
+                        onChange={(e) => setSelectedTsaExamId(Number(e.target.value))}
+                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                      >
+                        {tsaExams.map((exam) => (
+                          <option key={exam.id} value={exam.id}>
+                            {exam.name} {exam.isDefault ? '(Mới nhất)' : ''}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Input Score */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="tsa-score" className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          <Calculator className="h-3.5 w-3.5" />
+                          Điểm thi của bạn
+                        </Label>
+                        <span className="text-xs text-muted-foreground">Thang điểm: 0 - 100</span>
+                      </div>
+                      <Input
+                        id="tsa-score"
+                        type="number"
+                        step="0.1"
+                        min="0"
+                        max="100"
+                        placeholder="Ví dụ: 68.5 hoặc 75"
+                        value={tsaScore}
+                        onChange={(e) => {
+                          setTsaScore(e.target.value)
+                          if (errorTsa) setErrorTsa('')
+                        }}
+                        className="text-base font-semibold"
+                      />
+                    </div>
+
+                    {/* Quick Presets */}
+                    <div className="space-y-1.5">
+                      <span className="text-[11px] text-muted-foreground font-medium">Gợi ý mốc điểm nhanh:</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[50, 60, 65, 70, 75, 80, 85, 90].map((preset) => (
+                          <button
+                            key={preset}
+                            type="button"
+                            onClick={() => {
+                              setTsaScore(String(preset))
+                              if (errorTsa) setErrorTsa('')
+                            }}
+                            className="rounded-md border border-border bg-muted/60 px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                          >
+                            {preset}đ
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white" disabled={loadingTsa}>
+                      <Search className="h-4 w-4 mr-2" />
+                      {loadingTsa ? 'Đang tra cứu Tuyensinh247...' : 'Tra cứu thứ hạng TSA'}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+
+              {/* Note Card */}
+              <Card className="bg-muted/40 border-dashed">
+                <CardContent className="p-4 space-y-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1.5 font-medium text-foreground">
+                    <Info className="h-3.5 w-3.5 text-purple-600" />
+                    <span>Lưu ý về thứ hạng TSA:</span>
+                  </div>
+                  <ul className="list-disc pl-4 space-y-1">
+                    <li>Thứ hạng được xác định trực tiếp trên phổ điểm thí sinh của đợt thi TSA đã chọn.</li>
+                    <li>Chưa bao gồm điểm ưu tiên đối tượng, khu vực hay điểm thưởng xét tuyển riêng của từng trường.</li>
+                    <li>
+                      Nguồn dữ liệu:{' '}
+                      <a
+                        href="https://diemthi.tuyensinh247.com/tra-cuu-xep-hang-diem-thi.html?phuongthuc=TSA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline inline-flex items-center gap-0.5 hover:text-primary/80"
+                      >
+                        Tuyensinh247.com (Phương thức TSA) <ExternalLink className="h-2.5 w-2.5" />
+                      </a>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Result Card */}
+            <div className="lg:col-span-7 space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center justify-between">
+                    <span>Kết quả xếp hạng ĐGTD (TSA)</span>
+                    {tsaResult && (
+                      <span className="text-xs font-normal text-muted-foreground bg-muted px-2.5 py-1 rounded-full">
+                        {tsaResult.examName}
+                      </span>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {errorTsa && (
+                    <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                      <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+                      <span>{errorTsa}</span>
+                    </div>
+                  )}
+
+                  {loadingTsa && (
+                    <div className="text-center py-14 space-y-3">
+                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-purple-600 border-r-transparent" />
+                      <p className="text-sm text-muted-foreground font-medium">
+                        Đang kết nối và lấy phổ điểm TSA từ Tuyensinh247...
+                      </p>
+                    </div>
+                  )}
+
+                  {!loadingTsa && tsaResult && (
+                    <div className="space-y-6">
+                      {/* Top KPI Cards */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div className="p-3.5 bg-purple-50 border border-purple-200 rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-purple-700">
+                            #{tsaResult.thuHangTu.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1 font-medium">Thứ hạng ước tính</div>
+                        </div>
+
+                        <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-700">
+                            Top {tsaResult.tyLePhanTram}%
+                          </div>
+                          <div className="text-xs text-emerald-800 mt-1 font-medium">Vị trí năng lực</div>
+                        </div>
+
+                        <div className="p-3.5 bg-muted/60 border border-border rounded-xl text-center">
+                          <div className="text-xl sm:text-2xl font-bold text-foreground">
+                            {tsaResult.from} - {tsaResult.to}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1 font-medium">Khoảng điểm phổ</div>
+                        </div>
+
+                        <div className="p-3.5 bg-muted/60 border border-border rounded-xl text-center">
+                          <div className="text-xl sm:text-2xl font-bold text-foreground">
+                            {tsaResult.tongThiSinh.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1 font-medium">Tổng số thí sinh</div>
+                        </div>
+                      </div>
+
+                      {/* Detailed Breakdown */}
+                      <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          Phân bố thí sinh so với điểm {tsaResult.diem} của bạn
+                        </h4>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                          <div className="flex items-center justify-between sm:flex-col sm:items-start p-3 rounded-lg bg-red-50/70 border border-red-100">
+                            <span className="text-xs text-red-700 font-medium">Điểm cao hơn bạn</span>
+                            <span className="text-lg font-bold text-red-700">
+                              {tsaResult.larger.toLocaleString()}
+                            </span>
+                            <span className="text-[11px] text-red-600/80">
+                              ({tsaResult.tongThiSinh > 0 ? ((tsaResult.larger / tsaResult.tongThiSinh) * 100).toFixed(1) : 0}%)
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between sm:flex-col sm:items-start p-3 rounded-lg bg-purple-50/70 border border-purple-100">
+                            <span className="text-xs text-purple-700 font-medium">Cùng khoảng điểm</span>
+                            <span className="text-lg font-bold text-purple-700">
+                              {tsaResult.same.toLocaleString()}
+                            </span>
+                            <span className="text-[11px] text-purple-600/80">
+                              ({tsaResult.tongThiSinh > 0 ? ((tsaResult.same / tsaResult.tongThiSinh) * 100).toFixed(1) : 0}%)
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between sm:flex-col sm:items-start p-3 rounded-lg bg-emerald-50/70 border border-emerald-100">
+                            <span className="text-xs text-emerald-700 font-medium">Điểm thấp hơn bạn</span>
+                            <span className="text-lg font-bold text-emerald-700">
+                              {tsaResult.smaller.toLocaleString()}
+                            </span>
+                            <span className="text-[11px] text-emerald-600/80">
+                              ({tsaResult.tongThiSinh > 0 ? ((tsaResult.smaller / tsaResult.tongThiSinh) * 100).toFixed(1) : 0}%)
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Visual Ratio Bar */}
+                        {tsaResult.tongThiSinh > 0 && (
+                          <div className="pt-2 space-y-1.5">
+                            <div className="h-3 w-full rounded-full bg-muted overflow-hidden flex">
+                              <div
+                                style={{ width: `${(tsaResult.smaller / tsaResult.tongThiSinh) * 100}%` }}
+                                className="bg-emerald-500 h-full"
+                                title={`Điểm thấp hơn: ${tsaResult.smaller.toLocaleString()}`}
+                              />
+                              <div
+                                style={{ width: `${Math.max(1, (tsaResult.same / tsaResult.tongThiSinh) * 100)}%` }}
+                                className="bg-purple-500 h-full"
+                                title={`Cùng khoảng điểm: ${tsaResult.same.toLocaleString()}`}
+                              />
+                              <div
+                                style={{ width: `${(tsaResult.larger / tsaResult.tongThiSinh) * 100}%` }}
+                                className="bg-rose-400 h-full"
+                                title={`Điểm cao hơn: ${tsaResult.larger.toLocaleString()}`}
+                              />
+                            </div>
+                            <div className="flex justify-between text-[11px] text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" /> Thấp hơn ({((tsaResult.smaller / tsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-purple-500 inline-block" /> Cùng khoảng ({((tsaResult.same / tsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-rose-400 inline-block" /> Cao hơn ({((tsaResult.larger / tsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* View Mode Toggle: Interactive Chart or Official Image */}
+                      <div className="flex items-center justify-between border-b border-border pb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Dạng hiển thị phổ điểm:
+                          </span>
+                          <div className="inline-flex rounded-lg bg-muted p-0.5 text-xs">
+                            <button
+                              type="button"
+                              onClick={() => setTsaDisplayMode('both')}
+                              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                                tsaDisplayMode === 'both' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              Tất cả
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setTsaDisplayMode('chart')}
+                              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                                tsaDisplayMode === 'chart' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              <BarChart3 className="h-3 w-3 inline mr-1" />
+                              Biểu đồ cột
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setTsaDisplayMode('image')}
+                              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                                tsaDisplayMode === 'image' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              <ImageIcon className="h-3 w-3 inline mr-1" />
+                              Ảnh gốc
+                            </button>
+                          </div>
+                        </div>
+
+                        {tsaResult.image && (
+                          <a
+                            href={tsaResult.image}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1"
+                          >
+                            Xem ảnh gốc <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                      </div>
+
+                      {/* 1. INTERACTIVE BAR CHART OF SCORE DISTRIBUTION */}
+                      {(tsaDisplayMode === 'both' || tsaDisplayMode === 'chart') && tsaResult.phanBoDiem && tsaResult.phanBoDiem.length > 0 && (
+                        <div className="rounded-xl border border-border p-4 space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                              <BarChart3 className="h-3.5 w-3.5 text-purple-600" />
+                              Biểu đồ phổ điểm thi TSA ({tsaResult.examName})
+                            </h4>
+                            <span className="text-xs text-muted-foreground">
+                              Cột cam: Khoảng điểm của bạn ({tsaResult.from} - {tsaResult.to}đ)
+                            </span>
+                          </div>
+
+                          <ResponsiveContainer width="100%" height={260}>
+                            <BarChart
+                              data={tsaResult.phanBoDiem}
+                              margin={{ top: 12, right: 12, left: -10, bottom: 0 }}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.3} />
+                              <XAxis
+                                dataKey="khoang_diem"
+                                tick={{ fontSize: 9 }}
+                                interval={2}
+                                tickLine={false}
+                              />
+                              <YAxis
+                                tick={{ fontSize: 10 }}
+                                tickLine={false}
+                                axisLine={false}
+                                tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}
+                              />
+                              <Tooltip
+                                content={({ active, payload }) => {
+                                  if (!active || !payload || !payload.length) return null
+                                  const item = payload[0].payload
+                                  const isUser = (tsaResult.from === item.from && tsaResult.to === item.to) ||
+                                    (tsaResult.diem >= item.from && tsaResult.diem < item.to)
+                                  return (
+                                    <div className="rounded-lg border border-border bg-popover p-2.5 shadow-md text-xs space-y-1">
+                                      <p className="font-semibold text-popover-foreground">
+                                        Khoảng điểm: {item.khoang_diem}
+                                      </p>
+                                      <p className="text-muted-foreground">
+                                        Số thí sinh: <b className="text-foreground">{item.so_thi_sinh.toLocaleString()}</b>
+                                        {tsaResult.tongThiSinh > 0 && (
+                                          <span className="ml-1 text-[11px] text-muted-foreground">
+                                            ({((item.so_thi_sinh / tsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                                          </span>
+                                        )}
+                                      </p>
+                                      {isUser && (
+                                        <p className="pt-0.5 text-amber-600 font-semibold flex items-center gap-1">
+                                          ★ Điểm của bạn ({tsaResult.diem}đ) nằm trong khoảng này
+                                        </p>
+                                      )}
+                                    </div>
+                                  )
+                                }}
+                              />
+                              <Bar dataKey="so_thi_sinh" radius={[4, 4, 0, 0]}>
+                                {tsaResult.phanBoDiem.map((entry, index) => {
+                                  const isUserBin = (tsaResult.from === entry.from && tsaResult.to === entry.to) ||
+                                    (tsaResult.diem >= entry.from && tsaResult.diem < entry.to)
+                                  return (
+                                    <Cell
+                                      key={`tsa-cell-${index}`}
+                                      fill={isUserBin ? '#ea580c' : '#7c3aed'}
+                                    />
+                                  )
+                                })}
+                              </Bar>
+                            </BarChart>
+                          </ResponsiveContainer>
+
+                          <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground pt-1">
+                            <span className="flex items-center gap-1.5">
+                              <span className="w-3 h-3 rounded-xs bg-[#7c3aed] inline-block" /> Phổ điểm chung TSA
+                            </span>
+                            <span className="flex items-center gap-1.5 font-semibold text-foreground">
+                              <span className="w-3 h-3 rounded-xs bg-[#ea580c] inline-block" /> Khoảng điểm của bạn ({tsaResult.from} - {tsaResult.to}đ)
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 2. OFFICIAL PUBLISHED DISTRIBUTION IMAGE */}
+                      {(tsaDisplayMode === 'both' || tsaDisplayMode === 'image') && (
+                        <div className="rounded-xl border border-border p-4 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                              <Layers className="h-3.5 w-3.5" />
+                              Ảnh chụp phổ điểm chính thức ({tsaResult.examName})
+                            </h4>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setTsaImgError(false)
+                                  setTsaImgLoading(true)
+                                  if (tsaImgSrc.startsWith('/images/tsa/')) {
+                                    setTsaImgSrc(tsaResult.proxyImage || tsaResult.image)
+                                  } else {
+                                    const isJpg = tsaResult.examId === 23 || tsaResult.examId === 4
+                                    setTsaImgSrc(tsaResult.localImage || `/images/tsa/tsa-${tsaResult.examId}.${isJpg ? 'jpg' : 'png'}`)
+                                  }
+                                }}
+                                className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+                                title="Tải lại nguồn ảnh"
+                              >
+                                <RefreshCw className="h-3 w-3 mr-1" />
+                                Đổi nguồn ảnh
+                              </Button>
+                            </div>
+                          </div>
+
+                          <div className="relative overflow-hidden rounded-lg border border-border bg-muted/20 min-h-[260px] flex items-center justify-center p-3">
+                            {tsaImgLoading && !tsaImgError && (
+                              <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/60 backdrop-blur-xs text-xs text-muted-foreground space-y-2 z-10">
+                                <div className="h-6 w-6 animate-spin rounded-full border-2 border-purple-600 border-r-transparent" />
+                                <span>Đang tải biểu đồ phổ điểm TSA...</span>
+                              </div>
+                            )}
+
+                            {tsaImgError ? (
+                              <div className="text-center p-6 space-y-3">
+                                <AlertTriangle className="h-8 w-8 mx-auto text-amber-500" />
+                                <div className="space-y-1">
+                                  <p className="text-sm font-semibold text-foreground">Không thể hiển thị ảnh trực tiếp</p>
+                                  <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                                    Ảnh có thể bị chặn bởi trình duyệt hoặc tiện ích chặn quảng cáo. Bạn có thể xem biểu đồ cột tương tác ở trên hoặc mở ảnh trực tiếp tại tab mới.
+                                  </p>
+                                </div>
+                                <div className="flex justify-center gap-2 pt-1">
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      setTsaImgError(false)
+                                      setTsaImgLoading(true)
+                                      setTsaImgSrc(tsaResult.proxyImage || tsaResult.localImage)
+                                    }}
+                                  >
+                                    <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
+                                    Tải qua proxy
+                                  </Button>
+                                  {tsaResult.image && (
+                                    <a
+                                      href={tsaResult.image}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-purple-600 text-white hover:bg-purple-700"
+                                    >
+                                      Mở ảnh tại tab mới <ExternalLink className="h-3 w-3 ml-1" />
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            ) : (
+                              <img
+                                src={tsaImgSrc}
+                                alt={`Phổ điểm ${tsaResult.examName}`}
+                                referrerPolicy="no-referrer"
+                                crossOrigin="anonymous"
+                                onLoad={() => setTsaImgLoading(false)}
+                                onError={handleTsaImageError}
+                                className="max-h-[440px] w-auto max-w-full object-contain rounded transition-all hover:scale-[1.01]"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {!loadingTsa && !tsaResult && (
+                    <div className="text-center py-14 text-muted-foreground space-y-3">
+                      <TrendingUp className="h-12 w-12 mx-auto text-muted-foreground/40" />
+                      <div className="space-y-1">
+                        <p className="font-medium text-foreground">Chưa có kết quả tra cứu</p>
+                        <p className="text-xs">
+                          Chọn đợt thi TSA, nhập điểm thi của bạn ở khung bên trái và bấm &quot;Tra cứu thứ hạng TSA&quot;.
                         </p>
                       </div>
                     </div>

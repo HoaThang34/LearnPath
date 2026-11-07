@@ -82,7 +82,7 @@ Environment variables:
 | `/de-an` | `pages/DeAnTuyenSinh.jsx` | Protected | `/api/de-an`, `/api/de-an/:maTruong` |
 | `/diem-chuan` | `pages/DiemChuan.jsx` | Protected | `/api/diem-chuan`, `/phuong-thuc`, `/stats` |
 | `/khoi-thi` | `pages/KhoiThi.jsx` | Protected | `/api/khoi-thi`, `/api/khoi-thi/:maKhoi`, `/api/diem-chuan` |
-| `/thu-hang` | `pages/ThuHang.jsx` | Protected | `/api/diem-thi/ranking`, `/api/diem-thi/stats`, `/api/diem-thi/hsa/exams`, `/api/diem-thi/hsa/ranking` |
+| `/thu-hang` | `pages/ThuHang.jsx` | Protected | `/api/diem-thi/ranking`, `/api/diem-thi/stats`, `/api/diem-thi/hsa/exams`, `/api/diem-thi/hsa/ranking`, `/api/diem-thi/tsa/exams`, `/api/diem-thi/tsa/ranking` |
 | `/thong-tin-ca-nhan` | `pages/ThongTinCaNhan.jsx` | Protected | `/api/auth/profile` |
 | `/khao-sat` | `pages/KhaoSat.jsx` | Protected | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
 | `/phan-tich-nang-luc` | `pages/PhanTichNangLuc.jsx` | Protected | `/api/career/overview`, `/api/career/scores`, `/api/career/majors`, `/api/career/selections`, `/api/career/map-data`, `/api/career/recommendations`, `/api/career/benchmark` |
@@ -345,6 +345,25 @@ Returns `{ data: { diem, examId, examName, from, to, same, larger, smaller, tong
 ### `GET /api/diem-thi/hsa/image/:examId`
 
 Streams the official score distribution infographic image for the specified HSA exam batch. Serves from local cache (`backend/src/data/hsa_images/`) or falls back to proxying from Tuyensinh247 with caching headers.
+
+### `GET /api/diem-thi/tsa/exams`
+
+Returns the list of supported TSA (ĐGTD ĐHBK Hà Nội) exam batches (2026 all batches, batches 1/2/3, 2025, 2024...) with their metadata and score distribution image URLs.
+
+### `GET /api/diem-thi/tsa/ranking`
+
+Queries candidate ranking for TSA exams based on live score distribution data from `diemthi.tuyensinh247.com`.
+
+| Param | Type | Default | Notes |
+|---|---|---|---|
+| `your_score` | number / string | — | Required score between 0 and 100 (supports comma or dot decimal) |
+| `exam_id` | integer | 24 | TSA exam batch ID (e.g. 24 for TSA 2026 all 3 batches) |
+
+Returns `{ data: { diem, examId, examName, from, to, same, larger, smaller, tongThiSinh, thuHangTu, thuHangDen, tyLePhanTram, image, localImage, proxyImage, phanBoDiem, nguon } }`. Validates scale 0–100 (returns 400 if invalid) and returns 502 with Vietnamese message if upstream Tuyensinh247 service is unreachable.
+
+### `GET /api/diem-thi/tsa/image/:examId`
+
+Streams the official score distribution infographic image for the specified TSA exam batch. Serves from local cache (`backend/src/data/tsa_images/`) or falls back to proxying from Tuyensinh247 with caching headers.
 
 ### `GET /api/career/majors`
 

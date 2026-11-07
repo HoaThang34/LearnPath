@@ -28,7 +28,7 @@
 | Admission proposals | `/de-an` | Pick a school → read Markdown and table of contents (login required) | `/api/de-an`, `/api/de-an/:maTruong` |
 | Benchmark scores | `/diem-chuan` | Pick a method → filter/sort → paginated table (login required) | `/api/diem-chuan`, `/phuong-thuc`, `/stats`, `/compare` |
 | Exam blocks | `/khoi-thi` | Pick a block → school → majors; compare 2–5 majors (login required) | `/api/khoi-thi`, `/api/khoi-thi/:maKhoi` |
-| Ranking lookup | `/thu-hang` | Enter scores → THPTQG and ĐGNL (HSA) rank and distribution charts (login required) | `/api/diem-thi/ranking`, `/api/diem-thi/stats`, `/api/diem-thi/hsa/exams`, `/api/diem-thi/hsa/ranking` |
+| Ranking lookup | `/thu-hang` | Enter scores → THPTQG, ĐGNL (HSA) and ĐGTD (TSA) rank and distribution charts (login required) | `/api/diem-thi/ranking`, `/api/diem-thi/stats`, `/api/diem-thi/hsa/*`, `/api/diem-thi/tsa/*` |
 | Personal Profile | `/thong-tin-ca-nhan` | Xem/điền thông tin: họ tên, lớp, trường, điểm các môn, chứng chỉ (IELTS, TSA, HSA...), mục tiêu, tổ hợp thi 3 môn, freestyle | `/api/auth/profile` |
 | Onboarding Survey | `/khao-sat` | Khảo sát thông tin tuyển sinh khởi đầu: câu hỏi cố định lưu vào profile, câu hỏi custom của admin lưu vào `khac` (định dạng `Câu hỏi - Câu trả lời`) | `/api/auth/survey/questions`, `/api/auth/survey/submit` |
 | Career analysis | `/phan-tich-nang-luc` | Nhập điểm theo môn/kỳ/năm, chọn snapshot, xem fit theo rubric có độ phủ, khám phá và lưu lựa chọn điểm chuẩn 2025; ba tỉ lệ phù hợp (học lực/tính cách/tổng thể) và ma trận 3×2 | `/api/career/*` |

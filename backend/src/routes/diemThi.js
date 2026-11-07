@@ -4,6 +4,7 @@ const express = require('express');
 const router = express.Router();
 const { getDb, queryAll, queryOne } = require('../database/db');
 const { getHsaExams, fetchHsaRanking } = require('../hsa/hsaRanking');
+const { getTsaExams, fetchTsaRanking } = require('../tsa/tsaRanking');
 
 // GET /api/diem-thi/ranking
 router.get('/ranking', async (req, res) => {
@@ -143,6 +144,61 @@ router.get('/hsa/image/:examId', async (req, res) => {
   } catch (err) {
     console.error('[HSA Image Proxy error]', err.message);
     res.status(502).json({ error: 'Lỗi khi tải ảnh phổ điểm.' });
+  }
+});
+
+// GET /api/diem-thi/tsa/exams
+router.get('/tsa/exams', (req, res) => {
+  res.json({ data: getTsaExams() });
+});
+
+// GET /api/diem-thi/tsa/ranking
+router.get('/tsa/ranking', async (req, res) => {
+  try {
+    const { your_score, exam_id } = req.query;
+    const data = await fetchTsaRanking(your_score, exam_id);
+    res.json({ data });
+  } catch (error) {
+    const status = error.statusCode || 500;
+    res.status(status).json({ error: error.message || 'Lỗi khi tra cứu thứ hạng TSA.' });
+  }
+});
+
+// GET /api/diem-thi/tsa/image/:examId
+router.get('/tsa/image/:examId', async (req, res) => {
+  try {
+    const examId = Number(req.params.examId);
+    const exam = getTsaExams().find(e => e.id === examId);
+    if (!exam) {
+      return res.status(404).json({ error: 'Không tìm thấy thông tin đợt thi.' });
+    }
+
+    const ext = exam.localImage && exam.localImage.endsWith('.png') ? 'png' : 'jpg';
+    const localFile = path.join(__dirname, '../data/tsa_images', `tsa-${examId}.${ext}`);
+
+    if (fs.existsSync(localFile)) {
+      res.setHeader('Content-Type', ext === 'png' ? 'image/png' : 'image/jpeg');
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+      return fs.createReadStream(localFile).pipe(res);
+    }
+
+    // Upstream fallback
+    const upstreamRes = await fetch(exam.image, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+      signal: AbortSignal.timeout(8000),
+    });
+
+    if (!upstreamRes.ok) {
+      return res.status(502).json({ error: 'Không thể tải ảnh phổ điểm TSA từ máy chủ Tuyensinh247.' });
+    }
+
+    res.setHeader('Content-Type', upstreamRes.headers.get('content-type') || (ext === 'png' ? 'image/png' : 'image/jpeg'));
+    res.setHeader('Cache-Control', 'public, max-age=86400');
+    const buffer = Buffer.from(await upstreamRes.arrayBuffer());
+    res.end(buffer);
+  } catch (err) {
+    console.error('[TSA Image Proxy error]', err.message);
+    res.status(502).json({ error: 'Lỗi khi tải ảnh phổ điểm TSA.' });
   }
 });
 
