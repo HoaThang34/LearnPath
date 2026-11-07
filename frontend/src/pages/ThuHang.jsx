@@ -15,7 +15,11 @@ import {
   Layers,
   BarChart3,
   RefreshCw,
-  Image as ImageIcon
+  Image as ImageIcon,
+  X,
+  Lock,
+  RotateCcw,
+  Check
 } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -39,16 +43,30 @@ import {
   Cell
 } from 'recharts'
 
-const monHoc = [
-  { key: 'toan', label: 'Toán', color: '#2563eb' },
-  { key: 'van', label: 'Văn', color: '#dc2626' },
-  { key: 'ly', label: 'Lý', color: '#16a34a' },
-  { key: 'hoa', label: 'Hóa', color: '#ca8a04' },
-  { key: 'sinh', label: 'Sinh', color: '#9333ea' },
-  { key: 'su', label: 'Sử', color: '#ea580c' },
-  { key: 'dia', label: 'Địa', color: '#0891b2' },
-  { key: 'ngoai_ngu', label: 'Ngoại ngữ', color: '#db2777' },
+const BAT_BUOC = [
+  { key: 'toan', label: 'Toán', color: '#2563eb', required: true, description: 'Bắt buộc' },
+  { key: 'van', label: 'Ngữ văn', color: '#dc2626', required: true, description: 'Bắt buộc' },
+]
+
+const TU_CHON = [
+  { key: 'ly', label: 'Vật lí', color: '#16a34a' },
+  { key: 'hoa', label: 'Hóa học', color: '#ca8a04' },
+  { key: 'sinh', label: 'Sinh học', color: '#9333ea' },
+  { key: 'su', label: 'Lịch sử', color: '#ea580c' },
+  { key: 'dia', label: 'Địa lí', color: '#0891b2' },
   { key: 'tin_hoc', label: 'Tin học', color: '#4f46e5' },
+  { key: 'ngoai_ngu', label: 'Ngoại ngữ', color: '#db2777' },
+]
+
+const monHoc = [...BAT_BUOC, ...TU_CHON]
+
+const QUICK_PRESETS = [
+  { label: 'Vật lí + Hóa học', keys: ['ly', 'hoa'] },
+  { label: 'Hóa học + Sinh học', keys: ['hoa', 'sinh'] },
+  { label: 'Vật lí + Tin học', keys: ['ly', 'tin_hoc'] },
+  { label: 'Vật lí + Ngoại ngữ', keys: ['ly', 'ngoai_ngu'] },
+  { label: 'Lịch sử + Địa lí', keys: ['su', 'dia'] },
+  { label: 'Lịch sử + Ngoại ngữ', keys: ['su', 'ngoai_ngu'] },
 ]
 
 const DEFAULT_HSA_EXAMS = [
@@ -187,10 +205,28 @@ export default function ThuHang() {
   const [activeTab, setActiveTab] = useState('thptqg') // 'thptqg' | 'hsa' | 'tsa'
 
   // --- State for THPTQG Ranking ---
-  const [scores, setScores] = useState({})
+  const [scores, setScores] = useState({
+    toan: '',
+    van: '',
+    ly: '',
+    hoa: '',
+    sinh: '',
+    su: '',
+    dia: '',
+    tin_hoc: '',
+    ngoai_ngu: '',
+  })
+  const [fieldErrors, setFieldErrors] = useState({})
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // Đếm các môn tự chọn đã có điểm
+  const selectedElectives = TU_CHON.filter(
+    (m) => scores[m.key] !== '' && scores[m.key] !== undefined && scores[m.key] !== null
+  ).map((m) => m.key)
+  const electiveCount = selectedElectives.length
+  const isElectiveLimitReached = electiveCount >= 2
 
   // --- State for ĐGNL HSA Ranking ---
   const [hsaExams, setHsaExams] = useState(DEFAULT_HSA_EXAMS)
@@ -298,34 +334,160 @@ export default function ThuHang() {
     }
   }
 
-  // Handle THPTQG input change
-  const handleScoreChange = (key, value) => {
-    const numValue = parseFloat(value)
-    if (value === '' || (numValue >= 0 && numValue <= 10)) {
-      setScores(prev => ({
-        ...prev,
-        [key]: value === '' ? '' : numValue,
-      }))
+  // Handle THPTQG input change with validation
+  const handleScoreChange = (key, rawValue) => {
+    setError('')
+
+    if (rawValue === '') {
+      setScores((prev) => ({ ...prev, [key]: '' }))
+      setFieldErrors((prev) => {
+        const next = { ...prev }
+        delete next[key]
+        return next
+      })
+      return
     }
+
+    const normalized = rawValue.replace(',', '.')
+    const num = parseFloat(normalized)
+
+    if (isNaN(num)) {
+      setFieldErrors((prev) => ({ ...prev, [key]: 'Điểm phải là số' }))
+      setScores((prev) => ({ ...prev, [key]: rawValue }))
+      return
+    }
+
+    if (num < 0 || num > 10) {
+      setFieldErrors((prev) => ({ ...prev, [key]: 'Điểm từ 0 đến 10' }))
+      setScores((prev) => ({ ...prev, [key]: rawValue }))
+      return
+    }
+
+    setFieldErrors((prev) => {
+      const next = { ...prev }
+      delete next[key]
+      return next
+    })
+    setScores((prev) => ({ ...prev, [key]: rawValue }))
   }
 
-  // Handle THPTQG calculate
-  const handleCalculate = async (e) => {
-    e.preventDefault()
-    setLoading(true)
+  const handleClearSubject = (key) => {
     setError('')
-    try {
-      const params = {}
-      Object.keys(scores).forEach(key => {
-        if (scores[key] !== '' && scores[key] !== undefined) {
-          params[key] = scores[key]
+    setScores((prev) => ({ ...prev, [key]: '' }))
+    setFieldErrors((prev) => {
+      const next = { ...prev }
+      delete next[key]
+      return next
+    })
+  }
+
+  const handleResetThpt = () => {
+    setScores({
+      toan: '',
+      van: '',
+      ly: '',
+      hoa: '',
+      sinh: '',
+      su: '',
+      dia: '',
+      tin_hoc: '',
+      ngoai_ngu: '',
+    })
+    setFieldErrors({})
+    setResult(null)
+    setError('')
+  }
+
+  const handleApplyPreset = (keys) => {
+    setError('')
+    setScores((prev) => {
+      const next = { ...prev }
+      TU_CHON.forEach((m) => {
+        if (!keys.includes(m.key)) {
+          next[m.key] = ''
         }
       })
+      return next
+    })
+    setFieldErrors((prev) => {
+      const next = { ...prev }
+      TU_CHON.forEach((m) => {
+        if (!keys.includes(m.key)) {
+          delete next[m.key]
+        }
+      })
+      return next
+    })
+  }
+
+  // Handle THPTQG calculate (4 subjects: Toan, Van + 2 electives)
+  const handleCalculate = async (e) => {
+    if (e) e.preventDefault()
+    setError('')
+
+    // 1. Kiểm tra môn Toán (bắt buộc)
+    const toanVal =
+      scores.toan !== '' && scores.toan !== undefined
+        ? parseFloat(String(scores.toan).replace(',', '.'))
+        : NaN
+    if (isNaN(toanVal)) {
+      setError('Vui lòng nhập điểm môn Toán (môn thi bắt buộc).')
+      return
+    }
+    if (toanVal < 0 || toanVal > 10) {
+      setError('Điểm môn Toán không hợp lệ (phải từ 0 đến 10).')
+      return
+    }
+
+    // 2. Kiểm tra môn Ngữ văn (bắt buộc)
+    const vanVal =
+      scores.van !== '' && scores.van !== undefined
+        ? parseFloat(String(scores.van).replace(',', '.'))
+        : NaN
+    if (isNaN(vanVal)) {
+      setError('Vui lòng nhập điểm môn Ngữ văn (môn thi bắt buộc).')
+      return
+    }
+    if (vanVal < 0 || vanVal > 10) {
+      setError('Điểm môn Ngữ văn không hợp lệ (phải từ 0 đến 10).')
+      return
+    }
+
+    // 3. Kiểm tra môn tự chọn: phải đúng 2 môn
+    const chosen = []
+    for (const m of TU_CHON) {
+      const val = scores[m.key]
+      if (val !== '' && val !== undefined && val !== null) {
+        const num = parseFloat(String(val).replace(',', '.'))
+        if (isNaN(num) || num < 0 || num > 10) {
+          setError(`Điểm môn ${m.label} không hợp lệ (phải từ 0 đến 10).`)
+          return
+        }
+        chosen.push({ key: m.key, label: m.label, score: num })
+      }
+    }
+
+    if (chosen.length !== 2) {
+      setError(`Quy chế thi THPT yêu cầu chọn đúng 2 môn tự chọn (hiện tại: ${chosen.length}/2 môn).`)
+      return
+    }
+
+    setLoading(true)
+    try {
+      const params = {
+        toan: toanVal,
+        van: vanVal,
+        [chosen[0].key]: chosen[0].score,
+        [chosen[1].key]: chosen[1].score,
+      }
       const response = await getRanking(params)
       setResult(response.data.data)
     } catch (err) {
       console.error('Error calculating THPTQG ranking:', err)
-      setError('Không thể tính thứ hạng. Vui lòng kiểm tra kết nối và thử lại.')
+      setError(
+        err.response?.data?.error ||
+        'Không thể tính thứ hạng THPTQG. Vui lòng kiểm tra kết nối và thử lại.'
+      )
       setResult(null)
     } finally {
       setLoading(false)
@@ -462,134 +624,419 @@ export default function ThuHang() {
       {/* SECTION 1: THỨ HẠNG THPTQG */}
       {activeTab === 'thptqg' && (
         <div className="space-y-6">
-          <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-            <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-            <span>
-              Lưu ý: thứ hạng hiện được tính bằng tổng điểm các môn bạn nhập so với tổng điểm
-              tất cả môn của từng thí sinh, chưa theo tổ hợp xét tuyển. Kết quả chỉ mang tính tham khảo.
-            </span>
+          {/* Rules Banner */}
+          <div className="flex items-start gap-3 rounded-xl border border-blue-200 bg-blue-50/70 p-4 text-sm text-blue-900 shadow-2xs dark:border-blue-900/50 dark:bg-blue-950/30 dark:text-blue-200">
+            <Info className="h-5 w-5 mt-0.5 shrink-0 text-blue-600 dark:text-blue-400" />
+            <div className="space-y-1">
+              <div className="font-semibold text-blue-950 dark:text-blue-100">
+                Quy chế thi tốt nghiệp THPT (Chương trình GDPT 2018)
+              </div>
+              <p className="text-xs sm:text-sm text-blue-800/90 dark:text-blue-300/90 leading-relaxed">
+                Thí sinh thi <strong>4 môn</strong> gồm: <strong>2 môn bắt buộc</strong> (Toán, Ngữ văn) và <strong>đúng 2 môn tự chọn</strong> trong số 7 môn (Vật lí, Hóa học, Sinh học, Lịch sử, Địa lí, Ngoại ngữ, Tin học). Thang điểm mỗi môn từ 0 đến 10 (tổng điểm tối đa 40 điểm). Hệ thống sẽ tự động khóa các môn tự chọn còn lại khi bạn đã nhập đủ 2 môn.
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Input Form */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Nhập điểm thi THPTQG</CardTitle>
-                <CardDescription>Nhập điểm các môn bạn đã thi (để trống nếu không thi môn đó)</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleCalculate} className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    {monHoc.map((mon) => (
-                      <div key={mon.key} className="space-y-2">
-                        <Label htmlFor={mon.key} className="flex items-center space-x-2">
-                          <div 
-                            className="w-3 h-3 rounded-full" 
-                            style={{ backgroundColor: mon.color }}
-                          />
-                          <span>{mon.label}</span>
-                        </Label>
-                        <Input
-                          id={mon.key}
-                          type="number"
-                          step="0.25"
-                          min="0"
-                          max="10"
-                          placeholder="0 - 10"
-                          value={scores[mon.key] ?? ''}
-                          onChange={(e) => handleScoreChange(mon.key, e.target.value)}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    <Calculator className="h-4 w-4 mr-2" />
-                    {loading ? 'Đang tính...' : 'Tính thứ hạng THPTQG'}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            {/* Results */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Kết quả xếp hạng THPTQG</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {error && (
-                  <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                    <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-                    <span>{error}</span>
-                  </div>
-                )}
-                {result ? (
-                  <div className="space-y-6">
-                    {/* Ranking Info */}
-                    <div className="grid grid-cols-2 gap-4">
-                      <div className="p-4 bg-muted rounded-lg text-center">
-                        <div className="text-3xl font-bold text-primary">{result.thuHang.toLocaleString()}</div>
-                        <div className="text-sm text-muted-foreground">Thứ hạng</div>
-                      </div>
-                      <div className="p-4 bg-muted rounded-lg text-center">
-                        <div className="text-3xl font-bold">{result.tongDiem.toFixed(2)}</div>
-                        <div className="text-sm text-muted-foreground">Tổng điểm</div>
-                      </div>
-                      <div className="p-4 bg-muted rounded-lg text-center">
-                        <div className="text-3xl font-bold text-green-600">
-                          Top {result.tyLePhanTram}%
-                        </div>
-                        <div className="text-sm text-muted-foreground">Phần trăm</div>
-                      </div>
-                      <div className="p-4 bg-muted rounded-lg text-center">
-                        <div className="text-3xl font-bold">{result.tongThiSinh.toLocaleString()}</div>
-                        <div className="text-sm text-muted-foreground">Tổng thí sinh</div>
-                      </div>
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Input Form Column (7 cols on lg) */}
+            <div className="lg:col-span-7 space-y-5">
+              <Card className="border-border shadow-xs">
+                <CardHeader className="pb-3 border-b border-border/60">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="text-lg flex items-center gap-2">
+                        <GraduationCap className="h-5 w-5 text-primary" />
+                        Nhập điểm 4 môn thi THPT
+                      </CardTitle>
+                      <CardDescription className="text-xs mt-1">
+                        Nhập 2 môn bắt buộc + chọn đúng 2 môn tự chọn
+                      </CardDescription>
                     </div>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleResetThpt}
+                      className="text-xs h-8 text-muted-foreground hover:text-foreground"
+                    >
+                      <RotateCcw className="h-3.5 w-3.5 mr-1" />
+                      Đặt lại
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-4 space-y-5">
+                  <form onSubmit={handleCalculate} className="space-y-5">
+                    {/* KHỐI 1: MÔN BẮT BUỘC */}
+                    <div className="space-y-3 p-3.5 rounded-xl bg-muted/40 border border-border/80">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-red-100 text-[11px] font-bold text-red-700 dark:bg-red-950/50 dark:text-red-300">
+                            1
+                          </span>
+                          <span className="text-sm font-semibold text-foreground">
+                            Môn thi bắt buộc (2 môn)
+                          </span>
+                        </div>
+                        <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300">
+                          Bắt buộc
+                        </span>
+                      </div>
 
-                    {/* Score Summary */}
-                    <div className="p-4 border rounded-lg">
-                      <h4 className="font-medium mb-3 text-sm">Điểm đã nhập:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {Object.entries(result.diemNhap).map(([key, value]) => {
-                          if (value === null) return null
-                          const mon = monHoc.find(m => m.key === key)
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">
+                        {BAT_BUOC.map((mon) => {
+                          const hasValue = scores[mon.key] !== '' && scores[mon.key] !== undefined
+                          const fieldError = fieldErrors[mon.key]
                           return (
-                            <span
-                              key={key}
-                              className="px-3 py-1 rounded-full text-xs font-medium text-white"
-                              style={{ backgroundColor: mon?.color }}
-                            >
-                              {mon?.label}: {value}
-                            </span>
+                            <div key={mon.key} className="space-y-1.5">
+                              <div className="flex items-center justify-between text-xs">
+                                <Label htmlFor={`thpt-${mon.key}`} className="flex items-center gap-1.5 font-medium cursor-pointer">
+                                  <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: mon.color }} />
+                                  <span>{mon.label}</span>
+                                  <span className="text-red-500 font-bold">*</span>
+                                </Label>
+                                {hasValue && (
+                                  <span className="text-[11px] text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-0.5">
+                                    <Check className="h-3 w-3" /> Đã nhập
+                                  </span>
+                                )}
+                              </div>
+                              <div className="relative">
+                                <Input
+                                  id={`thpt-${mon.key}`}
+                                  type="text"
+                                  inputMode="decimal"
+                                  placeholder="0.0 - 10.0"
+                                  value={scores[mon.key] ?? ''}
+                                  onChange={(e) => handleScoreChange(mon.key, e.target.value)}
+                                  className={`h-9 pr-8 text-sm ${fieldError ? 'border-red-500 focus-visible:ring-red-500' : ''}`}
+                                />
+                                {hasValue && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleClearSubject(mon.key)}
+                                    className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5 rounded"
+                                    title={`Xóa điểm ${mon.label}`}
+                                  >
+                                    <X className="h-3.5 w-3.5" />
+                                  </button>
+                                )}
+                              </div>
+                              {fieldError && (
+                                <p className="text-[11px] text-red-600 dark:text-red-400">{fieldError}</p>
+                              )}
+                            </div>
                           )
                         })}
                       </div>
                     </div>
 
-                    {/* Distribution Chart */}
-                    {result.phanBoDiem && result.phanBoDiem.length > 0 && (
-                      <div>
-                        <h4 className="font-medium mb-3 text-sm">Phân bố điểm toàn quốc:</h4>
-                        <ResponsiveContainer width="100%" height={200}>
-                          <BarChart data={result.phanBoDiem}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="khoang_diem" />
-                            <YAxis />
-                            <Tooltip />
-                            <Bar dataKey="so_thi_sinh" fill="#2563eb" />
-                          </BarChart>
-                        </ResponsiveContainer>
+                    {/* KHỐI 2: MÔN TỰ CHỌN */}
+                    <div className="space-y-3 p-3.5 rounded-xl bg-muted/40 border border-border/80">
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                        <div className="flex items-center gap-2">
+                          <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[11px] font-bold text-primary">
+                            2
+                          </span>
+                          <span className="text-sm font-semibold text-foreground">
+                            Môn thi tự chọn (Chọn đúng 2 môn)
+                          </span>
+                        </div>
+                        <div className="inline-flex items-center gap-1.5 self-start sm:self-auto">
+                          <span
+                            className={`text-xs font-semibold px-2.5 py-0.5 rounded-full transition-colors ${
+                              electiveCount === 2
+                                ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-300/60 dark:border-emerald-700/60'
+                                : electiveCount === 1
+                                ? 'bg-amber-100 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-300/60 dark:border-amber-700/60'
+                                : 'bg-muted text-muted-foreground border border-border'
+                            }`}
+                          >
+                            Đã chọn: {electiveCount}/2 môn
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Gợi ý tổ hợp nhanh */}
+                      <div className="space-y-1.5 pt-1">
+                        <div className="text-[11px] text-muted-foreground font-medium">Gợi ý tổ hợp phổ biến:</div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {QUICK_PRESETS.map((preset) => {
+                            const isCurrentActive =
+                              selectedElectives.length === 2 &&
+                              preset.keys.every((k) => selectedElectives.includes(k))
+                            return (
+                              <button
+                                key={preset.label}
+                                type="button"
+                                onClick={() => handleApplyPreset(preset.keys)}
+                                className={`text-[11px] px-2.5 py-1 rounded-md border transition-all ${
+                                  isCurrentActive
+                                    ? 'bg-primary text-primary-foreground border-primary font-semibold shadow-2xs'
+                                    : 'bg-background hover:bg-muted text-muted-foreground hover:text-foreground border-border'
+                                }`}
+                              >
+                                {preset.label}
+                              </button>
+                            )
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Danh sách 7 môn tự chọn */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+                        {TU_CHON.map((mon) => {
+                          const isSelected = selectedElectives.includes(mon.key)
+                          const hasValue = scores[mon.key] !== '' && scores[mon.key] !== undefined
+                          const isDisabled = isElectiveLimitReached && !isSelected
+                          const fieldError = fieldErrors[mon.key]
+
+                          return (
+                            <div
+                              key={mon.key}
+                              className={`p-2.5 rounded-lg border transition-all ${
+                                isSelected
+                                  ? 'bg-background border-primary/50 shadow-2xs ring-1 ring-primary/20'
+                                  : isDisabled
+                                  ? 'bg-muted/30 border-border/40 opacity-60'
+                                  : 'bg-background/80 border-border/70 hover:border-border'
+                              }`}
+                            >
+                              <div className="flex items-center justify-between text-xs mb-1.5">
+                                <Label
+                                  htmlFor={`thpt-${mon.key}`}
+                                  className={`flex items-center gap-1.5 font-medium ${
+                                    isDisabled ? 'cursor-not-allowed text-muted-foreground' : 'cursor-pointer'
+                                  }`}
+                                >
+                                  <div
+                                    className="w-2.5 h-2.5 rounded-full shrink-0"
+                                    style={{ backgroundColor: mon.color, opacity: isDisabled ? 0.4 : 1 }}
+                                  />
+                                  <span>{mon.label}</span>
+                                </Label>
+                                {isSelected ? (
+                                  <span className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold px-1.5 py-0.2 rounded bg-emerald-50 dark:bg-emerald-950/40">
+                                    Đã chọn
+                                  </span>
+                                ) : isDisabled ? (
+                                  <span className="text-[10px] text-muted-foreground flex items-center gap-0.5">
+                                    <Lock className="h-2.5 w-2.5" /> Đã khóa
+                                  </span>
+                                ) : (
+                                  <span className="text-[10px] text-muted-foreground">Tùy chọn</span>
+                                )}
+                              </div>
+
+                              <div className="relative">
+                                <Input
+                                  id={`thpt-${mon.key}`}
+                                  type="text"
+                                  inputMode="decimal"
+                                  disabled={isDisabled}
+                                  placeholder={isDisabled ? 'Đã đủ 2 môn tự chọn' : '0.0 - 10.0'}
+                                  value={scores[mon.key] ?? ''}
+                                  onChange={(e) => handleScoreChange(mon.key, e.target.value)}
+                                  className={`h-8 pr-7 text-xs ${
+                                    isDisabled
+                                      ? 'bg-muted/50 cursor-not-allowed placeholder:text-muted-foreground/60'
+                                      : fieldError
+                                      ? 'border-red-500'
+                                      : ''
+                                  }`}
+                                />
+                                {hasValue && (
+                                  <button
+                                    type="button"
+                                    onClick={() => handleClearSubject(mon.key)}
+                                    className="absolute right-1.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground p-0.5 rounded"
+                                    title={`Xóa điểm ${mon.label}`}
+                                  >
+                                    <X className="h-3 w-3" />
+                                  </button>
+                                )}
+                              </div>
+                              {fieldError && (
+                                <p className="text-[10px] text-red-600 dark:text-red-400 mt-1">{fieldError}</p>
+                              )}
+                            </div>
+                          )
+                        })}
+                      </div>
+
+                      {isElectiveLimitReached && (
+                        <p className="text-xs text-muted-foreground flex items-center gap-1.5 pt-1">
+                          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 shrink-0" />
+                          <span>
+                            Bạn đã chọn đủ 2 môn tự chọn. Nhấn biểu tượng <span className="font-semibold text-foreground">✕</span> ở môn đã chọn nếu muốn đổi sang môn khác.
+                          </span>
+                        </p>
+                      )}
+                    </div>
+
+                    {error && (
+                      <div className="flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-xs sm:text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
+                        <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+                        <span>{error}</span>
                       </div>
                     )}
-                  </div>
-                ) : (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <TrendingUp className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>Nhập điểm các môn và nhấn &quot;Tính thứ hạng THPTQG&quot; để xem kết quả</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+
+                    <Button
+                      type="submit"
+                      className="w-full h-10 font-semibold"
+                      disabled={loading || electiveCount !== 2 || scores.toan === '' || scores.van === ''}
+                    >
+                      <Calculator className="h-4 w-4 mr-2" />
+                      {loading ? 'Đang tính toán thứ hạng...' : 'Tính thứ hạng THPTQG (4 môn)'}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Results Column (5 cols on lg) */}
+            <div className="lg:col-span-5">
+              <Card className="border-border shadow-xs sticky top-4">
+                <CardHeader className="pb-3 border-b border-border/60">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Trophy className="h-5 w-5 text-amber-500" />
+                    Kết quả xếp hạng THPTQG
+                  </CardTitle>
+                  <CardDescription className="text-xs">
+                    Thứ hạng và phổ điểm toàn quốc trên thang điểm 40
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="pt-4">
+                  {result ? (
+                    <div className="space-y-5">
+                      {/* 4 Stats Cards */}
+                      <div className="grid grid-cols-2 gap-3">
+                        <div className="p-3.5 bg-primary/5 border border-primary/15 rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-primary">
+                            #{result.thuHang.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground font-medium mt-0.5">Thứ hạng toàn quốc</div>
+                        </div>
+                        <div className="p-3.5 bg-muted/60 border border-border rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                            {result.tongDiem.toFixed(2)}
+                            <span className="text-xs text-muted-foreground font-normal ml-1">/ 40</span>
+                          </div>
+                          <div className="text-xs text-muted-foreground font-medium mt-0.5">Tổng điểm 4 môn</div>
+                        </div>
+                        <div className="p-3.5 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-600 dark:text-emerald-400">
+                            Top {result.tyLePhanTram}%
+                          </div>
+                          <div className="text-xs text-muted-foreground font-medium mt-0.5">Vị trí tương đối</div>
+                        </div>
+                        <div className="p-3.5 bg-muted/60 border border-border rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-foreground">
+                            {result.tongThiSinh.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground font-medium mt-0.5">Tổng thí sinh</div>
+                        </div>
+                      </div>
+
+                      {/* Chi tiết 4 môn */}
+                      <div className="p-3.5 border rounded-xl bg-muted/20 space-y-2.5">
+                        <div className="flex items-center justify-between text-xs">
+                          <span className="font-semibold text-foreground">Điểm 4 môn đã nhập:</span>
+                          <span className="text-[11px] text-muted-foreground">2 bắt buộc + 2 tự chọn</span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          {Object.entries(result.diemNhap).map(([key, value]) => {
+                            if (value === null || value === undefined) return null
+                            const mon = monHoc.find((m) => m.key === key)
+                            const isBatBuoc = key === 'toan' || key === 'van'
+                            return (
+                              <div
+                                key={key}
+                                className="flex items-center justify-between px-2.5 py-1.5 rounded-lg border bg-background text-xs"
+                              >
+                                <div className="flex items-center gap-1.5 truncate">
+                                  <div className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: mon?.color }} />
+                                  <span className="font-medium truncate">{mon?.label}</span>
+                                </div>
+                                <div className="flex items-center gap-1.5 shrink-0 ml-1">
+                                  <span className="font-bold text-foreground">{value}</span>
+                                  <span
+                                    className={`text-[9px] px-1 py-0.2 rounded font-semibold ${
+                                      isBatBuoc
+                                        ? 'bg-red-100 text-red-700 dark:bg-red-950/60 dark:text-red-300'
+                                        : 'bg-primary/10 text-primary'
+                                    }`}
+                                  >
+                                    {isBatBuoc ? 'Bắt buộc' : 'Tự chọn'}
+                                  </span>
+                                </div>
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Phổ điểm toàn quốc Recharts */}
+                      {result.phanBoDiem && result.phanBoDiem.length > 0 && (
+                        <div className="space-y-2">
+                          <div className="flex items-center justify-between">
+                            <h4 className="font-semibold text-xs text-foreground flex items-center gap-1.5">
+                              <BarChart3 className="h-3.5 w-3.5 text-primary" />
+                              Phổ điểm toàn quốc (Thang 40):
+                            </h4>
+                            <div className="flex items-center gap-2 text-[10px] text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-primary inline-block" /> Thí sinh
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-amber-500 inline-block" /> Bạn
+                              </span>
+                            </div>
+                          </div>
+                          <div className="w-full h-48">
+                            <ResponsiveContainer width="100%" height="100%">
+                              <BarChart data={result.phanBoDiem} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.3} />
+                                <XAxis dataKey="khoang_diem" tick={{ fontSize: 10 }} />
+                                <YAxis tick={{ fontSize: 10 }} />
+                                <Tooltip
+                                  formatter={(value) => [Number(value).toLocaleString() + ' thí sinh', 'Số lượng']}
+                                  labelFormatter={(label) => `Khoảng điểm: ${label}`}
+                                />
+                                <Bar dataKey="so_thi_sinh" radius={[4, 4, 0, 0]}>
+                                  {result.phanBoDiem.map((entry, index) => {
+                                    const [min, max] = entry.khoang_diem.split('-').map(Number)
+                                    const isUserBin =
+                                      result.tongDiem >= min && (max === 40 ? result.tongDiem <= max : result.tongDiem < max)
+                                    return (
+                                      <Cell
+                                        key={`thpt-cell-${index}`}
+                                        fill={isUserBin ? '#f59e0b' : '#3b82f6'}
+                                      />
+                                    )
+                                  })}
+                                </Bar>
+                              </BarChart>
+                            </ResponsiveContainer>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-12 text-muted-foreground space-y-3">
+                      <div className="mx-auto w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                        <TrendingUp className="h-6 w-6 text-muted-foreground/60" />
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium text-foreground">Chưa có kết quả</p>
+                        <p className="text-xs text-muted-foreground max-w-xs mx-auto">
+                          Nhập điểm 2 môn bắt buộc (Toán, Văn) và chọn 2 môn tự chọn, sau đó nhấn &quot;Tính thứ hạng THPTQG&quot;
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       )}

@@ -11,7 +11,7 @@ All fixes below are in the working tree only. Nothing has been committed or push
 | ID | Priority | Area | Summary | Status |
 |---|---|---|---|---|
 | KI-01 | P1 | DB/bootstrap | `db.js` created an old schema when the DB was missing | Fixed |
-| KI-02 | P1 | Ranking | 3-subject total compared with all-subject total; top score bin drops >= 30 | Open |
+| KI-02 | P1 | Ranking | 3-subject total compared with all-subject total; top score bin drops >= 30 | Resolved |
 | KI-03a | P1 | Data mapping | 5 school codes mapped to wrong schools; 2 orphan codes | Open |
 | KI-03b | P1 | Data coverage | 33/260 schools join to score data; 47 proposals absent from `truong` | Open |
 | KI-03c | P1 | Data import | Old parser skipped 15 block files; fixed code parses 281 blocks | Fixed in code; rebuild pending |
@@ -90,7 +90,7 @@ Run "npm run db:init" in backend/ to create and import it.
 
 The real DB was not modified.
 
-### KI-02 — Ranking semantics and distribution (Open)
+### KI-02 — Ranking semantics and distribution (Resolved)
 
 **Problem**:
 
@@ -101,7 +101,7 @@ The real DB was not modified.
 
 **Current mitigation**: the ranking page displays a warning that the result is not a subject-combination ranking and is for reference only.
 
-**Still needed**: product decision on ranking scope (same entered subjects vs a selected combination vs exactly 3 subjects), missing-score policy, and distribution bins. Do not change the calculation without that decision.
+**Resolution**: Implemented 4-subject requirement according to GDPT 2018 regulations: exactly 2 compulsory subjects (Toán, Ngữ văn) and exactly 2 elective subjects from 7 options (Lý, Hóa, Sinh, Sử, Địa, Ngoại ngữ, Tin học). Strict score validation (0-10 per subject) and locking rules enforced both on frontend and backend (`GET /api/diem-thi/ranking`). Distribution bins normalized to 0-40 scale across 7 bins (`['35-40', '30-35', '25-30', '20-25', '15-20', '10-15', '0-10']`) covering 100% of candidates (1,131,975 candidates) with user score highlighting.
 
 ### KI-03a — Wrong school mappings / orphan codes (Open)
 

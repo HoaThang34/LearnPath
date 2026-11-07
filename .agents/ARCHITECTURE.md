@@ -315,13 +315,13 @@ Returns score rows for one school and block, with `ten_truong` from `truong` whe
 
 ### `GET /api/diem-thi/ranking`
 
-Query params: `toan`, `van`, `ly`, `hoa`, `sinh`, `su`, `dia`, `tin_hoc`, `ngoai_ngu`.
+Query params: `toan`, `van`, and elective subjects (`ly`, `hoa`, `sinh`, `su`, `dia`, `tin_hoc`, `ngoai_ngu`).
 
-- At least one subject is required; otherwise 400.
-- The current implementation sums the supplied subjects and compares that sum with the sum of **all** subjects for every candidate.
-- `30` is excluded from the top `27-30` bin because the condition is `< 30`; the API therefore omits candidates with totals >= 30 from the distribution.
-- The response includes `diemNhap`, `tongDiem`, `soMon`, `thuHang`, `tongThiSinh`, `tyLePhanTram`, `phanBoDiem`.
-- This is a known semantic bug (KI-02), not a subject-combination ranking.
+- Quy chế thi THPT (GDPT 2018): Yêu cầu đúng 4 môn thi gồm 2 môn bắt buộc (`toan`, `van`) và đúng 2 môn tự chọn trong 7 môn còn lại.
+- Trả về 400 nếu thiếu `toan` hoặc `van`, hoặc số môn tự chọn khác 2, hoặc điểm bất kỳ môn nào nằm ngoài khoảng [0, 10].
+- Điểm tổng cộng được tính trên thang điểm 40 (4 môn).
+- So sánh thứ hạng với toàn bộ thí sinh trong cơ sở dữ liệu và trả về phân bố điểm trên thang 40 gồm 7 khoảng: `35-40`, `30-35`, `25-30`, `20-25`, `15-20`, `10-15`, `0-10`.
+- Response bao gồm `diemNhap`, `tongDiem`, `soMon: 4`, `monBatBuoc`, `monTuChon`, `thuHang`, `tongThiSinh`, `tyLePhanTram`, `phanBoDiem`.
 
 ### `GET /api/diem-thi/stats`
 

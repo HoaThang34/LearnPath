@@ -6,68 +6,124 @@ const { getDb, queryAll, queryOne } = require('../database/db');
 const { getHsaExams, fetchHsaRanking } = require('../hsa/hsaRanking');
 const { getTsaExams, fetchTsaRanking } = require('../tsa/tsaRanking');
 
+const ELECTIVE_KEYS = ['ly', 'hoa', 'sinh', 'su', 'dia', 'tin_hoc', 'ngoai_ngu'];
+const SUBJECT_LABELS = {
+  toan: 'Toán',
+  van: 'Ngữ văn',
+  ly: 'Vật lí',
+  hoa: 'Hóa học',
+  sinh: 'Sinh học',
+  su: 'Lịch sử',
+  dia: 'Địa lí',
+  tin_hoc: 'Tin học',
+  ngoai_ngu: 'Ngoại ngữ',
+};
+
+// Cached score distribution across 7 bins (scale 0-40)
+let cachedDistribution = null;
+
+function parseScore(val) {
+  if (val === undefined || val === null || val === '') return null;
+  const num = parseFloat(String(val).replace(',', '.'));
+  return Number.isFinite(num) ? num : NaN;
+}
+
 // GET /api/diem-thi/ranking
+// Quy chế thi tốt nghiệp THPT (GDPT 2018): 4 môn thi gồm 2 môn bắt buộc (Toán, Văn) + 2 môn tự chọn
 router.get('/ranking', async (req, res) => {
   try {
     await getDb();
-    const { toan, van, ly, hoa, sinh, su, dia, tin_hoc, ngoai_ngu } = req.query;
 
-    let totalScore = 0;
-    let subjectCount = 0;
-
-    if (toan) { totalScore += parseFloat(toan); subjectCount++; }
-    if (van) { totalScore += parseFloat(van); subjectCount++; }
-    if (ly) { totalScore += parseFloat(ly); subjectCount++; }
-    if (hoa) { totalScore += parseFloat(hoa); subjectCount++; }
-    if (sinh) { totalScore += parseFloat(sinh); subjectCount++; }
-    if (su) { totalScore += parseFloat(su); subjectCount++; }
-    if (dia) { totalScore += parseFloat(dia); subjectCount++; }
-    if (tin_hoc) { totalScore += parseFloat(tin_hoc); subjectCount++; }
-    if (ngoai_ngu) { totalScore += parseFloat(ngoai_ngu); subjectCount++; }
-
-    if (subjectCount === 0) {
-      return res.status(400).json({ error: 'Vui long nhap it nhat mot mon' });
+    // 1. Kiểm tra môn bắt buộc: Toán
+    const parsedToan = parseScore(req.query.toan);
+    if (parsedToan === null) {
+      return res.status(400).json({ error: 'Môn Toán là bắt buộc. Vui lòng nhập điểm môn Toán (từ 0 đến 10).' });
+    }
+    if (isNaN(parsedToan) || parsedToan < 0 || parsedToan > 10) {
+      return res.status(400).json({ error: 'Điểm môn Toán không hợp lệ (phải là số từ 0 đến 10).' });
     }
 
-    // Get all students and count those with higher scores
-    const allStudents = queryAll(
-      'SELECT COALESCE(toan,0)+COALESCE(van,0)+COALESCE(ly,0)+COALESCE(hoa,0)+COALESCE(sinh,0)+COALESCE(su,0)+COALESCE(dia,0)+COALESCE(tin_hoc,0)+COALESCE(ngoai_ngu,0) as total FROM diem_thi_thptqg'
-    );
-
-    let ranking = 1;
-    for (const student of allStudents) {
-      if (student.total > totalScore) ranking++;
+    // 2. Kiểm tra môn bắt buộc: Ngữ văn
+    const parsedVan = parseScore(req.query.van);
+    if (parsedVan === null) {
+      return res.status(400).json({ error: 'Môn Ngữ văn là bắt buộc. Vui lòng nhập điểm môn Ngữ văn (từ 0 đến 10).' });
+    }
+    if (isNaN(parsedVan) || parsedVan < 0 || parsedVan > 10) {
+      return res.status(400).json({ error: 'Điểm môn Ngữ văn không hợp lệ (phải là số từ 0 đến 10).' });
     }
 
-    const totalStudents = allStudents.length;
+    // 3. Kiểm tra các môn tự chọn
+    const chosenElectives = [];
+    for (const key of ELECTIVE_KEYS) {
+      const val = req.query[key];
+      if (val !== undefined && val !== null && val !== '') {
+        const num = parseScore(val);
+        if (isNaN(num) || num < 0 || num > 10) {
+          return res.status(400).json({
+            error: `Điểm môn ${SUBJECT_LABELS[key] || key} không hợp lệ (phải là số từ 0 đến 10).`
+          });
+        }
+        chosenElectives.push({ key, label: SUBJECT_LABELS[key], score: num });
+      }
+    }
 
-    // Score distribution
-    const ranges = ['27-30', '24-27', '21-24', '18-21', '15-18', '12-15', '0-12'];
-    const distribution = ranges.map(r => {
-      const [min, max] = r.split('-').map(Number);
-      const count = allStudents.filter(s => s.total >= min && s.total < max).length;
-      return { khoang_diem: r, so_thi_sinh: count };
-    });
+    if (chosenElectives.length !== 2) {
+      return res.status(400).json({
+        error: `Quy chế thi THPT yêu cầu nhập đúng 2 môn tự chọn (hiện tại có ${chosenElectives.length} môn).`
+      });
+    }
+
+    // Tổng điểm 4 môn (thang điểm 40)
+    const totalScore = parseFloat((parsedToan + parsedVan + chosenElectives[0].score + chosenElectives[1].score).toFixed(2));
+
+    // Tính thứ hạng so với toàn quốc
+    const higherCount = queryOne(
+      'SELECT COUNT(*) as higher FROM diem_thi_thptqg WHERE (COALESCE(toan,0)+COALESCE(van,0)+COALESCE(ly,0)+COALESCE(hoa,0)+COALESCE(sinh,0)+COALESCE(su,0)+COALESCE(dia,0)+COALESCE(tin_hoc,0)+COALESCE(ngoai_ngu,0)) > ?',
+      [totalScore]
+    )?.higher || 0;
+
+    const ranking = higherCount + 1;
+    const totalStudents = queryOne('SELECT COUNT(*) as count FROM diem_thi_thptqg')?.count || 1131975;
+
+    // Phân bố điểm 7 khoảng từ 0 đến 40
+    if (!cachedDistribution) {
+      const allStudents = queryAll(
+        'SELECT COALESCE(toan,0)+COALESCE(van,0)+COALESCE(ly,0)+COALESCE(hoa,0)+COALESCE(sinh,0)+COALESCE(su,0)+COALESCE(dia,0)+COALESCE(tin_hoc,0)+COALESCE(ngoai_ngu,0) as total FROM diem_thi_thptqg'
+      );
+      const ranges = ['35-40', '30-35', '25-30', '20-25', '15-20', '10-15', '0-10'];
+      cachedDistribution = ranges.map(r => {
+        const [min, max] = r.split('-').map(Number);
+        const count = allStudents.filter(s => s.total >= min && (max === 40 ? s.total <= max : s.total < max)).length;
+        return { khoang_diem: r, so_thi_sinh: count };
+      });
+    }
+
+    const diemNhapObj = {
+      toan: parsedToan,
+      van: parsedVan,
+      ly: null,
+      hoa: null,
+      sinh: null,
+      su: null,
+      dia: null,
+      tin_hoc: null,
+      ngoai_ngu: null,
+    };
+    for (const el of chosenElectives) {
+      diemNhapObj[el.key] = el.score;
+    }
 
     res.json({
       data: {
-        diemNhap: {
-          toan: toan ? parseFloat(toan) : null,
-          van: van ? parseFloat(van) : null,
-          ly: ly ? parseFloat(ly) : null,
-          hoa: hoa ? parseFloat(hoa) : null,
-          sinh: sinh ? parseFloat(sinh) : null,
-          su: su ? parseFloat(su) : null,
-          dia: dia ? parseFloat(dia) : null,
-          tin_hoc: tin_hoc ? parseFloat(tin_hoc) : null,
-          ngoai_ngu: ngoai_ngu ? parseFloat(ngoai_ngu) : null,
-        },
+        diemNhap: diemNhapObj,
         tongDiem: totalScore,
-        soMon: subjectCount,
+        soMon: 4,
+        monBatBuoc: ['toan', 'van'],
+        monTuChon: chosenElectives.map(e => e.key),
         thuHang: ranking,
         tongThiSinh: totalStudents,
         tyLePhanTram: ((ranking / totalStudents) * 100).toFixed(2),
-        phanBoDiem: distribution,
+        phanBoDiem: cachedDistribution,
       }
     });
   } catch (error) {
