@@ -1,0 +1,225 @@
+{
+  "majorCode": "EE-E1",
+  "majorName": "Kỹ thuật Điều khiển và Tự động hóa",
+  "industryCluster": "Kỹ thuật & Công nghệ",
+  "badgeTitle": "Kỹ sư Tự động hóa Tương lai",
+  "overview": {
+    "title": "Kỹ thuật Điều khiển & Tự động hóa là gì?",
+    "description": "Ngành học giao thoa đỉnh cao giữa Cơ khí chính xác, Kỹ thuật Điện - Điện tử và Công nghệ phần mềm. Kỹ sư Tự động hóa là những 'kiến trúc sư' thổi hồn vào máy móc, biến các nhà máy truyền thống thành các Smart Factory thông minh vận hành tự động 24/7 bằng PLC, Robot và SCADA/IoT.",
+    "roles": [
+      {
+        "title": "Kỹ sư Lập trình PLC & SCADA",
+        "description": "Thiết kế kiến trúc điều khiển, viết code cho các bộ điều khiển logic lập trình (Siemens S7, Mitsubishi, Omron) và thiết kế giao diện vận hành màn hình cảm ứng HMI/SCADA.",
+        "skills": ["PLC Ladder/SCL", "WinCC/InTouch", "Mạng Profinet/Modbus", "Tư duy logic tuần tự"]
+      },
+      {
+        "title": "Kỹ sư Vận hành & Bảo trì Nhà máy Thông minh",
+        "description": "Đảm bảo toàn bộ dây chuyền sản xuất tự động vận hành trơn tru; phát hiện và khắc phục sự cố hỏng hóc trong thời gian tính bằng phút.",
+        "skills": ["Chẩn đoán lỗi tủ điện", "Bảo trì cảm biến & biến tần", "Đọc bản vẽ mạch EPLAN", "Xử lý áp lực cao"]
+      },
+      {
+        "title": "Kỹ sư R&D Robotics & Thị giác máy (Machine Vision)",
+        "description": "Nghiên cứu cánh tay robot công nghiệp (KUKA, ABB, Universal Robots), tích hợp camera AI để kiểm tra lỗi sản phẩm siêu tốc độ.",
+        "skills": ["Kinematics Robot", "Python/C++", "Xử lý ảnh công nghiệp", "Thuật toán tối ưu"]
+      },
+      {
+        "title": "Kỹ sư Bán hàng Kỹ thuật & Tư vấn Giải pháp (Tech Sales)",
+        "description": "Tư vấn cấu hình thiết bị tự động hóa (cảm biến, động cơ servo, biến tần) cho các nhà máy, tập đoàn công nghiệp.",
+        "skills": ["Giao tiếp & Đàm phán", "Hiểu sâu thông số kỹ thuật", "Tiếng Anh chuyên ngành"]
+      }
+    ],
+    "salaryLadder": [
+      { "level": "Kỹ sư mới tốt nghiệp (0 - 1 năm)", "range": "10 - 16 triệu/tháng", "note": "Vị trí tập sự hoặc kỹ sư công trường/bảo trì sơ cấp" },
+      { "level": "Kỹ sư có kinh nghiệm (2 - 4 năm)", "range": "18 - 30 triệu/tháng", "note": "Lập trình độc lập các dự án PLC, tích hợp dây chuyền" },
+      { "level": "Trưởng nhóm / Kỹ sư Giải pháp (5+ năm)", "range": "35 - 65+ triệu/tháng", "note": "Quản lý dự án tự động hóa trọn gói, Solution Architect" }
+    ],
+    "topEmployers": [
+      "VinFast (Tổ hợp sản xuất ô tô điện Hải Phòng)",
+      "Samsung Electronics Vietnam (Bắc Ninh & Thái Nguyên)",
+      "Foxconn Vietnam",
+      "Siemens Vietnam",
+      "Schneider Electric",
+      "ABB Automation",
+      "Unilever / Heineken / Vinamilk (Nhà máy Mega tự động)"
+    ]
+  },
+  "dayInLife": [
+    {
+      "time": "08:00 - 08:30",
+      "title": "Giao ban ca trực tại Phòng Điều Khiển Trung Tâm (Control Room)",
+      "detail": "Kỹ sư đăng nhập SCADA, kiểm tra chỉ số hiệu suất dây chuyền (OEE) đêm qua, rà soát nhật ký cảnh báo lỗi và nhận chỉ tiêu sản xuất ca sáng.",
+      "tools": ["SCADA Dashboard", "Sổ log bàn giao", "Cà phê sáng ☕"],
+      "stressLevel": 20
+    },
+    {
+      "time": "09:00 - 10:30",
+      "title": "Đi tuyến hiện trường & Kiểm tra tủ điện điều khiển",
+      "detail": "Trực tiếp xuống sàn máy (Shop Floor). Đo nhiệt độ động cơ servo trạm đóng chai, kiểm tra áp suất khí nén cấp cho xy lanh gắp phôi.",
+      "tools": ["Đồng hồ vạn năng VOM", "Camera nhiệt FLIR", "Mũ bảo hộ & Giày chống tĩnh điện"],
+      "stressLevel": 40
+    },
+    {
+      "time": "11:00 - 12:00",
+      "title": "Họp nhóm tối ưu hóa chu kỳ (Cycle Time Optimization)",
+      "detail": "Thảo luận cùng kỹ sư cơ khí để rút ngắn chu kỳ dập nắp từ 2.4s xuống 2.1s, giúp tăng 12% sản lượng xuất khẩu cho nhà máy.",
+      "tools": ["Bản vẽ sơ đồ Gantt", "Sơ đồ giải thuật lưu trình", "Phần mềm mô phỏng Factory I/O"],
+      "stressLevel": 35
+    },
+    {
+      "time": "13:30 - 15:00",
+      "title": "BÁO ĐỘNG ĐỎ: Xử lý sự cố dây chuyền dừng khẩn cấp!",
+      "detail": "Còi báo động kêu réo, trạm dán nhãn bất ngờ dừng làm ứ đọng hàng trăm sản phẩm. Cắm cáp Ethernet vào PLC Siemens, soi trạng thái tín hiệu I/O để bắt đúng bệnh trong 10 phút.",
+      "tools": ["Laptop kỹ thuật chuyên dụng", "Phần mềm TIA Portal V18", "Cáp mạng công nghiệp RJ45"],
+      "stressLevel": 90
+    },
+    {
+      "time": "15:30 - 17:00",
+      "title": "Nghiên cứu & Nạp thử nghiệm thuật toán Robot mới",
+      "detail": "Viết chương trình nạp cho cánh tay robot 6 bậc tự do mới nhập về phòng R&D, kiểm tra vùng an toàn của công nhân bằng rào chắn laser.",
+      "tools": ["Bộ điều khiển cầm tay Teach Pendant", "Môi trường lập trình ROS / RobotStudio"],
+      "stressLevel": 30
+    },
+    {
+      "time": "17:00 - 17:30",
+      "title": "Bàn giao ca trực chiều & Sao lưu dự phòng dữ liệu",
+      "detail": "Lưu bản backup code PLC lên máy chủ nội bộ an toàn, ghi nhận giải pháp khắc phục sự cố vào cơ sở dữ liệu bảo trì.",
+      "tools": ["Git / Server Backup", "Báo cáo ca trực kỹ thuật số"],
+      "stressLevel": 15
+    }
+  ],
+  "gameRounds": [
+    {
+      "roundId": 1,
+      "type": "troubleshooting",
+      "title": "Vòng 1: Cuộc gọi khẩn cấp - Bắt bệnh sự cố tủ điện",
+      "description": "Dây chuyền đóng nắp chai tự động đột ngột dừng khẩn cấp! Còi hú inh ỏi. Mỗi phút trôi qua nhà máy thiệt hại 3.000.000 VNĐ. Hãy mở tủ điện, dùng dụng cụ chẩn đoán và tìm ra linh kiện hỏng để khởi động lại hệ thống!",
+      "downtimeCostPerSecond": 50000,
+      "timeLimitSeconds": 75,
+      "faultStory": "Màn hình HMI cảnh báo: 'ERROR #E402: BĂNG TẢI DỪNG - TRẠM ĐÓNG NẮP KHÔNG CÓ TÍN HIỆU PHÔI'. Đèn tháp chuyển đỏ rực.",
+      "interactiveSteps": [
+        {
+          "stepId": "vom_check",
+          "action": "Đo điện áp nguồn 24VDC cấp cho cảm biến",
+          "correctTool": "vom",
+          "resultGood": "Kim VOM chỉ 24.2V chuẩn xác. Nguồn điều khiển 24VDC hoạt động bình thường, loại trừ đứt cầu chì nguồn!",
+          "hint": "Nguồn điện tốt, hãy kiểm tra tín hiệu ngõ vào PLC xem cảm biến có gửi điện về không."
+        },
+        {
+          "stepId": "plc_check",
+          "action": "Soi trạng thái đèn LED I/O trên PLC S7-1200",
+          "correctTool": "inspect_plc",
+          "resultGood": "Đèn led ngõ vào I0.3 (Cảm biến quang định vị chai) TẮT ngúm dù chai nước đang nằm ngay trước mặt cảm biến!",
+          "hint": "Cảm biến quang không nhận diện được vật thể. Hãy kiểm tra mắt đọc hoặc gương phản xạ của nó."
+        },
+        {
+          "stepId": "sensor_action",
+          "action": "Quyết định xử lý khắc phục lỗi cảm biến",
+          "options": [
+            { "id": "opt1", "text": "Thay thế ngay bộ não CPU PLC Siemens (Chi phí 45 triệu, mất 4 tiếng)", "isCorrect": false, "penalty": 20, "feedback": "Sai hoàn toàn! CPU PLC hoàn toàn khỏe mạnh, thay thế gây lãng phí lớn và tăng thời gian chết dây chuyền!" },
+            { "id": "opt2", "text": "Thay cả xy lanh khí nén dập nắp", "isCorrect": false, "penalty": 15, "feedback": "Sai nguyên nhân! Xy lanh không liên quan đến tín hiệu cảm biến I0.3." },
+            { "id": "opt3", "text": "Lau sạch bụi dầu bám trên thấu kính cảm biến quang và siết lại ốc gá bị lệch góc rung", "isCorrect": true, "penalty": 0, "feedback": "CHÍNH XÁC! Thấu kính quang học bị bụi bám làm mất tia hồng ngoại. Đèn I0.3 sáng rực ngay lập tức, băng tải khởi động lại êm ru!" }
+          ]
+        }
+      ],
+      "expReward": 350,
+      "badgeAwarded": {
+        "id": "badge_troubleshooter",
+        "name": "Bàn Tay Vàng Xử Lý Sự Cố",
+        "icon": "Wrench",
+        "description": "Bắt đúng bệnh lỗi cảm biến tủ điện trong thời gian kỷ lục."
+      },
+      "linkedCourse": {
+        "code": "EE3110",
+        "name": "Kỹ thuật đo lường và Cảm biến",
+        "credits": 3,
+        "school": "Đại học Bách khoa Hà Nội"
+      }
+    },
+    {
+      "roundId": 2,
+      "type": "logic_sequencer",
+      "title": "Vòng 2: The Logic Runner - Lập trình logic băng chuyền",
+      "description": "Nhà máy vừa lắp thêm trạm phân loại tự động. Hãy kéo thả các khối điều kiện và hành động vào đúng trình tự để cánh tay robot gạt chính xác lon nước bị móp méo vào thùng tái chế mà không làm vỡ các lon đạt chuẩn!",
+      "downtimeCostPerSecond": 0,
+      "timeLimitSeconds": 120,
+      "targetProducts": 5,
+      "availableBlocks": [
+        { "id": "B1", "name": "Băng tải trôi phôi tới trạm", "category": "action", "icon": "ArrowRight" },
+        { "id": "B2", "name": "Cảm biến Camera AI quét: Lon Móp Méo = TRUE", "category": "condition", "icon": "Scan" },
+        { "id": "B3", "name": "Độ trễ chờ lon đến vị trí xy lanh (Delay 0.4s)", "category": "timing", "icon": "Clock" },
+        { "id": "B4", "name": "Kích hoạt Piston đẩy phế phẩm vào thùng phế (Piston ON)", "category": "action", "icon": "Zap" },
+        { "id": "B5", "name": "Rút Piston về vị trí gốc & cho băng tải tiếp tục chạy", "category": "action", "icon": "RotateCcw" }
+      ],
+      "correctSequence": ["B1", "B2", "B3", "B4", "B5"],
+      "expReward": 450,
+      "badgeAwarded": {
+        "id": "badge_logic_master",
+        "name": "Chúa Tể Băng Chuyền",
+        "icon": "Cpu",
+        "description": "Lập trình logic tuần tự hoàn hảo, phân loại 100% không làm rơi vỡ sản phẩm."
+      },
+      "linkedCourse": {
+        "code": "EE4220",
+        "name": "Điều khiển logic và PLC",
+        "credits": 3,
+        "school": "Đại học Bách khoa Hà Nội"
+      }
+    },
+    {
+      "roundId": 3,
+      "type": "pid_tuning",
+      "title": "Vòng 3: Cân bằng nhiệt độ lò luyện sơn tĩnh điện",
+      "description": "Lò sấy sơn xe ô tô yêu cầu giữ nhiệt độ ở đúng 200°C (±2°C). Bạn là kỹ sư điều khiển vòng kín: Hãy tinh chỉnh 3 thanh trượt P (Tỉ lệ), I (Tích phân) và D (Vi phân) để dập tắt dao động khi cửa lò bất ngờ mở gió lạnh ùa vào!",
+      "targetValue": 200,
+      "acceptableTolerance": 2.5,
+      "initialDisturbance": -35,
+      "optimalPID": { "kp": 60, "ki": 30, "kd": 45 },
+      "expReward": 500,
+      "badgeAwarded": {
+        "id": "badge_pid_guru",
+        "name": "Bậc Thầy Cân Bằng PID",
+        "icon": "Activity",
+        "description": "Dập tắt vọt lố nhiệt độ xuất sắc bằng thuật toán điều khiển tự động vòng kín."
+      },
+      "linkedCourse": {
+        "code": "EE3288",
+        "name": "Lý thuyết điều khiển tuyến tính",
+        "credits": 3,
+        "school": "Đại học Bách khoa Hà Nội"
+      }
+    }
+  ],
+  "realityCheck": {
+    "advantages": [
+      "Nhu cầu tuyển dụng luôn cực cao: Mọi nhà máy FDI đổ vào Việt Nam (VinFast, Foxconn, Samsung, Lego) đều săn đón kỹ sư tự động hóa.",
+      "Không sợ bị AI thay thế hoàn toàn: Vì công việc đòi hỏi can thiệp phần cứng thực tế, đấu nối điện, căn chỉnh cơ cấu vật lý ngoài hiện trường.",
+      "Mức lương tăng trưởng rất nhanh theo kinh nghiệm thực chiến và khả năng lập trình các hệ thống phức tạp.",
+      "Cơ hội tu nghiệp nước ngoài (Đức, Nhật, Hàn, Singapore) rất lớn vì tiêu chuẩn thiết bị Siemens, Mitsubishi mang tính toàn cầu."
+    ],
+    "challenges": [
+      "Có thể phải làm việc theo ca kíp (ca ngày / ca đêm) khi phụ trách vận hành dây chuyền nhà máy 24/7.",
+      "Môi trường công xưởng có tiếng ồn máy móc, dầu mỡ và nhiệt độ (cần tuân thủ đồ bảo hộ nghiêm ngặt).",
+      "Áp lực tâm lý lớn khi dây chuyền dừng: Mỗi phút dừng máy tính bằng hàng triệu đến hàng trăm triệu tiền thiệt hại của công ty.",
+      "Phải liên tục tự học công nghệ mới: Các hãng PLC, Robot đổi dòng vi xử lý và phần mềm liên tục từng năm."
+    ]
+  },
+  "riasecMapping": {
+    "primary": "R",
+    "primaryName": "Realistic (Thực tế / Kỹ thuật)",
+    "secondary": "I",
+    "secondaryName": "Investigative (Nghiên cứu / Khám phá)",
+    "description": "Ngành này cực kỳ phù hợp với những bạn thích làm việc với máy móc, công cụ vật lý, tư duy logic giải quyết lỗi kỹ thuật và không thích ngồi làm giấy tờ thuần túy cả ngày."
+  },
+  "admissionReference": {
+    "schoolName": "Đại học Bách khoa Hà Nội",
+    "schoolCode": "BKA",
+    "majorName": "Kỹ thuật Điều khiển và Tự động hóa",
+    "majorCode": "EE-E1",
+    "targetBlocks": ["A00", "A01"],
+    "benchmarkHistory": [
+      { "year": 2022, "score": 27.61 },
+      { "year": 2023, "score": 27.57 },
+      { "year": 2024, "score": 27.95 }
+    ]
+  }
+}

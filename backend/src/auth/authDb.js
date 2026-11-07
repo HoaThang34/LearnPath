@@ -10,7 +10,7 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 9;
+const SCHEMA_VERSION = 10;
 
 const INTEREST_WEIGHTS = [
   {
@@ -467,6 +467,83 @@ function createCurriculumSchema(database) {
   `);
 }
 
+// v10: gamified career simulations & interactive factory game logs.
+function createCareerSimulationSchema(database) {
+  database.run(`
+    CREATE TABLE IF NOT EXISTS career_simulations (
+      id               INTEGER PRIMARY KEY AUTOINCREMENT,
+      major_code       TEXT NOT NULL,
+      major_name       TEXT NOT NULL,
+      industry_cluster TEXT NOT NULL,
+      badge_title      TEXT,
+      overview_json    TEXT NOT NULL,
+      day_in_life_json TEXT NOT NULL,
+      game_rounds_json TEXT NOT NULL,
+      reality_json     TEXT,
+      riasec_json      TEXT,
+      admission_json   TEXT,
+      status           TEXT NOT NULL DEFAULT 'published',
+      created_at       INTEGER NOT NULL,
+      updated_at       INTEGER NOT NULL,
+      UNIQUE (major_code)
+    );
+    CREATE INDEX IF NOT EXISTS idx_career_simulations_code ON career_simulations(major_code);
+    CREATE TABLE IF NOT EXISTS user_simulation_logs (
+      id                    INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id               INTEGER NOT NULL,
+      simulation_id         INTEGER NOT NULL,
+      rounds_completed_json TEXT,
+      score                 INTEGER NOT NULL DEFAULT 0,
+      downtime_saved        INTEGER NOT NULL DEFAULT 0,
+      badges_json           TEXT,
+      radar_stats_json      TEXT,
+      reflection_notes      TEXT,
+      completed_at          INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (simulation_id) REFERENCES career_simulations(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_user_simulation_logs_user ON user_simulation_logs(user_id);
+  `);
+}
+
+function seedCareerSimulationDefaults(database) {
+  try {
+    const simFile = path.join(__dirname, '../data/simulations/tu_dong_hoa.json');
+    if (!fs.existsSync(simFile)) return;
+    const simData = JSON.parse(fs.readFileSync(simFile, 'utf8'));
+
+    const existingId = execScalar(
+      database,
+      'SELECT id FROM career_simulations WHERE major_code = ?',
+      [simData.majorCode]
+    );
+    if (existingId) return;
+
+    const now = Date.now();
+    database.run(
+      `INSERT INTO career_simulations
+         (major_code, major_name, industry_cluster, badge_title, overview_json, day_in_life_json, game_rounds_json, reality_json, riasec_json, admission_json, status, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'published', ?, ?)`,
+      [
+        simData.majorCode,
+        simData.majorName,
+        simData.industryCluster,
+        simData.badgeTitle,
+        JSON.stringify(simData.overview),
+        JSON.stringify(simData.dayInLife),
+        JSON.stringify(simData.gameRounds),
+        JSON.stringify(simData.realityCheck),
+        JSON.stringify(simData.riasecMapping),
+        JSON.stringify(simData.admissionReference),
+        now,
+        now,
+      ]
+    );
+  } catch (err) {
+    console.error('[authDb] Error seeding career simulation defaults:', err.message);
+  }
+}
+
 function createSchema(database) {
   database.run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -600,6 +677,8 @@ function createSchema(database) {
   seedInterestDefaults(database);
   createAgentSchema(database);
   createCurriculumSchema(database);
+  createCareerSimulationSchema(database);
+  seedCareerSimulationDefaults(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
 }
 
@@ -631,6 +710,8 @@ function verifySchema(database) {
     'agent_usage',
     'agent_consents',
     'curriculums',
+    'career_simulations',
+    'user_simulation_logs',
   ];
   const missingTables = requiredTables.filter((table) => !tables.includes(table));
 
@@ -751,7 +832,7 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version >= 1 && version <= 8) {
+  if (version >= 1 && version <= 9) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
@@ -897,6 +978,12 @@ function migrateSchema(database, version) {
       // v8 → v9: curriculum tables (additive only).
       if (version <= 8) {
         createCurriculumSchema(database);
+      }
+
+      // v9 → v10: career simulation tables and seed data.
+      if (version <= 9) {
+        createCareerSimulationSchema(database);
+        seedCareerSimulationDefaults(database);
       }
 
       database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);

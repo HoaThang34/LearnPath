@@ -12,6 +12,7 @@ const careerRoutes = require('./src/routes/career');
 const interestRoutes = require('./src/routes/interest');
 const agentRoutes = require('./src/routes/agent');
 const curriculumRoutes = require('./src/routes/curriculum');
+const careerSimulationRoutes = require('./src/routes/careerSimulation');
 const { getDb } = require('./src/database/db');
 const { getAuthDb, queryOne } = require('./src/auth/authDb');
 const { requireAuth, requirePasswordChanged } = require('./src/auth/session');
@@ -70,6 +71,7 @@ app.use('/api/career', careerRoutes);
 app.use('/api/interest', interestRoutes);
 app.use('/api/agent', agentRoutes);
 app.use('/api/chuong-trinh-hoc', requireAuth, requirePasswordChanged, curriculumRoutes);
+app.use('/api/mo-phong-nghe-nghiep', requireAuth, requirePasswordChanged, careerSimulationRoutes);
 
 app.use('/api', (req, res) => {
   res.status(404).json({ error: 'Không tìm thấy API.' });

@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react'
+import { Link } from 'react-router-dom'
 import {
   BookOpenCheck,
   Search,
@@ -14,6 +15,7 @@ import {
   Loader2,
   Building2,
   Sparkles,
+  Gamepad2,
 } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
@@ -377,6 +379,31 @@ export default function ChuongTrinhHoc() {
                   {curriculum.description}
                 </div>
               )}
+
+              {/* Quick Simulation Link Banner */}
+              <div className="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 rounded-xl bg-gradient-to-r from-slate-900 via-indigo-950 to-cyan-950 border border-cyan-500/30 p-3.5 shadow-sm text-white">
+                <div className="flex items-center gap-2.5">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-cyan-500/20 text-cyan-400">
+                    <Gamepad2 className="h-5 w-5" />
+                  </div>
+                  <div>
+                    <span className="block text-xs font-bold text-slate-100">
+                      Bạn muốn biết học ngành này ra trường thực tế sẽ làm gì?
+                    </span>
+                    <span className="text-[11px] text-slate-300">
+                      Trực tiếp nhập vai kỹ sư giải quyết sự cố và lập trình dây chuyền tự động hóa.
+                    </span>
+                  </div>
+                </div>
+                <Link to={`/mo-phong-nghe-nghiep?major=${encodeURIComponent(curriculum.majorCode || 'EE-E1')}`}>
+                  <Button
+                    size="sm"
+                    className="bg-cyan-600 hover:bg-cyan-500 text-white font-semibold text-xs shadow-md gap-1.5 whitespace-nowrap"
+                  >
+                    <Gamepad2 className="h-3.5 w-3.5" /> Trải nghiệm mô phỏng ngành này <ChevronRight className="h-3.5 w-3.5" />
+                  </Button>
+                </Link>
+              </div>
             </div>
 
             {/* Tabs Selector */}

@@ -186,4 +186,10 @@ export const getCurriculumMajors = (school) => api.get('/chuong-trinh-hoc/majors
 export const getCurriculumById = (id) => api.get(`/chuong-trinh-hoc/${id}`);
 export const getCurriculumDetail = (school, major) => api.get('/chuong-trinh-hoc/detail', { params: { school, major } });
 
+// Career Simulations (Mô phỏng hóa ngành nghề & Game giả lập)
+export const getCareerSimulations = () => api.get('/mo-phong-nghe-nghiep');
+export const getCareerSimulationDetail = (majorCode) => api.get(`/mo-phong-nghe-nghiep/${encodeURIComponent(majorCode)}`);
+export const submitSimulationRound = (majorCode, payload) => api.post(`/mo-phong-nghe-nghiep/${encodeURIComponent(majorCode)}/submit-round`, payload);
+export const saveSimulationLog = (majorCode, payload) => api.post(`/mo-phong-nghe-nghiep/${encodeURIComponent(majorCode)}/save-log`, payload);
+
 export default api;

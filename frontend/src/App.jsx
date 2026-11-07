@@ -22,6 +22,7 @@ const InterestRunner = lazy(() => import('./pages/InterestRunner'))
 const InterestResult = lazy(() => import('./pages/InterestResult'))
 const TroLyAI = lazy(() => import('./pages/TroLyAI'))
 const ChuongTrinhHoc = lazy(() => import('./pages/ChuongTrinhHoc'))
+const MoPhongNgheNghiep = lazy(() => import('./pages/MoPhongNgheNghiep'))
 
 function PageFallback() {
   return (
@@ -95,6 +96,16 @@ function App() {
                   <ProtectedRoute>
                     <Suspense fallback={<PageFallback />}>
                       <ChuongTrinhHoc />
+                    </Suspense>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/mo-phong-nghe-nghiep"
+                element={
+                  <ProtectedRoute>
+                    <Suspense fallback={<PageFallback />}>
+                      <MoPhongNgheNghiep />
                     </Suspense>
                   </ProtectedRoute>
                 }
