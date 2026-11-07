@@ -288,7 +288,7 @@ export default function DiemChuan() {
                 Chỉ ngành HOT (≥27đ)
               </Button>
               {hasActiveFilters && (<Button variant="ghost" size="sm" onClick={clearFilters}><X className="h-4 w-4 mr-1" />Xóa bộ lọc</Button>)}
-              <div className="ml-auto text-sm text-muted-foreground">
+              <div className="w-full sm:w-auto sm:ml-auto text-xs sm:text-sm text-muted-foreground pt-1 sm:pt-0">
                 {total > 0 && `Tìm thấy ${total.toLocaleString()} kết quả ${filterHotOnly ? `(${displayResults.length} ngành HOT ≥ 27đ)` : ''}`}
               </div>
             </div>
@@ -300,8 +300,11 @@ export default function DiemChuan() {
       {selectedPhuongThuc && (
         <Card>
           <CardContent className="p-0">
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
+            <div className="sm:hidden px-3 py-1.5 bg-muted/40 text-[11px] text-muted-foreground border-b flex items-center justify-between">
+              <span>👉 Vuốt ngang bảng để xem đầy đủ cột điểm & tổ hợp</span>
+            </div>
+            <div className="overflow-x-auto -webkit-overflow-scrolling-touch">
+              <table className="w-full text-sm min-w-[600px]">
                 <thead>
                   <tr className="border-b bg-muted/50">
                     <th className="text-left p-3 font-medium w-12">#</th>

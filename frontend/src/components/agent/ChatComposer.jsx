@@ -75,7 +75,7 @@ export default function ChatComposer({
           placeholder="Hỏi trợ lý AI (Ví dụ: Ngành nào hợp nhất với tôi, tra điểm chuẩn, phân tích học lực...)"
           disabled={disabled || isStreaming}
           rows={1}
-          className="w-full resize-none px-2.5 py-1.5 text-xs sm:text-sm text-slate-800 outline-none bg-transparent placeholder:text-slate-400"
+          className="w-full resize-none px-2.5 py-1.5 text-base sm:text-sm text-slate-800 outline-none bg-transparent placeholder:text-slate-400"
         />
 
         <div className="flex items-center justify-between px-2 pt-1 border-t border-slate-100 text-[11px] text-muted-foreground">
@@ -94,7 +94,7 @@ export default function ChatComposer({
                 size="sm"
                 variant="destructive"
                 onClick={onStop}
-                className="h-7 px-2.5 text-xs gap-1 rounded-md"
+                className="h-8 px-3 text-xs gap-1 rounded-md"
               >
                 <Square className="h-3 w-3 fill-current" />
                 <span>Dừng</span>
@@ -105,10 +105,10 @@ export default function ChatComposer({
                 size="sm"
                 onClick={() => submitMessage()}
                 disabled={!text.trim() || disabled}
-                className="h-7 px-3 text-xs gap-1 rounded-md bg-teal-600 hover:bg-teal-700 text-white"
+                className="h-8 px-3.5 text-xs gap-1.5 rounded-md bg-teal-600 hover:bg-teal-700 text-white font-medium"
               >
                 <span>Gửi</span>
-                <Send className="h-3 w-3" />
+                <Send className="h-3.5 w-3.5" />
               </Button>
             )}
           </div>

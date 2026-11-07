@@ -565,7 +565,7 @@ export default function InterestRunner() {
         </Card>
       )}
 
-      <div className="flex items-center justify-between gap-2 print:hidden">
+      <div className="flex items-center justify-between gap-2 print:hidden pb-[calc(1rem+env(safe-area-inset-bottom))]">
         <Button
           variant="outline"
           onClick={() => goToStep(step === 0 ? 0 : step - 1)}

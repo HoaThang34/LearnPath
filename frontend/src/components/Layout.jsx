@@ -89,6 +89,18 @@ export default function Layout({ children }) {
     setMobileMenuOpen(false)
   }, [location.pathname])
 
+  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+    return () => {
+      document.body.style.overflow = ''
+    }
+  }, [mobileMenuOpen])
+
   const handleLogout = async () => {
     setLogoutError('')
     setLoggingOut(true)
@@ -309,7 +321,7 @@ export default function Layout({ children }) {
           />
 
           {/* Drawer Panel */}
-          <aside className="fixed inset-y-0 left-0 z-50 flex h-full w-72 max-w-[80vw] flex-col bg-white shadow-2xl">
+          <aside className="fixed inset-y-0 left-0 z-50 flex h-full w-72 max-w-[85vw] flex-col bg-white shadow-2xl pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
             <div className="flex h-16 items-center justify-between border-b px-4">
               <Link
                 to="/"
@@ -356,7 +368,7 @@ export default function Layout({ children }) {
             </div>
 
             {user && (
-              <div className="border-t bg-slate-50 p-4 space-y-2">
+              <div className="border-t bg-slate-50 p-4 space-y-2 pb-[calc(1rem+env(safe-area-inset-bottom))]">
                 <div className="flex items-center gap-3 px-2 py-1">
                   <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-sm">
                     {user.fullName ? user.fullName.charAt(0).toUpperCase() : user.username?.charAt(0)?.toUpperCase() || 'U'}
@@ -410,12 +422,12 @@ export default function Layout({ children }) {
       <div
         className={cn(
           "flex flex-col transition-all duration-300 ease-in-out",
-          isChatPage ? "h-screen overflow-hidden" : "min-h-screen",
+          isChatPage ? "h-[100dvh] overflow-hidden" : "min-h-screen",
           !hideNavMenu && (sidebarCollapsed ? "lg:pl-[72px]" : "lg:pl-64")
         )}
       >
         {/* Header */}
-        <header className="sticky top-0 z-30 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+        <header className="sticky top-0 z-30 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 pt-[env(safe-area-inset-top)]">
           <div className="flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
             <div className="flex items-center gap-3">
               {/* Mobile Menu Button */}
@@ -494,8 +506,9 @@ export default function Layout({ children }) {
                   })}
                   title="Xem và chỉnh sửa thông tin cá nhân"
                 >
-                  <User className="mr-1.5 h-4 w-4" />
-                  <span>Thông tin cá nhân</span>
+                  <User className="mr-1.5 h-4 w-4 shrink-0" />
+                  <span className="hidden sm:inline">Thông tin cá nhân</span>
+                  <span className="sm:hidden">Hồ sơ</span>
                 </Link>
               ) : (
                 <>
@@ -595,7 +608,7 @@ export default function Layout({ children }) {
             "flex-1 w-full",
             isChatPage
               ? "overflow-hidden p-0 max-w-none flex flex-col"
-              : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+              : "max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 py-5 sm:py-8"
           )}
         >
           {children}
@@ -603,7 +616,7 @@ export default function Layout({ children }) {
 
         {/* Footer */}
         {!isChatPage && (
-          <footer className="border-t bg-muted/40 mt-auto shrink-0">
+          <footer className="border-t bg-muted/40 mt-auto shrink-0 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
             <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
               <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
                 <div className="flex items-center space-x-2">

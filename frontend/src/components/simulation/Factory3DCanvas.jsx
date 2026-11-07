@@ -602,7 +602,7 @@ export default function Factory3DCanvas({ onStateChange }) {
           onTouchStart={handlePointerDown}
           onTouchMove={handlePointerMove}
           onTouchEnd={handlePointerUp}
-          className="w-full h-auto block cursor-grab active:cursor-grabbing"
+          className="w-full h-auto block cursor-grab active:cursor-grabbing touch-none"
         />
 
         {/* Floating Bottom Hint */}
@@ -613,29 +613,29 @@ export default function Factory3DCanvas({ onStateChange }) {
       </div>
 
       {/* ================= 4 NÚT THAO TÁC ĐỒ HỌA TO RÕ DỄ HIỂU ================= */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
         {/* Nút 1: Bật nguồn */}
         <button
           type="button"
           onClick={handleTogglePower}
-          className={`p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-2 ${
+          className={`p-3 sm:p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 sm:gap-2 ${
             powerOn
               ? 'border-emerald-500 bg-emerald-950/40 text-emerald-200 shadow-lg ring-1 ring-emerald-500/50'
               : 'border-slate-700 bg-slate-900 hover:border-slate-500 text-slate-300'
           }`}
         >
           <div
-            className={`flex h-11 w-11 items-center justify-center rounded-xl shadow-md ${
+            className={`flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl shadow-md ${
               powerOn ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-400'
             }`}
           >
-            <Zap className="h-6 w-6" />
+            <Zap className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
           <div>
-            <span className="block text-xs font-bold uppercase tracking-wider">
+            <span className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider">
               {powerOn ? '1. Đã Bật Nguồn' : '1. Bật Nguồn 3D'}
             </span>
-            <span className="text-[10px] text-slate-400">Khởi động băng tải</span>
+            <span className="text-[9.5px] sm:text-[10px] text-slate-400">Khởi động băng tải</span>
           </div>
         </button>
 
@@ -644,24 +644,24 @@ export default function Factory3DCanvas({ onStateChange }) {
           type="button"
           disabled={!powerOn}
           onClick={handleToggleSensor}
-          className={`p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-2 ${
+          className={`p-3 sm:p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 sm:gap-2 ${
             sensorOn
               ? 'border-cyan-500 bg-cyan-950/40 text-cyan-200 shadow-lg ring-1 ring-cyan-500/50'
               : 'border-slate-700 bg-slate-900 hover:border-slate-500 text-slate-300'
           } disabled:opacity-40 disabled:cursor-not-allowed`}
         >
           <div
-            className={`flex h-11 w-11 items-center justify-center rounded-xl shadow-md ${
+            className={`flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl shadow-md ${
               sensorOn ? 'bg-cyan-500 text-slate-950' : 'bg-slate-800 text-slate-400'
             }`}
           >
-            <Eye className="h-6 w-6" />
+            <Eye className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
           <div>
-            <span className="block text-xs font-bold uppercase tracking-wider">
+            <span className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider">
               {sensorOn ? '2. Mắt Thần Đang Quét' : '2. Bật Mắt Thần Cảm Biến'}
             </span>
-            <span className="text-[10px] text-slate-400">Tia laser phát hiện lon</span>
+            <span className="text-[9.5px] sm:text-[10px] text-slate-400">Tia laser phát hiện lon</span>
           </div>
         </button>
 
@@ -670,24 +670,24 @@ export default function Factory3DCanvas({ onStateChange }) {
           type="button"
           disabled={!powerOn}
           onClick={handleToggleRobot}
-          className={`p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-2 ${
+          className={`p-3 sm:p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 sm:gap-2 ${
             robotOn
               ? 'border-amber-500 bg-amber-950/40 text-amber-200 shadow-lg ring-1 ring-amber-500/50'
               : 'border-slate-700 bg-slate-900 hover:border-slate-500 text-slate-300'
           } disabled:opacity-40 disabled:cursor-not-allowed`}
         >
           <div
-            className={`flex h-11 w-11 items-center justify-center rounded-xl shadow-md ${
+            className={`flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl shadow-md ${
               robotOn ? 'bg-amber-500 text-slate-950' : 'bg-slate-800 text-slate-400'
             }`}
           >
-            <Bot className="h-6 w-6" />
+            <Bot className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
           <div>
-            <span className="block text-xs font-bold uppercase tracking-wider">
+            <span className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider">
               {robotOn ? '3. Robot Đang Gắp' : '3. Bật Robot Xếp Hàng'}
             </span>
-            <span className="text-[10px] text-slate-400">Tự động gắp vào thùng</span>
+            <span className="text-[9.5px] sm:text-[10px] text-slate-400">Tự động gắp vào thùng</span>
           </div>
         </button>
 
@@ -696,24 +696,24 @@ export default function Factory3DCanvas({ onStateChange }) {
           type="button"
           disabled={!powerOn}
           onClick={handleToggleDefectFilter}
-          className={`p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-2 ${
+          className={`p-3 sm:p-4 rounded-xl border text-center transition-all flex flex-col items-center justify-center gap-1.5 sm:gap-2 ${
             filterDefectOn
               ? 'border-purple-500 bg-purple-950/40 text-purple-200 shadow-lg ring-1 ring-purple-500/50'
               : 'border-slate-700 bg-slate-900 hover:border-slate-500 text-slate-300'
           } disabled:opacity-40 disabled:cursor-not-allowed`}
         >
           <div
-            className={`flex h-11 w-11 items-center justify-center rounded-xl shadow-md ${
+            className={`flex h-9 w-9 sm:h-11 sm:w-11 items-center justify-center rounded-xl shadow-md ${
               filterDefectOn ? 'bg-purple-500 text-slate-950' : 'bg-slate-800 text-slate-400'
             }`}
           >
-            <Sparkles className="h-6 w-6" />
+            <Sparkles className="h-5 w-5 sm:h-6 sm:w-6" />
           </div>
           <div>
-            <span className="block text-xs font-bold uppercase tracking-wider">
+            <span className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider">
               {filterDefectOn ? '4. Tự Lọc Sản Phẩm Lỗi' : '4. Bật Tự Bắt Lỗi'}
             </span>
-            <span className="text-[10px] text-slate-400">Piston tự gạt lon móp</span>
+            <span className="text-[9.5px] sm:text-[10px] text-slate-400">Piston tự gạt lon móp</span>
           </div>
         </button>
       </div>

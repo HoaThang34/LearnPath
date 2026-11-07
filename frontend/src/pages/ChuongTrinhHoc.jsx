@@ -196,15 +196,15 @@ export default function ChuongTrinhHoc() {
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
       {/* Page Title & Hero */}
-      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 px-6 py-8 sm:px-10 sm:py-12 text-white shadow-xl">
-        <div className="relative z-10 max-w-3xl space-y-3">
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-900 via-slate-900 to-indigo-950 p-5 sm:px-10 sm:py-10 text-white shadow-xl">
+        <div className="relative z-10 max-w-3xl space-y-2.5 sm:space-y-3">
           <div className="inline-flex items-center gap-2 rounded-full bg-indigo-500/20 px-3 py-1 text-xs font-semibold text-indigo-200 backdrop-blur-sm border border-indigo-400/30">
             <BookOpenCheck className="h-4 w-4 text-indigo-300" /> Khung chương trình đào tạo đại học
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">
+          <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
             Chương trình học các Trường & Ngành
           </h1>
-          <p className="text-sm sm:text-base text-slate-300">
+          <p className="text-xs sm:text-base text-slate-300">
             Tra cứu chi tiết lộ trình học tập, cấu trúc môn học theo từng kỳ và chuẩn đầu ra của các ngành đào tạo tại các trường đại học trên cả nước.
           </p>
         </div>
@@ -407,35 +407,35 @@ export default function ChuongTrinhHoc() {
             </div>
 
             {/* Tabs Selector */}
-            <div className="flex border-b bg-slate-50/50 px-6">
+            <div className="flex border-b bg-slate-50/50 px-3 sm:px-6 overflow-x-auto">
               <button
                 type="button"
                 onClick={() => setActiveTab('semesters')}
-                className={`flex items-center gap-2 border-b-2 py-3 px-4 text-sm font-semibold transition-colors ${
+                className={`flex items-center gap-2 border-b-2 py-3 px-3 sm:px-4 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap ${
                   activeTab === 'semesters'
                     ? 'border-indigo-600 text-indigo-600'
                     : 'border-transparent text-slate-500 hover:text-slate-800'
                 }`}
               >
-                <Layers className="h-4 w-4" /> Khung môn học theo kỳ ({curriculumStats.totalSemesters} kỳ)
+                <Layers className="h-4 w-4 shrink-0" /> Khung môn học ({curriculumStats.totalSemesters} kỳ)
               </button>
               {curriculum.content && (
                 <button
                   type="button"
                   onClick={() => setActiveTab('content')}
-                  className={`flex items-center gap-2 border-b-2 py-3 px-4 text-sm font-semibold transition-colors ${
+                  className={`flex items-center gap-2 border-b-2 py-3 px-3 sm:px-4 text-xs sm:text-sm font-semibold transition-colors whitespace-nowrap ${
                     activeTab === 'content'
                       ? 'border-indigo-600 text-indigo-600'
                       : 'border-transparent text-slate-500 hover:text-slate-800'
                   }`}
                 >
-                  <FileText className="h-4 w-4" /> Đề cương & Chi tiết đào tạo
+                  <FileText className="h-4 w-4 shrink-0" /> Đề cương & Chi tiết đào tạo
                 </button>
               )}
             </div>
 
             {/* Tab Contents */}
-            <div className="p-6">
+            <div className="p-3.5 sm:p-6">
               {activeTab === 'semesters' ? (
                 Array.isArray(curriculum.semesters) && curriculum.semesters.length > 0 ? (
                   <div className="space-y-6">

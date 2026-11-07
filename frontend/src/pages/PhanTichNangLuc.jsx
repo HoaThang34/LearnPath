@@ -1359,8 +1359,9 @@ export default function PhanTichNangLuc() {
                 : 'text-muted-foreground hover:text-foreground'
             }`}
           >
-            <Compass className="h-4 w-4" />
-            Bản đồ (xem vị trí của bạn nằm ở đâu và phù hợp với ngành học nào)
+            <Compass className="h-4 w-4 shrink-0" />
+            <span>Bản đồ ngành học</span>
+            <span className="hidden md:inline">(xem vị trí của bạn nằm ở đâu và phù hợp với ngành học nào)</span>
           </button>
         </div>
       </div>
@@ -1479,16 +1480,16 @@ export default function PhanTichNangLuc() {
       )}
 
       {/* EduMind Filter Bar */}
-      <div className="rounded-xl border border-border bg-card p-4 shadow-xs">
-        <div className="flex flex-wrap items-center gap-2.5">
+      <div className="rounded-xl border border-border bg-card p-3 sm:p-4 shadow-xs">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-2.5">
           {/* Search Input */}
-          <div className="relative min-w-[200px] flex-1 max-w-sm">
+          <div className="relative w-full sm:w-auto sm:min-w-[200px] flex-1 sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Tìm ngành hoặc trường..."
-              className="h-9 pl-8 text-xs"
+              className="h-9 pl-8 text-xs w-full"
             />
           </div>
 
@@ -1496,7 +1497,7 @@ export default function PhanTichNangLuc() {
           <select
             value={universityFilter}
             onChange={(e) => setUniversityFilter(e.target.value)}
-            className="h-9 rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 max-w-[190px]"
+            className="h-9 rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-auto sm:max-w-[190px]"
           >
             <option value="">Tất cả trường ({availableSchools.length})</option>
             {availableSchools.map((school) => (
@@ -1508,7 +1509,7 @@ export default function PhanTichNangLuc() {
           <select
             value={blockFilter}
             onChange={(e) => setBlockFilter(e.target.value)}
-            className="h-9 rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="h-9 rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 flex-1 sm:flex-initial"
           >
             <option value="">Tất cả khối</option>
             {availableBlocks.map((b) => (
@@ -1520,7 +1521,7 @@ export default function PhanTichNangLuc() {
           <select
             value={groupFilter}
             onChange={(e) => setGroupFilter(e.target.value)}
-            className="h-9 rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 max-w-[170px]"
+            className="h-9 rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus:outline-none focus:ring-2 focus:ring-primary/20 w-full sm:w-auto sm:max-w-[170px]"
           >
             <option value="">Tất cả nhóm ngành</option>
             {availableGroups.map((g) => (

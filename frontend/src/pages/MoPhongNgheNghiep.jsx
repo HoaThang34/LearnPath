@@ -30,6 +30,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { getCareerSimulations, getCareerSimulationDetail } from '@/lib/api'
 import CasualAutomationGame from '@/components/simulation/CasualAutomationGame'
+import RotateDevicePrompt from '@/components/simulation/RotateDevicePrompt'
 
 export default function MoPhongNgheNghiep() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -148,6 +149,7 @@ export default function MoPhongNgheNghiep() {
     if (loadingDetail) {
       return (
         <div className="flex flex-col items-center justify-center py-28 text-slate-400 space-y-3">
+          <RotateDevicePrompt />
           <Loader2 className="h-8 w-8 animate-spin text-cyan-500" />
           <p className="text-sm">Đang tải sàn mô phỏng nhanh 5 phút...</p>
         </div>
@@ -157,6 +159,7 @@ export default function MoPhongNgheNghiep() {
     if (error || !activeSimData) {
       return (
         <div className="max-w-md mx-auto my-12 p-6 rounded-2xl bg-red-950/40 border border-red-800 text-center space-y-3 text-red-200">
+          <RotateDevicePrompt />
           <AlertCircle className="mx-auto h-8 w-8 text-red-400" />
           <h3 className="font-bold text-base">{error || 'Không tìm thấy dữ liệu ngành này.'}</h3>
           <Button onClick={handleBackToHub} className="bg-red-700 hover:bg-red-600 text-xs">
@@ -168,6 +171,7 @@ export default function MoPhongNgheNghiep() {
 
     return (
       <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <RotateDevicePrompt />
         <CasualAutomationGame simData={activeSimData} onBackToHub={handleBackToHub} />
       </div>
     )
@@ -176,6 +180,7 @@ export default function MoPhongNgheNghiep() {
   // ==================== VIEW 2: HUB MENU BIỂU THỊ MÔ PHỎNG TỪNG NGÀNH ====================
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 space-y-8">
+      <RotateDevicePrompt />
       {/* Hero Banner */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950 px-6 py-8 sm:px-10 sm:py-10 text-white shadow-xl border border-slate-800">
         <div className="relative z-10 max-w-3xl space-y-3">

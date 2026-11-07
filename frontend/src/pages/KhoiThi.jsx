@@ -48,7 +48,7 @@ function StepIndicator({ currentStep }) {
             }`}>{s.label}</span>
           </div>
           {i < steps.length - 1 && (
-            <div className={`w-12 h-0.5 mx-1 mt-[-18px] ${
+            <div className={`w-8 sm:w-12 h-0.5 mx-0.5 sm:mx-1 mt-[-18px] ${
               currentStep > s.num ? 'bg-green-500' : 'bg-muted'
             }`} />
           )}
@@ -246,7 +246,7 @@ export default function KhoiThi() {
               <button
                 key={khoi.ma_khoi}
                 onClick={() => handleSelectKhoi(khoi)}
-                className="group p-4 rounded-xl border bg-card hover:border-primary/50 hover:shadow-md transition-all text-left"
+                className="group p-3 sm:p-4 rounded-xl border bg-card hover:border-primary/50 hover:shadow-md transition-all text-left"
               >
                 <div className="text-xl font-bold text-primary group-hover:text-primary">{khoi.ma_khoi}</div>
                 <div className="text-xs text-muted-foreground mt-2 line-clamp-2 min-h-[32px]">{khoi.mon_thi}</div>

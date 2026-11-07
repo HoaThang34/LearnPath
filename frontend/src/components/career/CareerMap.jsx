@@ -864,7 +864,7 @@ export default function CareerMap({
       {/* Main Map Canvas Area */}
       <div
         ref={containerRef}
-        className="relative h-[680px] w-full overflow-hidden rounded-xl border border-border bg-[#f8fafc] shadow-inner"
+        className="relative h-[460px] sm:h-[580px] lg:h-[680px] w-full overflow-hidden rounded-xl border border-border bg-[#f8fafc] shadow-inner"
       >
         <svg
           ref={svgRef}
@@ -874,31 +874,30 @@ export default function CareerMap({
         />
 
         {/* Legend Box at Bottom-Left */}
-        <div className="absolute bottom-3 left-3 z-10 max-w-[280px] rounded-lg border border-border/80 bg-white/95 p-3 text-[11px] text-muted-foreground shadow-md backdrop-blur-xs space-y-1.5">
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-rose-500 shadow-xs" />
+        <div className="absolute bottom-3 left-3 z-10 max-w-[240px] sm:max-w-[280px] rounded-lg border border-border/80 bg-white/95 p-2 sm:p-3 text-[10px] sm:text-[11px] text-muted-foreground shadow-md backdrop-blur-xs space-y-1">
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-rose-500 shadow-xs shrink-0" />
             <span className="font-bold text-foreground">Bạn</span>
-            <span>— vị trí năng lực hiện tại</span>
+            <span className="truncate">— vị trí năng lực</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-slate-400" />
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-slate-400 shrink-0" />
             <span className="font-medium text-foreground">Ngành</span>
-            <span>— gần Bạn = fit cao, to = điểm cao</span>
+            <span className="truncate">— gần = fit cao</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="h-0.5 w-4 bg-slate-400" />
-            <span>Nối xám — yêu cầu môn học tương tự</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="h-0.5 w-3.5 sm:w-4 bg-slate-400 shrink-0" />
+            <span className="truncate">Nối xám — môn tương tự</span>
           </div>
-          <div className="flex items-center gap-2">
-            <span className="h-0 w-4 border-t-2 border-dashed border-rose-400" />
-            <span className="text-rose-600 font-medium">Nối đỏ</span>
-            <span>— top ngành phù hợp nhất từng nhóm</span>
+          <div className="flex items-center gap-1.5 sm:gap-2">
+            <span className="h-0 w-3.5 sm:w-4 border-t-2 border-dashed border-rose-400 shrink-0" />
+            <span className="text-rose-600 font-medium truncate">Nối đỏ — top ngành fit</span>
           </div>
         </div>
 
         {/* Slide-out Detail Drawer on Major Click */}
         {selectedMajor && (
-          <div className="absolute right-0 top-0 bottom-0 z-20 w-full sm:w-[360px] border-l border-border bg-card p-5 shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200">
+          <div className="absolute right-0 top-0 bottom-0 z-20 w-full sm:w-[360px] border-l border-border bg-card p-4 sm:p-5 shadow-2xl flex flex-col justify-between overflow-y-auto animate-in slide-in-from-right duration-200 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
             <div>
               {/* Header */}
               <div className="flex items-start justify-between gap-2 border-b border-border pb-3">

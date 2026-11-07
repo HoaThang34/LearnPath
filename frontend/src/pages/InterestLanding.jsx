@@ -183,14 +183,14 @@ export default function InterestLanding() {
       </Card>
 
       <div className="flex flex-wrap gap-2">
-        <Button onClick={start} disabled={working}>
+        <Button onClick={start} disabled={working} className="w-full sm:w-auto">
           {working ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
           {hasDraft ? 'Làm tiếp bài đang dở' : hasResult ? 'Làm lại từ đầu' : 'Bắt đầu làm bài'}
           <ArrowRight className="ml-2 h-4 w-4" />
         </Button>
         {hasResult && (
-          <Link to="/kham-pha-so-thich/ket-qua">
-            <Button variant="outline">Xem kết quả gần nhất</Button>
+          <Link to="/kham-pha-so-thich/ket-qua" className="w-full sm:w-auto">
+            <Button variant="outline" className="w-full sm:w-auto">Xem kết quả gần nhất</Button>
           </Link>
         )}
         {(hasResult || hasDraft) && (

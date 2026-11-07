@@ -669,27 +669,27 @@ export default function TrangChu() {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
               <Link
                 to="/thong-tin-ca-nhan"
                 className={buttonVariants({
                   variant: 'outline',
                   size: 'sm',
-                  className: 'text-xs h-8',
+                  className: 'text-xs h-8 flex-1 sm:flex-initial justify-center',
                 })}
               >
-                <User className="mr-1.5 h-3.5 w-3.5" />
-                Cập nhật hồ sơ & điểm
+                <User className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">Hồ sơ & Điểm</span>
               </Link>
               <Link
                 to="/phan-tich-nang-luc"
                 className={buttonVariants({
                   size: 'sm',
-                  className: 'text-xs h-8',
+                  className: 'text-xs h-8 flex-1 sm:flex-initial justify-center',
                 })}
               >
-                <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-                Phân tích đầy đủ
+                <Sparkles className="mr-1.5 h-3.5 w-3.5 shrink-0" />
+                <span className="truncate">Phân tích đầy đủ</span>
               </Link>
             </div>
           </div>

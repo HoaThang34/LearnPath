@@ -994,7 +994,7 @@ export default function ThongTinCaNhan() {
 
         {/* Nút lưu */}
         <div className="flex items-center justify-end gap-3 pt-2">
-          <Button type="submit" size="lg" disabled={saving} className="px-8 shadow-sm">
+          <Button type="submit" size="lg" disabled={saving} className="w-full sm:w-auto px-8 shadow-sm">
             {saving ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -1039,7 +1039,7 @@ export default function ThongTinCaNhan() {
               variant="outline"
               size="sm"
               onClick={() => setShowPasswordModal(true)}
-              className="shrink-0 gap-1.5 text-xs font-medium"
+              className="shrink-0 gap-1.5 text-xs font-medium w-full sm:w-auto"
             >
               <KeyRound className="h-3.5 w-3.5 text-primary" />
               Đổi mật khẩu
@@ -1059,7 +1059,7 @@ export default function ThongTinCaNhan() {
             if (e.target === e.currentTarget) handleClosePasswordModal()
           }}
         >
-          <div className="relative w-full max-w-md rounded-xl border bg-white p-6 shadow-2xl animate-in zoom-in-95 duration-150">
+          <div className="relative w-full max-w-md max-h-[90dvh] overflow-y-auto rounded-xl border bg-white p-5 sm:p-6 shadow-2xl animate-in zoom-in-95 duration-150">
             <div className="mb-4 flex items-start justify-between">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary">

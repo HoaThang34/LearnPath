@@ -29,8 +29,8 @@ export default function CasualAutomationGame({ simData, onBackToHub }) {
     <div className="space-y-6 max-w-5xl mx-auto animate-in fade-in duration-300 relative">
       {/* ================= POPUP MODAL GIỚI THIỆU & CÁCH CHƠI Ở GIỮA MÀN HÌNH ================= */}
       {showIntroModal && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 animate-in fade-in duration-200">
-          <div className="relative w-full max-w-lg rounded-2xl bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-2 border-cyan-500/50 p-6 sm:p-7 shadow-2xl text-white space-y-5 animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 animate-in fade-in duration-200">
+          <div className="relative w-full max-w-lg max-h-[88dvh] overflow-y-auto rounded-2xl bg-gradient-to-b from-slate-900 via-slate-900 to-slate-950 border-2 border-cyan-500/50 p-5 sm:p-7 shadow-2xl text-white space-y-4 sm:space-y-5 animate-in zoom-in-95 duration-200">
             {/* Close 'X' button */}
             <button
               onClick={() => setShowIntroModal(false)}

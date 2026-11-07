@@ -1305,7 +1305,7 @@ export default function ThuHang() {
                       </div>
 
                       {/* View Mode Toggle: Interactive Chart or Official Image */}
-                      <div className="flex items-center justify-between border-b border-border pb-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2">
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                             Dạng hiển thị phổ điểm:
@@ -1813,7 +1813,7 @@ export default function ThuHang() {
                       </div>
 
                       {/* View Mode Toggle: Interactive Chart or Official Image */}
-                      <div className="flex items-center justify-between border-b border-border pb-2">
+                      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border pb-2">
                         <div className="flex items-center gap-2">
                           <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                             Dạng hiển thị phổ điểm:

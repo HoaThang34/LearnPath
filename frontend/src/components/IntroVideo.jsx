@@ -97,19 +97,19 @@ const IntroVideo = ({ onComplete }) => {
       {isMuted && (
         <div
           onClick={enableAudio}
-          className="absolute top-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 bg-black/60 hover:bg-black/80 text-white text-sm font-medium rounded-full backdrop-blur-md border border-white/20 shadow-lg animate-pulse transition-all select-none"
+          className="absolute top-[max(1.5rem,calc(env(safe-area-inset-top)+0.75rem))] left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 px-4 py-2 bg-black/60 hover:bg-black/80 text-white text-xs sm:text-sm font-medium rounded-full backdrop-blur-md border border-white/20 shadow-lg animate-pulse transition-all select-none whitespace-nowrap"
         >
-          <Volume2 className="h-4 w-4 text-emerald-400" />
+          <Volume2 className="h-4 w-4 text-emerald-400 shrink-0" />
           <span>Nhấp vào màn hình để bật âm thanh</span>
         </div>
       )}
 
-      <div className="absolute bottom-10 right-10 z-50 flex gap-4">
+      <div className="absolute bottom-[max(1.5rem,calc(env(safe-area-inset-bottom)+1rem))] right-4 sm:right-10 z-50 flex gap-2.5 sm:gap-4">
         <button
           type="button"
           onClick={toggleMute}
           title={isMuted ? 'Bật âm thanh' : 'Tắt âm thanh'}
-          className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all flex items-center justify-center border border-white/20"
+          className="px-3.5 sm:px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full backdrop-blur-md transition-all flex items-center justify-center border border-white/20"
         >
           {isMuted ? (
             <VolumeX className="h-5 w-5 text-red-300" />
@@ -123,7 +123,7 @@ const IntroVideo = ({ onComplete }) => {
             e.stopPropagation();
             onComplete();
           }}
-          className="px-6 py-2 bg-white/20 hover:bg-white/40 text-white font-medium rounded-full backdrop-blur-md transition-all border border-white/30"
+          className="px-5 sm:px-6 py-2 bg-white/20 hover:bg-white/40 text-white font-medium text-sm rounded-full backdrop-blur-md transition-all border border-white/30"
         >
           Bỏ qua
         </button>

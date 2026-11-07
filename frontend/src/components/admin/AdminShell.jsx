@@ -111,7 +111,7 @@ export default function AdminShell({ admin, onLogout }) {
 
   return (
     <div className="min-h-screen bg-slate-50">
-      <header className="sticky top-0 z-40 border-b bg-slate-950 text-slate-100">
+      <header className="sticky top-0 z-40 border-b bg-slate-950 text-slate-100 pt-[env(safe-area-inset-top)]">
         <div className="mx-auto flex h-16 max-w-[1600px] items-center justify-between gap-4 px-4">
           <div className="flex min-w-0 items-center gap-3">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white/10">
@@ -169,7 +169,7 @@ export default function AdminShell({ admin, onLogout }) {
 
         <div className="min-w-0 flex-1">
           <nav
-            className="flex gap-1 overflow-x-auto border-b bg-white px-2 py-2 lg:hidden"
+            className="flex gap-1 overflow-x-auto border-b bg-white px-2 py-2 lg:hidden -webkit-overflow-scrolling-touch"
             aria-label="Điều hướng quản trị"
           >
             {NAV_ITEMS.map((item) => {
@@ -195,7 +195,7 @@ export default function AdminShell({ admin, onLogout }) {
             })}
           </nav>
 
-          <main className="p-4 sm:p-6">
+          <main className="p-3.5 sm:p-6 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
             {activeItem.id === 'overview' && (
               <AdminOverview admin={admin} onNavigateToData={handleNavigateToData} />
             )}

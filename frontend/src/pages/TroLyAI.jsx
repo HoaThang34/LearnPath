@@ -346,7 +346,7 @@ export default function TroLyAI() {
       {/* Mobile Drawer */}
       {mobileSidebarOpen && (
         <div className="fixed inset-0 z-50 md:hidden bg-black/50 backdrop-blur-sm flex">
-          <div className="w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col">
+          <div className="w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col pt-[env(safe-area-inset-top)] pb-[env(safe-area-inset-bottom)]">
             <div className="flex items-center justify-between p-3.5 border-b border-slate-200">
               <span className="text-xs font-semibold text-slate-800">Lịch sử trò chuyện</span>
               <button
@@ -532,7 +532,7 @@ export default function TroLyAI() {
         </div>
 
         {/* Bottom Input Area */}
-        <div className="border-t border-slate-200 bg-white/90 backdrop-blur-sm px-3 sm:px-6 py-3 shrink-0">
+        <div className="border-t border-slate-200 bg-white/95 backdrop-blur-sm px-3 sm:px-6 pt-2.5 pb-[calc(0.75rem+env(safe-area-inset-bottom))] shrink-0">
           <div className="max-w-4xl mx-auto">
             <ChatComposer
               onSend={handleSendMessage}

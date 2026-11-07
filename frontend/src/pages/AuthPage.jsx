@@ -192,6 +192,7 @@ export default function AuthPage({ mode = 'login' }) {
                   type="text"
                   autoComplete="username"
                   autoCapitalize="none"
+                  autoCorrect="off"
                   spellCheck={false}
                   autoFocus
                   required

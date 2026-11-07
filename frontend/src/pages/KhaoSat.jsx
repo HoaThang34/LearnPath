@@ -669,12 +669,13 @@ export default function KhaoSat() {
         )}
 
         {/* Nút nộp */}
-        <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4">
+        <div className="flex flex-col sm:flex-row items-center justify-end gap-3 pt-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
           <Button
             type="button"
             variant="outline"
             onClick={() => navigate('/')}
             disabled={submitting}
+            className="w-full sm:w-auto"
           >
             Tạm bỏ qua & về trang chủ
           </Button>
