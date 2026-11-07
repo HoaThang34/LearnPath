@@ -444,6 +444,7 @@ function createSchema(database) {
       truong           TEXT,
       diem_lop         TEXT,
       chung_chi        TEXT,
+      chung_chi_mong_muon TEXT,
       truong_muc_tieu  TEXT,
       nganh_muc_tieu   TEXT,
       to_hop_mong_muon TEXT,
@@ -710,6 +711,7 @@ function migrateSchema(database, version) {
             truong           TEXT,
             diem_lop         TEXT,
             chung_chi        TEXT,
+            chung_chi_mong_muon TEXT,
             truong_muc_tieu  TEXT,
             nganh_muc_tieu   TEXT,
             to_hop_mong_muon TEXT,
@@ -871,9 +873,9 @@ async function initialize() {
       migrateSchema(database, version);
     }
     const tables = getTableNames(database);
+    let changed = false;
     if (tables.includes('career_rubrics')) {
       const rubricsCols = getColumnNames(database, 'career_rubrics');
-      let changed = false;
       if (!rubricsCols.includes('major_group')) {
         ensureColumn(database, 'career_rubrics', 'major_group', 'TEXT');
         changed = true;
@@ -886,9 +888,16 @@ async function initialize() {
         ensureColumn(database, 'career_rubrics', 'is_valid', 'INTEGER DEFAULT 1');
         changed = true;
       }
-      if (changed) {
-        writeDatabaseToDisk(database);
+    }
+    if (tables.includes('user_profiles')) {
+      const profileCols = getColumnNames(database, 'user_profiles');
+      if (!profileCols.includes('chung_chi_mong_muon')) {
+        ensureColumn(database, 'user_profiles', 'chung_chi_mong_muon', 'TEXT');
+        changed = true;
       }
+    }
+    if (changed) {
+      writeDatabaseToDisk(database);
     }
     verifySchema(database);
     if (version < SCHEMA_VERSION) {

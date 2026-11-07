@@ -121,8 +121,8 @@ async function addCareerSelection(userId, input) {
         runSql('UPDATE user_profiles SET truong_muc_tieu = ?, nganh_muc_tieu = ?, updated_at = ? WHERE user_id = ?',
           [value.schoolName, value.majorName, now, userId]);
       } else {
-        runSql(`INSERT INTO user_profiles (user_id, ho_va_ten, lop, truong, diem_lop, chung_chi, truong_muc_tieu, nganh_muc_tieu, to_hop_mong_muon, khac, updated_at)
-          VALUES (?, '', '', '', '[]', '[]', ?, ?, '[]', '', ?)`,
+        runSql(`INSERT INTO user_profiles (user_id, ho_va_ten, lop, truong, diem_lop, chung_chi, chung_chi_mong_muon, truong_muc_tieu, nganh_muc_tieu, to_hop_mong_muon, khac, updated_at)
+          VALUES (?, '', '', '', '[]', '[]', '[]', ?, ?, '[]', '', ?)`,
           [userId, value.schoolName, value.majorName, now]);
       }
     }

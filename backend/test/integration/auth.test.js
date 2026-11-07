@@ -343,6 +343,7 @@ test('auth API integration', async (t) => {
     assert.equal(getInitial.data.data.profile.ho_va_ten, '');
     assert.deepEqual(getInitial.data.data.profile.diem_lop, []);
     assert.deepEqual(getInitial.data.data.profile.chung_chi, []);
+    assert.deepEqual(getInitial.data.data.profile.chung_chi_mong_muon, []);
 
     const payload = {
       ho_va_ten: 'Nguyễn Văn A',
@@ -356,6 +357,10 @@ test('auth API integration', async (t) => {
       chung_chi: [
         { loai: 'IELTS', diem: '7.5' },
         { loai: 'TSA', diem: '82/100' },
+      ],
+      chung_chi_mong_muon: [
+        { loai: 'IELTS', diem: '8.0' },
+        { loai: 'HSA (ĐGNL ĐHQGHN)', diem: '110/150' },
       ],
       truong_muc_tieu: 'Đại học Bách khoa Hà Nội',
       nganh_muc_tieu: 'Khoa học máy tính',
@@ -381,6 +386,11 @@ test('auth API integration', async (t) => {
     assert.equal(saved.chung_chi.length, 2);
     assert.equal(saved.chung_chi[0].loai, 'IELTS');
     assert.equal(saved.chung_chi[0].diem, '7.5');
+    assert.equal(saved.chung_chi_mong_muon.length, 2);
+    assert.equal(saved.chung_chi_mong_muon[0].loai, 'IELTS');
+    assert.equal(saved.chung_chi_mong_muon[0].diem, '8.0');
+    assert.equal(saved.chung_chi_mong_muon[1].loai, 'HSA (ĐGNL ĐHQGHN)');
+    assert.equal(saved.chung_chi_mong_muon[1].diem, '110/150');
     assert.equal(saved.truong_muc_tieu, 'Đại học Bách khoa Hà Nội');
     assert.equal(saved.nganh_muc_tieu, 'Khoa học máy tính');
     assert.deepEqual(saved.to_hop_mong_muon, ['Toán', 'Vật lý', 'Hóa học']);
@@ -392,6 +402,9 @@ test('auth API integration', async (t) => {
     assert.equal(readBack.response.status, 200);
     assert.equal(readBack.data.data.profile.ho_va_ten, 'Nguyễn Văn A');
     assert.equal(readBack.data.data.profile.diem_lop.length, 3);
+    assert.equal(readBack.data.data.profile.chung_chi_mong_muon.length, 2);
+    assert.equal(readBack.data.data.profile.chung_chi_mong_muon[0].loai, 'IELTS');
+    assert.equal(readBack.data.data.profile.chung_chi_mong_muon[0].diem, '8.0');
 
     // Rejects invalid score
     const invalidScore = await request('/api/auth/profile', {

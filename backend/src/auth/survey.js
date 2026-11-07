@@ -235,6 +235,7 @@ async function submitSurvey(userId, payload) {
   // 2. Điểm các môn trên lớp & chứng chỉ (không bắt buộc điền)
   const diemLop = Array.isArray(payload.diem_lop) ? payload.diem_lop : [];
   const chungChi = Array.isArray(payload.chung_chi) ? payload.chung_chi : [];
+  const chungChiMongMuon = Array.isArray(payload.chung_chi_mong_muon) ? payload.chung_chi_mong_muon : [];
 
   // 3. Xử lý câu hỏi thêm từ quản trị viên
   const activeQuestions = getActiveSurveyQuestions();
@@ -294,6 +295,7 @@ async function submitSurvey(userId, payload) {
     truong,
     diem_lop: diemLop,
     chung_chi: chungChi,
+    chung_chi_mong_muon: chungChiMongMuon,
     truong_muc_tieu: truongMucTieu,
     nganh_muc_tieu: nganhMucTieu,
     to_hop_mong_muon: toHopMongMuon,

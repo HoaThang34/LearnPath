@@ -52,6 +52,17 @@ function validateProfileInput(input) {
     chungChi.push({ loai, diem });
   }
 
+  // 2b. Chứng chỉ mong muốn có trong tương lai
+  const rawChungChiMongMuon = Array.isArray(input.chung_chi_mong_muon) ? input.chung_chi_mong_muon : [];
+  const chungChiMongMuon = [];
+  for (const item of rawChungChiMongMuon.slice(0, 20)) {
+    if (!item || typeof item !== 'object') continue;
+    const loai = typeof item.loai === 'string' ? item.loai.trim().slice(0, 100) : '';
+    const diem = typeof item.diem === 'string' || typeof item.diem === 'number' ? String(item.diem).trim().slice(0, 100) : '';
+    if (!loai && !diem) continue;
+    chungChiMongMuon.push({ loai, diem });
+  }
+
   // 3. Tổ hợp mong muốn (3 môn thi THPTQG)
   const rawToHop = Array.isArray(input.to_hop_mong_muon) ? input.to_hop_mong_muon : [];
   const toHopMongMuon = rawToHop
@@ -67,6 +78,7 @@ function validateProfileInput(input) {
       truong,
       diem_lop: diemLop,
       chung_chi: chungChi,
+      chung_chi_mong_muon: chungChiMongMuon,
       truong_muc_tieu: truongMucTieu,
       nganh_muc_tieu: nganhMucTieu,
       to_hop_mong_muon: toHopMongMuon,
@@ -77,7 +89,7 @@ function validateProfileInput(input) {
 
 function getUserProfile(userId) {
   const row = queryOne(
-    `SELECT ho_va_ten, lop, truong, diem_lop, chung_chi,
+    `SELECT ho_va_ten, lop, truong, diem_lop, chung_chi, chung_chi_mong_muon,
             truong_muc_tieu, nganh_muc_tieu, to_hop_mong_muon, khac, updated_at
        FROM user_profiles
       WHERE user_id = ?`,
@@ -91,6 +103,7 @@ function getUserProfile(userId) {
       truong: '',
       diem_lop: [],
       chung_chi: [],
+      chung_chi_mong_muon: [],
       truong_muc_tieu: '',
       nganh_muc_tieu: '',
       to_hop_mong_muon: [],
@@ -109,6 +122,13 @@ function getUserProfile(userId) {
     chungChi = row.chung_chi ? JSON.parse(row.chung_chi) : [];
   } catch (e) {
     chungChi = [];
+  }
+
+  let chungChiMongMuon = [];
+  try {
+    chungChiMongMuon = row.chung_chi_mong_muon ? JSON.parse(row.chung_chi_mong_muon) : [];
+  } catch (e) {
+    chungChiMongMuon = [];
   }
 
   let toHop = [];
@@ -137,6 +157,7 @@ function getUserProfile(userId) {
     truong: row.truong || '',
     diem_lop: Array.isArray(diemLop) ? diemLop : [],
     chung_chi: Array.isArray(chungChi) ? chungChi : [],
+    chung_chi_mong_muon: Array.isArray(chungChiMongMuon) ? chungChiMongMuon : [],
     truong_muc_tieu: truongMucTieu,
     nganh_muc_tieu: nganhMucTieu,
     to_hop_mong_muon: Array.isArray(toHop) ? toHop : [],
@@ -159,15 +180,16 @@ async function saveUserProfile(userId, input) {
   await runAuthMutation(() => {
     runSql(
       `INSERT INTO user_profiles (
-         user_id, ho_va_ten, lop, truong, diem_lop, chung_chi,
+         user_id, ho_va_ten, lop, truong, diem_lop, chung_chi, chung_chi_mong_muon,
          truong_muc_tieu, nganh_muc_tieu, to_hop_mong_muon, khac, updated_at
-       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+       ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
        ON CONFLICT(user_id) DO UPDATE SET
          ho_va_ten = excluded.ho_va_ten,
          lop = excluded.lop,
          truong = excluded.truong,
          diem_lop = excluded.diem_lop,
          chung_chi = excluded.chung_chi,
+         chung_chi_mong_muon = excluded.chung_chi_mong_muon,
          truong_muc_tieu = excluded.truong_muc_tieu,
          nganh_muc_tieu = excluded.nganh_muc_tieu,
          to_hop_mong_muon = excluded.to_hop_mong_muon,
@@ -175,11 +197,12 @@ async function saveUserProfile(userId, input) {
          updated_at = excluded.updated_at`,
       [
         userId,
-         v.ho_va_ten,
+        v.ho_va_ten,
         v.lop,
         v.truong,
-         '[]',
+        '[]',
         JSON.stringify(v.chung_chi),
+        JSON.stringify(v.chung_chi_mong_muon),
         v.truong_muc_tieu,
         v.nganh_muc_tieu,
         JSON.stringify(v.to_hop_mong_muon),

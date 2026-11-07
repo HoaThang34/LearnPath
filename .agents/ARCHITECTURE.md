@@ -593,7 +593,8 @@ Indexes: `admin_audit(created_at)`, `admin_audit(admin_id)`. Retention is 180 da
 | `lop` | TEXT | Lớp |
 | `truong` | TEXT | Trường THPT |
 | `diem_lop` | TEXT | Legacy JSON field; current structured scores are stored in `academic_scores` as môn/kỳ/lớp/TB môn/điểm |
-| `chung_chi` | TEXT | JSON string của mảng chứng chỉ: `[{loai, diem}]` |
+| `chung_chi` | TEXT | JSON string của mảng chứng chỉ đã có: `[{loai, diem}]` |
+| `chung_chi_mong_muon` | TEXT | JSON string của mảng chứng chỉ mong muốn có trong tương lai: `[{loai, diem}]` |
 | `truong_muc_tieu` | TEXT | Trường đại học mục tiêu |
 | `nganh_muc_tieu` | TEXT | Ngành mục tiêu |
 | `to_hop_mong_muon` | TEXT | JSON string của mảng 3 môn thi: `["Toán", "Vật lý", "Hóa học"]` |

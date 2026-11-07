@@ -112,6 +112,7 @@ export default function ThongTinCaNhan() {
     truong: '',
     diem_lop: [],
     chung_chi: [],
+    chung_chi_mong_muon: [],
     truong_muc_tieu: '',
     nganh_muc_tieu: '',
     to_hop_mong_muon: [],
@@ -142,6 +143,7 @@ export default function ThongTinCaNhan() {
           truong: p.truong || '',
           diem_lop: scores,
           chung_chi: Array.isArray(p.chung_chi) ? p.chung_chi : [],
+          chung_chi_mong_muon: Array.isArray(p.chung_chi_mong_muon) ? p.chung_chi_mong_muon : [],
           truong_muc_tieu: p.truong_muc_tieu || '',
           nganh_muc_tieu: p.nganh_muc_tieu || '',
           to_hop_mong_muon: Array.isArray(p.to_hop_mong_muon) ? p.to_hop_mong_muon : [],
@@ -167,7 +169,7 @@ export default function ThongTinCaNhan() {
     }
   }, [])
 
-  // Chứng chỉ
+  // Chứng chỉ đã có
   const handleAddCertificate = () => {
     setForm((prev) => ({
       ...prev,
@@ -187,6 +189,29 @@ export default function ThongTinCaNhan() {
     setForm((prev) => ({
       ...prev,
       chung_chi: prev.chung_chi.filter((_, i) => i !== index),
+    }))
+  }
+
+  // Chứng chỉ mong muốn có trong thời gian tới
+  const handleAddDesiredCertificate = () => {
+    setForm((prev) => ({
+      ...prev,
+      chung_chi_mong_muon: [...(prev.chung_chi_mong_muon || []), { loai: '', diem: '' }],
+    }))
+  }
+
+  const handleUpdateDesiredCertificate = (index, field, value) => {
+    setForm((prev) => {
+      const updated = [...(prev.chung_chi_mong_muon || [])]
+      updated[index] = { ...updated[index], [field]: value }
+      return { ...prev, chung_chi_mong_muon: updated }
+    })
+  }
+
+  const handleRemoveDesiredCertificate = (index) => {
+    setForm((prev) => ({
+      ...prev,
+      chung_chi_mong_muon: (prev.chung_chi_mong_muon || []).filter((_, i) => i !== index),
     }))
   }
 
@@ -271,6 +296,7 @@ export default function ThongTinCaNhan() {
         truong: form.truong,
         diem_lop: form.diem_lop.filter((item) => item.mon && item.diem !== ''),
         chung_chi: form.chung_chi.filter((item) => item.loai || item.diem),
+        chung_chi_mong_muon: (form.chung_chi_mong_muon || []).filter((item) => item.loai || item.diem),
         truong_muc_tieu: form.truong_muc_tieu,
         nganh_muc_tieu: form.nganh_muc_tieu,
         to_hop_mong_muon: form.to_hop_mong_muon,
@@ -278,16 +304,17 @@ export default function ThongTinCaNhan() {
       }
 
       const response = await updateUserProfile(payload)
-        const p = response.data.data.profile
-        const scores = Array.isArray(p.diem_lop) ? p.diem_lop : []
-        setAcademicClassLevel(inferAcademicClassLevel(p.lop, scores))
-        setAcademicTerm(inferAcademicTerm(scores))
-        setForm({
+      const p = response.data.data.profile
+      const scores = Array.isArray(p.diem_lop) ? p.diem_lop : []
+      setAcademicClassLevel(inferAcademicClassLevel(p.lop, scores))
+      setAcademicTerm(inferAcademicTerm(scores))
+      setForm({
         ho_va_ten: p.ho_va_ten || '',
         lop: p.lop || '',
         truong: p.truong || '',
-          diem_lop: scores,
+        diem_lop: scores,
         chung_chi: Array.isArray(p.chung_chi) ? p.chung_chi : [],
+        chung_chi_mong_muon: Array.isArray(p.chung_chi_mong_muon) ? p.chung_chi_mong_muon : [],
         truong_muc_tieu: p.truong_muc_tieu || '',
         nganh_muc_tieu: p.nganh_muc_tieu || '',
         to_hop_mong_muon: Array.isArray(p.to_hop_mong_muon) ? p.to_hop_mong_muon : [],
@@ -739,6 +766,79 @@ export default function ThongTinCaNhan() {
                     <button
                       type="button"
                       onClick={() => handleRemoveCertificate(index)}
+                      className="rounded-md p-2 text-muted-foreground transition hover:bg-red-50 hover:text-destructive"
+                      title="Xóa chứng chỉ này"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Phần: Chứng chỉ mong muốn có trong thời gian tới */}
+        <Card>
+          <CardHeader className="pb-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <CardTitle className="flex items-center gap-2 text-lg">
+                  <Target className="h-5 w-5 text-primary" />
+                  Chứng chỉ bạn mong muốn có trong thời gian tới (TSA, HSA, V-ACT, IELTS,...)
+                </CardTitle>
+                <CardDescription>
+                  Ghi nhận mục tiêu các chứng chỉ đánh giá năng lực, chứng chỉ ngoại ngữ và mức điểm kỳ vọng trong tương lai.
+                </CardDescription>
+              </div>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleAddDesiredCertificate}
+                className="h-8 text-xs"
+              >
+                <Plus className="mr-1 h-3.5 w-3.5" />
+                Thêm chứng chỉ
+              </Button>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            {(form.chung_chi_mong_muon || []).length === 0 ? (
+              <div className="rounded-lg border border-dashed py-8 text-center text-sm text-muted-foreground">
+                <Target className="mx-auto mb-2 h-8 w-8 text-muted-foreground/40" />
+                <p>Chưa có chứng chỉ mong muốn nào được lưu.</p>
+                <p className="text-xs text-muted-foreground">
+                  Nhấn &ldquo;Thêm chứng chỉ&rdquo; để lưu mục tiêu thi TSA, HSA, IELTS, v.v. trong thời gian tới.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {(form.chung_chi_mong_muon || []).map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center gap-3 rounded-md border bg-slate-50/60 p-2.5 transition hover:bg-slate-50"
+                  >
+                    <div className="flex-1">
+                      <Input
+                        list="suggested-certificates"
+                        placeholder="Tên chứng chỉ (VD: IELTS, HSA, TSA, SAT...)"
+                        value={item.loai}
+                        onChange={(e) => handleUpdateDesiredCertificate(index, 'loai', e.target.value)}
+                        className="bg-white text-sm"
+                      />
+                    </div>
+                    <div className="w-36 sm:w-44">
+                      <Input
+                        placeholder="Mức điểm mục tiêu (VD: 7.5, 95/150)"
+                        value={item.diem}
+                        onChange={(e) => handleUpdateDesiredCertificate(index, 'diem', e.target.value)}
+                        className="bg-white text-sm"
+                      />
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveDesiredCertificate(index)}
                       className="rounded-md p-2 text-muted-foreground transition hover:bg-red-50 hover:text-destructive"
                       title="Xóa chứng chỉ này"
                     >
