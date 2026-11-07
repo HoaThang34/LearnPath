@@ -74,12 +74,12 @@ export default function MessageBubble({ message, isStreaming = false, statusText
               </span>
             )}
           </div>
-          <div className="rounded-2xl rounded-tr-xs bg-linear-to-r from-teal-600 to-emerald-600 px-4 py-2.5 text-white text-xs sm:text-sm leading-relaxed shadow-xs">
-            <p className="whitespace-pre-wrap">{message.content}</p>
+          <div className="rounded-2xl rounded-tr-sm bg-slate-100 border border-slate-200/90 px-4 py-2.5 text-slate-900 text-xs sm:text-sm leading-relaxed shadow-sm">
+            <p className="whitespace-pre-wrap text-slate-900 font-medium">{message.content}</p>
           </div>
         </div>
         <div className="shrink-0 pt-1">
-          <div className="h-8 w-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center shadow-2xs font-semibold text-xs">
+          <div className="h-8 w-8 rounded-full bg-slate-200 text-slate-700 flex items-center justify-center shadow-sm font-semibold text-xs">
             <User className="h-4 w-4" />
           </div>
         </div>
@@ -98,10 +98,10 @@ export default function MessageBubble({ message, isStreaming = false, statusText
   const showBouncingDots = isStreaming && !parsed?.thinking && !parsed?.answer && !parsed?.analysis
 
   return (
-    <div className="flex gap-3 py-4 px-2 sm:px-4 rounded-xl transition-colors bg-white/70 border border-slate-100 shadow-2xs">
+    <div className="flex gap-3 py-4 px-2 sm:px-4 rounded-xl transition-colors bg-white border border-slate-100 shadow-sm">
       {/* Avatar */}
       <div className="shrink-0 pt-0.5">
-        <div className="h-8 w-8 rounded-xl bg-linear-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center shadow-xs">
+        <div className="h-8 w-8 rounded-xl bg-teal-600 bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center shadow-sm">
           <Bot className="h-4.5 w-4.5" />
         </div>
       </div>
@@ -153,7 +153,7 @@ export default function MessageBubble({ message, isStreaming = false, statusText
 
         {/* 1. KHỐI THINKING / SUY NGHĨ & THU THẬP DỮ LIỆU */}
         {hasThinking && (
-          <div className="rounded-xl border border-slate-200/90 bg-slate-50/80 overflow-hidden shadow-2xs transition-all">
+          <div className="rounded-xl border border-slate-200/90 bg-slate-50/80 overflow-hidden shadow-sm transition-all">
             <button
               type="button"
               onClick={() => setThinkingExpanded(!thinkingExpanded)}
@@ -236,7 +236,7 @@ export default function MessageBubble({ message, isStreaming = false, statusText
 
         {/* 2. KHỐI PHÂN TÍCH (ANALYSIS) */}
         {parsed?.analysis && (
-          <div className="rounded-xl border border-indigo-200/90 bg-indigo-50/20 overflow-hidden shadow-2xs">
+          <div className="rounded-xl border border-indigo-200/90 bg-indigo-50/20 overflow-hidden shadow-sm">
             <div className="flex items-center gap-2 px-3.5 py-2 bg-indigo-50/60 border-b border-indigo-100">
               <div className="h-5 w-5 rounded-md bg-indigo-600 text-white flex items-center justify-center shrink-0">
                 <BarChart3 className="h-3 w-3" />
@@ -275,7 +275,7 @@ export default function MessageBubble({ message, isStreaming = false, statusText
             className={cn(
               'rounded-xl text-xs sm:text-sm text-slate-800 leading-relaxed',
               parsed.hasStructuredSections
-                ? 'border border-teal-200/90 bg-teal-50/15 p-3.5 shadow-2xs space-y-2'
+                ? 'border border-teal-200/90 bg-teal-50/15 p-3.5 shadow-sm space-y-2'
                 : 'space-y-2'
             )}
           >

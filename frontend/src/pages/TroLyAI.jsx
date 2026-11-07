@@ -345,7 +345,7 @@ export default function TroLyAI() {
 
       {/* Mobile Drawer */}
       {mobileSidebarOpen && (
-        <div className="fixed inset-0 z-50 md:hidden bg-black/50 backdrop-blur-xs flex">
+        <div className="fixed inset-0 z-50 md:hidden bg-black/50 backdrop-blur-sm flex">
           <div className="w-72 max-w-[85vw] h-full bg-white shadow-2xl flex flex-col">
             <div className="flex items-center justify-between p-3.5 border-b border-slate-200">
               <span className="text-xs font-semibold text-slate-800">Lịch sử trò chuyện</span>
@@ -415,7 +415,7 @@ export default function TroLyAI() {
 
             {/* Title / AI indicator */}
             <div className="flex items-center gap-2 min-w-0 ml-1">
-              <div className="h-7 w-7 rounded-lg bg-linear-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center shrink-0 shadow-2xs">
+              <div className="h-7 w-7 rounded-lg bg-teal-600 bg-gradient-to-tr from-teal-600 to-emerald-500 text-white flex items-center justify-center shrink-0 shadow-sm">
                 <Bot className="h-4 w-4" />
               </div>
               <div className="min-w-0 hidden xs:block">
@@ -435,7 +435,7 @@ export default function TroLyAI() {
               </span>
             )}
             {status?.usage && (
-              <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full shadow-2xs">
+              <div className="flex items-center gap-1.5 text-[11px] text-muted-foreground bg-slate-50 border border-slate-200 px-2.5 py-1 rounded-full shadow-sm">
                 <Info className="h-3 w-3 text-teal-600" />
                 <span>
                   Hôm nay: <strong className="text-slate-800">{status.usage.today}</strong>/{status.usage.dailyLimit}
@@ -458,7 +458,7 @@ export default function TroLyAI() {
               </div>
             ) : messages.length === 0 ? (
               <div className="py-8 sm:py-14 text-center space-y-6">
-                <div className="w-16 h-16 mx-auto rounded-3xl bg-linear-to-tr from-teal-500/10 via-emerald-500/10 to-teal-500/20 border border-teal-200/80 text-teal-600 flex items-center justify-center shadow-xs">
+                <div className="w-16 h-16 mx-auto rounded-3xl bg-teal-50 border border-teal-200/80 text-teal-600 flex items-center justify-center shadow-sm">
                   <Sparkles className="h-8 w-8 text-teal-600" />
                 </div>
                 <div className="space-y-2 max-w-lg mx-auto">
@@ -532,7 +532,7 @@ export default function TroLyAI() {
         </div>
 
         {/* Bottom Input Area */}
-        <div className="border-t border-slate-200 bg-white/90 backdrop-blur-xs px-3 sm:px-6 py-3 shrink-0">
+        <div className="border-t border-slate-200 bg-white/90 backdrop-blur-sm px-3 sm:px-6 py-3 shrink-0">
           <div className="max-w-4xl mx-auto">
             <ChatComposer
               onSend={handleSendMessage}
