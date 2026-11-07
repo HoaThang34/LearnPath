@@ -54,6 +54,7 @@ export default function Layout({ children }) {
   const navigate = useNavigate()
   const { user, loading, logout } = useAuth()
   const isAuthPage = location.pathname === '/dang-nhap' || location.pathname === '/dang-ky'
+  const isChatPage = location.pathname === '/tro-ly-ai'
   const hideNavMenu = (!user && location.pathname === '/') || isAuthPage
 
   const toggleSidebar = () => {
@@ -404,7 +405,8 @@ export default function Layout({ children }) {
       {/* Main Content Area (Offset by sidebar width on desktop when nav is shown) */}
       <div
         className={cn(
-          "min-h-screen flex flex-col transition-all duration-300 ease-in-out",
+          "flex flex-col transition-all duration-300 ease-in-out",
+          isChatPage ? "h-screen overflow-hidden" : "min-h-screen",
           !hideNavMenu && (sidebarCollapsed ? "lg:pl-[72px]" : "lg:pl-64")
         )}
       >
@@ -584,26 +586,35 @@ export default function Layout({ children }) {
           )}
 
         {/* Main Content */}
-        <main className="flex-1 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <main
+          className={cn(
+            "flex-1 w-full",
+            isChatPage
+              ? "overflow-hidden p-0 max-w-none flex flex-col"
+              : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+          )}
+        >
           {children}
         </main>
 
         {/* Footer */}
-        <footer className="border-t bg-muted/40 mt-auto">
-          <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-            <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-              <div className="flex items-center space-x-2">
-                <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-6 w-auto opacity-60" />
-                <span className="text-sm text-muted-foreground">
-                  © 2026 LearnPath - Hệ thống tư vấn hướng nghiệp
-                </span>
-              </div>
-              <div className="text-sm text-muted-foreground">
-                Dữ liệu tuyển sinh năm 2026
+        {!isChatPage && (
+          <footer className="border-t bg-muted/40 mt-auto shrink-0">
+            <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+              <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+                <div className="flex items-center space-x-2">
+                  <img src="/logo/LearnPath_xoanen.png" alt="LearnPath" className="h-6 w-auto opacity-60" />
+                  <span className="text-sm text-muted-foreground">
+                    © 2026 LearnPath - Hệ thống tư vấn hướng nghiệp
+                  </span>
+                </div>
+                <div className="text-sm text-muted-foreground">
+                  Dữ liệu tuyển sinh năm 2026
+                </div>
               </div>
             </div>
-          </div>
-        </footer>
+          </footer>
+        )}
       </div>
     </div>
   )

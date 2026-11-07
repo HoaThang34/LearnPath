@@ -186,7 +186,12 @@ router.post('/chat', async (req, res) => {
     });
     const saved = await store.saveExchange({ userId, conversationId, userMessage: message, assistant: result });
     send('message', { content: result.content });
-    send('done', { conversationId: saved.conversationId, messageId: saved.assistantMessageId, tools: result.trace.map((t) => t.tool) });
+    send('done', {
+      conversationId: saved.conversationId,
+      messageId: saved.assistantMessageId,
+      tools: result.trace.map((t) => t.tool),
+      trace: result.trace,
+    });
   } catch (error) {
     const aborted = controller.signal.aborted;
     const timedOut = aborted && !clientGone;

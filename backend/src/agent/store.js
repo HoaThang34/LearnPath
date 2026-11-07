@@ -72,13 +72,14 @@ function getConversationRow(userId, conversationId) {
 
 function getMessages(conversationId) {
   return queryAll(
-    'SELECT id, role, content, artifacts_json, created_at FROM chat_messages WHERE conversation_id = ? ORDER BY id',
+    'SELECT id, role, content, artifacts_json, tool_trace_json, created_at FROM chat_messages WHERE conversation_id = ? ORDER BY id',
     [conversationId]
   ).map((row) => ({
     id: Number(row.id),
     role: row.role,
     content: row.content,
     artifacts: parseJson(row.artifacts_json, []),
+    trace: parseJson(row.tool_trace_json, []),
     createdAt: Number(row.created_at),
   }));
 }
