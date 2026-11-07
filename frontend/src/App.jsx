@@ -20,6 +20,7 @@ import InterestLanding from './pages/InterestLanding'
 const AdminPage = lazy(() => import('./pages/AdminPage'))
 const InterestRunner = lazy(() => import('./pages/InterestRunner'))
 const InterestResult = lazy(() => import('./pages/InterestResult'))
+const TroLyAI = lazy(() => import('./pages/TroLyAI'))
 
 function PageFallback() {
   return (
@@ -158,6 +159,16 @@ function App() {
                   <ProtectedRoute>
                     <Suspense fallback={<PageFallback />}>
                       <InterestResult />
+                    </Suspense>
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/tro-ly-ai"
+                element={
+                  <ProtectedRoute>
+                    <Suspense fallback={<PageFallback />}>
+                      <TroLyAI />
                     </Suspense>
                   </ProtectedRoute>
                 }

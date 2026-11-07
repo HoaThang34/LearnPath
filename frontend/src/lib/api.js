@@ -95,4 +95,88 @@ export const getInterestResult = (attemptId) => api.get(`/interest/results/${att
 export const deleteInterestAttempt = (attemptId) => api.delete(`/interest/attempt/${attemptId}`);
 export const resetInterest = () => api.post('/interest/reset');
 
+// Agent AI
+export const getAgentStatus = () => api.get('/agent/status');
+export const giveAgentConsent = () => api.post('/agent/consent');
+export const getAgentConversations = () => api.get('/agent/conversations');
+export const getAgentConversation = (id) => api.get(`/agent/conversations/${id}`);
+export const deleteAgentConversation = (id) => api.delete(`/agent/conversations/${id}`);
+
+export async function streamAgentChat({
+  message,
+  conversationId,
+  onStatus,
+  onArtifact,
+  onMessage,
+  onDone,
+  onError,
+  signal,
+}) {
+  try {
+    const response = await fetch('/api/agent/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true',
+      },
+      credentials: 'include',
+      body: JSON.stringify({ message, conversationId }),
+      signal,
+    });
+
+    if (!response.ok) {
+      let errJson = null;
+      try {
+        errJson = await response.json();
+      } catch {}
+      const error = new Error(errJson?.error || 'Đã xảy ra lỗi khi kết nối với Trợ lý AI.');
+      error.code = errJson?.code;
+      error.status = response.status;
+      throw error;
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const parts = buffer.split('\n\n');
+      buffer = parts.pop() || '';
+
+      for (const part of parts) {
+        const lines = part.split('\n');
+        let event = 'message';
+        let dataStr = '';
+        for (const line of lines) {
+          if (line.startsWith('event: ')) {
+            event = line.slice(7).trim();
+          } else if (line.startsWith('data: ')) {
+            dataStr = line.slice(6).trim();
+          }
+        }
+        if (!dataStr) continue;
+        let parsed;
+        try {
+          parsed = JSON.parse(dataStr);
+        } catch {
+          continue;
+        }
+
+        if (event === 'status') onStatus?.(parsed);
+        else if (event === 'artifact') onArtifact?.(parsed);
+        else if (event === 'message') onMessage?.(parsed);
+        else if (event === 'done') onDone?.(parsed);
+        else if (event === 'error') onError?.(parsed);
+      }
+    }
+  } catch (err) {
+    if (signal?.aborted) return;
+    onError?.({ error: err.message || 'Lỗi kết nối tới máy chủ.' });
+    throw err;
+  }
+}
+
 export default api;

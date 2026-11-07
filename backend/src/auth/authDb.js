@@ -10,7 +10,7 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 7;
+const SCHEMA_VERSION = 8;
 
 const INTEREST_WEIGHTS = [
   {
@@ -404,6 +404,45 @@ function seedInterestDefaults(database) {
   seedCareerMatchConfig(database);
 }
 
+// v8: personalised AI agent (chat history, per-user daily usage, consent).
+function createAgentSchema(database) {
+  database.run(`
+    CREATE TABLE IF NOT EXISTS chat_conversations (
+      id         INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id    INTEGER NOT NULL,
+      title      TEXT NOT NULL,
+      created_at INTEGER NOT NULL,
+      updated_at INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_chat_conversations_user ON chat_conversations(user_id, updated_at);
+    CREATE TABLE IF NOT EXISTS chat_messages (
+      id              INTEGER PRIMARY KEY AUTOINCREMENT,
+      conversation_id INTEGER NOT NULL,
+      role            TEXT NOT NULL CHECK (role IN ('user', 'assistant')),
+      content         TEXT NOT NULL,
+      artifacts_json  TEXT,
+      tool_trace_json TEXT,
+      created_at      INTEGER NOT NULL,
+      FOREIGN KEY (conversation_id) REFERENCES chat_conversations(id) ON DELETE CASCADE
+    );
+    CREATE INDEX IF NOT EXISTS idx_chat_messages_conversation ON chat_messages(conversation_id, id);
+    CREATE TABLE IF NOT EXISTS agent_usage (
+      user_id  INTEGER NOT NULL,
+      day      TEXT NOT NULL,
+      requests INTEGER NOT NULL DEFAULT 0,
+      tokens   INTEGER NOT NULL DEFAULT 0,
+      PRIMARY KEY (user_id, day),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+    CREATE TABLE IF NOT EXISTS agent_consents (
+      user_id      INTEGER PRIMARY KEY,
+      consented_at INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
+  `);
+}
+
 function createSchema(database) {
   database.run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -535,6 +574,7 @@ function createSchema(database) {
   createAdminSchema(database);
   createInterestSchema(database);
   seedInterestDefaults(database);
+  createAgentSchema(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
 }
 
@@ -561,6 +601,10 @@ function verifySchema(database) {
     'interest_group_pairs',
     'career_match_config',
     'user_exam_scores',
+    'chat_conversations',
+    'chat_messages',
+    'agent_usage',
+    'agent_consents',
   ];
   const missingTables = requiredTables.filter((table) => !tables.includes(table));
 
@@ -681,7 +725,7 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version >= 1 && version <= 6) {
+  if (version >= 1 && version <= 7) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
@@ -818,6 +862,9 @@ function migrateSchema(database, version) {
         createInterestSchema(database);
         seedInterestDefaults(database);
       }
+
+      // v7 → v8: agent chat tables (additive only).
+      createAgentSchema(database);
 
       database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
       database.run('COMMIT');

@@ -89,6 +89,7 @@ Environment variables:
 | `/kham-pha-so-thich` | `pages/InterestLanding.jsx` | Protected | `/api/interest/instrument`, `/api/interest/attempt`, `/api/interest/results/latest` |
 | `/kham-pha-so-thich/lam-bai` | `pages/InterestRunner.jsx` (lazy) | Protected | `/api/interest/attempt`, `/api/interest/attempt/:id/responses`, `/submit` |
 | `/kham-pha-so-thich/ket-qua` | `pages/InterestResult.jsx` (lazy) | Protected | `/api/interest/results/latest`, `/api/interest/results/:attemptId` |
+| `/tro-ly-ai` | `pages/TroLyAI.jsx` (lazy) | Protected | `/api/agent/status`, `/api/agent/consent`, `/api/agent/chat`, `/api/agent/conversations` |
 
 Implementation notes:
 
@@ -440,6 +441,19 @@ All endpoints require `requireAuth` + `requirePasswordChanged`.
 
 Scoring lives in `backend/src/interest/scoring.js` (pure): `scoreAttempt({ instrument, items, responses })`. The pair contract is per item: odd `itemNo` puts the first letter on the left, even on the right; `D = Σ(even) − Σ(odd)`, range −24…+24. Missing answers are **not** zero: an incomplete group is `partial`/`empty`, and an incomplete pair has `d = null`.
 
+### Agent API (`/api/agent/*`)
+
+All endpoints require `requireAuth` + `requirePasswordChanged` + trusted `Origin`.
+
+| Method | Path | Notes |
+|---|---|---|
+| GET | `/status` | Returns `{ enabled, configured, consented, usage: { today, dailyLimit }, maxMessageLength }` |
+| POST | `/consent` | Records user consent in `agent_consents` table |
+| POST | `/chat` | Body `{ conversationId?, message }`. Validates consent, length, burst/daily limit. Returns `text/event-stream` (SSE events: `status`, `artifact`, `message`, `done`, `error`) |
+| GET | `/conversations` | Lists current user's conversations sorted by `updated_at DESC` |
+| GET | `/conversations/:id` | Returns conversation details and message history with visual artifacts (user-isolated) |
+| DELETE | `/conversations/:id` | Deletes conversation and its messages |
+
 ### Admin interest API (`/api/admin/interest/*`)
 
 All endpoints require the admin cookie + `X-Admin-CSRF`.
@@ -543,6 +557,7 @@ Migrations:
 - v4 → v5: adds structured academic scores, career selections, and admin-managed career rubrics (`career_rubrics`, `career_rubric_subjects`).
 - v5 → v6: replaces the legacy unstructured profile score columns with shared structured academic scores.
 - v6 → v7: adds the interest module (7 `interest_*` tables), `users.interest_completed`, `career_match_config`, and `user_exam_scores`; seeds instrument v1, 8 major-group weights, and 7 match-config keys in the same migration transaction. `verifySchema()` also checks that the active instrument has 60 RIASEC + 48 pair items.
+- v7 → v8: adds the personalized AI agent module (`chat_conversations`, `chat_messages`, `agent_usage`, `agent_consents`), supporting tool-calling conversational agent with persistent chat histories, visual artifact storage, user consent flags, and daily/burst rate limiting.
 
 Mỗi lần di chuyển phiên bản đều tự động sao lưu bản backup có gắn dấu thời gian `auth.db.v${version}-backup-<timestamp>` trước khi chạy transaction nâng cấp.
 

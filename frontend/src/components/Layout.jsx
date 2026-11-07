@@ -16,6 +16,7 @@ import {
   ChevronRight,
   Activity,
   Compass,
+  Bot,
   PanelLeft,
   PanelLeftClose,
 } from 'lucide-react'
@@ -32,6 +33,7 @@ const menuItems = [
   { path: '/thu-hang', label: 'Tra cứu thứ hạng', icon: Trophy },
   { path: '/phan-tich-nang-luc', label: 'Phân tích năng lực', icon: Activity },
   { path: '/kham-pha-so-thich', label: 'Sở thích nghề nghiệp', icon: Compass },
+  { path: '/tro-ly-ai', label: 'Trợ lý AI', icon: Bot },
 ]
 
 export default function Layout({ children }) {
