@@ -29,7 +29,7 @@ const menuItems = [
   { path: '/de-an', label: 'Đề án tuyển sinh', icon: Search },
   { path: '/diem-chuan', label: 'Điểm chuẩn', icon: BarChart3 },
   { path: '/khoi-thi', label: 'Khối thi', icon: BookOpen },
-  { path: '/thu-hang', label: 'Thứ hạng THPTQG', icon: Trophy },
+  { path: '/thu-hang', label: 'Tra cứu thứ hạng', icon: Trophy },
   { path: '/phan-tich-nang-luc', label: 'Phân tích năng lực', icon: Activity },
   { path: '/kham-pha-so-thich', label: 'Sở thích nghề nghiệp', icon: Compass },
 ]

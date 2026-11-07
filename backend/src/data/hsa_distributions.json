@@ -1,0 +1,852 @@
+{
+  "3": [
+    {
+      "khoang_diem": "16-20",
+      "from": 16,
+      "to": 20,
+      "so_thi_sinh": 1,
+      "larger": 100238,
+      "smaller": 0
+    },
+    {
+      "khoang_diem": "21-25",
+      "from": 21,
+      "to": 25,
+      "so_thi_sinh": 2,
+      "larger": 100236,
+      "smaller": 1
+    },
+    {
+      "khoang_diem": "26-30",
+      "from": 26,
+      "to": 30,
+      "so_thi_sinh": 3,
+      "larger": 100233,
+      "smaller": 3
+    },
+    {
+      "khoang_diem": "31-35",
+      "from": 31,
+      "to": 35,
+      "so_thi_sinh": 3,
+      "larger": 100230,
+      "smaller": 6
+    },
+    {
+      "khoang_diem": "36-40",
+      "from": 36,
+      "to": 40,
+      "so_thi_sinh": 51,
+      "larger": 100179,
+      "smaller": 9
+    },
+    {
+      "khoang_diem": "41-45",
+      "from": 41,
+      "to": 45,
+      "so_thi_sinh": 325,
+      "larger": 99854,
+      "smaller": 60
+    },
+    {
+      "khoang_diem": "46-50",
+      "from": 46,
+      "to": 50,
+      "so_thi_sinh": 1259,
+      "larger": 98595,
+      "smaller": 385
+    },
+    {
+      "khoang_diem": "51-55",
+      "from": 51,
+      "to": 55,
+      "so_thi_sinh": 3210,
+      "larger": 95385,
+      "smaller": 1644
+    },
+    {
+      "khoang_diem": "56-60",
+      "from": 56,
+      "to": 60,
+      "so_thi_sinh": 6091,
+      "larger": 89294,
+      "smaller": 4854
+    },
+    {
+      "khoang_diem": "61-65",
+      "from": 61,
+      "to": 65,
+      "so_thi_sinh": 9790,
+      "larger": 79504,
+      "smaller": 10945
+    },
+    {
+      "khoang_diem": "66-70",
+      "from": 66,
+      "to": 70,
+      "so_thi_sinh": 12930,
+      "larger": 66574,
+      "smaller": 20735
+    },
+    {
+      "khoang_diem": "71-75",
+      "from": 71,
+      "to": 75,
+      "so_thi_sinh": 14941,
+      "larger": 51633,
+      "smaller": 33665
+    },
+    {
+      "khoang_diem": "76-80",
+      "from": 76,
+      "to": 80,
+      "so_thi_sinh": 14389,
+      "larger": 37244,
+      "smaller": 48606
+    },
+    {
+      "khoang_diem": "81-85",
+      "from": 81,
+      "to": 85,
+      "so_thi_sinh": 12645,
+      "larger": 24599,
+      "smaller": 62995
+    },
+    {
+      "khoang_diem": "86-90",
+      "from": 86,
+      "to": 90,
+      "so_thi_sinh": 9695,
+      "larger": 14904,
+      "smaller": 75640
+    },
+    {
+      "khoang_diem": "91-95",
+      "from": 91,
+      "to": 95,
+      "so_thi_sinh": 6745,
+      "larger": 8159,
+      "smaller": 85335
+    },
+    {
+      "khoang_diem": "96-100",
+      "from": 96,
+      "to": 100,
+      "so_thi_sinh": 4219,
+      "larger": 3940,
+      "smaller": 92080
+    },
+    {
+      "khoang_diem": "101-105",
+      "from": 101,
+      "to": 105,
+      "so_thi_sinh": 2320,
+      "larger": 1620,
+      "smaller": 96299
+    },
+    {
+      "khoang_diem": "106-110",
+      "from": 106,
+      "to": 110,
+      "so_thi_sinh": 1120,
+      "larger": 500,
+      "smaller": 98619
+    },
+    {
+      "khoang_diem": "111-115",
+      "from": 111,
+      "to": 115,
+      "so_thi_sinh": 350,
+      "larger": 150,
+      "smaller": 99739
+    },
+    {
+      "khoang_diem": "116-120",
+      "from": 116,
+      "to": 120,
+      "so_thi_sinh": 115,
+      "larger": 35,
+      "smaller": 100089
+    },
+    {
+      "khoang_diem": "121-125",
+      "from": 121,
+      "to": 125,
+      "so_thi_sinh": 31,
+      "larger": 4,
+      "smaller": 100204
+    },
+    {
+      "khoang_diem": "126-130",
+      "from": 126,
+      "to": 130,
+      "so_thi_sinh": 4,
+      "larger": 0,
+      "smaller": 100235
+    }
+  ],
+  "7": [
+    {
+      "khoang_diem": "40-41",
+      "from": 40,
+      "to": 41,
+      "so_thi_sinh": 12,
+      "larger": 30762,
+      "smaller": 9
+    },
+    {
+      "khoang_diem": "45-46",
+      "from": 45,
+      "to": 46,
+      "so_thi_sinh": 33,
+      "larger": 30667,
+      "smaller": 77
+    },
+    {
+      "khoang_diem": "50-51",
+      "from": 50,
+      "to": 51,
+      "so_thi_sinh": 97,
+      "larger": 30349,
+      "smaller": 276
+    },
+    {
+      "khoang_diem": "55-56",
+      "from": 55,
+      "to": 56,
+      "so_thi_sinh": 221,
+      "larger": 29559,
+      "smaller": 829
+    },
+    {
+      "khoang_diem": "60-61",
+      "from": 60,
+      "to": 61,
+      "so_thi_sinh": 388,
+      "larger": 28014,
+      "smaller": 2039
+    },
+    {
+      "khoang_diem": "65-66",
+      "from": 65,
+      "to": 66,
+      "so_thi_sinh": 545,
+      "larger": 25679,
+      "smaller": 4042
+    },
+    {
+      "khoang_diem": "70-71",
+      "from": 70,
+      "to": 71,
+      "so_thi_sinh": 748,
+      "larger": 22490,
+      "smaller": 6890
+    },
+    {
+      "khoang_diem": "75-76",
+      "from": 75,
+      "to": 76,
+      "so_thi_sinh": 776,
+      "larger": 18740,
+      "smaller": 10539
+    },
+    {
+      "khoang_diem": "80-81",
+      "from": 80,
+      "to": 81,
+      "so_thi_sinh": 814,
+      "larger": 14915,
+      "smaller": 14299
+    },
+    {
+      "khoang_diem": "85-86",
+      "from": 85,
+      "to": 86,
+      "so_thi_sinh": 749,
+      "larger": 11080,
+      "smaller": 18155
+    },
+    {
+      "khoang_diem": "90-91",
+      "from": 90,
+      "to": 91,
+      "so_thi_sinh": 645,
+      "larger": 7684,
+      "smaller": 21820
+    },
+    {
+      "khoang_diem": "95-96",
+      "from": 95,
+      "to": 96,
+      "so_thi_sinh": 489,
+      "larger": 4899,
+      "smaller": 24846
+    },
+    {
+      "khoang_diem": "100-101",
+      "from": 100,
+      "to": 101,
+      "so_thi_sinh": 360,
+      "larger": 2750,
+      "smaller": 27308
+    },
+    {
+      "khoang_diem": "105-106",
+      "from": 105,
+      "to": 106,
+      "so_thi_sinh": 229,
+      "larger": 1364,
+      "smaller": 28957
+    },
+    {
+      "khoang_diem": "110-111",
+      "from": 110,
+      "to": 111,
+      "so_thi_sinh": 118,
+      "larger": 546,
+      "smaller": 30000
+    },
+    {
+      "khoang_diem": "115-116",
+      "from": 115,
+      "to": 116,
+      "so_thi_sinh": 52,
+      "larger": 191,
+      "smaller": 30502
+    },
+    {
+      "khoang_diem": "120-121",
+      "from": 120,
+      "to": 121,
+      "so_thi_sinh": 16,
+      "larger": 41,
+      "smaller": 30708
+    },
+    {
+      "khoang_diem": "125-126",
+      "from": 125,
+      "to": 126,
+      "so_thi_sinh": 3,
+      "larger": 6,
+      "smaller": 30781
+    },
+    {
+      "khoang_diem": "127-150",
+      "from": 127,
+      "to": 150,
+      "so_thi_sinh": 1,
+      "larger": 0,
+      "smaller": 30792
+    }
+  ],
+  "11": [
+    {
+      "khoang_diem": "33-38",
+      "from": 33,
+      "to": 38,
+      "so_thi_sinh": 36,
+      "larger": 89023,
+      "smaller": 1
+    },
+    {
+      "khoang_diem": "39-44",
+      "from": 39,
+      "to": 44,
+      "so_thi_sinh": 294,
+      "larger": 88729,
+      "smaller": 37
+    },
+    {
+      "khoang_diem": "45-50",
+      "from": 45,
+      "to": 50,
+      "so_thi_sinh": 1174,
+      "larger": 87555,
+      "smaller": 331
+    },
+    {
+      "khoang_diem": "51-56",
+      "from": 51,
+      "to": 56,
+      "so_thi_sinh": 3446,
+      "larger": 84109,
+      "smaller": 1505
+    },
+    {
+      "khoang_diem": "57-62",
+      "from": 57,
+      "to": 62,
+      "so_thi_sinh": 6940,
+      "larger": 77169,
+      "smaller": 4951
+    },
+    {
+      "khoang_diem": "63-68",
+      "from": 63,
+      "to": 68,
+      "so_thi_sinh": 10370,
+      "larger": 66799,
+      "smaller": 11891
+    },
+    {
+      "khoang_diem": "69-74",
+      "from": 69,
+      "to": 74,
+      "so_thi_sinh": 13185,
+      "larger": 53614,
+      "smaller": 22261
+    },
+    {
+      "khoang_diem": "75-80",
+      "from": 75,
+      "to": 80,
+      "so_thi_sinh": 13760,
+      "larger": 39854,
+      "smaller": 35446
+    },
+    {
+      "khoang_diem": "81-86",
+      "from": 81,
+      "to": 86,
+      "so_thi_sinh": 13100,
+      "larger": 26754,
+      "smaller": 49206
+    },
+    {
+      "khoang_diem": "87-92",
+      "from": 87,
+      "to": 92,
+      "so_thi_sinh": 10590,
+      "larger": 16164,
+      "smaller": 62306
+    },
+    {
+      "khoang_diem": "93-98",
+      "from": 93,
+      "to": 98,
+      "so_thi_sinh": 7935,
+      "larger": 8229,
+      "smaller": 72896
+    },
+    {
+      "khoang_diem": "99-104",
+      "from": 99,
+      "to": 104,
+      "so_thi_sinh": 4720,
+      "larger": 3509,
+      "smaller": 80831
+    },
+    {
+      "khoang_diem": "105-110",
+      "from": 105,
+      "to": 110,
+      "so_thi_sinh": 2420,
+      "larger": 1089,
+      "smaller": 85551
+    },
+    {
+      "khoang_diem": "111-116",
+      "from": 111,
+      "to": 116,
+      "so_thi_sinh": 827,
+      "larger": 262,
+      "smaller": 87971
+    },
+    {
+      "khoang_diem": "117-122",
+      "from": 117,
+      "to": 122,
+      "so_thi_sinh": 223,
+      "larger": 39,
+      "smaller": 88798
+    },
+    {
+      "khoang_diem": "123-128",
+      "from": 123,
+      "to": 128,
+      "so_thi_sinh": 36,
+      "larger": 3,
+      "smaller": 89021
+    },
+    {
+      "khoang_diem": "129-134",
+      "from": 129,
+      "to": 134,
+      "so_thi_sinh": 3,
+      "larger": 0,
+      "smaller": 89057
+    }
+  ],
+  "21": [
+    {
+      "khoang_diem": "20-25",
+      "from": 20,
+      "to": 25,
+      "so_thi_sinh": 15,
+      "larger": 57215,
+      "smaller": 0
+    },
+    {
+      "khoang_diem": "25-30",
+      "from": 25,
+      "to": 30,
+      "so_thi_sinh": 18,
+      "larger": 57197,
+      "smaller": 0
+    },
+    {
+      "khoang_diem": "30-35",
+      "from": 30,
+      "to": 35,
+      "so_thi_sinh": 15,
+      "larger": 57182,
+      "smaller": 15
+    },
+    {
+      "khoang_diem": "35-40",
+      "from": 35,
+      "to": 40,
+      "so_thi_sinh": 50,
+      "larger": 57132,
+      "smaller": 33
+    },
+    {
+      "khoang_diem": "40-45",
+      "from": 40,
+      "to": 45,
+      "so_thi_sinh": 244,
+      "larger": 56888,
+      "smaller": 48
+    },
+    {
+      "khoang_diem": "45-50",
+      "from": 45,
+      "to": 50,
+      "so_thi_sinh": 710,
+      "larger": 56178,
+      "smaller": 98
+    },
+    {
+      "khoang_diem": "50-55",
+      "from": 50,
+      "to": 55,
+      "so_thi_sinh": 1770,
+      "larger": 54408,
+      "smaller": 342
+    },
+    {
+      "khoang_diem": "55-60",
+      "from": 55,
+      "to": 60,
+      "so_thi_sinh": 3200,
+      "larger": 51208,
+      "smaller": 1052
+    },
+    {
+      "khoang_diem": "60-65",
+      "from": 60,
+      "to": 65,
+      "so_thi_sinh": 4905,
+      "larger": 46303,
+      "smaller": 2822
+    },
+    {
+      "khoang_diem": "65-70",
+      "from": 65,
+      "to": 70,
+      "so_thi_sinh": 6105,
+      "larger": 40198,
+      "smaller": 6022
+    },
+    {
+      "khoang_diem": "70-75",
+      "from": 70,
+      "to": 75,
+      "so_thi_sinh": 7005,
+      "larger": 33193,
+      "smaller": 10927
+    },
+    {
+      "khoang_diem": "75-80",
+      "from": 75,
+      "to": 80,
+      "so_thi_sinh": 7325,
+      "larger": 25868,
+      "smaller": 17032
+    },
+    {
+      "khoang_diem": "80-85",
+      "from": 80,
+      "to": 85,
+      "so_thi_sinh": 6761,
+      "larger": 19107,
+      "smaller": 24037
+    },
+    {
+      "khoang_diem": "85-90",
+      "from": 85,
+      "to": 90,
+      "so_thi_sinh": 5886,
+      "larger": 13221,
+      "smaller": 31362
+    },
+    {
+      "khoang_diem": "90-95",
+      "from": 90,
+      "to": 95,
+      "so_thi_sinh": 4913,
+      "larger": 8308,
+      "smaller": 38123
+    },
+    {
+      "khoang_diem": "95-100",
+      "from": 95,
+      "to": 100,
+      "so_thi_sinh": 3443,
+      "larger": 4865,
+      "smaller": 44009
+    },
+    {
+      "khoang_diem": "100-105",
+      "from": 100,
+      "to": 105,
+      "so_thi_sinh": 2444,
+      "larger": 2421,
+      "smaller": 48922
+    },
+    {
+      "khoang_diem": "105-110",
+      "from": 105,
+      "to": 110,
+      "so_thi_sinh": 1345,
+      "larger": 1076,
+      "smaller": 52365
+    },
+    {
+      "khoang_diem": "110-115",
+      "from": 110,
+      "to": 115,
+      "so_thi_sinh": 752,
+      "larger": 324,
+      "smaller": 54809
+    },
+    {
+      "khoang_diem": "115-120",
+      "from": 115,
+      "to": 120,
+      "so_thi_sinh": 252,
+      "larger": 72,
+      "smaller": 56154
+    },
+    {
+      "khoang_diem": "120-125",
+      "from": 120,
+      "to": 125,
+      "so_thi_sinh": 56,
+      "larger": 16,
+      "smaller": 56906
+    },
+    {
+      "khoang_diem": "125-130",
+      "from": 125,
+      "to": 130,
+      "so_thi_sinh": 16,
+      "larger": 0,
+      "smaller": 57158
+    }
+  ],
+  "25": [
+    {
+      "khoang_diem": "15-20",
+      "from": 15,
+      "to": 20,
+      "so_thi_sinh": 1,
+      "larger": 116838,
+      "smaller": 0
+    },
+    {
+      "khoang_diem": "20-25",
+      "from": 20,
+      "to": 25,
+      "so_thi_sinh": 1,
+      "larger": 116837,
+      "smaller": 0
+    },
+    {
+      "khoang_diem": "25-30",
+      "from": 25,
+      "to": 30,
+      "so_thi_sinh": 3,
+      "larger": 116834,
+      "smaller": 1
+    },
+    {
+      "khoang_diem": "30-35",
+      "from": 30,
+      "to": 35,
+      "so_thi_sinh": 7,
+      "larger": 116827,
+      "smaller": 2
+    },
+    {
+      "khoang_diem": "35-40",
+      "from": 35,
+      "to": 40,
+      "so_thi_sinh": 117,
+      "larger": 116710,
+      "smaller": 5
+    },
+    {
+      "khoang_diem": "40-45",
+      "from": 40,
+      "to": 45,
+      "so_thi_sinh": 432,
+      "larger": 116278,
+      "smaller": 12
+    },
+    {
+      "khoang_diem": "45-50",
+      "from": 45,
+      "to": 50,
+      "so_thi_sinh": 1274,
+      "larger": 115004,
+      "smaller": 129
+    },
+    {
+      "khoang_diem": "50-55",
+      "from": 50,
+      "to": 55,
+      "so_thi_sinh": 3213,
+      "larger": 111791,
+      "smaller": 561
+    },
+    {
+      "khoang_diem": "55-60",
+      "from": 55,
+      "to": 60,
+      "so_thi_sinh": 5924,
+      "larger": 105867,
+      "smaller": 1835
+    },
+    {
+      "khoang_diem": "60-65",
+      "from": 60,
+      "to": 65,
+      "so_thi_sinh": 9184,
+      "larger": 96683,
+      "smaller": 5048
+    },
+    {
+      "khoang_diem": "65-70",
+      "from": 65,
+      "to": 70,
+      "so_thi_sinh": 11766,
+      "larger": 84917,
+      "smaller": 10972
+    },
+    {
+      "khoang_diem": "70-75",
+      "from": 70,
+      "to": 75,
+      "so_thi_sinh": 13565,
+      "larger": 71352,
+      "smaller": 20156
+    },
+    {
+      "khoang_diem": "75-80",
+      "from": 75,
+      "to": 80,
+      "so_thi_sinh": 14367,
+      "larger": 56985,
+      "smaller": 31922
+    },
+    {
+      "khoang_diem": "80-85",
+      "from": 80,
+      "to": 85,
+      "so_thi_sinh": 13869,
+      "larger": 43116,
+      "smaller": 45487
+    },
+    {
+      "khoang_diem": "85-90",
+      "from": 85,
+      "to": 90,
+      "so_thi_sinh": 12511,
+      "larger": 30605,
+      "smaller": 59854
+    },
+    {
+      "khoang_diem": "90-95",
+      "from": 90,
+      "to": 95,
+      "so_thi_sinh": 10586,
+      "larger": 20019,
+      "smaller": 73723
+    },
+    {
+      "khoang_diem": "95-100",
+      "from": 95,
+      "to": 100,
+      "so_thi_sinh": 8190,
+      "larger": 11829,
+      "smaller": 86234
+    },
+    {
+      "khoang_diem": "100-105",
+      "from": 100,
+      "to": 105,
+      "so_thi_sinh": 5772,
+      "larger": 6057,
+      "smaller": 96820
+    },
+    {
+      "khoang_diem": "105-110",
+      "from": 105,
+      "to": 110,
+      "so_thi_sinh": 3493,
+      "larger": 2564,
+      "smaller": 105010
+    },
+    {
+      "khoang_diem": "110-115",
+      "from": 110,
+      "to": 115,
+      "so_thi_sinh": 1719,
+      "larger": 845,
+      "smaller": 110782
+    },
+    {
+      "khoang_diem": "115-120",
+      "from": 115,
+      "to": 120,
+      "so_thi_sinh": 619,
+      "larger": 226,
+      "smaller": 114275
+    },
+    {
+      "khoang_diem": "120-125",
+      "from": 120,
+      "to": 125,
+      "so_thi_sinh": 187,
+      "larger": 39,
+      "smaller": 115994
+    },
+    {
+      "khoang_diem": "125-130",
+      "from": 125,
+      "to": 130,
+      "so_thi_sinh": 35,
+      "larger": 4,
+      "smaller": 116613
+    },
+    {
+      "khoang_diem": "130-135",
+      "from": 130,
+      "to": 135,
+      "so_thi_sinh": 4,
+      "larger": 0,
+      "smaller": 116800
+    }
+  ]
+}

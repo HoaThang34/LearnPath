@@ -12,7 +12,7 @@ Website giúp học sinh THPT tra cứu đề án tuyển sinh, điểm chuẩn,
 - **Đề án tuyển sinh** — 307 đề án Markdown, tìm theo trường, xem nội dung + mục lục.
 - **Điểm chuẩn** — 2.617 dòng theo 5 phương thức: THPT, ĐGNL HSA, ĐGTD TSA, ĐGNL V-ACT, SAT.
 - **Khối thi** — 245 khối trong DB hiện tại; mã import mới đọc được 281 khối từ nguồn, chờ rebuild; xem trường và ngành theo khối, so sánh tối đa 5 ngành.
-- **Thứ hạng THPTQG** — nhập điểm, xem thứ hạng và biểu đồ phân bố (xem cảnh báo bên dưới).
+- **Tra cứu thứ hạng** — tra cứu thứ hạng điểm thi THPTQG và điểm thi Đánh giá năng lực ĐHQGHN (HSA) theo phổ điểm thực tế từ cổng Tuyensinh247.
 - **Phân tích năng lực & Định hướng ngành** — nhập điểm theo môn/kỳ/năm, chọn snapshot, xem phân tích theo rubric có độ phủ, khám phá và lưu ngành mục tiêu/ngành quan tâm theo dữ liệu điểm chuẩn 2025.
 
 ## Tech stack

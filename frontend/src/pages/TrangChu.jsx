@@ -342,8 +342,8 @@ const coreFeatures = [
     link: '/khoi-thi',
   },
   {
-    title: 'Thứ hạng THPTQG',
-    description: 'Ước lượng thứ hạng phổ điểm dựa trên kết quả thi tốt nghiệp THPT toàn quốc để định vị năng lực cạnh tranh.',
+    title: 'Tra cứu thứ hạng',
+    description: 'Ước lượng thứ hạng phổ điểm dựa trên kết quả thi tốt nghiệp THPT toàn quốc và điểm ĐGNL (HSA) để định vị năng lực cạnh tranh.',
     icon: Trophy,
     link: '/thu-hang',
   },
@@ -1355,12 +1355,12 @@ export default function TrangChu() {
                 <div className="p-1.5 rounded-md bg-muted border border-border text-foreground">
                   <Trophy className="h-3.5 w-3.5" />
                 </div>
-                <CardTitle className="text-xs font-semibold">Thứ hạng THPTQG</CardTitle>
+                <CardTitle className="text-xs font-semibold">Tra cứu thứ hạng</CardTitle>
               </div>
             </CardHeader>
             <CardContent className="p-4 pt-1 space-y-2">
               <p className="text-[11px] text-muted-foreground line-clamp-2">
-                Tra cứu vị trí và xếp hạng dự kiến dựa trên điểm thi tốt nghiệp THPT.
+                Tra cứu vị trí và xếp hạng dự kiến dựa trên điểm thi tốt nghiệp THPT và điểm ĐGNL HSA.
               </p>
               <Link
                 to="/thu-hang"

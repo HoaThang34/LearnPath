@@ -1,10 +1,26 @@
-import { useState } from 'react'
-import { Trophy, Calculator, TrendingUp, AlertTriangle } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import {
+  Trophy,
+  Calculator,
+  TrendingUp,
+  AlertTriangle,
+  GraduationCap,
+  Award,
+  ExternalLink,
+  Search,
+  CheckCircle2,
+  Info,
+  Calendar,
+  Layers,
+  BarChart3,
+  RefreshCw,
+  Image as ImageIcon
+} from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { getRanking } from '@/lib/api'
+import { getRanking, getHsaExams, getHsaRanking } from '@/lib/api'
 import {
   BarChart,
   Bar,
@@ -12,7 +28,8 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
+  Cell
 } from 'recharts'
 
 const monHoc = [
@@ -27,22 +44,134 @@ const monHoc = [
   { key: 'tin_hoc', label: 'Tin học', color: '#4f46e5' },
 ]
 
+const DEFAULT_HSA_EXAMS = [
+  {
+    id: 25,
+    name: 'HSA tất cả các đợt năm 2026',
+    year: 2026,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/709883021-1695292892056849-1248372962989095024-n.jpg',
+    localImage: '/images/hsa/hsa-25.jpg',
+    proxyImage: '/api/diem-thi/hsa/image/25',
+    isDefault: true,
+  },
+  {
+    id: 21,
+    name: 'HSA đợt 601 - 603 năm 2026',
+    year: 2026,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/pho-diem-hsa-2026-dot-1-2-3.png',
+    localImage: '/images/hsa/hsa-21.png',
+    proxyImage: '/api/diem-thi/hsa/image/21',
+    isDefault: false,
+  },
+  {
+    id: 11,
+    name: 'HSA tất cả các đợt năm 2025',
+    year: 2025,
+    image: 'https://images.tuyensinh247.com/picture/diemthi/ts247/images/hsa-2025.png',
+    localImage: '/images/hsa/hsa-11.png',
+    proxyImage: '/api/diem-thi/hsa/image/11',
+    isDefault: false,
+  },
+  {
+    id: 7,
+    name: 'HSA đợt 501-502 năm 2025',
+    year: 2025,
+    image: 'https://images.tuyensinh247.com/picture/2025/0402/pho-diem-hsa-dot-501-502.png',
+    localImage: '/images/hsa/hsa-7.png',
+    proxyImage: '/api/diem-thi/hsa/image/7',
+    isDefault: false,
+  },
+  {
+    id: 3,
+    name: 'HSA đợt 401 - 406 năm 2024',
+    year: 2024,
+    image: 'https://images.tuyensinh247.com/picture/2025/0108/hsa-tat-ca-cac-dot.jpg',
+    localImage: '/images/hsa/hsa-3.jpg',
+    proxyImage: '/api/diem-thi/hsa/image/3',
+    isDefault: false,
+  },
+]
+
 export default function ThuHang() {
+  const [activeTab, setActiveTab] = useState('thptqg') // 'thptqg' | 'hsa'
+
+  // --- State for THPTQG Ranking ---
   const [scores, setScores] = useState({})
   const [result, setResult] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // --- State for ĐGNL HSA Ranking ---
+  const [hsaExams, setHsaExams] = useState(DEFAULT_HSA_EXAMS)
+  const [selectedExamId, setSelectedExamId] = useState(25)
+  const [hsaScore, setHsaScore] = useState('')
+  const [hsaResult, setHsaResult] = useState(null)
+  const [loadingHsa, setLoadingHsa] = useState(false)
+  const [errorHsa, setErrorHsa] = useState('')
+
+  // Image display state
+  const [hsaImgSrc, setHsaImgSrc] = useState('')
+  const [hsaImgLoading, setHsaImgLoading] = useState(true)
+  const [hsaImgError, setHsaImgError] = useState(false)
+
+  // Chart view mode for HSA
+  const [hsaDisplayMode, setHsaDisplayMode] = useState('both') // 'both' | 'chart' | 'image'
+
+  useEffect(() => {
+    // Load fresh HSA exams from backend
+    getHsaExams()
+      .then(res => {
+        if (res?.data?.data && Array.isArray(res.data.data) && res.data.data.length > 0) {
+          setHsaExams(res.data.data)
+          const def = res.data.data.find(e => e.isDefault)
+          if (def) setSelectedExamId(def.id)
+        }
+      })
+      .catch(err => {
+        console.warn('Không thể tải danh sách đợt thi HSA động, sử dụng cấu hình mặc định:', err.message)
+      })
+  }, [])
+
+  // Sync image source whenever hsaResult changes
+  useEffect(() => {
+    if (hsaResult) {
+      // Prioritize local static asset first (zero cross-origin/adblock issues)
+      const primarySrc = hsaResult.localImage || `/images/hsa/hsa-${hsaResult.examId}.${hsaResult.examId === 21 || hsaResult.examId === 11 || hsaResult.examId === 7 ? 'png' : 'jpg'}`
+      setHsaImgSrc(primarySrc)
+      setHsaImgLoading(true)
+      setHsaImgError(false)
+    }
+  }, [hsaResult])
+
+  const handleImageError = () => {
+    // If local image fails, try proxy, then remote
+    if (hsaResult) {
+      if (hsaImgSrc !== hsaResult.proxyImage && hsaResult.proxyImage) {
+        setHsaImgSrc(hsaResult.proxyImage)
+      } else if (hsaImgSrc !== hsaResult.image && hsaResult.image) {
+        setHsaImgSrc(hsaResult.image)
+      } else {
+        setHsaImgError(true)
+        setHsaImgLoading(false)
+      }
+    } else {
+      setHsaImgError(true)
+      setHsaImgLoading(false)
+    }
+  }
+
+  // Handle THPTQG input change
   const handleScoreChange = (key, value) => {
     const numValue = parseFloat(value)
     if (value === '' || (numValue >= 0 && numValue <= 10)) {
       setScores(prev => ({
         ...prev,
-        [key]: value === '' ? '' : numValue
+        [key]: value === '' ? '' : numValue,
       }))
     }
   }
 
+  // Handle THPTQG calculate
   const handleCalculate = async (e) => {
     e.preventDefault()
     setLoading(true)
@@ -57,7 +186,7 @@ export default function ThuHang() {
       const response = await getRanking(params)
       setResult(response.data.data)
     } catch (err) {
-      console.error('Error:', err)
+      console.error('Error calculating THPTQG ranking:', err)
       setError('Không thể tính thứ hạng. Vui lòng kiểm tra kết nối và thử lại.')
       setResult(null)
     } finally {
@@ -65,145 +194,730 @@ export default function ThuHang() {
     }
   }
 
+  // Handle HSA query
+  const handleHsaCalculate = async (e) => {
+    if (e) e.preventDefault()
+    if (hsaScore === '' || hsaScore === undefined) {
+      setErrorHsa('Vui lòng nhập điểm thi HSA.')
+      return
+    }
+
+    const numScore = parseFloat(String(hsaScore).replace(',', '.'))
+    if (isNaN(numScore) || numScore < 0 || numScore > 150) {
+      setErrorHsa('Điểm thi HSA phải là số từ 0 đến 150.')
+      return
+    }
+
+    setLoadingHsa(true)
+    setErrorHsa('')
+    try {
+      const response = await getHsaRanking({
+        your_score: numScore,
+        exam_id: selectedExamId,
+      })
+      setHsaResult(response.data.data)
+    } catch (err) {
+      console.error('Error querying HSA ranking:', err)
+      setErrorHsa(
+        err.response?.data?.error ||
+        'Không thể tra cứu xếp hạng điểm HSA từ cổng Tuyensinh247 lúc này. Vui lòng thử lại sau.'
+      )
+      setHsaResult(null)
+    } finally {
+      setLoadingHsa(false)
+    }
+  }
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center space-x-3">
-        <Trophy className="h-8 w-8 text-primary" />
-        <div>
-          <h1 className="text-2xl font-bold">Tra cứu thứ hạng THPTQG 2026</h1>
-          <p className="text-muted-foreground">Nhập điểm thi để biết thứ hạng của bạn</p>
+      {/* Page Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex items-center space-x-3">
+          <div className="p-2.5 rounded-xl bg-primary/10 text-primary">
+            <Trophy className="h-7 w-7" />
+          </div>
+          <div>
+            <h1 className="text-2xl font-bold tracking-tight">Tra cứu thứ hạng</h1>
+            <p className="text-sm text-muted-foreground">
+              Tra cứu vị trí xếp hạng điểm thi tốt nghiệp THPT và kỳ thi Đánh giá năng lực ĐHQGHN (HSA)
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
-        <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-        <span>
-          Lưu ý: thứ hạng hiện được tính bằng tổng điểm các môn bạn nhập so với tổng điểm
-          tất cả môn của từng thí sinh, chưa theo tổ hợp xét tuyển. Kết quả chỉ mang tính tham khảo.
-        </span>
+      {/* Segmented View Switcher */}
+      <div className="flex border-b border-border pb-1">
+        <div className="inline-flex rounded-lg bg-muted p-1 text-muted-foreground">
+          <button
+            type="button"
+            onClick={() => setActiveTab('thptqg')}
+            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'thptqg'
+                ? 'bg-background text-foreground shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <GraduationCap className="h-4 w-4" />
+            Thứ hạng THPTQG
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('hsa')}
+            className={`inline-flex items-center gap-2 rounded-md px-4 py-2 text-xs sm:text-sm font-semibold transition-all ${
+              activeTab === 'hsa'
+                ? 'bg-background text-foreground shadow-xs'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            <Award className="h-4 w-4" />
+            Thứ hạng ĐGNL - HSA
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Input Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Nhập điểm thi</CardTitle>
-            <CardDescription>Nhập điểm các môn bạn đã thi (để trống nếu không thi môn đó)</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleCalculate} className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                {monHoc.map((mon) => (
-                  <div key={mon.key} className="space-y-2">
-                    <Label htmlFor={mon.key} className="flex items-center space-x-2">
-                      <div 
-                        className="w-3 h-3 rounded-full" 
-                        style={{ backgroundColor: mon.color }}
-                      />
-                      <span>{mon.label}</span>
-                    </Label>
-                    <Input
-                      id={mon.key}
-                      type="number"
-                      step="0.25"
-                      min="0"
-                      max="10"
-                      placeholder="0 - 10"
-                      value={scores[mon.key] ?? ''}
-                      onChange={(e) => handleScoreChange(mon.key, e.target.value)}
-                    />
-                  </div>
-                ))}
-              </div>
-              <Button type="submit" className="w-full" disabled={loading}>
-                <Calculator className="h-4 w-4 mr-2" />
-                {loading ? 'Đang tính...' : 'Tính thứ hạng'}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
+      {/* SECTION 1: THỨ HẠNG THPTQG */}
+      {activeTab === 'thptqg' && (
+        <div className="space-y-6">
+          <div className="flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-800">
+            <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+            <span>
+              Lưu ý: thứ hạng hiện được tính bằng tổng điểm các môn bạn nhập so với tổng điểm
+              tất cả môn của từng thí sinh, chưa theo tổ hợp xét tuyển. Kết quả chỉ mang tính tham khảo.
+            </span>
+          </div>
 
-        {/* Results */}
-        <Card>
-          <CardHeader>
-            <CardTitle>Kết quả</CardTitle>
-          </CardHeader>
-          <CardContent>
-            {error && (
-              <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
-                <span>{error}</span>
-              </div>
-            )}
-            {result ? (
-              <div className="space-y-6">
-                {/* Ranking Info */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 bg-muted rounded-lg text-center">
-                    <div className="text-3xl font-bold text-primary">{result.thuHang}</div>
-                    <div className="text-sm text-muted-foreground">Thứ hạng</div>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Input Form */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Nhập điểm thi THPTQG</CardTitle>
+                <CardDescription>Nhập điểm các môn bạn đã thi (để trống nếu không thi môn đó)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleCalculate} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    {monHoc.map((mon) => (
+                      <div key={mon.key} className="space-y-2">
+                        <Label htmlFor={mon.key} className="flex items-center space-x-2">
+                          <div 
+                            className="w-3 h-3 rounded-full" 
+                            style={{ backgroundColor: mon.color }}
+                          />
+                          <span>{mon.label}</span>
+                        </Label>
+                        <Input
+                          id={mon.key}
+                          type="number"
+                          step="0.25"
+                          min="0"
+                          max="10"
+                          placeholder="0 - 10"
+                          value={scores[mon.key] ?? ''}
+                          onChange={(e) => handleScoreChange(mon.key, e.target.value)}
+                        />
+                      </div>
+                    ))}
                   </div>
-                  <div className="p-4 bg-muted rounded-lg text-center">
-                    <div className="text-3xl font-bold">{result.tongDiem.toFixed(2)}</div>
-                    <div className="text-sm text-muted-foreground">Tổng điểm</div>
-                  </div>
-                  <div className="p-4 bg-muted rounded-lg text-center">
-                    <div className="text-3xl font-bold text-green-600">
-                      Top {result.tyLePhanTram}%
-                    </div>
-                    <div className="text-sm text-muted-foreground">Phần trăm</div>
-                  </div>
-                  <div className="p-4 bg-muted rounded-lg text-center">
-                    <div className="text-3xl font-bold">{result.tongThiSinh.toLocaleString()}</div>
-                    <div className="text-sm text-muted-foreground">Tổng thí sinh</div>
-                  </div>
-                </div>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    <Calculator className="h-4 w-4 mr-2" />
+                    {loading ? 'Đang tính...' : 'Tính thứ hạng THPTQG'}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
 
-                {/* Score Summary */}
-                <div className="p-4 border rounded-lg">
-                  <h4 className="font-medium mb-3">Điểm đã nhập:</h4>
-                  <div className="flex flex-wrap gap-2">
-                    {Object.entries(result.diemNhap).map(([key, value]) => {
-                      if (value === null) return null
-                      const mon = monHoc.find(m => m.key === key)
-                      return (
-                        <span
-                          key={key}
-                          className="px-3 py-1 rounded-full text-sm text-white"
-                          style={{ backgroundColor: mon?.color }}
-                        >
-                          {mon?.label}: {value}
-                        </span>
-                      )
-                    })}
-                  </div>
-                </div>
-
-                {/* Distribution Chart */}
-                {result.phanBoDiem && result.phanBoDiem.length > 0 && (
-                  <div>
-                    <h4 className="font-medium mb-3">Phân bố điểm:</h4>
-                    <ResponsiveContainer width="100%" height={200}>
-                      <BarChart data={result.phanBoDiem}>
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="khoang_diem" />
-                        <YAxis />
-                        <Tooltip />
-                        <Bar dataKey="so_thi_sinh" fill="#2563eb" />
-                      </BarChart>
-                    </ResponsiveContainer>
+            {/* Results */}
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Kết quả xếp hạng THPTQG</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {error && (
+                  <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                    <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+                    <span>{error}</span>
                   </div>
                 )}
-              </div>
-            ) : (
-              <div className="text-center py-12 text-muted-foreground">
-                <TrendingUp className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                <p>Nhập điểm và nhấn "Tính thứ hạng" để xem kết quả</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
-      </div>
+                {result ? (
+                  <div className="space-y-6">
+                    {/* Ranking Info */}
+                    <div className="grid grid-cols-2 gap-4">
+                      <div className="p-4 bg-muted rounded-lg text-center">
+                        <div className="text-3xl font-bold text-primary">{result.thuHang.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">Thứ hạng</div>
+                      </div>
+                      <div className="p-4 bg-muted rounded-lg text-center">
+                        <div className="text-3xl font-bold">{result.tongDiem.toFixed(2)}</div>
+                        <div className="text-sm text-muted-foreground">Tổng điểm</div>
+                      </div>
+                      <div className="p-4 bg-muted rounded-lg text-center">
+                        <div className="text-3xl font-bold text-green-600">
+                          Top {result.tyLePhanTram}%
+                        </div>
+                        <div className="text-sm text-muted-foreground">Phần trăm</div>
+                      </div>
+                      <div className="p-4 bg-muted rounded-lg text-center">
+                        <div className="text-3xl font-bold">{result.tongThiSinh.toLocaleString()}</div>
+                        <div className="text-sm text-muted-foreground">Tổng thí sinh</div>
+                      </div>
+                    </div>
+
+                    {/* Score Summary */}
+                    <div className="p-4 border rounded-lg">
+                      <h4 className="font-medium mb-3 text-sm">Điểm đã nhập:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {Object.entries(result.diemNhap).map(([key, value]) => {
+                          if (value === null) return null
+                          const mon = monHoc.find(m => m.key === key)
+                          return (
+                            <span
+                              key={key}
+                              className="px-3 py-1 rounded-full text-xs font-medium text-white"
+                              style={{ backgroundColor: mon?.color }}
+                            >
+                              {mon?.label}: {value}
+                            </span>
+                          )
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Distribution Chart */}
+                    {result.phanBoDiem && result.phanBoDiem.length > 0 && (
+                      <div>
+                        <h4 className="font-medium mb-3 text-sm">Phân bố điểm toàn quốc:</h4>
+                        <ResponsiveContainer width="100%" height={200}>
+                          <BarChart data={result.phanBoDiem}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="khoang_diem" />
+                            <YAxis />
+                            <Tooltip />
+                            <Bar dataKey="so_thi_sinh" fill="#2563eb" />
+                          </BarChart>
+                        </ResponsiveContainer>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-center py-12 text-muted-foreground">
+                    <TrendingUp className="h-12 w-12 mx-auto mb-4 opacity-50" />
+                    <p>Nhập điểm các môn và nhấn &quot;Tính thứ hạng THPTQG&quot; để xem kết quả</p>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      )}
+
+      {/* SECTION 2: THỨ HẠNG ĐGNL - HSA */}
+      {activeTab === 'hsa' && (
+        <div className="space-y-6">
+          <div className="flex items-start gap-2 rounded-lg border border-blue-200 bg-blue-50/80 p-3 text-sm text-blue-900">
+            <Info className="h-4 w-4 mt-0.5 shrink-0 text-blue-600" />
+            <div className="space-y-1">
+              <span className="font-semibold">Tra cứu thứ hạng thi Đánh giá năng lực ĐHQGHN (HSA)</span>
+              <p className="text-xs text-blue-700">
+                Thang điểm HSA tối đa 150 điểm. Dữ liệu xếp hạng và phổ điểm được đối chiếu từ cổng phân tích phổ điểm Tuyensinh247.com theo từng đợt thi.
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            {/* Input Card */}
+            <div className="lg:col-span-5 space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Award className="h-5 w-5 text-primary" />
+                    Nhập thông tin thi HSA
+                  </CardTitle>
+                  <CardDescription>
+                    Chọn đợt thi và nhập điểm số bài thi HSA của bạn (0 - 150)
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleHsaCalculate} className="space-y-5">
+                    {/* Select Exam Batch */}
+                    <div className="space-y-2">
+                      <Label htmlFor="hsa-exam" className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                        <Calendar className="h-3.5 w-3.5" />
+                        Đợt thi HSA
+                      </Label>
+                      <select
+                        id="hsa-exam"
+                        value={selectedExamId}
+                        onChange={(e) => setSelectedExamId(Number(e.target.value))}
+                        className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                      >
+                        {hsaExams.map((exam) => (
+                          <option key={exam.id} value={exam.id}>
+                            {exam.name} {exam.isDefault ? '(Mới nhất)' : ''}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Input Score */}
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label htmlFor="hsa-score" className="flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          <Calculator className="h-3.5 w-3.5" />
+                          Điểm thi của bạn
+                        </Label>
+                        <span className="text-xs text-muted-foreground">Thang điểm: 0 - 150</span>
+                      </div>
+                      <Input
+                        id="hsa-score"
+                        type="number"
+                        step="0.5"
+                        min="0"
+                        max="150"
+                        placeholder="Ví dụ: 95.5 hoặc 102"
+                        value={hsaScore}
+                        onChange={(e) => {
+                          setHsaScore(e.target.value)
+                          if (errorHsa) setErrorHsa('')
+                        }}
+                        className="text-base font-semibold"
+                      />
+                    </div>
+
+                    {/* Quick Presets */}
+                    <div className="space-y-1.5">
+                      <span className="text-[11px] text-muted-foreground font-medium">Gợi ý mốc điểm nhanh:</span>
+                      <div className="flex flex-wrap gap-1.5">
+                        {[75, 85, 90, 95, 100, 110, 120].map((preset) => (
+                          <button
+                            key={preset}
+                            type="button"
+                            onClick={() => {
+                              setHsaScore(String(preset))
+                              if (errorHsa) setErrorHsa('')
+                            }}
+                            className="rounded-md border border-border bg-muted/60 px-2 py-0.5 text-xs text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                          >
+                            {preset}đ
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <Button type="submit" className="w-full" disabled={loadingHsa}>
+                      <Search className="h-4 w-4 mr-2" />
+                      {loadingHsa ? 'Đang tra cứu Tuyensinh247...' : 'Tra cứu thứ hạng HSA'}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+
+              {/* Note Card */}
+              <Card className="bg-muted/40 border-dashed">
+                <CardContent className="p-4 space-y-2 text-xs text-muted-foreground">
+                  <div className="flex items-center gap-1.5 font-medium text-foreground">
+                    <Info className="h-3.5 w-3.5 text-primary" />
+                    <span>Lưu ý về thứ hạng HSA:</span>
+                  </div>
+                  <ul className="list-disc pl-4 space-y-1">
+                    <li>Thứ hạng được xác định trực tiếp trên phổ điểm thí sinh của đợt thi đã chọn.</li>
+                    <li>Chưa bao gồm điểm ưu tiên đối tượng, khu vực hay điểm thưởng xét tuyển riêng của từng trường.</li>
+                    <li>
+                      Nguồn dữ liệu:{' '}
+                      <a
+                        href="https://diemthi.tuyensinh247.com/tra-cuu-xep-hang-diem-thi.html?phuongthuc=HSA"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary underline inline-flex items-center gap-0.5 hover:text-primary/80"
+                      >
+                        Tuyensinh247.com <ExternalLink className="h-2.5 w-2.5" />
+                      </a>
+                    </li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Result Card */}
+            <div className="lg:col-span-7 space-y-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle className="text-lg flex items-center justify-between">
+                    <span>Kết quả xếp hạng ĐGNL (HSA)</span>
+                    {hsaResult && (
+                      <span className="text-xs font-normal text-muted-foreground bg-muted px-2.5 py-1 rounded-full">
+                        {hsaResult.examName}
+                      </span>
+                    )}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {errorHsa && (
+                    <div className="mb-4 flex items-start gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                      <AlertTriangle className="h-4 w-4 mt-0.5 shrink-0" />
+                      <span>{errorHsa}</span>
+                    </div>
+                  )}
+
+                  {loadingHsa && (
+                    <div className="text-center py-14 space-y-3">
+                      <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-primary border-r-transparent" />
+                      <p className="text-sm text-muted-foreground font-medium">
+                        Đang kết nối và lấy phổ điểm từ Tuyensinh247...
+                      </p>
+                    </div>
+                  )}
+
+                  {!loadingHsa && hsaResult && (
+                    <div className="space-y-6">
+                      {/* Top KPI Cards */}
+                      <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                        <div className="p-3.5 bg-primary/5 border border-primary/20 rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-primary">
+                            #{hsaResult.thuHangTu.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1 font-medium">Thứ hạng ước tính</div>
+                        </div>
+
+                        <div className="p-3.5 bg-emerald-50 border border-emerald-200 rounded-xl text-center">
+                          <div className="text-2xl sm:text-3xl font-extrabold text-emerald-700">
+                            Top {hsaResult.tyLePhanTram}%
+                          </div>
+                          <div className="text-xs text-emerald-800 mt-1 font-medium">Vị trí năng lực</div>
+                        </div>
+
+                        <div className="p-3.5 bg-muted/60 border border-border rounded-xl text-center">
+                          <div className="text-xl sm:text-2xl font-bold text-foreground">
+                            {hsaResult.from} - {hsaResult.to}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1 font-medium">Khoảng điểm phổ</div>
+                        </div>
+
+                        <div className="p-3.5 bg-muted/60 border border-border rounded-xl text-center">
+                          <div className="text-xl sm:text-2xl font-bold text-foreground">
+                            {hsaResult.tongThiSinh.toLocaleString()}
+                          </div>
+                          <div className="text-xs text-muted-foreground mt-1 font-medium">Tổng số thí sinh</div>
+                        </div>
+                      </div>
+
+                      {/* Detailed Breakdown */}
+                      <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+                        <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                          Phân bố thí sinh so với điểm {hsaResult.diem} của bạn
+                        </h4>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                          <div className="flex items-center justify-between sm:flex-col sm:items-start p-3 rounded-lg bg-red-50/70 border border-red-100">
+                            <span className="text-xs text-red-700 font-medium">Điểm cao hơn bạn</span>
+                            <span className="text-lg font-bold text-red-700">
+                              {hsaResult.larger.toLocaleString()}
+                            </span>
+                            <span className="text-[11px] text-red-600/80">
+                              ({hsaResult.tongThiSinh > 0 ? ((hsaResult.larger / hsaResult.tongThiSinh) * 100).toFixed(1) : 0}%)
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between sm:flex-col sm:items-start p-3 rounded-lg bg-blue-50/70 border border-blue-100">
+                            <span className="text-xs text-blue-700 font-medium">Cùng khoảng điểm</span>
+                            <span className="text-lg font-bold text-blue-700">
+                              {hsaResult.same.toLocaleString()}
+                            </span>
+                            <span className="text-[11px] text-blue-600/80">
+                              ({hsaResult.tongThiSinh > 0 ? ((hsaResult.same / hsaResult.tongThiSinh) * 100).toFixed(1) : 0}%)
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-between sm:flex-col sm:items-start p-3 rounded-lg bg-emerald-50/70 border border-emerald-100">
+                            <span className="text-xs text-emerald-700 font-medium">Điểm thấp hơn bạn</span>
+                            <span className="text-lg font-bold text-emerald-700">
+                              {hsaResult.smaller.toLocaleString()}
+                            </span>
+                            <span className="text-[11px] text-emerald-600/80">
+                              ({hsaResult.tongThiSinh > 0 ? ((hsaResult.smaller / hsaResult.tongThiSinh) * 100).toFixed(1) : 0}%)
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Visual Ratio Bar */}
+                        {hsaResult.tongThiSinh > 0 && (
+                          <div className="pt-2 space-y-1.5">
+                            <div className="h-3 w-full rounded-full bg-muted overflow-hidden flex">
+                              <div
+                                style={{ width: `${(hsaResult.smaller / hsaResult.tongThiSinh) * 100}%` }}
+                                className="bg-emerald-500 h-full"
+                                title={`Điểm thấp hơn: ${hsaResult.smaller.toLocaleString()}`}
+                              />
+                              <div
+                                style={{ width: `${Math.max(1, (hsaResult.same / hsaResult.tongThiSinh) * 100)}%` }}
+                                className="bg-blue-500 h-full"
+                                title={`Cùng khoảng điểm: ${hsaResult.same.toLocaleString()}`}
+                              />
+                              <div
+                                style={{ width: `${(hsaResult.larger / hsaResult.tongThiSinh) * 100}%` }}
+                                className="bg-rose-400 h-full"
+                                title={`Điểm cao hơn: ${hsaResult.larger.toLocaleString()}`}
+                              />
+                            </div>
+                            <div className="flex justify-between text-[11px] text-muted-foreground">
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" /> Thấp hơn ({((hsaResult.smaller / hsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-blue-500 inline-block" /> Cùng khoảng ({((hsaResult.same / hsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                              </span>
+                              <span className="flex items-center gap-1">
+                                <span className="w-2 h-2 rounded-full bg-rose-400 inline-block" /> Cao hơn ({((hsaResult.larger / hsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* View Mode Toggle: Interactive Chart or Official Image */}
+                      <div className="flex items-center justify-between border-b border-border pb-2">
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                            Dạng hiển thị phổ điểm:
+                          </span>
+                          <div className="inline-flex rounded-lg bg-muted p-0.5 text-xs">
+                            <button
+                              type="button"
+                              onClick={() => setHsaDisplayMode('both')}
+                              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                                hsaDisplayMode === 'both' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              Tất cả
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setHsaDisplayMode('chart')}
+                              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                                hsaDisplayMode === 'chart' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              <BarChart3 className="h-3 w-3 inline mr-1" />
+                              Biểu đồ cột
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => setHsaDisplayMode('image')}
+                              className={`rounded-md px-2.5 py-1 font-medium transition-colors ${
+                                hsaDisplayMode === 'image' ? 'bg-background text-foreground shadow-xs' : 'text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              <ImageIcon className="h-3 w-3 inline mr-1" />
+                              Ảnh gốc
+                            </button>
+                          </div>
+                        </div>
+
+                        {hsaResult.image && (
+                          <a
+                            href={hsaResult.image}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-primary font-medium hover:underline inline-flex items-center gap-1"
+                          >
+                            Xem ảnh gốc <ExternalLink className="h-3 w-3" />
+                          </a>
+                        )}
+                      </div>
+
+                      {/* 1. INTERACTIVE BAR CHART OF SCORE DISTRIBUTION */}
+                      {(hsaDisplayMode === 'both' || hsaDisplayMode === 'chart') && hsaResult.phanBoDiem && hsaResult.phanBoDiem.length > 0 && (
+                        <div className="rounded-xl border border-border p-4 space-y-3">
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                              <BarChart3 className="h-3.5 w-3.5 text-primary" />
+                              Biểu đồ phổ điểm thi HSA ({hsaResult.examName})
+                            </h4>
+                            <span className="text-xs text-muted-foreground">
+                              Cột cam: Khoảng điểm của bạn ({hsaResult.from} - {hsaResult.to}đ)
+                            </span>
+                          </div>
+
+                          <ResponsiveContainer width="100%" height={260}>
+                            <BarChart
+                              data={hsaResult.phanBoDiem}
+                              margin={{ top: 12, right: 12, left: -10, bottom: 0 }}
+                            >
+                              <CartesianGrid strokeDasharray="3 3" vertical={false} opacity={0.3} />
+                              <XAxis
+                                dataKey="khoang_diem"
+                                tick={{ fontSize: 10 }}
+                                interval={1}
+                                tickLine={false}
+                              />
+                              <YAxis
+                                tick={{ fontSize: 10 }}
+                                tickLine={false}
+                                axisLine={false}
+                                tickFormatter={(val) => val >= 1000 ? `${(val / 1000).toFixed(0)}k` : val}
+                              />
+                              <Tooltip
+                                content={({ active, payload }) => {
+                                  if (!active || !payload || !payload.length) return null
+                                  const item = payload[0].payload
+                                  const isUser = (hsaResult.from === item.from && hsaResult.to === item.to) ||
+                                    (hsaResult.diem >= item.from && hsaResult.diem < item.to)
+                                  return (
+                                    <div className="rounded-lg border border-border bg-popover p-2.5 shadow-md text-xs space-y-1">
+                                      <p className="font-semibold text-popover-foreground">
+                                        Khoảng điểm: {item.khoang_diem}
+                                      </p>
+                                      <p className="text-muted-foreground">
+                                        Số thí sinh: <b className="text-foreground">{item.so_thi_sinh.toLocaleString()}</b>
+                                        {hsaResult.tongThiSinh > 0 && (
+                                          <span className="ml-1 text-[11px] text-muted-foreground">
+                                            ({((item.so_thi_sinh / hsaResult.tongThiSinh) * 100).toFixed(1)}%)
+                                          </span>
+                                        )}
+                                      </p>
+                                      {isUser && (
+                                        <p className="pt-0.5 text-amber-600 font-semibold flex items-center gap-1">
+                                          ★ Điểm của bạn ({hsaResult.diem}đ) nằm trong khoảng này
+                                        </p>
+                                      )}
+                                    </div>
+                                  )
+                                }}
+                              />
+                              <Bar dataKey="so_thi_sinh" radius={[4, 4, 0, 0]}>
+                                {hsaResult.phanBoDiem.map((entry, index) => {
+                                  const isUserBin = (hsaResult.from === entry.from && hsaResult.to === entry.to) ||
+                                    (hsaResult.diem >= entry.from && hsaResult.diem < entry.to)
+                                  return (
+                                    <Cell
+                                      key={`hsa-cell-${index}`}
+                                      fill={isUserBin ? '#ea580c' : '#2563eb'}
+                                    />
+                                  )
+                                })}
+                              </Bar>
+                            </BarChart>
+                          </ResponsiveContainer>
+
+                          <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground pt-1">
+                            <span className="flex items-center gap-1.5">
+                              <span className="w-3 h-3 rounded-xs bg-[#2563eb] inline-block" /> Phổ điểm chung
+                            </span>
+                            <span className="flex items-center gap-1.5 font-semibold text-foreground">
+                              <span className="w-3 h-3 rounded-xs bg-[#ea580c] inline-block" /> Khoảng điểm của bạn ({hsaResult.from} - {hsaResult.to}đ)
+                            </span>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* 2. OFFICIAL PUBLISHED DISTRIBUTION IMAGE */}
+                      {(hsaDisplayMode === 'both' || hsaDisplayMode === 'image') && (
+                        <div className="rounded-xl border border-border p-4 space-y-3">
+                          <div className="flex items-center justify-between">
+                            <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-1.5">
+                              <Layers className="h-3.5 w-3.5" />
+                              Ảnh chụp phổ điểm chính thức ({hsaResult.examName})
+                            </h4>
+                            <div className="flex items-center gap-2">
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => {
+                                  setHsaImgError(false)
+                                  setHsaImgLoading(true)
+                                  // toggle fallback
+                                  if (hsaImgSrc.startsWith('/images/hsa/')) {
+                                    setHsaImgSrc(hsaResult.proxyImage || hsaResult.image)
+                                  } else {
+                                    setHsaImgSrc(hsaResult.localImage || `/images/hsa/hsa-${hsaResult.examId}.jpg`)
+                                  }
+                                }}
+                                className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+                                title="Tải lại nguồn ảnh"
+                              >
+                                <RefreshCw className="h-3 w-3 mr-1" />
+                                Đổi nguồn ảnh
+                              </Button>
+                            </div>
+                          </div>
+
+                          <div className="relative overflow-hidden rounded-lg border border-border bg-muted/20 min-h-[260px] flex items-center justify-center p-3">
+                            {hsaImgLoading && !hsaImgError && (
+                              <div className="absolute inset-0 flex flex-col items-center justify-center bg-background/60 backdrop-blur-xs text-xs text-muted-foreground space-y-2 z-10">
+                                <div className="h-6 w-6 animate-spin rounded-full border-2 border-primary border-r-transparent" />
+                                <span>Đang tải biểu đồ phổ điểm...</span>
+                              </div>
+                            )}
+
+                            {hsaImgError ? (
+                              <div className="text-center p-6 space-y-3">
+                                <AlertTriangle className="h-8 w-8 mx-auto text-amber-500" />
+                                <div className="space-y-1">
+                                  <p className="text-sm font-semibold text-foreground">Không thể hiển thị ảnh trực tiếp</p>
+                                  <p className="text-xs text-muted-foreground max-w-sm mx-auto">
+                                    Ảnh có thể bị chặn bởi trình duyệt hoặc tiện ích chặn quảng cáo. Bạn có thể xem biểu đồ cột tương tác ở trên hoặc mở ảnh trực tiếp tại tab mới.
+                                  </p>
+                                </div>
+                                <div className="flex justify-center gap-2 pt-1">
+                                  <Button
+                                    type="button"
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => {
+                                      setHsaImgError(false)
+                                      setHsaImgLoading(true)
+                                      setHsaImgSrc(hsaResult.proxyImage || hsaResult.localImage)
+                                    }}
+                                  >
+                                    <RefreshCw className="h-3.5 w-3.5 mr-1.5" />
+                                    Tải qua proxy
+                                  </Button>
+                                  {hsaResult.image && (
+                                    <a
+                                      href={hsaResult.image}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="inline-flex items-center px-3 py-1.5 text-xs font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
+                                    >
+                                      Mở ảnh tại tab mới <ExternalLink className="h-3 w-3 ml-1" />
+                                    </a>
+                                  )}
+                                </div>
+                              </div>
+                            ) : (
+                              <img
+                                src={hsaImgSrc}
+                                alt={`Phổ điểm ${hsaResult.examName}`}
+                                referrerPolicy="no-referrer"
+                                crossOrigin="anonymous"
+                                onLoad={() => setHsaImgLoading(false)}
+                                onError={handleImageError}
+                                className="max-h-[440px] w-auto max-w-full object-contain rounded transition-all hover:scale-[1.01]"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {!loadingHsa && !hsaResult && (
+                    <div className="text-center py-14 text-muted-foreground space-y-3">
+                      <TrendingUp className="h-12 w-12 mx-auto text-muted-foreground/40" />
+                      <div className="space-y-1">
+                        <p className="font-medium text-foreground">Chưa có kết quả tra cứu</p>
+                        <p className="text-xs">
+                          Chọn đợt thi HSA, nhập điểm thi của bạn ở khung bên trái và bấm &quot;Tra cứu thứ hạng HSA&quot;.
+                        </p>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

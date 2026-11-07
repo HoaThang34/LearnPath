@@ -57,6 +57,8 @@ export const getDeAnByMaTruong = (maTruong) => api.get(`/de-an/${maTruong}`);
 
 // Diem Thi
 export const getRanking = (params) => api.get('/diem-thi/ranking', { params });
+export const getHsaExams = () => api.get('/diem-thi/hsa/exams');
+export const getHsaRanking = (params) => api.get('/diem-thi/hsa/ranking', { params });
 
 // Career guidance
 export const getCareerOverview = (params) => api.get('/career/overview', params ? { params } : undefined);
