@@ -103,6 +103,9 @@ test('curriculum API: user and admin workflows', async (t) => {
     headers: { origin: 'http://localhost:5173' },
     json: { username: 'curriculumadmin', password: 'AdminPassword123' },
   });
+  if (loginRes.status !== 200) {
+    console.error('LOGIN ERROR BODY:', await loginRes.text());
+  }
   assert.equal(loginRes.status, 200);
   const adminCookie = readCookie(loginRes, 'lp_admin_session');
   assert.ok(adminCookie);
