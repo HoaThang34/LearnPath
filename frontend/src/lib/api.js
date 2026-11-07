@@ -179,4 +179,11 @@ export async function streamAgentChat({
   }
 }
 
+// Curriculum (Chương trình học)
+export const getCurriculums = (params) => api.get('/chuong-trinh-hoc', { params });
+export const getCurriculumSchools = () => api.get('/chuong-trinh-hoc/schools');
+export const getCurriculumMajors = (school) => api.get('/chuong-trinh-hoc/majors', { params: { school } });
+export const getCurriculumById = (id) => api.get(`/chuong-trinh-hoc/${id}`);
+export const getCurriculumDetail = (school, major) => api.get('/chuong-trinh-hoc/detail', { params: { school, major } });
+
 export default api;

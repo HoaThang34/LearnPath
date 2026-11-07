@@ -10,7 +10,7 @@ const MAIN_DB_PATH = process.env.LEARNPATH_DB_PATH
   ? path.resolve(process.env.LEARNPATH_DB_PATH)
   : path.join(__dirname, '../../database/learnpath.db');
 
-const SCHEMA_VERSION = 8;
+const SCHEMA_VERSION = 9;
 
 const INTEREST_WEIGHTS = [
   {
@@ -443,6 +443,30 @@ function createAgentSchema(database) {
   `);
 }
 
+// v9: university & major academic curriculum.
+function createCurriculumSchema(database) {
+  database.run(`
+    CREATE TABLE IF NOT EXISTS curriculums (
+      id             INTEGER PRIMARY KEY AUTOINCREMENT,
+      school_code    TEXT,
+      school_name    TEXT NOT NULL,
+      major_code     TEXT,
+      major_name     TEXT NOT NULL,
+      degree_level   TEXT DEFAULT 'Đại học',
+      duration_years REAL DEFAULT 4,
+      total_credits  INTEGER,
+      description    TEXT,
+      content        TEXT,
+      semesters_json TEXT,
+      created_at     INTEGER NOT NULL,
+      updated_at     INTEGER NOT NULL,
+      UNIQUE (school_name, major_name)
+    );
+    CREATE INDEX IF NOT EXISTS idx_curriculums_school ON curriculums(school_name);
+    CREATE INDEX IF NOT EXISTS idx_curriculums_major ON curriculums(major_name);
+  `);
+}
+
 function createSchema(database) {
   database.run(`
     CREATE TABLE IF NOT EXISTS users (
@@ -575,6 +599,7 @@ function createSchema(database) {
   createInterestSchema(database);
   seedInterestDefaults(database);
   createAgentSchema(database);
+  createCurriculumSchema(database);
   database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
 }
 
@@ -605,6 +630,7 @@ function verifySchema(database) {
     'chat_messages',
     'agent_usage',
     'agent_consents',
+    'curriculums',
   ];
   const missingTables = requiredTables.filter((table) => !tables.includes(table));
 
@@ -725,7 +751,7 @@ function backupBeforeMigration(version) {
 }
 
 function migrateSchema(database, version) {
-  if (version >= 1 && version <= 7) {
+  if (version >= 1 && version <= 8) {
     backupBeforeMigration(version);
 
     database.run('BEGIN');
@@ -864,7 +890,14 @@ function migrateSchema(database, version) {
       }
 
       // v7 → v8: agent chat tables (additive only).
-      createAgentSchema(database);
+      if (version <= 7) {
+        createAgentSchema(database);
+      }
+
+      // v8 → v9: curriculum tables (additive only).
+      if (version <= 8) {
+        createCurriculumSchema(database);
+      }
 
       database.run(`PRAGMA user_version = ${SCHEMA_VERSION};`);
       database.run('COMMIT');

@@ -19,6 +19,7 @@ import {
   Bot,
   PanelLeft,
   PanelLeftClose,
+  BookOpenCheck,
 } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { Button, buttonVariants } from './ui/button'
@@ -27,6 +28,7 @@ import { cn } from '@/lib/utils'
 
 const menuItems = [
   { path: '/', label: 'Trang chủ', icon: GraduationCap },
+  { path: '/chuong-trinh-hoc', label: 'Chương trình học', icon: BookOpenCheck },
   { path: '/de-an', label: 'Đề án tuyển sinh', icon: Search },
   { path: '/diem-chuan', label: 'Điểm chuẩn', icon: BarChart3 },
   { path: '/khoi-thi', label: 'Khối thi', icon: BookOpen },

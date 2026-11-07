@@ -9,6 +9,7 @@ import {
   ShieldCheck,
   Users,
   SlidersHorizontal,
+  BookOpenCheck,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
@@ -18,6 +19,7 @@ import DataPanel from './DataPanel'
 import AuditPanel from './AuditPanel'
 import SurveySettingsPanel from './SurveySettingsPanel'
 import CareerRubricsPanel from './CareerRubricsPanel'
+import CurriculumPanel from './CurriculumPanel'
 
 const NAV_ITEMS = [
   {
@@ -54,6 +56,13 @@ const NAV_ITEMS = [
     alias: ['/admin/career'],
     label: 'Rubric năng lực',
     icon: SlidersHorizontal,
+  },
+  {
+    id: 'curriculum',
+    path: '/admin_curriculum',
+    alias: ['/admin/curriculum'],
+    label: 'Chương trình học',
+    icon: BookOpenCheck,
   },
   {
     id: 'audit',
@@ -200,6 +209,7 @@ export default function AdminShell({ admin, onLogout }) {
               />
             )}
             {activeItem.id === 'career' && <CareerRubricsPanel admin={admin} />}
+            {activeItem.id === 'curriculum' && <CurriculumPanel admin={admin} />}
             {activeItem.id === 'audit' && <AuditPanel admin={admin} />}
           </main>
         </div>

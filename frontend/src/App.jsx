@@ -21,6 +21,7 @@ const AdminPage = lazy(() => import('./pages/AdminPage'))
 const InterestRunner = lazy(() => import('./pages/InterestRunner'))
 const InterestResult = lazy(() => import('./pages/InterestResult'))
 const TroLyAI = lazy(() => import('./pages/TroLyAI'))
+const ChuongTrinhHoc = lazy(() => import('./pages/ChuongTrinhHoc'))
 
 function PageFallback() {
   return (
@@ -68,6 +69,7 @@ function App() {
             <Route path="/admin_survey" element={<AdminPage />} />
             <Route path="/admin_data" element={<AdminPage />} />
             <Route path="/admin_career" element={<AdminPage />} />
+            <Route path="/admin_curriculum" element={<AdminPage />} />
             <Route path="/admin_audit" element={<AdminPage />} />
             <Route path="/admin_*" element={<AdminPage />} />
           </Routes>
@@ -87,6 +89,16 @@ function App() {
               <Route path="/dang-nhap" element={<AuthPage mode="login" />} />
               <Route path="/dang-ky" element={<AuthPage mode="register" />} />
               <Route path="/doi-mat-khau" element={<ChangePasswordPage />} />
+              <Route
+                path="/chuong-trinh-hoc"
+                element={
+                  <ProtectedRoute>
+                    <Suspense fallback={<PageFallback />}>
+                      <ChuongTrinhHoc />
+                    </Suspense>
+                  </ProtectedRoute>
+                }
+              />
               <Route
                 path="/de-an"
                 element={

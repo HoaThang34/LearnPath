@@ -34,17 +34,17 @@ function cleanupPath(filePath) {
   fs.rmSync(filePath, { force: true });
 }
 
-test('initializes schema v8 in a new auth database', async () => {
+test('initializes schema v9 in a new auth database', async () => {
   await getAuthDb();
 
   assert.equal(fs.existsSync(AUTH_DB_PATH), true);
-  assert.equal(SCHEMA_VERSION, 8);
+  assert.equal(SCHEMA_VERSION, 9);
   assert.equal(queryOne('PRAGMA user_version').user_version, SCHEMA_VERSION);
 
   const tables = queryOne(
     "SELECT group_concat(name, ',') AS names FROM sqlite_master WHERE type = 'table'"
   ).names.split(',');
-  for (const table of ['users', 'sessions', 'admins', 'admin_sessions', 'admin_audit', 'user_profiles', 'survey_questions', 'academic_scores', 'career_selections', 'career_rubrics', 'career_rubric_subjects', 'interest_instruments', 'interest_items', 'interest_attempts', 'interest_responses', 'interest_results', 'interest_group_weights', 'interest_group_pairs', 'career_match_config', 'user_exam_scores', 'chat_conversations', 'chat_messages', 'agent_usage', 'agent_consents']) {
+  for (const table of ['users', 'sessions', 'admins', 'admin_sessions', 'admin_audit', 'user_profiles', 'survey_questions', 'academic_scores', 'career_selections', 'career_rubrics', 'career_rubric_subjects', 'interest_instruments', 'interest_items', 'interest_attempts', 'interest_responses', 'interest_results', 'interest_group_weights', 'interest_group_pairs', 'career_match_config', 'user_exam_scores', 'chat_conversations', 'chat_messages', 'agent_usage', 'agent_consents', 'curriculums']) {
     assert.ok(tables.includes(table), `expected table ${table}`);
   }
 
@@ -181,7 +181,7 @@ test('refuses a newer schema version', async () => {
   const db = new SQL.Database();
   db.run('CREATE TABLE users (id INTEGER PRIMARY KEY);');
   db.run('CREATE TABLE sessions (token_hash TEXT PRIMARY KEY);');
-  db.run('PRAGMA user_version = 9;');
+  db.run('PRAGMA user_version = 10;');
   fs.writeFileSync(newerPath, Buffer.from(db.export()));
   db.close();
 
@@ -822,7 +822,7 @@ test('migrates a v7 auth database to v8 with agent tables and keeps users', asyn
 
   const migrated = new SQL.Database(fs.readFileSync(migrationPath));
   try {
-    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 8);
+    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 9);
     const tables = migrated
       .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
       .flatMap((r) => r.values.map((row) => row[0]));
@@ -840,6 +840,61 @@ test('migrates a v7 auth database to v8 with agent tables and keeps users', asyn
     if (name.startsWith(`${prefix}.v7-backup-`)) EXTRA_FILES.push(path.join(directory, name));
   }
   assert.ok(EXTRA_FILES.some((file) => path.basename(file).startsWith(`${prefix}.v7-backup-`)));
+});
+
+test('migrates a v8 auth database to v9 with curriculum tables and keeps users', async () => {
+  const migrationPath = path.join(
+    os.tmpdir(),
+    `learnpath-auth-v8-${process.pid}-${Date.now()}.db`
+  );
+  EXTRA_FILES.push(migrationPath);
+
+  // Build a real current-schema DB in a child process, then downgrade it to v8.
+  const createScript = `
+    process.env.LEARNPATH_AUTH_DB_PATH = ${JSON.stringify(migrationPath)};
+    require(${JSON.stringify(MODULE_PATH)}).getAuthDb()
+      .then(() => process.exit(0))
+      .catch((error) => { console.error(error.message); process.exit(3); });
+  `;
+  const created = spawnSync(process.execPath, ['-e', createScript], { encoding: 'utf8' });
+  assert.equal(created.status, 0, created.stderr);
+
+  const SQL = await initSqlJs();
+  const db = new SQL.Database(fs.readFileSync(migrationPath));
+  db.run(`
+    DROP TABLE curriculums;
+    PRAGMA user_version = 8;
+  `);
+  db.run(
+    `INSERT INTO users (username, username_lower, password_hash, created_at, status, updated_at)
+     VALUES ('KeepV8', 'keepv8', 'scrypt$test$hash', ?, 'active', ?)`,
+    [Date.now(), Date.now()]
+  );
+  fs.writeFileSync(migrationPath, Buffer.from(db.export()));
+  db.close();
+
+  const result = spawnSync(process.execPath, ['-e', createScript], { encoding: 'utf8' });
+  assert.equal(result.status, 0, result.stderr);
+  assert.match(result.stdout, /backup created/i);
+
+  const migrated = new SQL.Database(fs.readFileSync(migrationPath));
+  try {
+    assert.equal(migrated.exec('PRAGMA user_version')[0].values[0][0], 9);
+    const tables = migrated
+      .exec("SELECT name FROM sqlite_master WHERE type = 'table'")
+      .flatMap((r) => r.values.map((row) => row[0]));
+    assert.ok(tables.includes('curriculums'), 'expected migrated table curriculums');
+    assert.equal(migrated.exec("SELECT username FROM users WHERE username = 'KeepV8'").length, 1);
+  } finally {
+    migrated.close();
+  }
+
+  const directory = path.dirname(migrationPath);
+  const prefix = path.basename(migrationPath);
+  for (const name of fs.readdirSync(directory)) {
+    if (name.startsWith(`${prefix}.v8-backup-`)) EXTRA_FILES.push(path.join(directory, name));
+  }
+  assert.ok(EXTRA_FILES.some((file) => path.basename(file).startsWith(`${prefix}.v8-backup-`)));
 });
 
 after(() => {

@@ -130,4 +130,12 @@ export const getInterestResultDetail = (attemptId) => adminApi.get(`/interest/re
 export const exportInterestResults = () =>
   adminApi.get('/interest/results/export', { responseType: 'blob' });
 
+// Curriculums (Chương trình học)
+export const getAdminCurriculums = (params) => adminApi.get('/curriculum', { params });
+export const getAdminCurriculumOptions = () => adminApi.get('/curriculum/options');
+export const getAdminCurriculumById = (id) => adminApi.get(`/curriculum/${id}`);
+export const createAdminCurriculum = (payload) => adminApi.post('/curriculum', payload);
+export const updateAdminCurriculum = (id, payload) => adminApi.put(`/curriculum/${id}`, payload);
+export const deleteAdminCurriculum = (id) => adminApi.delete(`/curriculum/${id}`);
+
 export default adminApi;

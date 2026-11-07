@@ -79,6 +79,7 @@ Environment variables:
 | `/dang-ky` | `pages/AuthPage.jsx` | Public | `/api/auth/register` |
 | `/doi-mat-khau` | `pages/ChangePasswordPage.jsx` | Authenticated | `/api/auth/change-password` |
 | `/admin/*`, `/admin_*` | `pages/AdminPage.jsx` (lazy) | Admin cookie | `/api/admin/*` |
+| `/chuong-trinh-hoc` | `pages/ChuongTrinhHoc.jsx` (lazy) | Protected | `/api/chuong-trinh-hoc` |
 | `/de-an` | `pages/DeAnTuyenSinh.jsx` | Protected | `/api/de-an`, `/api/de-an/:maTruong` |
 | `/diem-chuan` | `pages/DiemChuan.jsx` | Protected | `/api/diem-chuan`, `/phuong-thuc`, `/stats` |
 | `/khoi-thi` | `pages/KhoiThi.jsx` | Protected | `/api/khoi-thi`, `/api/khoi-thi/:maKhoi`, `/api/diem-chuan` |
