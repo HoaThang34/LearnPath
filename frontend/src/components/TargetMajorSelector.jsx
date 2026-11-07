@@ -17,11 +17,14 @@ import {
   Target,
   Trash2,
   X,
+  Flame,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import HotMajorBadge from '@/components/career/HotMajorBadge'
+import { HOT_MAJORS, getHotMajorInfo, isHotMajor } from '@/lib/hotMajors'
 import { getCareerTargetOptions } from '@/lib/api'
 import { cn } from '@/lib/utils'
 
@@ -50,6 +53,7 @@ export default function TargetMajorSelector({
   const [isMajorOpen, setIsMajorOpen] = useState(false)
   const [schoolSearch, setSchoolSearch] = useState('')
   const [majorSearch, setMajorSearch] = useState('')
+  const [filterHotOnly, setFilterHotOnly] = useState(false)
   const [isManualMode, setIsManualMode] = useState(false)
 
   const schoolDropdownRef = useRef(null)
@@ -157,17 +161,21 @@ export default function TargetMajorSelector({
       .sort((a, b) => (a.majorName || '').localeCompare(b.majorName || '', 'vi'))
   }, [targets, schoolValue])
 
-  // Lọc ngành theo ô tìm kiếm
+  // Lọc ngành theo ô tìm kiếm và bộ lọc ngành HOT
   const filteredMajors = useMemo(() => {
+    let list = availableMajors
+    if (filterHotOnly) {
+      list = list.filter((m) => isHotMajor(m.majorName, m.entryScore))
+    }
     const q = removeVietnameseTones(majorSearch)
-    if (!q) return availableMajors
-    return availableMajors.filter((m) => {
+    if (!q) return list
+    return list.filter((m) => {
       const nameNorm = removeVietnameseTones(m.majorName)
       const groupNorm = removeVietnameseTones(m.majorGroup)
       const blockNorm = removeVietnameseTones(m.admissionBlock)
       return nameNorm.includes(q) || groupNorm.includes(q) || blockNorm.includes(q)
     })
-  }, [availableMajors, majorSearch])
+  }, [availableMajors, majorSearch, filterHotOnly])
 
   // Chi tiết ngành mục tiêu đang chọn nếu khớp với catalog
   const matchedTarget = useMemo(() => {
@@ -328,6 +336,38 @@ export default function TargetMajorSelector({
               disabled={disabled}
               required={required}
             />
+          </div>
+
+          {/* Gợi ý 10 ngành HOT xu hướng hàng đầu */}
+          <div className="sm:col-span-2 rounded-xl border border-rose-200/80 dark:border-rose-950/60 bg-gradient-to-br from-rose-50/60 via-amber-50/30 to-background dark:from-rose-950/20 dark:via-background dark:to-background p-3.5 space-y-2.5">
+            <div className="flex items-center justify-between">
+              <span className="flex items-center gap-1.5 text-xs font-bold text-rose-700 dark:text-rose-300">
+                <Flame className="h-3.5 w-3.5 fill-rose-500 text-rose-500" />
+                Gợi ý 10 ngành HOT xu hướng hàng đầu:
+              </span>
+              <span className="text-[11px] text-muted-foreground">Nhấp để điền nhanh</span>
+            </div>
+            <div className="flex flex-wrap gap-1.5">
+              {HOT_MAJORS.map((hot) => {
+                const isSelected = majorValue === hot.name
+                return (
+                  <button
+                    key={hot.id}
+                    type="button"
+                    onClick={() => handleManualChange('major', hot.name)}
+                    className={cn(
+                      'inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-[11px] font-medium transition border',
+                      isSelected
+                        ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
+                        : 'bg-background hover:bg-rose-50 dark:hover:bg-rose-950/40 text-slate-800 dark:text-slate-200 border-slate-200 dark:border-slate-800 hover:border-rose-300 hover:text-rose-700'
+                    )}
+                  >
+                    <span className="font-bold text-[10px] text-rose-500">#{hot.id}</span>
+                    <span>{hot.name}</span>
+                  </button>
+                )
+              })}
+            </div>
           </div>
         </div>
       ) : (
@@ -493,7 +533,7 @@ export default function TargetMajorSelector({
               {/* Popover danh sách ngành */}
               {isMajorOpen && (
                 <div className="absolute left-0 top-full z-50 mt-1.5 w-full min-w-[300px] sm:min-w-[420px] rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-2.5 shadow-2xl ring-1 ring-black/10 animate-in fade-in-0 zoom-in-95">
-                  <div className="sticky top-0 bg-white dark:bg-slate-900 pb-2 z-10 border-b border-slate-100 dark:border-slate-800 mb-1.5">
+                  <div className="sticky top-0 bg-white dark:bg-slate-900 pb-2 z-10 border-b border-slate-100 dark:border-slate-800 mb-1.5 space-y-1.5">
                     <div className="relative">
                       <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
                       <Input
@@ -512,6 +552,25 @@ export default function TargetMajorSelector({
                           <X className="h-4 w-4" />
                         </button>
                       )}
+                    </div>
+
+                    <div className="flex items-center justify-between px-1">
+                      <button
+                        type="button"
+                        onClick={() => setFilterHotOnly((prev) => !prev)}
+                        className={cn(
+                          'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[10.5px] font-semibold transition border',
+                          filterHotOnly
+                            ? 'bg-rose-600 text-white border-rose-600 shadow-2xs'
+                            : 'bg-rose-50/70 hover:bg-rose-100 text-rose-700 dark:bg-rose-950/40 dark:text-rose-300 border-rose-200 dark:border-rose-900'
+                        )}
+                      >
+                        <Flame className="h-3 w-3 fill-rose-500 text-rose-500" />
+                        <span>Chỉ ngành HOT (≥27đ)</span>
+                      </button>
+                      <span className="text-[10px] text-muted-foreground">
+                        {filteredMajors.length} ngành
+                      </span>
                     </div>
                   </div>
 
@@ -536,8 +595,9 @@ export default function TargetMajorSelector({
                             )}
                           >
                             <div className="min-w-0 flex-1">
-                              <div className="font-semibold text-xs leading-snug">
-                                {major.majorName}
+                              <div className="font-semibold text-xs leading-snug flex items-center gap-1.5 flex-wrap">
+                                <span>{major.majorName}</span>
+                                <HotMajorBadge majorName={major.majorName} entryScore={major.entryScore} variant="compact" />
                               </div>
                               <div
                                 className={cn(
@@ -608,9 +668,11 @@ export default function TargetMajorSelector({
                   )}
                 </div>
 
-                <div className="font-bold text-sm sm:text-base text-foreground">
-                  {majorValue}
+                <div className="font-bold text-sm sm:text-base text-foreground flex items-center gap-2 flex-wrap">
+                  <span>{majorValue}</span>
+                  <HotMajorBadge majorName={majorValue} entryScore={matchedTarget?.entryScore} variant="pill" />
                 </div>
+                <HotMajorBadge majorName={majorValue} entryScore={matchedTarget?.entryScore} variant="full" className="mt-1" />
                 <div className="text-xs text-muted-foreground flex items-center gap-1.5">
                   <School className="h-3.5 w-3.5" />
                   <span>{schoolValue}</span>

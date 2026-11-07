@@ -9,6 +9,7 @@ import {
   ChevronRight,
   Compass,
   Crosshair,
+  Flame,
   GraduationCap,
   HelpCircle,
   Layers,
@@ -28,6 +29,8 @@ import { Button, buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useAuth } from '@/context/AuthContext'
 import { addCareerSelection, getCareerOverview, getUserProfile } from '@/lib/api'
+import HotMajorBadge from '@/components/career/HotMajorBadge'
+import { HOT_MAJORS } from '@/lib/hotMajors'
 
 // Helper: Short label for Radar vertices
 function shortSubject(s) {
@@ -874,6 +877,7 @@ export default function TrangChu() {
                         {targetFit.majorGroup}
                       </span>
                     )}
+                    <HotMajorBadge majorName={targetFit?.majorName || unmatchedTarget?.majorName} entryScore={targetFit?.entryScore} variant="badge" />
                   </div>
                 </div>
               ) : (
@@ -1118,6 +1122,7 @@ export default function TrangChu() {
                         {bestFit.majorGroup}
                       </span>
                     )}
+                    <HotMajorBadge majorName={bestFit.majorName} entryScore={bestFit.entryScore} variant="badge" />
                     {bestFit.isTarget && (
                       <span className="px-1.5 py-0.5 rounded border border-border bg-secondary text-secondary-foreground font-medium">
                         ★ Ngành mục tiêu

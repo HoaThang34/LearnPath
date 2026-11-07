@@ -1,9 +1,11 @@
-import { useState, useEffect, useRef } from 'react'
-import { BarChart3, Search, X, Info, AlertTriangle } from 'lucide-react'
+import { useState, useEffect, useRef, useMemo } from 'react'
+import { BarChart3, Search, X, Info, AlertTriangle, Flame } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import HotMajorBadge from '@/components/career/HotMajorBadge'
+import { isHotMajor } from '@/lib/hotMajors'
 import {
   getDiemChuan,
   getPhuongThuc,
@@ -70,9 +72,15 @@ export default function DiemChuan() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [page, setPage] = useState(1)
+  const [filterHotOnly, setFilterHotOnly] = useState(false)
   const [searchNonce, setSearchNonce] = useState(0)
   const requestIdRef = useRef(0)
   const PER_PAGE = 100
+
+  const displayResults = useMemo(() => {
+    if (!filterHotOnly) return results
+    return results.filter((r) => isHotMajor(r.nganh, r.diem_chuan))
+  }, [results, filterHotOnly])
 
   useEffect(() => {
     fetchPhuongThuc()
@@ -145,11 +153,12 @@ export default function DiemChuan() {
     setSearchTerm('')
     setSort('diem_desc')
     setFilterKhoiThi('')
+    setFilterHotOnly(false)
     setPage(1)
     setSearchNonce((value) => value + 1)
   }
 
-  const hasActiveFilters = searchTerm || sort !== 'diem_desc' || filterKhoiThi
+  const hasActiveFilters = searchTerm || sort !== 'diem_desc' || filterKhoiThi || filterHotOnly
   const totalPages = Math.ceil(total / PER_PAGE)
 
   // Scale description for selected method
@@ -267,11 +276,20 @@ export default function DiemChuan() {
                 </select>
               </div>
             </div>
-            <div className="flex items-center gap-2 mt-4">
+            <div className="flex flex-wrap items-center gap-2 mt-4">
               <Button onClick={handleSearch}><Search className="h-4 w-4 mr-2" />Tìm kiếm</Button>
+              <Button
+                type="button"
+                variant={filterHotOnly ? 'default' : 'outline'}
+                onClick={() => setFilterHotOnly((prev) => !prev)}
+                className={filterHotOnly ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-xs' : 'border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400'}
+              >
+                <Flame className="h-4 w-4 mr-1.5 fill-rose-500 text-rose-500" />
+                Chỉ ngành HOT (≥27đ)
+              </Button>
               {hasActiveFilters && (<Button variant="ghost" size="sm" onClick={clearFilters}><X className="h-4 w-4 mr-1" />Xóa bộ lọc</Button>)}
               <div className="ml-auto text-sm text-muted-foreground">
-                {total > 0 && `Tìm thấy ${total.toLocaleString()} kết quả`}
+                {total > 0 && `Tìm thấy ${total.toLocaleString()} kết quả ${filterHotOnly ? `(${displayResults.length} ngành HOT ≥ 27đ)` : ''}`}
               </div>
             </div>
           </CardContent>
@@ -297,17 +315,22 @@ export default function DiemChuan() {
                 <tbody>
                   {loading ? (
                     <tr><td colSpan="6" className="text-center py-8 text-muted-foreground">Đang tải...</td></tr>
-                  ) : results.length === 0 ? (
+                  ) : displayResults.length === 0 ? (
                     <tr><td colSpan="6" className="text-center py-8 text-muted-foreground">Không tìm thấy kết quả</td></tr>
                   ) : (
-                    results.map((item, index) => {
+                    displayResults.map((item, index) => {
                       const scoreInfo = getScoreScale(item.diem_chuan, selectedPhuongThuc, item.ghi_chu)
                       const bgColor = getScoreColor(item.diem_chuan, scoreInfo.scale)
                       return (
                         <tr key={item.id} className="border-b hover:bg-muted/50">
                           <td className="p-3 text-muted-foreground">{(page - 1) * PER_PAGE + index + 1}</td>
                           <td className="p-3">{item.truong}</td>
-                          <td className="p-3 font-medium max-w-[300px] truncate" title={item.nganh}>{item.nganh}</td>
+                          <td className="p-3 font-medium max-w-[320px]">
+                            <div className="flex items-center gap-1.5 min-w-0">
+                              <span className="truncate" title={item.nganh}>{item.nganh}</span>
+                              <HotMajorBadge majorName={item.nganh} entryScore={item.diem_chuan} variant="compact" />
+                            </div>
+                          </td>
                           <td className="p-3 text-muted-foreground text-xs max-w-[150px] truncate">{item.to_hop_mon}</td>
                           <td className="p-3 text-center">
                             <span className={`inline-block px-2 py-1 rounded text-xs font-bold border ${bgColor}`}>

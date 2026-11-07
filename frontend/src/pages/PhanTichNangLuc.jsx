@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   AlertCircle, ArrowLeftRight, Bookmark, Check, CheckCircle2, ChevronDown, ChevronUp,
-  Compass, Crosshair, Filter, Info, Loader2, RotateCcw, Search, Sliders, Sparkles, Star, Target, Trash2, X,
+  Compass, Crosshair, Filter, Flame, Info, Loader2, RotateCcw, Search, Sliders, Sparkles, Star, Target, Trash2, X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -16,6 +16,9 @@ import CareerMap from '@/components/career/CareerMap'
 import FitBars from '@/components/career/FitBars'
 import GroupFitPanel from '@/components/career/GroupFitPanel'
 import TinhCachMatrix from '@/components/career/TinhCachMatrix'
+import HotMajorBadge from '@/components/career/HotMajorBadge'
+import { HOT_MAJORS, getHotMajorInfo, isHotMajor } from '@/lib/hotMajors'
+import { computeEffectiveFits, compareMajorsByFit } from '@/lib/fitCalculations'
 
 // Helper: Normalize subject names for comparison
 function normalizeSubject(val) {
@@ -423,17 +426,23 @@ function MajorCard({
   const [isExpanded, setIsExpanded] = useState(false)
 
   const activeDetails = radarMode === 'all' ? (fit.allDetails || fit.details) : fit.details
-  const activeFitPct = radarMode === 'all' ? (fit.allFitPct ?? fit.fitPct) : fit.fitPct
   const activePrioritySubject = radarMode === 'all' ? (fit.allPrioritySubject || fit.prioritySubject) : fit.prioritySubject
 
   // Compute effective hocLucFit & tongHopFit
-  const effectiveHocLucFit = hasActiveSim || radarMode === 'all'
-    ? (activeFitPct ?? recommendation?.hocLucFit ?? null)
-    : (recommendation?.hocLucFit ?? (activeFitPct !== null ? activeFitPct : null))
-
-  const effectiveTongHopFit = (effectiveHocLucFit !== null && recommendation?.tinhCachFit !== null && recommendation?.tinhCachFit !== undefined)
-    ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * effectiveHocLucFit + (recommendationConfig?.w_tinh_cach ?? 0.4) * recommendation.tinhCachFit) * 10) / 10
-    : (recommendation?.tongHopFit ?? null)
+  const {
+    activeFitPct,
+    effectiveHocLucFit,
+    effectiveTongHopFit,
+    hasTongHop,
+    displayFitPct,
+    displayFitLabel,
+  } = computeEffectiveFits({
+    fit,
+    recommendation,
+    recommendationConfig,
+    radarMode,
+    hasActiveSim,
+  })
 
   const effectiveRecommendation = useMemo(() => {
     if (!recommendation) {
@@ -523,9 +532,6 @@ function MajorCard({
   }, [recommendation, activeFitPct, hasActiveSim, simulatedScores, effectiveHocLucFit, effectiveTongHopFit, fit.rubricId])
 
   // Top summary metric: Display "Phù hợp tổng thể" when available, fallback to academic fit
-  const hasTongHop = effectiveTongHopFit !== null && effectiveTongHopFit !== undefined
-  const displayFitPct = hasTongHop ? effectiveTongHopFit : activeFitPct
-  const displayFitLabel = hasTongHop ? 'Phù hợp tổng thể' : (radarMode === 'all' ? 'Phù hợp học lực (toàn diện)' : 'Phù hợp học lực')
   const fitStyle = getFitStyle(displayFitPct)
 
   const showDetails = isHovered || isExpanded
@@ -579,14 +585,15 @@ function MajorCard({
           {fit.year && <span className="text-[10px]">({fit.year})</span>}
         </div>
 
-        {/* Major group pill */}
-        {fit.majorGroup && (
-          <div className="mt-1">
+        {/* Major group pill & Hot Major badge */}
+        <div className="mt-1 flex flex-wrap items-center gap-1.5">
+          {fit.majorGroup && (
             <span className="inline-block rounded bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground">
               {fit.majorGroup}
             </span>
-          </div>
-        )}
+          )}
+          <HotMajorBadge majorName={fit.majorName} entryScore={fit.entryScore} variant="badge" />
+        </div>
 
         {/* Resting Fit Summary Bar & Percentage: Phù hợp tổng thể */}
         <div className="mt-2.5 flex items-center justify-between gap-2">
@@ -792,6 +799,8 @@ export default function PhanTichNangLuc() {
   const [filterPinned, setFilterPinned] = useState(false)
   const [filterTarget, setFilterTarget] = useState(false)
   const [filterCompare, setFilterCompare] = useState(false)
+  const [filterHot, setFilterHot] = useState(false)
+  const [selectedHotId, setSelectedHotId] = useState(null)
   const [sortBy, setSortBy] = useState('fit') // 'fit' | 'score_desc' | 'score_asc' | 'name'
 
   // Comparison State (up to 4 majors)
@@ -1074,23 +1083,24 @@ export default function PhanTichNangLuc() {
       if (filterPinned && !item.isPinned) return false
       if (filterTarget && !item.isTarget) return false
       if (filterCompare && !compareIds.includes(item.rubricId)) return false
+      if (filterHot) {
+        if (!isHotMajor(item.majorName, item.entryScore)) return false
+        if (selectedHotId) {
+          const hotInfo = getHotMajorInfo(item.majorName)
+          if (hotInfo?.id !== selectedHotId) return false
+        }
+      }
       return true
     })
 
     result.sort((a, b) => {
       if (sortBy === 'fit') {
-        const aFit = radarMode === 'all'
-          ? (a.allFitPct ?? a.fitPct)
-          : (recommendations.get(String(a.rubricId))?.hocLucFit ?? a.fitPct)
-        const bFit = radarMode === 'all'
-          ? (b.allFitPct ?? b.fitPct)
-          : (recommendations.get(String(b.rubricId))?.hocLucFit ?? b.fitPct)
-        if (aFit !== null && bFit === null) return -1
-        if (aFit === null && bFit !== null) return 1
-        if (aFit !== null && bFit !== null && bFit !== aFit) {
-          return bFit - aFit
-        }
-        return (Number(b.entryScore) || 0) - (Number(a.entryScore) || 0)
+        return compareMajorsByFit(a, b, {
+          recommendations,
+          recommendationConfig,
+          radarMode,
+          hasActiveSim,
+        })
       }
       if (sortBy === 'score_desc') {
         return (Number(b.entryScore) || 0) - (Number(a.entryScore) || 0) || String(a.majorName || '').localeCompare(String(b.majorName || ''), 'vi')
@@ -1103,10 +1113,14 @@ export default function PhanTichNangLuc() {
       }
       if (sortBy === 'tongHop') {
         const aRec = recommendations.get(String(a.rubricId))
-        const aHL = radarMode === 'all' ? (a.allFitPct ?? a.fitPct) : (aRec?.hocLucFit ?? a.fitPct)
-        const avLegacy = (aHL !== null && aRec?.tinhCachFit !== null && aRec?.tinhCachFit !== undefined)
-          ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * aHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * aRec.tinhCachFit) * 10) / 10
-          : (aRec?.tongHopFit ?? null)
+        const aEff = computeEffectiveFits({
+          fit: a,
+          recommendation: aRec,
+          recommendationConfig,
+          radarMode,
+          hasActiveSim,
+        })
+        const avLegacy = aEff.displayFitPct
         const av = (aRec?.groupFit !== null && aRec?.groupFit !== undefined)
           ? aRec.groupFit
           : ((aRec?.groupFitPartial !== null && aRec?.groupFitPartial !== undefined)
@@ -1114,10 +1128,14 @@ export default function PhanTichNangLuc() {
             : avLegacy)
 
         const bRec = recommendations.get(String(b.rubricId))
-        const bHL = radarMode === 'all' ? (b.allFitPct ?? b.fitPct) : (bRec?.hocLucFit ?? b.fitPct)
-        const bvLegacy = (bHL !== null && bRec?.tinhCachFit !== null && bRec?.tinhCachFit !== undefined)
-          ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * bHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * bRec.tinhCachFit) * 10) / 10
-          : (bRec?.tongHopFit ?? null)
+        const bEff = computeEffectiveFits({
+          fit: b,
+          recommendation: bRec,
+          recommendationConfig,
+          radarMode,
+          hasActiveSim,
+        })
+        const bvLegacy = bEff.displayFitPct
         const bv = (bRec?.groupFit !== null && bRec?.groupFit !== undefined)
           ? bRec.groupFit
           : ((bRec?.groupFitPartial !== null && bRec?.groupFitPartial !== undefined)
@@ -1131,13 +1149,31 @@ export default function PhanTichNangLuc() {
         } else if (bv !== av) {
           return bv - av
         }
-        return (Number(b.entryScore) || 0) - (Number(a.entryScore) || 0)
+        return (Number(b.entryScore) || 0) - (Number(a.entryScore) || 0) || String(a.majorName || '').localeCompare(String(b.majorName || ''), 'vi')
       }
       return 0
     })
 
     return result
-  }, [processedFits, search, universityFilter, blockFilter, groupFilter, minFit, filterPinned, filterTarget, filterCompare, compareIds, sortBy, recommendations, radarMode])
+  }, [
+    processedFits,
+    search,
+    universityFilter,
+    blockFilter,
+    groupFilter,
+    minFit,
+    filterPinned,
+    filterTarget,
+    filterCompare,
+    filterHot,
+    selectedHotId,
+    compareIds,
+    sortBy,
+    recommendations,
+    radarMode,
+    recommendationConfig,
+    hasActiveSim,
+  ])
 
   // Compare selection management
   const toggleCompare = (rubricId) => {
@@ -1228,6 +1264,16 @@ export default function PhanTichNangLuc() {
   if (filterPinned) activeChips.push({ label: 'Đã ghim', clear: () => setFilterPinned(false) })
   if (filterTarget) activeChips.push({ label: 'Mục tiêu', clear: () => setFilterTarget(false) })
   if (filterCompare) activeChips.push({ label: 'Đã chọn so sánh', clear: () => setFilterCompare(false) })
+  if (filterHot) {
+    const hotGroup = selectedHotId ? HOT_MAJORS.find((h) => h.id === selectedHotId) : null
+    activeChips.push({
+      label: hotGroup ? `Ngành HOT (≥27đ): ${hotGroup.shortName}` : 'Ngành HOT (Điểm chuẩn ≥ 27đ)',
+      clear: () => {
+        setFilterHot(false)
+        setSelectedHotId(null)
+      },
+    })
+  }
 
   // Simulator helper: initialize slider values
   const getSimValue = (subject) => {
@@ -1524,6 +1570,23 @@ export default function PhanTichNangLuc() {
             Đã chọn ({compareIds.length})
           </button>
 
+          {/* Lọc ngành HOT */}
+          <button
+            type="button"
+            onClick={() => {
+              setFilterHot((prev) => !prev)
+              if (filterHot) setSelectedHotId(null)
+            }}
+            className={`inline-flex h-9 items-center gap-1.5 rounded-md border px-2.5 text-xs font-semibold transition-all ${
+              filterHot
+                ? 'border-rose-500 bg-rose-600 text-white shadow-xs'
+                : 'border-rose-200 bg-rose-50/70 text-rose-700 hover:bg-rose-100 hover:text-rose-800 dark:border-rose-900 dark:bg-rose-950/30 dark:text-rose-300'
+            }`}
+          >
+            <Flame className="h-3.5 w-3.5 fill-rose-500 text-rose-500" />
+            <span>Ngành HOT (≥27đ)</span>
+          </button>
+
           {/* Fit range slider */}
           <div className="flex items-center gap-2 rounded-md border border-input bg-background px-2.5 py-1">
             <span className="text-[11px] text-muted-foreground whitespace-nowrap">Phù hợp:</span>
@@ -1541,6 +1604,45 @@ export default function PhanTichNangLuc() {
             </span>
           </div>
         </div>
+
+        {/* Thanh 10 nhóm ngành HOT xu hướng hàng đầu */}
+        {filterHot && (
+          <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-rose-100 dark:border-rose-950/60 pt-2.5 animate-in fade-in-50">
+            <span className="text-[11px] font-bold text-rose-700 dark:text-rose-400 flex items-center gap-1 shrink-0">
+              <Flame className="h-3 w-3 fill-rose-500 text-rose-500" />
+              10 ngành HOT:
+            </span>
+            <button
+              type="button"
+              onClick={() => setSelectedHotId(null)}
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition ${
+                selectedHotId === null
+                  ? 'bg-rose-600 text-white shadow-xs'
+                  : 'bg-muted text-muted-foreground hover:text-foreground'
+              }`}
+            >
+              Tất cả 10 ngành HOT
+            </button>
+            {HOT_MAJORS.map((h) => {
+              const isSelected = selectedHotId === h.id
+              return (
+                <button
+                  key={h.id}
+                  type="button"
+                  onClick={() => setSelectedHotId(isSelected ? null : h.id)}
+                  title={h.name}
+                  className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition border ${
+                    isSelected
+                      ? 'bg-rose-600 text-white border-rose-600 shadow-xs'
+                      : 'border-slate-200 dark:border-slate-800 bg-background text-slate-700 dark:text-slate-300 hover:border-rose-300 hover:text-rose-600'
+                  }`}
+                >
+                  {h.id}. {h.shortName}
+                </button>
+              )
+            })}
+          </div>
+        )}
 
         {/* Sort Bar & Active Chips */}
         <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-slate-100 pt-3">
@@ -1664,6 +1766,8 @@ export default function PhanTichNangLuc() {
                 setFilterPinned(false)
                 setFilterTarget(false)
                 setFilterCompare(false)
+                setFilterHot(false)
+                setSelectedHotId(null)
               }}
               className="text-xs text-muted-foreground hover:text-foreground underline ml-1"
             >
@@ -1865,15 +1969,13 @@ export default function PhanTichNangLuc() {
             }`}>
               {comparedFits.map((f, idx) => {
                 const activeDetails = radarMode === 'all' ? (f.allDetails || f.details) : f.details
-                const activeFitPct = radarMode === 'all' ? (f.allFitPct ?? f.fitPct) : f.fitPct
-                const rec = recommendations.get(String(f.rubricId))
-                const effHL = (activeFitPct ?? rec?.hocLucFit ?? null)
-                const effTongHop = (effHL !== null && rec?.tinhCachFit !== null && rec?.tinhCachFit !== undefined)
-                  ? Math.round(((recommendationConfig?.w_hoc_luc ?? 0.6) * effHL + (recommendationConfig?.w_tinh_cach ?? 0.4) * rec.tinhCachFit) * 10) / 10
-                  : (rec?.tongHopFit ?? null)
-                const hasTongHop = effTongHop !== null && effTongHop !== undefined
-                const displayPct = hasTongHop ? effTongHop : activeFitPct
-                const displayLabel = hasTongHop ? 'Phù hợp tổng thể' : (radarMode === 'all' ? 'Học lực toàn diện' : 'Học lực tổ hợp')
+                const { displayFitPct: displayPct, displayFitLabel: displayLabel } = computeEffectiveFits({
+                  fit: f,
+                  recommendation: recommendations.get(String(f.rubricId)),
+                  recommendationConfig,
+                  radarMode,
+                  hasActiveSim,
+                })
                 const fitStyle = getFitStyle(displayPct)
                 return (
                   <div key={f.rubricId} className="rounded-xl border p-4 bg-muted/30 flex flex-col justify-between">
@@ -1882,7 +1984,8 @@ export default function PhanTichNangLuc() {
                         Ngành {String.fromCharCode(65 + idx)}
                       </span>
                       <h3 className="mt-1 text-sm font-bold text-foreground leading-snug">{f.majorName}</h3>
-                      <p className="text-xs text-muted-foreground">{f.schoolName}</p>
+                      <HotMajorBadge majorName={f.majorName} entryScore={f.entryScore} variant="badge" className="mt-1" />
+                      <p className="text-xs text-muted-foreground mt-0.5">{f.schoolName}</p>
                       <div className="mt-1 text-[11px] text-muted-foreground">
                         Khối: <strong>{f.admissionBlock}</strong> · Điểm chuẩn: <strong>{f.entryScore ?? '—'}</strong>
                       </div>

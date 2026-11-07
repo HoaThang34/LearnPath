@@ -6,6 +6,7 @@ import {
   Minus, Plus, RotateCcw, Search, Sparkles, Star, Target, Trash2, X,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import HotMajorBadge from '@/components/career/HotMajorBadge'
 
 export const GROUP_COLORS = {
   'Kỹ thuật - Công nghệ': '#3b82f6',
@@ -911,7 +912,8 @@ export default function CareerMap({
                   <h3 className="text-base font-bold text-foreground leading-snug">
                     {selectedMajor.majorName}
                   </h3>
-                  <p className="mt-0.5 text-xs text-muted-foreground font-medium">
+                  <HotMajorBadge majorName={selectedMajor.majorName} entryScore={selectedMajor.entryScore} variant="badge" className="mt-1" />
+                  <p className="mt-1 text-xs text-muted-foreground font-medium">
                     {selectedMajor.schoolName} ({selectedMajor.schoolCode})
                   </p>
                 </div>

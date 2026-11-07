@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
-import { Layers, Search, X, Plus, BarChart3, ChevronRight, ArrowLeft, Check, AlertTriangle } from 'lucide-react'
+import { Layers, Search, X, Plus, BarChart3, ChevronRight, ArrowLeft, Check, AlertTriangle, Flame } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import HotMajorBadge from '@/components/career/HotMajorBadge'
+import { isHotMajor } from '@/lib/hotMajors'
 import {
   getKhoiThiList,
   getKhoiThiById,
@@ -69,6 +71,7 @@ export default function KhoiThi() {
   const [searchKhoi, setSearchKhoi] = useState('')
   const [searchTruong, setSearchTruong] = useState('')
   const [searchNganh, setSearchNganh] = useState('')
+  const [filterHotOnly, setFilterHotOnly] = useState(false)
   const [compareList, setCompareList] = useState([])
   const [compareData, setCompareData] = useState([])
   const [loading, setLoading] = useState(false)
@@ -197,9 +200,10 @@ export default function KhoiThi() {
     t.ten_truong.toLowerCase().includes(searchTruong.toLowerCase())
   )
 
-  const filteredNganh = nganhList.filter(n =>
-    n.nganh.toLowerCase().includes(searchNganh.toLowerCase())
-  )
+  const filteredNganh = nganhList.filter(n => {
+    if (filterHotOnly && !isHotMajor(n.nganh, n.diem_chuan)) return false
+    return n.nganh.toLowerCase().includes(searchNganh.toLowerCase())
+  })
 
   return (
     <div className="space-y-6">
@@ -341,6 +345,15 @@ export default function KhoiThi() {
                 className="pl-9"
               />
             </div>
+            <Button
+              type="button"
+              variant={filterHotOnly ? 'default' : 'outline'}
+              onClick={() => setFilterHotOnly((prev) => !prev)}
+              className={filterHotOnly ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-xs' : 'border-rose-200 text-rose-700 hover:bg-rose-50 dark:border-rose-800 dark:text-rose-400'}
+            >
+              <Flame className="h-4 w-4 mr-1.5 fill-rose-500 text-rose-500" />
+              Chỉ ngành HOT (≥27đ)
+            </Button>
             <select
               value={filterPhuongThuc}
               onChange={(e) => handleFilterPhuongThuc(e.target.value)}
@@ -369,7 +382,10 @@ export default function KhoiThi() {
                       isComparing ? 'border-primary ring-1 ring-primary/20 bg-primary/5' : 'border-border hover:border-primary/30 hover:shadow-sm bg-card'
                     }`}
                   >
-                    <div className="font-medium text-sm line-clamp-2 min-h-[40px]">{item.nganh}</div>
+                    <div className="flex items-start justify-between gap-1.5 min-h-[40px]">
+                      <div className="font-medium text-sm line-clamp-2">{item.nganh}</div>
+                      <HotMajorBadge majorName={item.nganh} entryScore={item.diem_chuan} variant="compact" />
+                    </div>
                     <div className="mt-3 flex items-center gap-2">
                       <span className={`inline-block px-2.5 py-1 rounded-lg text-sm font-bold border ${colorClass}`}>
                         {item.diem_chuan?.toFixed(2) || '-'}
