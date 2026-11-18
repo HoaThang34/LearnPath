@@ -203,29 +203,6 @@ export default function InterestResult() {
           </div>
         </CardContent>
       </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base">Miễn trừ và nguồn tham khảo</CardTitle>
-        </CardHeader>
-        <CardContent className="space-y-3 text-xs text-muted-foreground">
-          <p className="rounded-md border border-amber-200 bg-amber-50 p-3 text-amber-900">
-            {interpretation.disclaimer}
-          </p>
-          <ol className="list-decimal space-y-1 pl-5">
-            {(interpretation.sources || []).map((source) => (
-              <li key={source.id}>
-                {source.title} —{' '}
-                <a href={source.url} className="text-primary hover:underline" target="_blank" rel="noreferrer">
-                  {source.url}
-                </a>
-                {source.note ? ` · ${source.note}` : ''}
-              </li>
-            ))}
-          </ol>
-          <p>Ngày tra cứu nguồn: 30/10/2026.</p>
-        </CardContent>
-      </Card>
     </div>
   )
 }
