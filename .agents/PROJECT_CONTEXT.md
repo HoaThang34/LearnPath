@@ -81,6 +81,7 @@ Runtime facts:
 - Default user cookie: `lp_session`, HttpOnly, SameSite=Lax, Path=/, 7 days, `Secure` when `NODE_ENV=production`.
 - Default admin cookie: `lp_admin_session` (`__Host-lp_admin_session` in production), HttpOnly, SameSite=Strict, Path=/, 8 h absolute/30 min idle, `Secure` in production.
 - If behind a trusted reverse proxy, set `TRUST_PROXY=1`; otherwise leave it unset to avoid spoofed client IPs.
+- AI agent provider (2026-11-23): OpenAI-compatible `https://motapis.com/v1/chat/completions`, model `deepseek-v4-flash`, key stored in `backend/.env` under the legacy `OLLAMA_*` env names. No SDK dependency; native tool calls map to the existing read-only tool registry. Outbound DNS prefers IPv4 because the provider's AAAA route resets Node's `fetch`.
 
 ### Authentication and access
 

@@ -8,8 +8,8 @@ const { once } = require('node:events');
 process.env.NODE_ENV = 'test';
 process.env.APP_ORIGIN = 'http://localhost:5173';
 process.env.OLLAMA_API_KEY = 'test_key';
-process.env.OLLAMA_BASE_URL = 'http://localhost:11434/api';
-process.env.OLLAMA_MODEL = 'beam:cloud';
+process.env.OLLAMA_BASE_URL = 'http://localhost:11434/v1';
+process.env.OLLAMA_MODEL = 'deepseek-v4-flash';
 process.env.AGENT_ENABLED = '1';
 process.env.LEARNPATH_AUTH_DB_PATH = path.join(
   os.tmpdir(),
@@ -162,16 +162,21 @@ test('agent API: chat SSE streaming and conversation management', async () => {
   // Mock global fetch for Ollama backend
   const originalFetch = globalThis.fetch;
   globalThis.fetch = async (url, opts) => {
-    if (String(url).includes('/api/chat')) {
+    if (String(url).includes('/chat/completions')) {
       return new Response(
         JSON.stringify({
-          model: 'beam:cloud',
-          message: {
-            role: 'assistant',
-            content: 'Chào bạn! Mình là Trợ lý LearnPath.',
-          },
-          prompt_eval_count: 50,
-          eval_count: 20,
+          model: 'deepseek-v4-flash',
+          choices: [
+            {
+              index: 0,
+              finish_reason: 'stop',
+              message: {
+                role: 'assistant',
+                content: 'Chào bạn! Mình là Trợ lý LearnPath.',
+              },
+            },
+          ],
+          usage: { prompt_tokens: 50, completion_tokens: 20, total_tokens: 70 },
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } }
       );

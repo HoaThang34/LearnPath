@@ -455,6 +455,8 @@ All endpoints require `requireAuth` + `requirePasswordChanged` + trusted `Origin
 | GET | `/conversations/:id` | Returns conversation details and message history with visual artifacts (user-isolated) |
 | DELETE | `/conversations/:id` | Deletes conversation and its messages |
 
+AI backend: the agent calls an OpenAI-compatible `/chat/completions` endpoint. Configuration comes from `backend/.env` (legacy names retained): `OLLAMA_BASE_URL` = `https://motapis.com/v1`, `OLLAMA_API_KEY`, `OLLAMA_MODEL` = `deepseek-v4-flash`. `backend/src/agent/ollama.js` keeps its legacy module/function names but sends OpenAI-style JSON (`tools`, `stream: false`, `temperature`) and reads `choices[0].message` plus `usage.total_tokens`; tool results are sent back with `tool_call_id`. The key is server-side only: it is never returned by `/status` or logged. `config.js` sets `dns.setDefaultResultOrder('ipv4first')` because the provider's IPv6 route resets Node's `fetch`; this applies to outbound DNS in the backend process.
+
 ### Admin interest API (`/api/admin/interest/*`)
 
 All endpoints require the admin cookie + `X-Admin-CSRF`.

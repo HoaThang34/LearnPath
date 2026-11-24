@@ -2,6 +2,13 @@
 
 const fs = require('fs');
 const path = require('path');
+const dns = require('node:dns');
+
+// The configured provider publishes AAAA records whose IPv6 path resets
+// Node's global fetch. Prefer IPv4 for outbound DNS lookups in this process.
+if (typeof dns.setDefaultResultOrder === 'function') {
+  dns.setDefaultResultOrder('ipv4first');
+}
 
 function tryLoadEnv() {
   if (typeof process.loadEnvFile === 'function') {
@@ -24,6 +31,8 @@ tryLoadEnv();
 
 // Agent configuration is read from the environment on every call so tests can
 // override it. The API key is never returned to the client or logged.
+// Env names are kept as OLLAMA_* for backward compatibility, but the configured
+// service is an OpenAI-compatible chat API (base URL + /chat/completions).
 
 function intFromEnv(name, fallback, { min = 1, max = Number.MAX_SAFE_INTEGER } = {}) {
   const raw = process.env[name];
@@ -35,8 +44,8 @@ function intFromEnv(name, fallback, { min = 1, max = Number.MAX_SAFE_INTEGER } =
 
 function getAgentConfig() {
   const apiKey = (process.env.OLLAMA_API_KEY || '').trim();
-  const baseUrl = (process.env.OLLAMA_BASE_URL || 'https://ollama.com/api').trim().replace(/\/+$/, '');
-  const model = (process.env.OLLAMA_MODEL || 'beam:cloud').trim();
+  const baseUrl = (process.env.OLLAMA_BASE_URL || 'https://motapis.com/v1').trim().replace(/\/+$/, '');
+  const model = (process.env.OLLAMA_MODEL || 'deepseek-v4-flash').trim();
   return {
     enabled: process.env.AGENT_ENABLED !== '0',
     configured: Boolean(apiKey && baseUrl && model),

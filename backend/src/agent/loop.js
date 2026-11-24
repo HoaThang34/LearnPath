@@ -83,8 +83,8 @@ async function runAgentTurn({ userId, history = [], message, onEvent = () => {},
       messages.push({
         role: 'tool',
         content: serializeToolResult(result.data),
-        tool_name: name,
-        ...(call.id ? { tool_call_id: call.id } : {}),
+        // OpenAI-compatible APIs match tool results to calls by tool_call_id.
+        tool_call_id: call.id,
       });
     }
   }

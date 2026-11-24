@@ -64,6 +64,7 @@ Purpose: help the next agent/session understand LearnPath **in a few minutes**, 
 | CI | Workflow added | `.github/workflows/ci.yml`: backend tests, frontend build, non-blocking audit; not run on GitHub until push |
 | Admission DB integrity | Pass | SHA-256 unchanged after API/UI/admin tests (`C06329AD8FBB3B8FCC87FAEEB16D5B9ECEA9E8DCB2A19E660B24824ED0ED0F05`) |
 | Real auth DB | v7 (migrated 2026-10-31) | 13 users, 1 admin, 108 interest items, 8 weight rows, 7 config keys; backups `auth.db.v6-backup-20261031130214132` and `auth.db.pre-m0-20261031130214177`; historical v1 backup `auth.db.v1-backup-20261023141514808` (KI-24) |
+| AI provider | Switched 2026-11-23 | `backend/.env` → `https://motapis.com/v1`, `deepseek-v4-flash`; real `/chat/completions` tool round-trip OK; backend 252/252 tests pass |
 
 Important: the 281-block result is from a **temporary** database. The live DB still has 245 blocks until the user approves a rebuild and a backup is made.
 
